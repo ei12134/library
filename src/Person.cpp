@@ -1,18 +1,58 @@
 /*
  * Person.cpp
  *
- *  Created on: 08/10/2014
- *      Author: User
+ *  Created on: 8 de Out de 2014
+ *      Author: zikoc_000
  */
-
 #include "Person.h"
 
-Person::Person() {
-	// TODO Auto-generated constructor stub
+using namespace std;
+
+Person::Person(string name, int age, unsigned long phoneNumber, string email) {
+	this->name = name;
+	this->age = age;
+	this->phoneNumber = phoneNumber;
+	this->email = email;
+}
+
+Person::~Person(){
 
 }
 
-Person::~Person() {
-	// TODO Auto-generated destructor stub
+void Person::setName(string name){
+	this->name=name;
+}
+
+string Person::getName() const{
+	return name;
+}
+
+void Person::setAge(int age){
+	this->age=age;
+}
+
+int Person::getAge() const {
+	return age;
+}
+
+void Person::setPhoneNumber(unsigned long phoneNumber){
+	this->phoneNumber=phoneNumber;
+}
+
+unsigned long Person::getPhoneNumber() const{
+	return phoneNumber;
+}
+
+void Person::setEmail(string email){
+	this->email=email;
+}
+
+string Person::getEmail() const{
+	return email;
+}
+ string Person::printInfo(){
+	 	 stringstream ss;
+	 	 ss<<"A minha info é: "<<name<<endl<<age<<endl<<phoneNumber<<endl<<email;
+	 	 return ss.str();
 }
 
