@@ -9,6 +9,8 @@
 #include "Library.h"
 using namespace std;
 
+unsigned long int Library::personID = 0;
+
 Library::Library() {
 	// TODO Auto-generated constructor stub
 

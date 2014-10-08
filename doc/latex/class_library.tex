@@ -1,0 +1,202 @@
+\hypertarget{class_library}{\section{Library Class Reference}
+\label{class_library}\index{Library@{Library}}
+}
+
+
+{\ttfamily \#include $<$Library.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_library_a82338219d8bf51962ff5f60a0db21b19}{Library} ()
+\item 
+vector$<$ \hyperlink{class_book}{Book} $\ast$ $>$ \hyperlink{class_library_a5c68dd0db0e426e601d56026dcab0c3a}{get\+Books} () const 
+\item 
+vector$<$ \hyperlink{class_borrow}{Borrow} $\ast$ $>$ \hyperlink{class_library_a426200a81b0a586d77d06f950d9f90c5}{get\+Borrows} () const 
+\item 
+vector$<$ \hyperlink{class_person}{Person} $\ast$ $>$ \hyperlink{class_library_afc03e416a30d319118794634f4be2e53}{get\+Persons} () const 
+\item 
+void \hyperlink{class_library_a4e0ca35d3bdeff3f8d173b4e721d37a8}{set\+Books} (vector$<$ \hyperlink{class_book}{Book} $\ast$ $>$ books)
+\item 
+void \hyperlink{class_library_a536f7dbc786266c5b14697fbc9b5adab}{set\+Borrows} (vector$<$ \hyperlink{class_borrow}{Borrow} $\ast$ $>$ borrows)
+\item 
+void \hyperlink{class_library_ab75b95897c1ec446b3b6782483898ef6}{set\+Persons} (vector$<$ \hyperlink{class_person}{Person} $\ast$ $>$ persons)
+\item 
+void \hyperlink{class_library_a2996f2fc786be395cb28497e8e0cb0db}{add\+Book} (\hyperlink{class_book}{Book} $\ast$book)
+\item 
+void \hyperlink{class_library_ae2dd97e7dad7e38c525ff682a216e68d}{add\+Borrow} (\hyperlink{class_borrow}{Borrow} $\ast$borrow)
+\item 
+void \hyperlink{class_library_ad914371ad542ffdf29a10f79a76fda59}{add\+Person} (\hyperlink{class_person}{Person} $\ast$person)
+\item 
+bool \hyperlink{class_library_a08fabb07a9d488eaa3e54367a0017964}{remove\+Book} (\hyperlink{class_book}{Book} $\ast$book)
+\item 
+bool \hyperlink{class_library_a6ac8ef36ea84e447e8a1c9a6531f37eb}{remove\+Borrow} (\hyperlink{class_borrow}{Borrow} $\ast$borrow)
+\item 
+bool \hyperlink{class_library_a4b581c83a98efda1f81e95060bb74bea}{remove\+Person} (\hyperlink{class_person}{Person} $\ast$person)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_library_afccdda28439b9fb28b207cfc80111ba9}{static unsigned long int \hyperlink{class_library_afccdda28439b9fb28b207cfc80111ba9}{person\+I\+D} = 0}\label{class_library_afccdda28439b9fb28b207cfc80111ba9}
+
+\begin{DoxyCompactList}\small\item\em All personnel unique identifier. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{class_library}{Library} Class stores containers used in the library management 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_library_a82338219d8bf51962ff5f60a0db21b19}{\index{Library@{Library}!Library@{Library}}
+\index{Library@{Library}!Library@{Library}}
+\subsubsection[{Library}]{\setlength{\rightskip}{0pt plus 5cm}Library\+::\+Library (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_library_a82338219d8bf51962ff5f60a0db21b19}
+\hyperlink{class_library}{Library} constructor reads $\ast$.csv files and stores pointers to each object in their dedicated container 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_library_a2996f2fc786be395cb28497e8e0cb0db}{\index{Library@{Library}!add\+Book@{add\+Book}}
+\index{add\+Book@{add\+Book}!Library@{Library}}
+\subsubsection[{add\+Book}]{\setlength{\rightskip}{0pt plus 5cm}void Library\+::add\+Book (
+\begin{DoxyParamCaption}
+\item[{{\bf Book} $\ast$}]{book}
+\end{DoxyParamCaption}
+)}}\label{class_library_a2996f2fc786be395cb28497e8e0cb0db}
+adds new book to the library 
+\begin{DoxyParams}{Parameters}
+{\em book} & \hyperlink{class_book}{Book} pointer \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_library_ae2dd97e7dad7e38c525ff682a216e68d}{\index{Library@{Library}!add\+Borrow@{add\+Borrow}}
+\index{add\+Borrow@{add\+Borrow}!Library@{Library}}
+\subsubsection[{add\+Borrow}]{\setlength{\rightskip}{0pt plus 5cm}void Library\+::add\+Borrow (
+\begin{DoxyParamCaption}
+\item[{{\bf Borrow} $\ast$}]{borrow}
+\end{DoxyParamCaption}
+)}}\label{class_library_ae2dd97e7dad7e38c525ff682a216e68d}
+adds new borrow to the library 
+\begin{DoxyParams}{Parameters}
+{\em borrow} & \hyperlink{class_borrow}{Borrow} pointer \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_library_ad914371ad542ffdf29a10f79a76fda59}{\index{Library@{Library}!add\+Person@{add\+Person}}
+\index{add\+Person@{add\+Person}!Library@{Library}}
+\subsubsection[{add\+Person}]{\setlength{\rightskip}{0pt plus 5cm}void Library\+::add\+Person (
+\begin{DoxyParamCaption}
+\item[{{\bf Person} $\ast$}]{person}
+\end{DoxyParamCaption}
+)}}\label{class_library_ad914371ad542ffdf29a10f79a76fda59}
+adds new person to the library 
+\begin{DoxyParams}{Parameters}
+{\em person} & \hyperlink{class_person}{Person} pointer \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_library_a5c68dd0db0e426e601d56026dcab0c3a}{\index{Library@{Library}!get\+Books@{get\+Books}}
+\index{get\+Books@{get\+Books}!Library@{Library}}
+\subsubsection[{get\+Books}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Book} $\ast$ $>$ Library\+::get\+Books (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_library_a5c68dd0db0e426e601d56026dcab0c3a}
+\begin{DoxyReturn}{Returns}
+books 
+\end{DoxyReturn}
+\hypertarget{class_library_a426200a81b0a586d77d06f950d9f90c5}{\index{Library@{Library}!get\+Borrows@{get\+Borrows}}
+\index{get\+Borrows@{get\+Borrows}!Library@{Library}}
+\subsubsection[{get\+Borrows}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Borrow} $\ast$ $>$ Library\+::get\+Borrows (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_library_a426200a81b0a586d77d06f950d9f90c5}
+\begin{DoxyReturn}{Returns}
+borrows 
+\end{DoxyReturn}
+\hypertarget{class_library_afc03e416a30d319118794634f4be2e53}{\index{Library@{Library}!get\+Persons@{get\+Persons}}
+\index{get\+Persons@{get\+Persons}!Library@{Library}}
+\subsubsection[{get\+Persons}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Person} $\ast$ $>$ Library\+::get\+Persons (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_library_afc03e416a30d319118794634f4be2e53}
+\begin{DoxyReturn}{Returns}
+persons 
+\end{DoxyReturn}
+\hypertarget{class_library_a08fabb07a9d488eaa3e54367a0017964}{\index{Library@{Library}!remove\+Book@{remove\+Book}}
+\index{remove\+Book@{remove\+Book}!Library@{Library}}
+\subsubsection[{remove\+Book}]{\setlength{\rightskip}{0pt plus 5cm}bool Library\+::remove\+Book (
+\begin{DoxyParamCaption}
+\item[{{\bf Book} $\ast$}]{book}
+\end{DoxyParamCaption}
+)}}\label{class_library_a08fabb07a9d488eaa3e54367a0017964}
+removes a book from the library 
+\begin{DoxyParams}{Parameters}
+{\em book} & \hyperlink{class_book}{Book} pointer \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_library_a6ac8ef36ea84e447e8a1c9a6531f37eb}{\index{Library@{Library}!remove\+Borrow@{remove\+Borrow}}
+\index{remove\+Borrow@{remove\+Borrow}!Library@{Library}}
+\subsubsection[{remove\+Borrow}]{\setlength{\rightskip}{0pt plus 5cm}bool Library\+::remove\+Borrow (
+\begin{DoxyParamCaption}
+\item[{{\bf Borrow} $\ast$}]{borrow}
+\end{DoxyParamCaption}
+)}}\label{class_library_a6ac8ef36ea84e447e8a1c9a6531f37eb}
+removes a borrow from the library 
+\begin{DoxyParams}{Parameters}
+{\em borrow} & \hyperlink{class_borrow}{Borrow} pointer \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_library_a4b581c83a98efda1f81e95060bb74bea}{\index{Library@{Library}!remove\+Person@{remove\+Person}}
+\index{remove\+Person@{remove\+Person}!Library@{Library}}
+\subsubsection[{remove\+Person}]{\setlength{\rightskip}{0pt plus 5cm}bool Library\+::remove\+Person (
+\begin{DoxyParamCaption}
+\item[{{\bf Person} $\ast$}]{person}
+\end{DoxyParamCaption}
+)}}\label{class_library_a4b581c83a98efda1f81e95060bb74bea}
+removes a person from the library 
+\begin{DoxyParams}{Parameters}
+{\em person} & \hyperlink{class_person}{Person} pointer \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_library_a4e0ca35d3bdeff3f8d173b4e721d37a8}{\index{Library@{Library}!set\+Books@{set\+Books}}
+\index{set\+Books@{set\+Books}!Library@{Library}}
+\subsubsection[{set\+Books}]{\setlength{\rightskip}{0pt plus 5cm}void Library\+::set\+Books (
+\begin{DoxyParamCaption}
+\item[{vector$<$ {\bf Book} $\ast$ $>$}]{books}
+\end{DoxyParamCaption}
+)}}\label{class_library_a4e0ca35d3bdeff3f8d173b4e721d37a8}
+replaces existing books pointer vector 
+\begin{DoxyParams}{Parameters}
+{\em books} & \hyperlink{class_book}{Book} pointer vector \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_library_a536f7dbc786266c5b14697fbc9b5adab}{\index{Library@{Library}!set\+Borrows@{set\+Borrows}}
+\index{set\+Borrows@{set\+Borrows}!Library@{Library}}
+\subsubsection[{set\+Borrows}]{\setlength{\rightskip}{0pt plus 5cm}void Library\+::set\+Borrows (
+\begin{DoxyParamCaption}
+\item[{vector$<$ {\bf Borrow} $\ast$ $>$}]{borrows}
+\end{DoxyParamCaption}
+)}}\label{class_library_a536f7dbc786266c5b14697fbc9b5adab}
+replaces existing borrows pointer vector 
+\begin{DoxyParams}{Parameters}
+{\em borrows} & \hyperlink{class_borrow}{Borrow} pointer vector \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_library_ab75b95897c1ec446b3b6782483898ef6}{\index{Library@{Library}!set\+Persons@{set\+Persons}}
+\index{set\+Persons@{set\+Persons}!Library@{Library}}
+\subsubsection[{set\+Persons}]{\setlength{\rightskip}{0pt plus 5cm}void Library\+::set\+Persons (
+\begin{DoxyParamCaption}
+\item[{vector$<$ {\bf Person} $\ast$ $>$}]{persons}
+\end{DoxyParamCaption}
+)}}\label{class_library_ab75b95897c1ec446b3b6782483898ef6}
+replaces existing persons pointer vector 
+\begin{DoxyParams}{Parameters}
+{\em persons} & Persons pointer vector \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+User/\+Eclipse/library/src/Library.\+h\item 
+C\+:/\+Users/\+User/\+Eclipse/library/src/Library.\+cpp\end{DoxyCompactItemize}
