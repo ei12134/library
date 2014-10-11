@@ -1,19 +1,13 @@
-/*
- * Superviser.cpp
- *
- *  Created on: 8 de Out de 2014
- *      Author: zikoc_000
- */
-
 #include "Superviser.h"
 
 using namespace std;
 
-Superviser::Superviser(string name, int age, unsigned long phoneNumber,
-		string email, unsigned long nif, unsigned int wage) :
+Superviser::Superviser(string name, int age, unsigned long int phoneNumber,
+		string email, unsigned long int nif, unsigned int wage) :
 		Employee(name, age, phoneNumber, email, nif, wage) {
 
 }
+
 Superviser::~Superviser() {
 }
 

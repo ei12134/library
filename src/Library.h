@@ -8,24 +8,30 @@
 #ifndef SRC_LIBRARY_H_
 #define SRC_LIBRARY_H_
 
+#define READERS_FILE "readers.csv"
+
 #include <vector>
+#include <fstream>
 #include "Book.h"
-#include "Borrow.h"
-#include "Person.h"
+#include "./Borrow/Current.h"
+#include "./Borrow/Previous.h"
+#include "./Persons/Person.h"
+
 using namespace std;
 
 /**
  * Library Class
  * stores containers used in the library management
  */
-
 class Library {
 
 private:
 	/// pointer vector to book type objects
 	vector<Book*> books;
 	/// pointer vector to borrow type objects
-	vector<Borrow*> borrows;
+	vector<Current*> currentBorrows;
+	/// pointer vector to borrow type objects
+	vector<Previous*> previousBorrows;
 	/// pointer vector to person type objects
 	vector<Person*> persons; // http://english.stackexchange.com/questions/62084/whats-the-correct-plural-of-person
 
@@ -41,7 +47,10 @@ public:
 	vector<Book*> getBooks() const;
 
 	///@return borrows
-	vector<Borrow*> getBorrows() const;
+	vector<Current*> getCurrentBorrows() const;
+
+	///@return borrows
+	vector<Previous*> getPreviousBorrows() const;
 
 	///@return persons
 	vector<Person*> getPersons() const;
@@ -54,7 +63,12 @@ public:
 	/** replaces existing borrows pointer vector
 	 *@param borrows Borrow pointer vector
 	 */
-	void setBorrows(vector<Borrow*> borrows);
+	void setCurrentBorrows(vector<Current*> currentBorrows);
+
+	/** replaces existing borrows pointer vector
+	 *@param borrows Borrow pointer vector
+	 */
+	void setPreviousBorrows(vector<Previous*> previousBorrows);
 
 	/** replaces existing persons pointer vector
 	 *@param persons Persons pointer vector
@@ -69,7 +83,7 @@ public:
 	/** adds new borrow to the library
 	 *@param borrow Borrow pointer
 	 */
-	void addBorrow(Borrow* borrow);
+	void addCurrentBorrow(Current* currentBorrow);
 
 	/** adds new person to the library
 	 *@param person Person pointer
@@ -84,12 +98,17 @@ public:
 	/** removes a borrow from the library
 	 *@param borrow Borrow pointer
 	 */
-	bool removeBorrow(Borrow* borrow);
+	bool removeCurrentBorrow(Current* currentBorrow);
 
 	/** removes a person from the library
 	 *@param person Person pointer
 	 */
 	bool removePerson(Person* person);
+
+	// read from files
+	void loadReaders();
+
+	void displayPersons();
 };
 
 #endif /* SRC_LIBRARY_H_ */

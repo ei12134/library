@@ -1,0 +1,14 @@
+#include "Borrow.h"
+
+Borrow::Borrow(Book* book, Employee* employee, Reader* reader,
+		Data borrowDate) {
+	this->book = book;
+	this->employee = employee;
+	this->reader = reader;
+	this->borrowDate = borrowDate;
+}
+
+Borrow::~Borrow() {
+	// TODO Auto-generated destructor stub
+}
+

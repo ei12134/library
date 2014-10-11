@@ -18,25 +18,24 @@
 using namespace std;
 
 class Person {
-	int age;
+	unsigned int age;
 	string email;
 	string name;
-	unsigned long phoneNumber;
+	unsigned long int phoneNumber;
 public:
-	Person(string name,int age,unsigned long phoneNumber,string email);
+	Person(string name, unsigned int age, unsigned long phoneNumber,
+			string email);
 	virtual ~Person();
 	void setName(string name);
-	string getName()const;
-	void setAge(int age);
-	int getAge()const;
+	string getName() const;
+	void setAge(unsigned int age);
+	unsigned int getAge() const;
 	void setPhoneNumber(unsigned long phoneNumber);
-	unsigned long getPhoneNumber()const;
+	unsigned long getPhoneNumber() const;
 	void setEmail(string email);
-	string getEmail()const;
+	string getEmail() const;
 	virtual string printInfo();
 
 };
-
-
 
 #endif /* PERSON_H_ */

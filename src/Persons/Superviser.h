@@ -1,10 +1,3 @@
-/*
- * Superviser.h
- *
- *  Created on: 8 de Out de 2014
- *      Author: zikoc_000
- */
-
 #include <string>
 #include <vector>
 #include <iostream>
@@ -15,16 +8,15 @@
 
 using namespace std;
 
-class Superviser: public Employee{
+class Superviser: public Employee {
 	vector<Employee *> teamvec;
 public:
-	Superviser(string name,int age,unsigned long phoneNumber,string email,unsigned long nif,unsigned int wage );
+	Superviser(string name, int age, unsigned long int phoneNumber,
+			string email, unsigned long int nif, unsigned int wage);
 	virtual ~Superviser();
 	void addEmployee(Employee *e1);
 	bool removeEmployee(string name);
 	string printInfo();
 
-
 };
-
 
