@@ -34,9 +34,9 @@ void Employee::setWage(unsigned int wage) {
 
 //void createBorrow(Book *, Reader *, Employee *);
 
-string Employee::printInfo() {
+string Employee::print() {
 	stringstream ss;
-	ss << Person::printInfo() << endl << nif << endl << wage;
+	ss << Person::print() << " ; " << nif << " ; " << wage;
 	return ss.str();
 }
 

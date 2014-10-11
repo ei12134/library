@@ -1,18 +1,18 @@
-/*
- * Library.cpp
- *
- *  Created on: 08/10/2014
- *      Author: User
- */
-
+#include <iostream>
 #include "Library.h"
 using namespace std;
 
 unsigned long int Library::personID = 0;
 
 Library::Library() {
+//	loadBooks();
+//	loadBorrows();
 	loadReaders();
-	displayPersons();
+//	loadEmployees();
+//	loadSupervisors();
+	/* ...
+	 * associations?
+	 */
 }
 
 Library::~Library() {
@@ -27,8 +27,16 @@ vector<Current*> Library::getCurrentBorrows() const {
 	return currentBorrows;
 }
 
-vector<Person*> Library::getPersons() const {
-	return persons;
+vector<Reader*> Library::getReaders() const {
+	return readers;
+}
+
+vector<Employee*> Library::getEmployees() const {
+	return employees;
+}
+
+vector<Supervisor*> Library::getSupervisors() const {
+	return supervisors;
 }
 
 void Library::setBooks(vector<Book*> books) {
@@ -39,8 +47,16 @@ void Library::setBooks(vector<Book*> books) {
 //	this->borrows = borrows;
 //}
 
-void Library::setPersons(vector<Person*> persons) {
-	this->persons = persons;
+void Library::setReaders(vector<Reader*> readers) {
+	this->readers = readers;
+}
+
+void Library::setEmployees(vector<Employee*> employees) {
+	this->employees = employees;
+}
+
+void Library::setSupervisors(vector<Supervisor*> supervisors) {
+	this->supervisors = supervisors;
 }
 
 void Library::addBook(Book* book) {
@@ -51,8 +67,16 @@ void Library::addCurrentBorrow(Current* currentBorrow) {
 	currentBorrows.push_back(currentBorrow);
 }
 
-void Library::addPerson(Person* person) {
-	persons.push_back(person);
+void Library::addReader(Reader* reader) {
+	readers.push_back(reader);
+}
+
+void Library::addEmployee(Employee* employee) {
+	employees.push_back(employee);
+}
+
+void Library::addSupervisor(Supervisor* supervisor) {
+	supervisors.push_back(supervisor);
 }
 
 bool Library::removeBook(Book* book) {
@@ -77,33 +101,53 @@ bool Library::removeCurrentBorrow(Current* currentBorrow) {
 	return false;
 }
 
-bool Library::removePerson(Person* person) {
-	vector<Person*>::iterator it;
-	for (it = persons.begin(); it != persons.end(); it++) {
-		if (*it == person) {
-			persons.erase(it);
+bool Library::removeReader(Reader* reader) {
+	vector<Reader*>::iterator it;
+	for (it = readers.begin(); it != readers.end(); it++) {
+		if (*it == reader) {
+			readers.erase(it);
 			return true;
 		}
 	}
 	return false;
 }
 
-// read from files
+bool Library::removeEmployee(Employee* employee) {
+	vector<Employee*>::iterator it;
+	for (it = employees.begin(); it != employees.end(); it++) {
+		if (*it == employee) {
+			employees.erase(it);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Library::removeSupervisor(Supervisor* supervisor) {
+	vector<Supervisor*>::iterator it;
+	for (it = supervisors.begin(); it != supervisors.end(); it++) {
+		if (*it == supervisor) {
+			supervisors.erase(it);
+			return true;
+		}
+	}
+	return false;
+}
+
 void Library::loadReaders() {
 
 	string value;
-
 	fstream file;
 	file.open(READERS_FILE);
+
 	if (file.is_open()) {
 		if (!file.eof())
 			getline(file, value);
 		while (file.good()) {
-			string nome, email, num;
 			stringstream ss;
+			string nome, email, num;
 			unsigned int age;
-			unsigned long int phone;
-			unsigned long int cardID;
+			unsigned long int phone, cardID;
 
 			getline(file, nome, ';');
 			getline(file, num, ';');
@@ -118,20 +162,12 @@ void Library::loadReaders() {
 			getline(file, email, ';');
 
 			num.clear();
-			getline(file, num, ';');
+			getline(file, num); // read last input until newline
 			ss << num;
 			ss >> cardID;
 
-			getline(file, value); //clear newline
-			Reader *e = new Reader(nome, age, phone, email, cardID);
-			persons.push_back(e);
+			Reader *reader = new Reader(nome, age, phone, email, cardID);
+			addReader(reader);
 		}
-	}
-}
-
-void Library::displayPersons() {
-	vector<Person*>::iterator it;
-	for (it = persons.begin(); it != persons.end(); it++) {
-		cout << (*it)->getName() << endl;
 	}
 }

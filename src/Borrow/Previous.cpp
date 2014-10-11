@@ -1,7 +1,7 @@
 #include "Previous.h"
 
 Previous::Previous(Book* book, Employee* employee, Reader* reader,
-		Data borrowDate, Data expectedDeliveryDate, float fee) :
+		Date borrowDate, Date expectedDeliveryDate, float fee) :
 		Borrow(book, employee, reader, borrowDate) {
 	this->fee = fee;
 }

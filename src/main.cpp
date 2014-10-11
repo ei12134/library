@@ -1,10 +1,9 @@
-#include "Library.h"
+#include "Interface.h"
 
 using namespace std;
 
 int main() {
 
-	Library l;
-
+	Interface();
 	return 0;
 }

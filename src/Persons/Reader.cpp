@@ -46,7 +46,8 @@ bool Reader::borrowLimit() {
 	return currentlyBorrowedBooks.size() > 2;
 }
 
-string Reader::printInfo() {
-	return NULL;
-	//return Person::printInfo;
+string Reader::print() {
+	stringstream ss;
+	ss << Person::print() << " ; " << cardID;
+	return ss.str();
 }

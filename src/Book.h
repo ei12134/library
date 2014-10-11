@@ -1,10 +1,3 @@
-/*
- * Book.h
- *
- *  Created on: Oct 10, 2014
- *      Author: potter
- */
-
 #ifndef BOOK_H_
 #define BOOK_H_
 
@@ -15,13 +8,13 @@ class Book {
 private:
 	string author;
 	bool borrowed;
-	string cota;
-	int npaginas;
+	string quota;
+	int pageNumber;
 	string isbn;
 	string title;
 public:
-	Book(string author, bool borrowed, string cota, int npaginas, string isbn,
-			string title);
+	Book(string author, bool borrowed, string quota, int pageNumber,
+			string isbn, string title);
 	virtual ~Book();
 };
 

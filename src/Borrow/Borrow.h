@@ -3,25 +3,22 @@
 
 class Employee;
 class Reader;
-class Data;
 
-#include "../Persons/Employee.h"
-#include "../Persons/Reader.h"
 #include "../Book.h"
-#include "../Data.h"
+#include "../Date.h"
 using namespace std;
 
 class Borrow {
 protected:
-	Data borrowDate;
-	Data actuallyDeliveryDate;
+	Date borrowDate;
+	Date actuallyDeliveryDate;
 
 	Book* book;
 	Employee* employee;
 	Reader* reader;
 
 public:
-	Borrow(Book* book, Employee* employee, Reader* reader, Data borrowDate);
+	Borrow(Book* book, Employee* employee, Reader* reader, Date borrowDate);
 	virtual float CalcFee() = 0;
 	virtual ~Borrow();
 };

@@ -51,10 +51,10 @@ void Person::setEmail(string email) {
 string Person::getEmail() const {
 	return email;
 }
-string Person::printInfo() {
+
+string Person::print() {
 	stringstream ss;
-	ss << "A minha info é: " << name << endl << age << endl << phoneNumber
-			<< endl << email;
+	ss << name << " ; " << age << " ; "<< phoneNumber << " ; " << email;
 	return ss.str();
 }
 

@@ -31,7 +31,7 @@ public:
 	unsigned int getWage() const;
 	void setWage(unsigned int wage);
 	void createBorrow(Book *, Reader *, Employee *);
-	string printInfo();
+	string print();
 };
 #endif /* EMPLOYEE_H_ */
 

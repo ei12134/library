@@ -8,15 +8,15 @@
 
 using namespace std;
 
-class Superviser: public Employee {
+class Supervisor: public Employee {
 	vector<Employee *> teamvec;
 public:
-	Superviser(string name, int age, unsigned long int phoneNumber,
+	Supervisor(string name, int age, unsigned long int phoneNumber,
 			string email, unsigned long int nif, unsigned int wage);
-	virtual ~Superviser();
+	virtual ~Supervisor();
 	void addEmployee(Employee *e1);
 	bool removeEmployee(string name);
-	string printInfo();
+	string print();
 
 };
 

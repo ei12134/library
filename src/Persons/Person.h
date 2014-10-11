@@ -34,7 +34,7 @@ public:
 	unsigned long getPhoneNumber() const;
 	void setEmail(string email);
 	string getEmail() const;
-	virtual string printInfo();
+	virtual string print();
 
 };
 

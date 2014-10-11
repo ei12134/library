@@ -1,15 +1,9 @@
-/*
- * Book.cpp
- *
- *  Created on: Oct 10, 2014
- *      Author: potter
- */
-
 #include "Book.h"
+using namespace std;
 
-Book::Book(std::string author, bool borrowed, std::string cota, int npaginas,
-		std::string isbn, std::string title) :
-		author(author), borrowed { borrowed }, cota(cota), npaginas { npaginas }, isbn(
+Book::Book(string author, bool borrowed, string quota, int pageNumber,
+		string isbn, string title) :
+		author(author), borrowed(borrowed), quota(quota), pageNumber(pageNumber), isbn(
 				isbn), title(title) {
 }
 

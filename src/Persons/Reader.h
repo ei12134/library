@@ -25,7 +25,7 @@ public:
 	void addCurrentBorrow(Current* currentBorrow);
 	bool removeCurrentBorrow(Current* currentBorrow);
 	bool borrowLimit();
-	string printInfo();
+	string print();
 };
 
 #endif /* SRC_READER_H_ */

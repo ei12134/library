@@ -1,7 +1,7 @@
 #include "Borrow.h"
 
 Borrow::Borrow(Book* book, Employee* employee, Reader* reader,
-		Data borrowDate) {
+		Date borrowDate) {
 	this->book = book;
 	this->employee = employee;
 	this->reader = reader;

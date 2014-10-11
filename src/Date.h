@@ -5,12 +5,12 @@
 #include <string>
 using namespace std;
 
-class Data {
+class Date {
 private:
 	unsigned int day, month, year;
 public:
-	Data():day(1),month(1),year(2000){};
-	Data(unsigned int day, unsigned int month, unsigned int year);
+	Date():day(1),month(1),year(2000){};
+	Date(unsigned int day, unsigned int month, unsigned int year);
 
 	void setDate(unsigned int day, unsigned int month, unsigned int year);
 
@@ -26,10 +26,10 @@ public:
 
 	string imprime() const;
 
-	bool operator <(Data d2) const;
-	bool operator >(Data d2) const;
-	bool operator ==(Data d2) const;
-	bool operator !=(Data d2) const;
+	bool operator <(Date d2) const;
+	bool operator >(Date d2) const;
+	bool operator ==(Date d2) const;
+	bool operator !=(Date d2) const;
 
 };
 

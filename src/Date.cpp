@@ -1,25 +1,18 @@
-/*
- * Data.cpp
- *
- *  Created on: Oct 10, 2014
- *      Author: potter
- */
-
-#include "Data.h"
 #include <sstream>
+#include "Date.h"
 using namespace std;
 
-Data::Data(unsigned int day, unsigned int month, unsigned int year) {
+Date::Date(unsigned int day, unsigned int month, unsigned int year) {
 	setDate(day, month, year);
 }
 
-string Data::imprime() const {
+string Date::imprime() const {
 	stringstream st;
 	st << getDay() << "-" << getMonth() << "-" << getYear();
 	return st.str();
 }
 
-void Data::setDate(unsigned int day, unsigned int month, unsigned int year) {
+void Date::setDate(unsigned int day, unsigned int month, unsigned int year) {
 //	if (month < 1 || month > 12)
 //		throw Exception<int>("Invalid Month", month); // throw exception <int> because of the template
 //	unsigned int days = GiveMonthDays(month, year);
@@ -30,7 +23,7 @@ void Data::setDate(unsigned int day, unsigned int month, unsigned int year) {
 	this->month = month;
 	this->year = year;
 }
-bool Data::operator <(Data d2) const {
+bool Date::operator <(Date d2) const {
 	if (this->year < d2.year)
 		return true;
 	else if (this->year > d2.year)
@@ -43,14 +36,14 @@ bool Data::operator <(Data d2) const {
 		return true;
 	return false;
 }
-bool Data::operator >(Data d2) const {
+bool Date::operator >(Date d2) const {
 	return d2 < (*this);
 }
-bool Data::operator ==(Data d2) const {
+bool Date::operator ==(Date d2) const {
 	return (this->year == d2.year) && (this->month == d2.month)
 			&& (this->day == d2.day);
 }
-bool Data::operator !=(Data d2) const {
+bool Date::operator !=(Date d2) const {
 	return !(*this == d2);
 }
 
