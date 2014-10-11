@@ -1,22 +1,21 @@
-#include <iostream>
 #include "Library.h"
 using namespace std;
 
-unsigned long int Library::personID = 0;
+unsigned long int Library::readerID = 1;
 
 Library::Library() {
 //	loadBooks();
 //	loadBorrows();
 	loadReaders();
-//	loadEmployees();
-//	loadSupervisors();
+	loadEmployees();
+	loadSupervisors();
 	/* ...
 	 * associations?
 	 */
 }
 
 Library::~Library() {
-	// TODO Auto-generated destructor stub
+	// save containers to files? then delete them
 }
 
 vector<Book*> Library::getBooks() const {
@@ -43,9 +42,13 @@ void Library::setBooks(vector<Book*> books) {
 	this->books = books;
 }
 
-//void Library::setBorrows(vector<Borrow*> borrows) {
-//	this->borrows = borrows;
-//}
+void Library::setCurrentBorrows(vector<Current*> currentBorrows) {
+	this->currentBorrows = currentBorrows;
+}
+
+void Library::setPreviousBorrows(vector<Previous*> previousBorrows) {
+	this->previousBorrows = previousBorrows;
+}
 
 void Library::setReaders(vector<Reader*> readers) {
 	this->readers = readers;
@@ -65,6 +68,10 @@ void Library::addBook(Book* book) {
 
 void Library::addCurrentBorrow(Current* currentBorrow) {
 	currentBorrows.push_back(currentBorrow);
+}
+
+void Library::addPreviousBorrow(Previous* previousBorrow) {
+	previousBorrows.push_back(previousBorrow);
 }
 
 void Library::addReader(Reader* reader) {
@@ -95,6 +102,17 @@ bool Library::removeCurrentBorrow(Current* currentBorrow) {
 	for (it = currentBorrows.begin(); it != currentBorrows.end(); it++) {
 		if (*it == currentBorrow) {
 			currentBorrows.erase(it);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Library::removePreviousBorrow(Previous* previousBorrow) {
+	vector<Previous*>::iterator it;
+	for (it = previousBorrows.begin(); it != previousBorrows.end(); it++) {
+		if (*it == previousBorrow) {
+			previousBorrows.erase(it);
 			return true;
 		}
 	}
@@ -135,39 +153,108 @@ bool Library::removeSupervisor(Supervisor* supervisor) {
 }
 
 void Library::loadReaders() {
-
-	string value;
 	fstream file;
 	file.open(READERS_FILE);
 
 	if (file.is_open()) {
-		if (!file.eof())
-			getline(file, value);
 		while (file.good()) {
 			stringstream ss;
-			string nome, email, num;
+			string name, email, sAge, sPhone, sCard;
 			unsigned int age;
-			unsigned long int phone, cardID;
+			unsigned long int phone, card;
 
-			getline(file, nome, ';');
-			getline(file, num, ';');
-			ss << num;
+			getline(file, name, ';');
+			getline(file, sAge, ';');
+			ss << sAge;
 			ss >> age;
 
-			num.clear();
-			getline(file, num, ';');
-			ss << num;
+			getline(file, sPhone, ';');
+			ss << sPhone;
 			ss >> phone;
 
 			getline(file, email, ';');
 
-			num.clear();
-			getline(file, num); // read last input until newline
-			ss << num;
-			ss >> cardID;
+			getline(file, sCard); // read last input until newline
+			ss << sCard;
+			ss >> card;
 
-			Reader *reader = new Reader(nome, age, phone, email, cardID);
+			Reader *reader = new Reader(name, age, phone, email, card);
 			addReader(reader);
+			readerID++;
+		}
+	}
+}
+
+void Library::loadEmployees() {
+	fstream file;
+	file.open(EMPLOYEES_FILE);
+
+	if (file.is_open()) {
+		while (file.good()) {
+			stringstream ss;
+			string name, email, sAge, sPhone, sNif, sWage;
+			unsigned int age;
+			unsigned long int wage, phone, nif;
+
+			getline(file, name, ';');
+			getline(file, sAge, ';');
+			ss << sAge;
+			ss >> age;
+
+			getline(file, sPhone, ';');
+			ss << sPhone;
+			ss >> phone;
+
+			getline(file, email, ';');
+
+			getline(file, sNif, ';');
+			ss << sNif;
+			ss >> nif;
+
+			getline(file, sWage); // read last input until newline
+			ss << sWage;
+			ss >> wage;
+
+			Employee *employee = new Employee(name, age, phone, email, nif,
+					wage);
+			addEmployee(employee);
+		}
+	}
+}
+
+void Library::loadSupervisors() {
+	fstream file;
+	file.open(EMPLOYEES_FILE);
+
+	if (file.is_open()) {
+		while (file.good()) {
+			stringstream ss;
+			string name, email, sAge, sPhone, sNif, sWage;
+			unsigned int age;
+			unsigned long int wage, phone, nif;
+
+			getline(file, name, ';');
+			getline(file, sAge, ';');
+			ss << sAge;
+			ss >> age;
+
+			getline(file, sPhone, ';');
+			ss << sPhone;
+			ss >> phone;
+
+			getline(file, email, ';');
+
+			getline(file, sNif, ';');
+			ss << sNif;
+			ss >> nif;
+
+			getline(file, sWage); // read last input until newline
+			ss << sWage;
+			ss >> wage;
+
+			Supervisor *supervisor = new Supervisor(name, age, phone, email,
+					nif, wage);
+			addSupervisor(supervisor);
 		}
 	}
 }

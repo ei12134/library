@@ -20,16 +20,15 @@
 using namespace std;
 
 class Employee: public Person {
-	unsigned long int nif;
-	unsigned int wage;
+	unsigned int nif, wage;
 public:
-	Employee(string name, unsigned int age, unsigned long int phoneNumber,
-			string email, unsigned long int nif, unsigned int wage);
+	Employee(string name, unsigned int age, unsigned long int phone,
+			string email, unsigned long int nif, unsigned long int wage);
 	virtual ~Employee();
-	unsigned long getNif() const;
-	void setNif(unsigned long nif);
-	unsigned int getWage() const;
-	void setWage(unsigned int wage);
+	unsigned long int getNif() const;
+	void setNif(unsigned long int nif);
+	unsigned long int getWage() const;
+	void setWage(unsigned long int wage);
 	void createBorrow(Book *, Reader *, Employee *);
 	string print();
 };

@@ -2,21 +2,22 @@
 #define EXCEPTION_H_
 
 #include <string>
+using namespace std;
 
 template<class DataTypeT>
 class Exception {
 private:
-	std::string msg;
+	string msg;
 	DataTypeT value;
 public:
 
-	Exception(std::string str, DataTypeT value) :
+	Exception(string str, DataTypeT value) :
 			msg(str), value(value) {
 	}
 
-	std::string getError() const;
+	string getError() const;
 
-	std::string getMessage() const {
+	string getMessage() const {
 		return msg;
 	}
 	DataTypeT getValue() const {

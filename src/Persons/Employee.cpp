@@ -8,8 +8,8 @@
 
 using namespace std;
 
-Employee::Employee(string name, unsigned int age, unsigned long phoneNumber,
-		string email, unsigned long nif, unsigned int wage) :
+Employee::Employee(string name, unsigned int age, unsigned long int phoneNumber,
+		string email, unsigned long int nif, unsigned long int wage) :
 		Person(name, age, phoneNumber, email) {
 	this->nif = nif;
 	this->wage = wage;
@@ -25,10 +25,10 @@ unsigned long int Employee::getNif() const {
 void Employee::setNif(unsigned long int nif) {
 	this->nif = nif;
 }
-unsigned int Employee::getWage() const {
+unsigned long int Employee::getWage() const {
 	return wage;
 }
-void Employee::setWage(unsigned int wage) {
+void Employee::setWage(unsigned long int wage) {
 	this->wage = wage;
 }
 

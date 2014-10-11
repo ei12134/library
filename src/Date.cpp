@@ -6,7 +6,7 @@ Date::Date(unsigned int day, unsigned int month, unsigned int year) {
 	setDate(day, month, year);
 }
 
-string Date::imprime() const {
+string Date::print() const {
 	stringstream st;
 	st << getDay() << "-" << getMonth() << "-" << getYear();
 	return st.str();

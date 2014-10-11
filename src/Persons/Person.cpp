@@ -8,11 +8,11 @@
 
 using namespace std;
 
-Person::Person(string name, unsigned int age, unsigned long phoneNumber,
+Person::Person(string name, unsigned int age, unsigned long int phone,
 		string email) {
 	this->name = name;
 	this->age = age;
-	this->phoneNumber = phoneNumber;
+	this->phone = phone;
 	this->email = email;
 }
 
@@ -36,12 +36,12 @@ unsigned int Person::getAge() const {
 	return age;
 }
 
-void Person::setPhoneNumber(unsigned long phoneNumber) {
-	this->phoneNumber = phoneNumber;
+void Person::setPhone(unsigned long int phone) {
+	this->phone = phone;
 }
 
-unsigned long Person::getPhoneNumber() const {
-	return phoneNumber;
+unsigned long int Person::getPhone() const {
+	return phone;
 }
 
 void Person::setEmail(string email) {
@@ -54,7 +54,7 @@ string Person::getEmail() const {
 
 string Person::print() {
 	stringstream ss;
-	ss << name << " ; " << age << " ; "<< phoneNumber << " ; " << email;
+	ss << name << " ; " << age << " ; "<< phone << " ; " << email;
 	return ss.str();
 }
 

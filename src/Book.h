@@ -13,7 +13,7 @@ private:
 	string isbn;
 	string title;
 public:
-	Book(string author, bool borrowed, string quota, int pageNumber,
+	Book(string author, bool borrowed, string quota, unsigned int pageNumber,
 			string isbn, string title);
 	virtual ~Book();
 };

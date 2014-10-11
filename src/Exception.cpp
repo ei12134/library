@@ -1,10 +1,10 @@
 #include "Exception.h"
 #include <sstream>
 
-using std::ostringstream;
+using namespace std;
 
 template<class DataTypeT>
-std::string Exception<DataTypeT>::getError() const {
+string Exception<DataTypeT>::getError() const {
 	ostringstream outStr;
 	outStr << msg << " :(value: " << value << ")";
 	return outStr.str();

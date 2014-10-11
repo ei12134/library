@@ -10,7 +10,7 @@
 Reader::Reader(string name, unsigned int age, unsigned long int phoneNumber,
 		string email, unsigned long int cardID) :
 		Person(name, age, phoneNumber, email) {
-	this->cardID = cardID;
+	this->card = card;
 	currentlyBorrowedBooks.reserve(3); // limit to 3 borrowed books
 }
 
@@ -48,6 +48,6 @@ bool Reader::borrowLimit() {
 
 string Reader::print() {
 	stringstream ss;
-	ss << Person::print() << " ; " << cardID;
+	ss << Person::print() << " ; " << card;
 	return ss.str();
 }

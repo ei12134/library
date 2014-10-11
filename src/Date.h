@@ -24,7 +24,7 @@ public:
 		return year;
 	}
 
-	string imprime() const;
+	string print() const;
 
 	bool operator <(Date d2) const;
 	bool operator >(Date d2) const;

@@ -37,6 +37,7 @@
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -49,36 +50,76 @@
 <div class="title">Reader Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Inheritance diagram for Reader:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_reader.png" usemap="#Reader_map" alt=""/>
+  <map id="Reader_map" name="Reader_map">
+<area href="class_person.html" alt="Person" shape="rect" coords="0,0,53,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6e2caa78c9fa8c1b1f643fb34b176cb7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e2caa78c9fa8c1b1f643fb34b176cb7"></a>
-vector&lt; <a class="el" href="class_borrow.html">Borrow</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getBorrowedBooks</b> () const </td></tr>
-<tr class="separator:a6e2caa78c9fa8c1b1f643fb34b176cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf9e08569965a31462812220d9292b27"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf9e08569965a31462812220d9292b27"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setBooks</b> (vector&lt; <a class="el" href="class_borrow.html">Borrow</a> * &gt; borrowedBooks)</td></tr>
-<tr class="separator:acf9e08569965a31462812220d9292b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cd9302e5981eb3c19697e86904a05f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3cd9302e5981eb3c19697e86904a05f8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addBorrow</b> (<a class="el" href="class_borrow.html">Borrow</a> *borrow)</td></tr>
-<tr class="separator:a3cd9302e5981eb3c19697e86904a05f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb8a0980b5838c5ffaa5376ec7685d00"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb8a0980b5838c5ffaa5376ec7685d00"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>removeBorrow</b> (<a class="el" href="class_borrow.html">Borrow</a> *borrow)</td></tr>
-<tr class="separator:acb8a0980b5838c5ffaa5376ec7685d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcc685e9e0bd368b09de1881ef4797bb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adcc685e9e0bd368b09de1881ef4797bb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Reader</b> (string name, unsigned int age, unsigned long int phone, string email, unsigned long int cardID)</td></tr>
+<tr class="separator:adcc685e9e0bd368b09de1881ef4797bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9bdf65e8232287fde9c6ce5ced078c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa9bdf65e8232287fde9c6ce5ced078c2"></a>
+vector&lt; <a class="el" href="class_current.html">Current</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getCurrentBorrowedBooks</b> () const </td></tr>
+<tr class="separator:aa9bdf65e8232287fde9c6ce5ced078c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f34b96369f901dfcaeff035425f678f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f34b96369f901dfcaeff035425f678f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setBooks</b> (vector&lt; <a class="el" href="class_current.html">Current</a> * &gt; currentlyBorrowedBooks)</td></tr>
+<tr class="separator:a5f34b96369f901dfcaeff035425f678f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afeb0601909cc670d6bd34f449a1e33ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afeb0601909cc670d6bd34f449a1e33ec"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addCurrentBorrow</b> (<a class="el" href="class_current.html">Current</a> *currentBorrow)</td></tr>
+<tr class="separator:afeb0601909cc670d6bd34f449a1e33ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ff11bada90b34f0435b99990460bb84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ff11bada90b34f0435b99990460bb84"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>removeCurrentBorrow</b> (<a class="el" href="class_current.html">Current</a> *currentBorrow)</td></tr>
+<tr class="separator:a6ff11bada90b34f0435b99990460bb84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78d4b1c4794d70a8dcbfd037b96ba9c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a78d4b1c4794d70a8dcbfd037b96ba9c6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>borrowLimit</b> ()</td></tr>
 <tr class="separator:a78d4b1c4794d70a8dcbfd037b96ba9c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d8a7db1b8989f618dc42b8be9c7cbd2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d8a7db1b8989f618dc42b8be9c7cbd2"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>printInfo</b> ()</td></tr>
-<tr class="separator:a8d8a7db1b8989f618dc42b8be9c7cbd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30b7f349a12eb6ce83e4b8a34321e2c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a30b7f349a12eb6ce83e4b8a34321e2c8"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> ()</td></tr>
+<tr class="separator:a30b7f349a12eb6ce83e4b8a34321e2c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_person"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_person')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_person.html">Person</a></td></tr>
+<tr class="memitem:a9f84a0de566ff313e34707aa1c744d12 inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f84a0de566ff313e34707aa1c744d12"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Person</b> (string name, unsigned int age, unsigned long int phone, string email)</td></tr>
+<tr class="separator:a9f84a0de566ff313e34707aa1c744d12 inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fa68f82727e6de0137b3c1b1537a0bf inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fa68f82727e6de0137b3c1b1537a0bf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (string name)</td></tr>
+<tr class="separator:a9fa68f82727e6de0137b3c1b1537a0bf inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c06a41731a2656caec65e3bc39f5ebe inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c06a41731a2656caec65e3bc39f5ebe"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> () const </td></tr>
+<tr class="separator:a5c06a41731a2656caec65e3bc39f5ebe inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea346abdc6d7e1f96c8fb13e3183d966 inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea346abdc6d7e1f96c8fb13e3183d966"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setAge</b> (unsigned int age)</td></tr>
+<tr class="separator:aea346abdc6d7e1f96c8fb13e3183d966 inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e1d19fb3a6d7be79e8ffab40d0bb7a3 inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e1d19fb3a6d7be79e8ffab40d0bb7a3"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getAge</b> () const </td></tr>
+<tr class="separator:a9e1d19fb3a6d7be79e8ffab40d0bb7a3 inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae15216c07c4c5d509c06c690f9ebebd0 inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae15216c07c4c5d509c06c690f9ebebd0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setPhone</b> (unsigned long int phoneNumber)</td></tr>
+<tr class="separator:ae15216c07c4c5d509c06c690f9ebebd0 inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3d05413756970c9f3adfbe3c175b4ec inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad3d05413756970c9f3adfbe3c175b4ec"></a>
+unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><b>getPhone</b> () const </td></tr>
+<tr class="separator:ad3d05413756970c9f3adfbe3c175b4ec inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8e37990f68dc17e94432e8d1d3e43c4 inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8e37990f68dc17e94432e8d1d3e43c4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setEmail</b> (string email)</td></tr>
+<tr class="separator:aa8e37990f68dc17e94432e8d1d3e43c4 inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a161d3faf3736d1ed067eb634c9e781c1 inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a161d3faf3736d1ed067eb634c9e781c1"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>getEmail</b> () const </td></tr>
+<tr class="separator:a161d3faf3736d1ed067eb634c9e781c1 inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>C:/Users/User/Eclipse/library/src/<a class="el" href="_reader_8h_source.html">Reader.h</a></li>
-<li>C:/Users/User/Eclipse/library/src/Reader.cpp</li>
+<li>C:/Users/User/Eclipse/library/src/Persons/<a class="el" href="_reader_8h_source.html">Reader.h</a></li>
+<li>C:/Users/User/Eclipse/library/src/Persons/Reader.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 8 2014 19:23:26 for Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Oct 11 2014 23:01:12 for Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

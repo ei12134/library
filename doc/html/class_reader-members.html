@@ -37,6 +37,7 @@
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -49,18 +50,28 @@
 
 <p>This is the complete list of members for <a class="el" href="class_reader.html">Reader</a>, including all inherited members.</p>
 <table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>addBorrow</b>(Borrow *borrow) (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>addCurrentBorrow</b>(Current *currentBorrow) (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>borrowLimit</b>() (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getBorrowedBooks</b>() const  (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>printInfo</b>() (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Reader</b>() (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>removeBorrow</b>(Borrow *borrow) (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setBooks</b>(vector&lt; Borrow * &gt; borrowedBooks) (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getAge</b>() const  (defined in <a class="el" href="class_person.html">Person</a>)</td><td class="entry"><a class="el" href="class_person.html">Person</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>getCurrentBorrowedBooks</b>() const  (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getEmail</b>() const  (defined in <a class="el" href="class_person.html">Person</a>)</td><td class="entry"><a class="el" href="class_person.html">Person</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>getName</b>() const  (defined in <a class="el" href="class_person.html">Person</a>)</td><td class="entry"><a class="el" href="class_person.html">Person</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getPhone</b>() const  (defined in <a class="el" href="class_person.html">Person</a>)</td><td class="entry"><a class="el" href="class_person.html">Person</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>Person</b>(string name, unsigned int age, unsigned long int phone, string email) (defined in <a class="el" href="class_person.html">Person</a>)</td><td class="entry"><a class="el" href="class_person.html">Person</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>print</b>() (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>Reader</b>(string name, unsigned int age, unsigned long int phone, string email, unsigned long int cardID) (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>removeCurrentBorrow</b>(Current *currentBorrow) (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>setAge</b>(unsigned int age) (defined in <a class="el" href="class_person.html">Person</a>)</td><td class="entry"><a class="el" href="class_person.html">Person</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setBooks</b>(vector&lt; Current * &gt; currentlyBorrowedBooks) (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>setEmail</b>(string email) (defined in <a class="el" href="class_person.html">Person</a>)</td><td class="entry"><a class="el" href="class_person.html">Person</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setName</b>(string name) (defined in <a class="el" href="class_person.html">Person</a>)</td><td class="entry"><a class="el" href="class_person.html">Person</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>setPhone</b>(unsigned long int phoneNumber) (defined in <a class="el" href="class_person.html">Person</a>)</td><td class="entry"><a class="el" href="class_person.html">Person</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>~Person</b>() (defined in <a class="el" href="class_person.html">Person</a>)</td><td class="entry"><a class="el" href="class_person.html">Person</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>~Reader</b>() (defined in <a class="el" href="class_reader.html">Reader</a>)</td><td class="entry"><a class="el" href="class_reader.html">Reader</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 8 2014 19:23:26 for Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Oct 11 2014 23:01:12 for Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>
