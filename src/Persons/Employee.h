@@ -22,13 +22,13 @@ using namespace std;
 class Employee: public Person {
 	unsigned int nif, wage;
 public:
-	Employee(string name, unsigned int age, unsigned long int phone,
-			string email, unsigned long int nif, unsigned long int wage);
+	Employee(string name, unsigned int age, unsigned int phone,
+			string email, unsigned int nif, unsigned int wage);
 	virtual ~Employee();
-	unsigned long int getNif() const;
-	void setNif(unsigned long int nif);
-	unsigned long int getWage() const;
-	void setWage(unsigned long int wage);
+	unsigned int getNif() const;
+	void setNif(unsigned int nif);
+	unsigned int getWage() const;
+	void setWage(unsigned int wage);
 	void createBorrow(Book *, Reader *, Employee *);
 	string print();
 };

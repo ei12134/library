@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Person::Person(string name, unsigned int age, unsigned long int phone,
+Person::Person(string name, unsigned int age, unsigned int phone,
 		string email) {
 	this->name = name;
 	this->age = age;
@@ -36,11 +36,11 @@ unsigned int Person::getAge() const {
 	return age;
 }
 
-void Person::setPhone(unsigned long int phone) {
+void Person::setPhone(unsigned int phone) {
 	this->phone = phone;
 }
 
-unsigned long int Person::getPhone() const {
+unsigned int Person::getPhone() const {
 	return phone;
 }
 

@@ -22,15 +22,15 @@ class Person {
 	string email;
 	string name;
 public:
-	Person(string name, unsigned int age, unsigned long int phone,
+	Person(string name, unsigned int age, unsigned int phone,
 			string email);
 	virtual ~Person();
 	void setName(string name);
 	string getName() const;
 	void setAge(unsigned int age);
 	unsigned int getAge() const;
-	void setPhone(unsigned long int phoneNumber);
-	unsigned long int getPhone() const;
+	void setPhone(unsigned int phoneNumber);
+	unsigned int getPhone() const;
 	void setEmail(string email);
 	string getEmail() const;
 	virtual string print();

@@ -2,8 +2,8 @@
 
 using namespace std;
 
-Supervisor::Supervisor(string name, int age, unsigned long int phoneNumber,
-		string email, unsigned long int nif, unsigned long int wage) :
+Supervisor::Supervisor(string name, int age, unsigned int phoneNumber,
+		string email, unsigned int nif, unsigned int wage) :
 		Employee(name, age, phoneNumber, email, nif, wage) {
 }
 

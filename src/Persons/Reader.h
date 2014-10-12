@@ -14,11 +14,11 @@ class Reader: public Person {
 
 private:
 	vector<Current *> currentlyBorrowedBooks;
-	unsigned long int card;
+	unsigned int card;
 
 public:
-	Reader(string name, unsigned int age, unsigned long int phone,
-			string email, unsigned long int cardID);
+	Reader(string name, unsigned int age, unsigned int phone,
+			string email, unsigned int card);
 	virtual ~Reader();
 	vector<Current*> getCurrentBorrowedBooks() const;
 	void setBooks(vector<Current*> currentlyBorrowedBooks);

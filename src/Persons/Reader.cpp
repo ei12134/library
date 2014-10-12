@@ -7,8 +7,8 @@
 
 #include "Reader.h"
 
-Reader::Reader(string name, unsigned int age, unsigned long int phoneNumber,
-		string email, unsigned long int cardID) :
+Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,
+		string email, unsigned int card) :
 		Person(name, age, phoneNumber, email) {
 	this->card = card;
 	currentlyBorrowedBooks.reserve(3); // limit to 3 borrowed books

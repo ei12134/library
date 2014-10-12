@@ -160,23 +160,25 @@ void Library::loadReaders() {
 		while (file.good()) {
 			stringstream ss;
 			string name, email, sAge, sPhone, sCard;
-			unsigned int age;
-			unsigned long int phone, card;
+			unsigned int age, phone, card;
 
 			getline(file, name, ';');
 			getline(file, sAge, ';');
 			ss << sAge;
 			ss >> age;
+			ss.clear();
 
 			getline(file, sPhone, ';');
 			ss << sPhone;
 			ss >> phone;
+			ss.clear();
 
 			getline(file, email, ';');
 
 			getline(file, sCard); // read last input until newline
 			ss << sCard;
 			ss >> card;
+			ss.clear();
 
 			Reader *reader = new Reader(name, age, phone, email, card);
 			addReader(reader);
@@ -193,27 +195,30 @@ void Library::loadEmployees() {
 		while (file.good()) {
 			stringstream ss;
 			string name, email, sAge, sPhone, sNif, sWage;
-			unsigned int age;
-			unsigned long int wage, phone, nif;
+			unsigned int age, wage, phone, nif;
 
 			getline(file, name, ';');
 			getline(file, sAge, ';');
 			ss << sAge;
 			ss >> age;
+			ss.clear();
 
 			getline(file, sPhone, ';');
 			ss << sPhone;
 			ss >> phone;
+			ss.clear();
 
 			getline(file, email, ';');
 
 			getline(file, sNif, ';');
 			ss << sNif;
 			ss >> nif;
+			ss.clear();
 
 			getline(file, sWage); // read last input until newline
 			ss << sWage;
 			ss >> wage;
+			ss.clear();
 
 			Employee *employee = new Employee(name, age, phone, email, nif,
 					wage);
@@ -224,33 +229,36 @@ void Library::loadEmployees() {
 
 void Library::loadSupervisors() {
 	fstream file;
-	file.open(EMPLOYEES_FILE);
+	file.open(SUPERVISORS_FILE);
 
 	if (file.is_open()) {
 		while (file.good()) {
 			stringstream ss;
 			string name, email, sAge, sPhone, sNif, sWage;
-			unsigned int age;
-			unsigned long int wage, phone, nif;
+			unsigned int age, wage, phone, nif;
 
 			getline(file, name, ';');
 			getline(file, sAge, ';');
 			ss << sAge;
 			ss >> age;
+			ss.clear();
 
 			getline(file, sPhone, ';');
 			ss << sPhone;
 			ss >> phone;
+			ss.clear();
 
 			getline(file, email, ';');
 
 			getline(file, sNif, ';');
 			ss << sNif;
 			ss >> nif;
+			ss.clear();
 
 			getline(file, sWage); // read last input until newline
 			ss << sWage;
 			ss >> wage;
+			ss.clear();
 
 			Supervisor *supervisor = new Supervisor(name, age, phone, email,
 					nif, wage);

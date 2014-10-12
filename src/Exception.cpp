@@ -1,6 +1,5 @@
 #include "Exception.h"
 #include <sstream>
-
 using namespace std;
 
 template<class DataTypeT>
