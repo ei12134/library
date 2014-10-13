@@ -12,9 +12,7 @@
 #include <fstream>
 #include "./Borrow/Current.h"
 #include "./Borrow/Previous.h"
-#include "./Persons/Reader.h"
-#include "./Persons/Employee.h"
-#include "./Persons/Supervisor.h"
+#include "./Persons/Person.h"
 #include "Book.h"
 using namespace std;
 
@@ -31,12 +29,8 @@ private:
 	vector<Current*> currentBorrows;
 	/// pointer vector to borrow type objects
 	vector<Previous*> previousBorrows;
-	/// pointer vector to person type objects readers
-	vector<Reader*> readers;
-	/// pointer vector to person type objects employees
-	vector<Employee*> employees;
-	/// pointer vector to person type objects supervisors
-	vector<Supervisor*> supervisors;
+	/// pointer vector to person type objects
+	vector<Person*> persons;
 
 public:
 	/// reader unique identifier
@@ -55,14 +49,8 @@ public:
 	///@return borrows
 	vector<Previous*> getPreviousBorrows() const;
 
-	///@return readers
-	vector<Reader*> getReaders() const;
-
-	///@return employees
-	vector<Employee*> getEmployees() const;
-
-	///@return supervisors
-	vector<Supervisor*> getSupervisors() const;
+	///@return persons
+	vector<Person*> getPersons() const;
 
 	/** replaces existing books pointer vector
 	 *@param books Book pointer vector
@@ -79,20 +67,10 @@ public:
 	 */
 	void setPreviousBorrows(vector<Previous*> previousBorrows);
 
-	/** replaces existing Reader pointer vector containing readers
-	 *@param readers Reader pointer vector
+	/** replaces existing Person pointer vector containing persons
+	 *@param persons Person pointer vector
 	 */
-	void setReaders(vector<Reader*> readers);
-
-	/** replaces existing Employees pointer vector containing employees
-	 *@param employees Employees pointer vector
-	 */
-	void setEmployees(vector<Employee*> employees);
-
-	/** replaces existing Supervisors pointer vector containing supervisors
-	 *@param supervisors Supervisors pointer vector
-	 */
-	void setSupervisors(vector<Supervisor*> supervisors);
+	void setPersons(vector<Person*> person);
 
 	/** adds new book to the library
 	 *@param book Book pointer
@@ -109,35 +87,15 @@ public:
 	 */
 	void addPreviousBorrow(Previous* previousBorrow);
 
-	/** adds new reader to the library
-	 *@param reader Reader pointer
+	/** adds new person to the library
+	 *@param person Person pointer
 	 */
-	void addReader(Reader* reader);
+	void addPerson(Person* person);
 
-	/** adds new employee to the library
-	 *@param employee Employee pointer
+	/** Loads stored persons
+	 * Loads *.csv files to the persons vector
 	 */
-	void addEmployee(Employee* employee);
-
-	/** adds new supervisor to the library
-	 *@param supervisor Supervisor pointer
-	 */
-	void addSupervisor(Supervisor* supervisor);
-
-	/** Loads stored readers
-	 * Loads readers.csv to the readers vector
-	 */
-	void loadReaders();
-
-	/** Loads stored employees
-	 * Loads employees.csv to the employees vector
-	 */
-	void loadEmployees();
-
-	/** Loads stored supervisors
-	 * Loads supervisors.csv to the supervisors vector
-	 */
-	void loadSupervisors();
+	void loadPersons();
 
 	/** removes a book from the library
 	 *@param book Book pointer
@@ -154,20 +112,10 @@ public:
 	 */
 	bool removePreviousBorrow(Previous* previousBorrow);
 
-	/** removes a reader from the library
-	 *@param reader Reader pointer
+	/** removes a person from the library
+	 *@param person Person pointer
 	 */
-	bool removeReader(Reader* reader);
-
-	/** removes a employee from the library
-	 *@param employee Employee pointer
-	 */
-	bool removeEmployee(Employee* employee);
-
-	/** removes a supervisor from the library
-	 *@param supervisor Supervisor pointer
-	 */
-	bool removeSupervisor(Supervisor* supervisor);
+	bool removePerson(Person* person);
 };
 
 #endif /* SRC_LIBRARY_H_ */

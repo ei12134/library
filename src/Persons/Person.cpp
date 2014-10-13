@@ -16,8 +16,29 @@ Person::Person(string name, unsigned int age, unsigned int phone,
 	this->email = email;
 }
 
-Person::~Person() {
+Person::Person(fstream& s) {
+	stringstream ss;
+	string name, email, sAge, sPhone;
+	unsigned int age, phone, card;
 
+	getline(s, name, ';');
+	getline(s, sAge, ';');
+	ss << sAge;
+	ss >> age;
+	ss.clear();
+	this->age = age;
+
+	getline(s, sPhone, ';');
+	ss << sPhone;
+	ss >> phone;
+	ss.clear();
+	this->phone = phone;
+
+	getline(s, email, ';');
+	this->email = email;
+}
+
+Person::~Person() {
 }
 
 void Person::setName(string name) {
@@ -54,7 +75,7 @@ string Person::getEmail() const {
 
 string Person::print() {
 	stringstream ss;
-	ss << name << " ; " << age << " ; "<< phone << " ; " << email;
+	ss << name << " ; " << age << " ; " << phone << " ; " << email;
 	return ss.str();
 }
 

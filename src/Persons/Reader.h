@@ -7,6 +7,8 @@ class Current;
 #include "../Borrow/Current.h"
 #include <string>
 #include <vector>
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 
@@ -17,10 +19,11 @@ private:
 	unsigned int card;
 
 public:
+	Reader(fstream& s);
 	Reader(string name, unsigned int age, unsigned int phone,
 			string email, unsigned int card);
 	virtual ~Reader();
-	vector<Current*> getCurrentBorrowedBooks() const;
+//	vector<Current*> getCurrentBorrowedBooks() const;
 	void setBooks(vector<Current*> currentlyBorrowedBooks);
 	void addCurrentBorrow(Current* currentBorrow);
 	bool removeCurrentBorrow(Current* currentBorrow);

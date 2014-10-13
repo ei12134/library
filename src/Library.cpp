@@ -6,9 +6,7 @@ unsigned long int Library::readerID = 1;
 Library::Library() {
 //	loadBooks();
 //	loadBorrows();
-	loadReaders();
-	loadEmployees();
-	loadSupervisors();
+	loadPersons();
 	/* ...
 	 * associations?
 	 */
@@ -26,16 +24,8 @@ vector<Current*> Library::getCurrentBorrows() const {
 	return currentBorrows;
 }
 
-vector<Reader*> Library::getReaders() const {
-	return readers;
-}
-
-vector<Employee*> Library::getEmployees() const {
-	return employees;
-}
-
-vector<Supervisor*> Library::getSupervisors() const {
-	return supervisors;
+vector<Person*> Library::getPersons() const {
+	return persons;
 }
 
 void Library::setBooks(vector<Book*> books) {
@@ -50,16 +40,8 @@ void Library::setPreviousBorrows(vector<Previous*> previousBorrows) {
 	this->previousBorrows = previousBorrows;
 }
 
-void Library::setReaders(vector<Reader*> readers) {
-	this->readers = readers;
-}
-
-void Library::setEmployees(vector<Employee*> employees) {
-	this->employees = employees;
-}
-
-void Library::setSupervisors(vector<Supervisor*> supervisors) {
-	this->supervisors = supervisors;
+void Library::setPersons(vector<Person*> persons) {
+	this->persons = persons;
 }
 
 void Library::addBook(Book* book) {
@@ -74,21 +56,12 @@ void Library::addPreviousBorrow(Previous* previousBorrow) {
 	previousBorrows.push_back(previousBorrow);
 }
 
-void Library::addReader(Reader* reader) {
-	readers.push_back(reader);
-}
-
-void Library::addEmployee(Employee* employee) {
-	employees.push_back(employee);
-}
-
-void Library::addSupervisor(Supervisor* supervisor) {
-	supervisors.push_back(supervisor);
+void Library::addPerson(Person* person) {
+	persons.push_back(person);
 }
 
 bool Library::removeBook(Book* book) {
-	vector<Book*>::iterator it;
-	for (it = books.begin(); it != books.end(); it++) {
+	for (vector<Book*>::iterator it = books.begin(); it != books.end(); it++) {
 		if (*it == book) {
 			books.erase(it);
 			return true;
@@ -119,150 +92,140 @@ bool Library::removePreviousBorrow(Previous* previousBorrow) {
 	return false;
 }
 
-bool Library::removeReader(Reader* reader) {
-	vector<Reader*>::iterator it;
-	for (it = readers.begin(); it != readers.end(); it++) {
-		if (*it == reader) {
-			readers.erase(it);
+bool Library::removePerson(Person* person) {
+	for (vector<Person*>::iterator it = persons.begin(); it != persons.end();
+			it++) {
+		if (*it == person) {
+			persons.erase(it);
 			return true;
 		}
 	}
 	return false;
 }
 
-bool Library::removeEmployee(Employee* employee) {
-	vector<Employee*>::iterator it;
-	for (it = employees.begin(); it != employees.end(); it++) {
-		if (*it == employee) {
-			employees.erase(it);
-			return true;
-		}
-	}
-	return false;
-}
-
-bool Library::removeSupervisor(Supervisor* supervisor) {
-	vector<Supervisor*>::iterator it;
-	for (it = supervisors.begin(); it != supervisors.end(); it++) {
-		if (*it == supervisor) {
-			supervisors.erase(it);
-			return true;
-		}
-	}
-	return false;
-}
-
-void Library::loadReaders() {
+void Library::loadPersons() {
 	fstream file;
 	file.open(READERS_FILE);
-
-	if (file.is_open()) {
-		while (file.good()) {
-			stringstream ss;
-			string name, email, sAge, sPhone, sCard;
-			unsigned int age, phone, card;
-
-			getline(file, name, ';');
-			getline(file, sAge, ';');
-			ss << sAge;
-			ss >> age;
-			ss.clear();
-
-			getline(file, sPhone, ';');
-			ss << sPhone;
-			ss >> phone;
-			ss.clear();
-
-			getline(file, email, ';');
-
-			getline(file, sCard); // read last input until newline
-			ss << sCard;
-			ss >> card;
-			ss.clear();
-
-			Reader *reader = new Reader(name, age, phone, email, card);
-			addReader(reader);
-			readerID++;
-		}
-	}
+//	if (file.is_open()) {
+//		while (file.good()) {
+//			Reader* ptr = new Reader(file);
+//			persons.push_back(ptr);
+//		}
+//	}
+	file.close();
 }
 
-void Library::loadEmployees() {
-	fstream file;
-	file.open(EMPLOYEES_FILE);
-
-	if (file.is_open()) {
-		while (file.good()) {
-			stringstream ss;
-			string name, email, sAge, sPhone, sNif, sWage;
-			unsigned int age, wage, phone, nif;
-
-			getline(file, name, ';');
-			getline(file, sAge, ';');
-			ss << sAge;
-			ss >> age;
-			ss.clear();
-
-			getline(file, sPhone, ';');
-			ss << sPhone;
-			ss >> phone;
-			ss.clear();
-
-			getline(file, email, ';');
-
-			getline(file, sNif, ';');
-			ss << sNif;
-			ss >> nif;
-			ss.clear();
-
-			getline(file, sWage); // read last input until newline
-			ss << sWage;
-			ss >> wage;
-			ss.clear();
-
-			Employee *employee = new Employee(name, age, phone, email, nif,
-					wage);
-			addEmployee(employee);
-		}
-	}
-}
-
-void Library::loadSupervisors() {
-	fstream file;
-	file.open(SUPERVISORS_FILE);
-
-	if (file.is_open()) {
-		while (file.good()) {
-			stringstream ss;
-			string name, email, sAge, sPhone, sNif, sWage;
-			unsigned int age, wage, phone, nif;
-
-			getline(file, name, ';');
-			getline(file, sAge, ';');
-			ss << sAge;
-			ss >> age;
-			ss.clear();
-
-			getline(file, sPhone, ';');
-			ss << sPhone;
-			ss >> phone;
-			ss.clear();
-
-			getline(file, email, ';');
-
-			getline(file, sNif, ';');
-			ss << sNif;
-			ss >> nif;
-			ss.clear();
-
-			getline(file, sWage); // read last input until newline
-			ss << sWage;
-			ss >> wage;
-			ss.clear();
-
-			Supervisor *supervisor = new Supervisor(name, age, phone, email,
-					nif, wage);
-			addSupervisor(supervisor);
-		}
-	}
-}
+//void Library::loadReaders() {
+//	fstream file;
+//	file.open(READERS_FILE);
+//
+//	if (file.is_open()) {
+//		while (file.good()) {
+//			stringstream ss;
+//			string name, email, sAge, sPhone, sCard;
+//			unsigned int age, phone, card;
+//
+//			getline(file, name, ';');
+//			getline(file, sAge, ';');
+//			ss << sAge;
+//			ss >> age;
+//			ss.clear();
+//
+//			getline(file, sPhone, ';');
+//			ss << sPhone;
+//			ss >> phone;
+//			ss.clear();
+//
+//			getline(file, email, ';');
+//
+//			getline(file, sCard); // read last input until newline
+//			ss << sCard;
+//			ss >> card;
+//			ss.clear();
+//
+//			Reader *reader = new Reader(name, age, phone, email, card);
+//			addReader(reader);
+//			readerID++;
+//		}
+//	}
+//}
+//
+//void Library::loadEmployees() {
+//	fstream file;
+//	file.open(EMPLOYEES_FILE);
+//
+//	if (file.is_open()) {
+//		while (file.good()) {
+//			stringstream ss;
+//			string name, email, sAge, sPhone, sNif, sWage;
+//			unsigned int age, wage, phone, nif;
+//
+//			getline(file, name, ';');
+//			getline(file, sAge, ';');
+//			ss << sAge;
+//			ss >> age;
+//			ss.clear();
+//
+//			getline(file, sPhone, ';');
+//			ss << sPhone;
+//			ss >> phone;
+//			ss.clear();
+//
+//			getline(file, email, ';');
+//
+//			getline(file, sNif, ';');
+//			ss << sNif;
+//			ss >> nif;
+//			ss.clear();
+//
+//			getline(file, sWage); // read last input until newline
+//			ss << sWage;
+//			ss >> wage;
+//			ss.clear();
+//
+//			Employee *employee = new Employee(name, age, phone, email, nif,
+//					wage);
+//			addEmployee(employee);
+//		}
+//	}
+//}
+//
+//void Library::loadSupervisors() {
+//	fstream file;
+//	file.open(SUPERVISORS_FILE);
+//
+//	if (file.is_open()) {
+//		while (file.good()) {
+//			stringstream ss;
+//			string name, email, sAge, sPhone, sNif, sWage;
+//			unsigned int age, wage, phone, nif;
+//
+//			getline(file, name, ';');
+//			getline(file, sAge, ';');
+//			ss << sAge;
+//			ss >> age;
+//			ss.clear();
+//
+//			getline(file, sPhone, ';');
+//			ss << sPhone;
+//			ss >> phone;
+//			ss.clear();
+//
+//			getline(file, email, ';');
+//
+//			getline(file, sNif, ';');
+//			ss << sNif;
+//			ss >> nif;
+//			ss.clear();
+//
+//			getline(file, sWage); // read last input until newline
+//			ss << sWage;
+//			ss >> wage;
+//			ss.clear();
+//
+//			Supervisor *supervisor = new Supervisor(name, age, phone, email,
+//					nif, wage);
+//			addSupervisor(supervisor);
+//		}
+//	}
+//}

@@ -18,10 +18,12 @@
 using namespace std;
 
 class Person {
+protected:
 	unsigned int age, phone;
 	string email;
 	string name;
 public:
+	Person(fstream& s);
 	Person(string name, unsigned int age, unsigned int phone,
 			string email);
 	virtual ~Person();
@@ -34,6 +36,7 @@ public:
 	void setEmail(string email);
 	string getEmail() const;
 	virtual string print();
+	virtual void load(fstream& s);
 
 };
 

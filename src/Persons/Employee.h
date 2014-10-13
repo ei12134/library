@@ -22,6 +22,7 @@ using namespace std;
 class Employee: public Person {
 	unsigned int nif, wage;
 public:
+	Employee(fstream& s);
 	Employee(string name, unsigned int age, unsigned int phone,
 			string email, unsigned int nif, unsigned int wage);
 	virtual ~Employee();
@@ -31,6 +32,7 @@ public:
 	void setWage(unsigned int wage);
 	void createBorrow(Book *, Reader *, Employee *);
 	string print();
+	void load(fstream& s);
 };
 #endif /* EMPLOYEE_H_ */
 

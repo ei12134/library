@@ -14,13 +14,39 @@ Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,
 	currentlyBorrowedBooks.reserve(3); // limit to 3 borrowed books
 }
 
-Reader::~Reader() {
-	// TODO Auto-generated destructor stub
+Reader::Reader(fstream& s) : Person(s) {
+	stringstream ss;
+	string name, email, sAge, sPhone, sCard;
+	unsigned int age, phone, card;
+
+	getline(s, name, ';');
+	getline(s, sAge, ';');
+	ss << sAge;
+	ss >> age;
+	ss.clear();
+	this->age = age;
+
+	getline(s, sPhone, ';');
+	ss << sPhone;
+	ss >> phone;
+	ss.clear();
+	this->phone = phone;
+
+	getline(s, email, ';');
+	this->email = email;
+
+	getline(s, sCard); // read last input until newline
+	ss << sCard;
+	ss >> card;
+	ss.clear();
+	this->card = card;
+
+//	readerID++;
 }
 
-vector<Current*> Reader::getCurrentBorrowedBooks() const {
-	return currentlyBorrowedBooks;
-}
+//vector<Current*> Reader::getCurrentBorrowedBooks() const {
+//	return currentlyBorrowedBooks;
+//}
 
 void Reader::setBooks(vector<Current*> currentlyBorrowedBooks) {
 	this->currentlyBorrowedBooks = currentlyBorrowedBooks;
