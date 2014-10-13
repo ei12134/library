@@ -7,6 +7,10 @@ Supervisor::Supervisor(string name, int age, unsigned int phoneNumber,
 		Employee(name, age, phoneNumber, email, nif, wage) {
 }
 
+Supervisor::Supervisor(fstream& s) :
+		Employee(s) {
+}
+
 Supervisor::~Supervisor() {
 }
 

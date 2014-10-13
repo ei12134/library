@@ -11,13 +11,12 @@ using namespace std;
 class Supervisor: public Employee {
 	vector<Employee *> teamvec;
 public:
-	Supervisor(fstream& s);
 	Supervisor(string name, int age, unsigned int phone, string email,
 			unsigned int nif, unsigned int wage);
+	Supervisor(fstream& s);
 	virtual ~Supervisor();
 	void addEmployee(Employee *e1);
 	bool removeEmployee(string name);
 	string print();
-	void load(fstream& s);
 };
 

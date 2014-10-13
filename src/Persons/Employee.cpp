@@ -15,6 +15,25 @@ Employee::Employee(string name, unsigned int age, unsigned int phoneNumber,
 	this->wage = wage;
 }
 
+Employee::Employee(fstream& s) :
+		Person(s) {
+	stringstream ss;
+	string sNif, sWage;
+	unsigned int nif, wage;
+
+	getline(s, sNif, ';');
+	ss << sNif;
+	ss >> nif;
+	ss.clear();
+	this->nif = nif;
+
+	getline(s, sWage); // read last input until newline
+	ss << sWage;
+	ss >> wage;
+	ss.clear();
+	this->wage = wage;
+}
+
 Employee::~Employee() {
 }
 

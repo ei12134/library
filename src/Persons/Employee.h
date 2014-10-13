@@ -27,12 +27,11 @@ public:
 			string email, unsigned int nif, unsigned int wage);
 	virtual ~Employee();
 	unsigned int getNif() const;
-	void setNif(unsigned int nif);
 	unsigned int getWage() const;
+	void setNif(unsigned int nif);
 	void setWage(unsigned int wage);
 	void createBorrow(Book *, Reader *, Employee *);
 	string print();
-	void load(fstream& s);
 };
 #endif /* EMPLOYEE_H_ */
 

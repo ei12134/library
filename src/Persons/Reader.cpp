@@ -11,57 +11,45 @@ Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,
 		string email, unsigned int card) :
 		Person(name, age, phoneNumber, email) {
 	this->card = card;
-	currentlyBorrowedBooks.reserve(3); // limit to 3 borrowed books
+	borrowedBooks.reserve(3); // limit to 3 borrowed books
 }
 
-Reader::Reader(fstream& s) : Person(s) {
+Reader::Reader(fstream& s) :
+		Person(s) {
+	borrowedBooks.reserve(3);
 	stringstream ss;
-	string name, email, sAge, sPhone, sCard;
-	unsigned int age, phone, card;
-
-	getline(s, name, ';');
-	getline(s, sAge, ';');
-	ss << sAge;
-	ss >> age;
-	ss.clear();
-	this->age = age;
-
-	getline(s, sPhone, ';');
-	ss << sPhone;
-	ss >> phone;
-	ss.clear();
-	this->phone = phone;
-
-	getline(s, email, ';');
-	this->email = email;
+	string sCard;
+	unsigned int card;
 
 	getline(s, sCard); // read last input until newline
 	ss << sCard;
 	ss >> card;
 	ss.clear();
 	this->card = card;
-
 //	readerID++;
 }
 
-//vector<Current*> Reader::getCurrentBorrowedBooks() const {
-//	return currentlyBorrowedBooks;
-//}
+Reader::~Reader() {
 
-void Reader::setBooks(vector<Current*> currentlyBorrowedBooks) {
-	this->currentlyBorrowedBooks = currentlyBorrowedBooks;
 }
 
-void Reader::addCurrentBorrow(Current* currentBorrow) {
-	currentlyBorrowedBooks.push_back(currentBorrow);
+vector<Borrow*> Reader::getBorrowBorrowedBooks() const {
+	return borrowedBooks;
 }
 
-bool Reader::removeCurrentBorrow(Current* currentBorrow) {
-	vector<Current*>::iterator it;
-	for (it = currentlyBorrowedBooks.begin();
-			it != currentlyBorrowedBooks.end(); it++) {
-		if (*it == currentBorrow) {
-			currentlyBorrowedBooks.erase(it);
+void Reader::setBorrowedBooks(vector<Borrow*> borrowedBooks) {
+	this->borrowedBooks = borrowedBooks;
+}
+
+void Reader::addBorrow(Borrow* borrow) {
+	borrowedBooks.push_back(borrow);
+}
+
+bool Reader::removeBorrow(Borrow* borrow) {
+	vector<Borrow*>::iterator it;
+	for (it = borrowedBooks.begin(); it != borrowedBooks.end(); it++) {
+		if (*it == borrow) {
+			borrowedBooks.erase(it);
 			return true;
 		}
 	}
@@ -69,7 +57,7 @@ bool Reader::removeCurrentBorrow(Current* currentBorrow) {
 }
 
 bool Reader::borrowLimit() {
-	return currentlyBorrowedBooks.size() > 2;
+	return borrowedBooks.size() > 2;
 }
 
 string Reader::print() {

@@ -22,6 +22,8 @@ Person::Person(fstream& s) {
 	unsigned int age, phone, card;
 
 	getline(s, name, ';');
+	this->name = name;
+
 	getline(s, sAge, ';');
 	ss << sAge;
 	ss >> age;

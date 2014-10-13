@@ -1,10 +1,9 @@
 #ifndef SRC_READER_H_
 #define SRC_READER_H_
 
-class Current;
+class Borrow;
 
 #include "Person.h"
-#include "../Borrow/Current.h"
 #include <string>
 #include <vector>
 #include <fstream>
@@ -15,18 +14,18 @@ using namespace std;
 class Reader: public Person {
 
 private:
-	vector<Current *> currentlyBorrowedBooks;
+	vector<Borrow *> borrowedBooks;
 	unsigned int card;
 
 public:
+	Reader(string name, unsigned int age, unsigned int phone, string email,
+			unsigned int card);
 	Reader(fstream& s);
-	Reader(string name, unsigned int age, unsigned int phone,
-			string email, unsigned int card);
 	virtual ~Reader();
-//	vector<Current*> getCurrentBorrowedBooks() const;
-	void setBooks(vector<Current*> currentlyBorrowedBooks);
-	void addCurrentBorrow(Current* currentBorrow);
-	bool removeCurrentBorrow(Current* currentBorrow);
+	vector<Borrow*> getBorrowBorrowedBooks() const;
+	void setBorrowedBooks(vector<Borrow*> borrowedBooks);
+	void addBorrow(Borrow* borrow);
+	bool removeBorrow(Borrow* borrow);
 	bool borrowLimit();
 	string print();
 };

@@ -62,6 +62,7 @@ void Interface::displayMenu() {
 		switch (input) {
 		case 1:
 			clearScreen();
+			displayContainer(library.getPersons());
 			pressAnyKey();
 			break;
 		case 2:
