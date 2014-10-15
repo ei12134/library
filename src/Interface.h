@@ -1,9 +1,9 @@
-#ifndef SRC_INTERFACE_H_
-#define SRC_INTERFACE_H_
+#ifndef INTERFACE_H_
+#define INTERFACE_H_
 
 #ifdef _WIN32
 #define CLEAR "cls"
-#else //In any other OS
+#else // Other OS's
 #define CLEAR "clear"
 #endif
 
@@ -43,4 +43,4 @@ public:
 	virtual ~Interface();
 };
 
-#endif /* SRC_INTERFACE_H_ */
+#endif /* INTERFACE_H_ */

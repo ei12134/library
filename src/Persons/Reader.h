@@ -1,14 +1,13 @@
-#ifndef SRC_READER_H_
-#define SRC_READER_H_
+#ifndef READER_H_
+#define READER_H_
 
 class Borrow;
 
-#include "Person.h"
 #include <string>
 #include <vector>
 #include <fstream>
 #include <iostream>
-
+#include "Person.h"
 using namespace std;
 
 class Reader: public Person {
@@ -31,4 +30,4 @@ public:
 	unsigned int getType();
 };
 
-#endif /* SRC_READER_H_ */
+#endif /* READER_H_ */

@@ -1,5 +1,5 @@
-#ifndef SRC_LIBRARY_H_
-#define SRC_LIBRARY_H_
+#ifndef LIBRARY_H_
+#define LIBRARY_H_
 
 #define BOOKS_FILE "books.csv"
 #define BORROWS_FILE "borrows.csv"
@@ -106,4 +106,4 @@ public:
 	bool removePerson(Person* person);
 };
 
-#endif /* SRC_LIBRARY_H_ */
+#endif /* LIBRARY_H_ */

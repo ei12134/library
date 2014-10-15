@@ -25,17 +25,15 @@ bool Supervisor::removeEmployee(string name) {
 			team.erase(it);
 			return true;
 		}
-		return false;
 	}
 	return false;
-
 }
 
 string Supervisor::print() {
 	return Employee::print();
 }
 
-unsigned int Supervisor::getType(){
+unsigned int Supervisor::getType() {
 	return 3;
 }
 

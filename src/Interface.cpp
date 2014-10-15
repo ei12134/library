@@ -77,7 +77,7 @@ void Interface::displayMenu() {
 			break;
 		case 52:
 			clearScreen();
-			genericDisplay(library.getSupervisors(), "Readers",
+			genericDisplay(library.getSupervisors(), "Supervisors",
 					"Name ; Age ; Phone ; Email ; Nif ; Wage");
 			break;
 		case 53:
@@ -128,7 +128,7 @@ void Interface::pressAnyKey() {
 }
 
 template<typename T>
-void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
+void Interface::genericDisplay(vector<T> vec, string listName, string labels ) {
 	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
 	float pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
 	bool done = false;

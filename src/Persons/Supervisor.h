@@ -1,3 +1,6 @@
+#ifndef SUPERVISOR_H_
+#define SUPERVISOR_H_
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -5,7 +8,6 @@
 #include <fstream>
 #include <stdlib.h>
 #include "Employee.h"
-
 using namespace std;
 
 class Supervisor: public Employee {
@@ -21,3 +23,4 @@ public:
 	unsigned int getType();
 };
 
+#endif /* SUPERVISOR_H_ */

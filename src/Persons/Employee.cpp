@@ -1,12 +1,4 @@
-/*
- * Employee.cpp
- *
- *  Created on: 8 de Out de 2014
- *      Author: zikoc_000
- */
 #include "Employee.h"
-
-using namespace std;
 
 Employee::Employee(string name, unsigned int age, unsigned int phoneNumber,
 		string email, unsigned int nif, unsigned int wage) :
@@ -51,7 +43,8 @@ void Employee::setWage(unsigned int wage) {
 	this->wage = wage;
 }
 
-//void createBorrow(Book *, Reader *, Employee *);
+void createBorrow(Book *, Reader *, Employee *) {
+}
 
 string Employee::print() {
 	stringstream ss;
@@ -59,7 +52,7 @@ string Employee::print() {
 	return ss.str();
 }
 
-unsigned int Employee::getType(){
+unsigned int Employee::getType() {
 	return 2;
 }
 

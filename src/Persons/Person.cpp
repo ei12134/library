@@ -1,12 +1,4 @@
-/*
- * Person.cpp
- *
- *  Created on: 8 de Out de 2014
- *      Author: zikoc_000
- */
 #include "Person.h"
-
-using namespace std;
 
 Person::Person(string name, unsigned int age, unsigned int phone,
 		string email) {

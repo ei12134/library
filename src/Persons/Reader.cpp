@@ -1,10 +1,3 @@
-/*
- * Reader.cpp
- *
- *  Created on: 08/10/2014
- *      Author: User
- */
-
 #include "Reader.h"
 
 Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,

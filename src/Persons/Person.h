@@ -1,10 +1,3 @@
-/*
- * Person.h
- *
- *  Created on: 8 de Out de 2014
- *      Author: zikoc_000
- */
-
 #ifndef PERSON_H_
 #define PERSON_H_
 
@@ -14,7 +7,6 @@
 #include <sstream>
 #include <fstream>
 #include <stdlib.h>
-
 using namespace std;
 
 class Person {
