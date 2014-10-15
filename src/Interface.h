@@ -3,7 +3,9 @@
 
 #ifdef _WIN32
 #define CLEAR "cls"
+#define PROMPT_SYMBOL " >"
 #else // Other OS's
+#define PROMPT_SYMBOL " $"
 #define CLEAR "clear"
 #endif
 

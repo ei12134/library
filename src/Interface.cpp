@@ -10,17 +10,17 @@ Interface::~Interface() {
 
 void Interface::menu() {
 	char input;
-	string exitDialog = "\n Are you sure you want to exit the program?";
+	string exitDialog = " Exit the program?";
 	bool exit = false;
 
 	do {
 		clearScreen();
 		displayHeader("Library");
-		cout << " [1] Enter as a Reader\n";
-		cout << " [2] Enter as an Employee\n";
-		cout << " [3] Enter as a Supervisor\n";
-		cout << " [4] Display\n";
-		cout << " [5] Quit\n\n $ ";
+		cout << "\n [1] Enter as a Reader\n\n";
+		cout << " [2] Enter as an Employee\n\n";
+		cout << " [3] Enter as a Supervisor\n\n";
+		cout << " [4] Display\n\n";
+		cout << " [5] Quit\n\n\n" << PROMPT_SYMBOL;
 
 		input = getch();
 		switch (input) {
@@ -51,12 +51,12 @@ void Interface::displayMenu() {
 	do {
 		clearScreen();
 		displayHeader("Display");
-		cout << " [1] All\n";
-		cout << " [2] Readers\n";
-		cout << " [3] Employees\n";
-		cout << " [4] Supervisors\n";
-		cout << " [5] Book\n";
-		cout << " [6] Exit to menu\n\n $ ";
+		cout << "\n [1] All\n\n";
+		cout << " [2] Readers\n\n";
+		cout << " [3] Employees\n\n";
+		cout << " [4] Supervisors\n\n";
+		cout << " [5] Book\n\n";
+		cout << " [6] Exit to menu\n\n\n" << PROMPT_SYMBOL;
 
 		input = getch();
 		switch (input) {
@@ -113,7 +113,7 @@ void Interface::displayHeader(string header) {
 }
 
 bool Interface::confirmOperation(string& query) {
-	cout << endl << query << "\n [y] to confirm\n\n $ ";
+	cout << query << " [y] to confirm ";
 	char answer = getch();
 
 	if (answer == 'y' || answer == 'Y')
@@ -128,7 +128,7 @@ void Interface::pressAnyKey() {
 }
 
 template<typename T>
-void Interface::genericDisplay(vector<T> vec, string listName, string labels ) {
+void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
 	float pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
 	bool done = false;
