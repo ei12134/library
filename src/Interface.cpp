@@ -61,7 +61,8 @@ void Interface::displayMenu() {
 		switch (input) {
 		case 49:
 			clearScreen();
-			genericDisplay(library.getPersons(), "Readers", "Name ; Age ; ID");
+			genericDisplay(library.getPersons(), "Readers",
+					"Name ; Age ; Phone ; Email ; Card");
 			break;
 		case 50:
 			clearScreen();
@@ -102,28 +103,23 @@ void Interface::displayHeader(string header) {
 }
 
 bool Interface::confirmOperation(string& query) {
-	char answer;
-	cout << query << "\n [y] to confirm\n\n $ ";
-	answer = getch();
+	cout << endl << query << "\n [y] to confirm\n\n $ ";
+	char answer = getch();
 
-	if (answer == 'y' || answer == 'Y') {
-		clearScreen();
+	if (answer == 'y' || answer == 'Y')
 		return true;
-	} else {
-		clearScreen();
+	else
 		return false;
-	}
 }
 
 void Interface::pressAnyKey() {
-	cout << " Press any key to continue . . .";
+	cout << " Press any key to continue...";
 	getch();
 }
 
 template<typename T>
 void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
-	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0,
-			progress;
+	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
 	float pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
 	bool done = false;
 	string vLimitDialog = " [q] to interrupt or any other key to continue...";
