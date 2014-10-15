@@ -18,5 +18,6 @@ public:
 	void addEmployee(Employee *e1);
 	bool removeEmployee(string name);
 	string print();
+	unsigned int getType();
 };
 

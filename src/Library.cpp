@@ -28,6 +28,30 @@ vector<Person*> Library::getPersons() const {
 	return persons;
 }
 
+vector<Person*> Library::getReaders() const {
+	vector<Person*> readers;
+	for (size_t i = 0; i < persons.size(); i++)
+		if (persons[i]->getType() == 1)
+			readers.push_back(persons[i]);
+	return readers;
+}
+
+vector<Person*> Library::getEmployees() const {
+	vector<Person*> employees;
+	for (size_t i = 0; i < persons.size(); i++)
+		if (persons[i]->getType() == 2)
+			employees.push_back(persons[i]);
+	return employees;
+}
+
+vector<Person*> Library::getSupervisors() const {
+	vector<Person*> supervisors;
+	for (size_t i = 0; i < persons.size(); i++)
+		if (persons[i]->getType() == 3)
+			supervisors.push_back(persons[i]);
+	return supervisors;
+}
+
 void Library::setBooks(vector<Book*> books) {
 	this->books = books;
 }
@@ -104,12 +128,12 @@ void Library::loadPersons() {
 	}
 	file.close();
 
-//	file.open(SUPERVISORS_FILE);
-//	if (file.is_open()) {
-//		while (file.good()) {
-//			Supervisor* supervisor = new Supervisor(file);
-//			persons.push_back(supervisor);
-//		}
-//	}
-//	file.close();
+	file.open(SUPERVISORS_FILE);
+	if (file.is_open()) {
+		while (file.good()) {
+			Supervisor* supervisor = new Supervisor(file);
+			persons.push_back(supervisor);
+		}
+	}
+	file.close();
 }

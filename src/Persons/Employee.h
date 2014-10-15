@@ -32,6 +32,7 @@ public:
 	void setWage(unsigned int wage);
 	void createBorrow(Book *, Reader *, Employee *);
 	string print();
+	unsigned int getType();
 };
 #endif /* EMPLOYEE_H_ */
 

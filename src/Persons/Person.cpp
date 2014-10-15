@@ -19,7 +19,7 @@ Person::Person(string name, unsigned int age, unsigned int phone,
 Person::Person(fstream& s) {
 	stringstream ss;
 	string name, email, sAge, sPhone;
-	unsigned int age, phone, card;
+	unsigned int age, phone;
 
 	getline(s, name, ';');
 	this->name = name;

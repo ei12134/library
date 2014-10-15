@@ -65,3 +65,7 @@ string Reader::print() {
 	ss << Person::print() << " ; " << card;
 	return ss.str();
 }
+
+unsigned int Reader::getType(){
+	return 1;
+}

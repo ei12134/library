@@ -51,29 +51,39 @@ void Interface::displayMenu() {
 	do {
 		clearScreen();
 		displayHeader("Display");
-		cout << " [1] Readers\n";
-		cout << " [2] Employees\n";
-		cout << " [3] Supervisors\n";
-		cout << " [4] Book\n";
-		cout << " [5] Exit to menu\n\n $ ";
+		cout << " [1] All\n";
+		cout << " [2] Readers\n";
+		cout << " [3] Employees\n";
+		cout << " [4] Supervisors\n";
+		cout << " [5] Book\n";
+		cout << " [6] Exit to menu\n\n $ ";
 
 		input = getch();
 		switch (input) {
 		case 49:
 			clearScreen();
-			genericDisplay(library.getPersons(), "Readers",
-					"Name ; Age ; Phone ; Email ; Card");
+			genericDisplay(library.getPersons(), "All",
+					"Name ; Age ; Phone ; Email ; [Card] ; Nif ; Wage");
 			break;
 		case 50:
 			clearScreen();
+			genericDisplay(library.getReaders(), "Readers",
+					"Name ; Age ; Phone ; Email ; Card");
 			break;
 		case 51:
 			clearScreen();
+			genericDisplay(library.getEmployees(), "Employees",
+					"Name ; Age ; Phone ; Email ; Nif ; Wage");
 			break;
 		case 52:
 			clearScreen();
+			genericDisplay(library.getSupervisors(), "Readers",
+					"Name ; Age ; Phone ; Email ; Nif ; Wage");
 			break;
 		case 53:
+			clearScreen();
+			break;
+		case 54:
 			exit = true;
 			break;
 		default:

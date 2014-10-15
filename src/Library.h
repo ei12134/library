@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 #include "./Persons/Person.h"
+#include "./Persons/Supervisor.h"
 #include "Book.h"
 #include "Borrow.h"
 using namespace std;
@@ -44,6 +45,15 @@ public:
 
 	///@return persons
 	vector<Person*> getPersons() const;
+
+	///@return readers
+	vector<Person*> getReaders() const;
+
+	///@return readers
+	vector<Person*> getEmployees() const;
+
+	///@return readers
+	vector<Person*> getSupervisors() const;
 
 	/** replaces existing books pointer vector
 	 *@param books Book pointer vector

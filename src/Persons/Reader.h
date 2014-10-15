@@ -28,6 +28,7 @@ public:
 	bool removeBorrow(Borrow* borrow);
 	bool borrowLimit();
 	string print();
+	unsigned int getType();
 };
 
 #endif /* SRC_READER_H_ */

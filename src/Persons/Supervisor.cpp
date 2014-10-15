@@ -35,3 +35,7 @@ string Supervisor::print() {
 	return Employee::print();
 }
 
+unsigned int Supervisor::getType(){
+	return 3;
+}
+

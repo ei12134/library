@@ -59,3 +59,7 @@ string Employee::print() {
 	return ss.str();
 }
 
+unsigned int Employee::getType(){
+	return 2;
+}
+
