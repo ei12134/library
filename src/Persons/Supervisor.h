@@ -9,7 +9,7 @@
 using namespace std;
 
 class Supervisor: public Employee {
-	vector<Employee *> teamvec;
+	vector<Employee *> team;
 public:
 	Supervisor(string name, int age, unsigned int phone, string email,
 			unsigned int nif, unsigned int wage);

@@ -15,14 +15,14 @@ Supervisor::~Supervisor() {
 }
 
 void Supervisor::addEmployee(Employee *e1) {
-	teamvec.push_back(e1);
+	team.push_back(e1);
 }
 
 bool Supervisor::removeEmployee(string name) {
-	for (vector<Employee *>::iterator it = teamvec.begin(); it != teamvec.end();
+	for (vector<Employee *>::iterator it = team.begin(); it != team.end();
 			it++) {
 		if ((*it)->getName() == name) {
-			teamvec.erase(it);
+			team.erase(it);
 			return true;
 		}
 		return false;

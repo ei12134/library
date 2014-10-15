@@ -6,11 +6,10 @@ Interface::Interface() {
 }
 
 Interface::~Interface() {
-	// TODO Auto-generated destructor stub
 }
 
 void Interface::menu() {
-	int input;
+	char input;
 	string exitDialog = "\n Are you sure you want to exit the program?";
 	bool exit = false;
 
@@ -23,18 +22,18 @@ void Interface::menu() {
 		cout << " [4] Display\n";
 		cout << " [5] Quit\n\n $ ";
 
-		input = getInput();
+		input = getch();
 		switch (input) {
-		case 1:
+		case 49:
 			break;
-		case 2:
+		case 50:
 			break;
-		case 3:
+		case 51:
 			break;
-		case 4:
+		case 52:
 			displayMenu();
 			break;
-		case 5:
+		case 53:
 			if (confirmOperation(exitDialog))
 				exit = true;
 			break;
@@ -46,7 +45,7 @@ void Interface::menu() {
 }
 
 void Interface::displayMenu() {
-	int input;
+	char input;
 	bool exit = false;
 
 	do {
@@ -58,25 +57,22 @@ void Interface::displayMenu() {
 		cout << " [4] Book\n";
 		cout << " [5] Exit to menu\n\n $ ";
 
-		input = getInput();
+		input = getch();
 		switch (input) {
-		case 1:
+		case 49:
 			clearScreen();
-			displayContainer(library.getPersons());
-			pressAnyKey();
+			genericDisplay(library.getPersons(), "Readers", "Name ; Age ; ID");
 			break;
-		case 2:
+		case 50:
 			clearScreen();
-			pressAnyKey();
 			break;
-		case 3:
+		case 51:
 			clearScreen();
-			pressAnyKey();
 			break;
-		case 4:
-			displayMenu();
+		case 52:
+			clearScreen();
 			break;
-		case 5:
+		case 53:
 			exit = true;
 			break;
 		default:
@@ -106,11 +102,11 @@ void Interface::displayHeader(string header) {
 }
 
 bool Interface::confirmOperation(string& query) {
-	string answer;
+	char answer;
 	cout << query << "\n [y] to confirm\n\n $ ";
-	cin >> answer;
+	answer = getch();
 
-	if (answer == "y" || answer == "Y") {
+	if (answer == 'y' || answer == 'Y') {
 		clearScreen();
 		return true;
 	} else {
@@ -119,47 +115,48 @@ bool Interface::confirmOperation(string& query) {
 	}
 }
 
-int Interface::getInput() {
-	int input;
-	do {
-		cin.clear();
-		cin >> input;
-	} while (cin.fail());
-
-	return input;
-}
-
-//string Interface::readInputString(string dialog) {
-//	string input;
-//	do {
-////		cout << " Use only characters from the alphabet [a-z]*[A-Z]*.\n";
-//		cout << dialog;
-//		getline(cin, input, '\n');
-//	} while (cin.fail() || !(is_All_ASCII_Letter(input)) || (input.size() == 1));
-//
-//	return input;
-//}
-
 void Interface::pressAnyKey() {
 	cout << " Press any key to continue . . .";
-	cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	cin.get();
+	getch();
 }
-
-bool Interface::is_NON_ASCII_Letter(const int & c) {
-	return ((c < 65) || (c > 122) || (c > 90 && c < 97));
-}
-
-//bool Interface::is_All_ASCII_Letter(const string& s) {
-//	return find_if(s.begin(), s.end(), is_NON_ASCII_Letter) == s.end();
-//}
 
 template<typename T>
-void Interface::displayContainer(vector<T*> container) const {
-	typename vector<T*>::const_iterator it;
-	for (it = container.begin(); it != container.end(); it++) {
-		string print = (*it)->print();
-		cout << print << endl;
+void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
+	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0,
+			progress;
+	float pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
+	bool done = false;
+	string vLimitDialog = " [q] to interrupt or any other key to continue...";
+	char ch;
+
+	while (i < vecSize && !done) {
+		vLimit = 0;
+		progress = ceil((18.0 / pLimit) * pCount);
+		clearScreen();
+		displayHeader(listName);
+		cout << " Page " << pCount << " out of " << pLimit << " ["
+				<< string(progress, '#') << string((18 - progress), ' ')
+				<< "]\n\n";
+		cout << " " << string(78, '-') << " ";
+		cout << " " << labels << string(79 - labels.length(), ' ');
+		cout << " " << string(78, '-') << " ";
+
+		while (vLimit < MAX_LINES && i < vecSize && !done) {
+			cout << "\n " << vec[i]->print() << "\n"; // maybe overload << operator??
+			i++;
+			vLimit++;
+
+			if (vLimit == MAX_LINES && i < vecSize) {
+				pCount++;
+				cout << " " << string(78, '-') << " " << vLimitDialog;
+				ch = getch();
+				if (ch == 'q')
+					done = true;
+			}
+		}
+	}
+	if (i == vecSize) {
+		cout << " " << string(78, '-') << " ";
+		pressAnyKey();
 	}
 }

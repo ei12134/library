@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <conio.h>
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
@@ -20,6 +21,8 @@
 #include <stdio.h>
 #include <sstream>
 using namespace std;
+
+#define MAX_LINES 5
 
 class Interface {
 private:
@@ -30,15 +33,13 @@ public:
 	void menu();
 	void displayMenu();
 	void clearScreen();
-	template<typename T>
-	void displayContainer(vector<T*> container) const;
 	void displayHeader(string header);
 	bool confirmOperation(string& query);
 	int getInput();
 	string readInputString(string dialog);
 	void pressAnyKey();
-	bool is_NON_ASCII_Letter(const int & c);
-	bool is_All_ASCII_Letter(const string& s);
+	template<typename T>
+	void genericDisplay(vector<T> vec, string listName, string labels);
 	virtual ~Interface();
 };
 
