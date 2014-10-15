@@ -10,7 +10,7 @@ Interface::~Interface() {
 
 void Interface::menu() {
 	char input;
-	string exitDialog = " Exit the program?";
+	string exitDialog = "Exit the program?";
 	bool exit = false;
 
 	do {
@@ -22,23 +22,24 @@ void Interface::menu() {
 		cout << " [4] Display\n\n";
 		cout << " [5] Quit\n\n\n" << PROMPT_SYMBOL;
 
-		input = getch();
+		input = getKey();
 		switch (input) {
-		case 49:
+		case '1':
 			break;
-		case 50:
+		case '2':
 			break;
-		case 51:
+		case '3':
 			break;
-		case 52:
+		case '4':
 			displayMenu();
 			break;
-		case 53:
-			if (confirmOperation(exitDialog))
+		case '5':
+			if (confirmOperation(exitDialog)) {
+				clearScreen();
 				exit = true;
+			}
 			break;
 		default:
-			input = -1;
 			break;
 		}
 	} while (!exit);
@@ -58,36 +59,35 @@ void Interface::displayMenu() {
 		cout << " [5] Book\n\n";
 		cout << " [6] Exit to menu\n\n\n" << PROMPT_SYMBOL;
 
-		input = getch();
+		input = getKey();
 		switch (input) {
-		case 49:
+		case '1':
 			clearScreen();
 			genericDisplay(library.getPersons(), "All",
 					"Name ; Age ; Phone ; Email ; [Card] ; Nif ; Wage");
 			break;
-		case 50:
+		case '2':
 			clearScreen();
 			genericDisplay(library.getReaders(), "Readers",
 					"Name ; Age ; Phone ; Email ; Card");
 			break;
-		case 51:
+		case '3':
 			clearScreen();
 			genericDisplay(library.getEmployees(), "Employees",
 					"Name ; Age ; Phone ; Email ; Nif ; Wage");
 			break;
-		case 52:
+		case '4':
 			clearScreen();
 			genericDisplay(library.getSupervisors(), "Supervisors",
 					"Name ; Age ; Phone ; Email ; Nif ; Wage");
 			break;
-		case 53:
+		case '5':
 			clearScreen();
 			break;
-		case 54:
+		case '6':
 			exit = true;
 			break;
 		default:
-			input = -1;
 			break;
 		}
 	} while (!exit);
@@ -114,7 +114,7 @@ void Interface::displayHeader(string header) {
 
 bool Interface::confirmOperation(string& query) {
 	cout << query << " [y] to confirm ";
-	char answer = getch();
+	char answer = getKey();
 
 	if (answer == 'y' || answer == 'Y')
 		return true;
@@ -124,7 +124,7 @@ bool Interface::confirmOperation(string& query) {
 
 void Interface::pressAnyKey() {
 	cout << " Press any key to continue...";
-	getch();
+	getKey();
 }
 
 template<typename T>
@@ -155,7 +155,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 			if (vLimit == MAX_LINES && i < vecSize) {
 				pCount++;
 				cout << " " << string(78, '-') << " " << vLimitDialog;
-				ch = getch();
+				ch = getKey();
 				if (ch == 'q')
 					done = true;
 			}
@@ -165,4 +165,42 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		cout << " " << string(78, '-') << " ";
 		pressAnyKey();
 	}
+}
+
+char Interface::getKey() {
+#ifdef _WIN32
+	return getch();
+#elif _WIN64
+	return getch();
+#else
+	//char buf[32] = { 0 };
+	//fgets(buf, sizeof(buf), stdin);
+	//return buf[0];
+
+	static struct termios oldt, newt;
+
+	/*tcgetattr gets the parameters of the current terminal
+	 STDIN_FILENO will tell tcgetattr that it should write the settings
+	 of stdin to oldt*/
+	tcgetattr( STDIN_FILENO, &oldt);
+	/*now the settings will be copied*/
+	newt = oldt;
+
+	/*ICANON normally takes care that one line at a time will be processed
+	 that means it will return if it sees a "\n" or an EOF or an EOL*/
+	newt.c_lflag &= ~(ICANON | ECHO);
+
+	/*Those new settings will be set to STDIN
+	 TCSANOW tells tcsetattr to change attributes immediately. */
+	tcsetattr( STDIN_FILENO, TCSANOW, &newt);
+
+	/*This is your part:
+	 I choose 'e' to end input. Notice that EOF is also turned off
+	 in the non-canonical mode*/
+	char key = getchar();
+
+	/*restore the old settings*/
+	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
+	return key;
+#endif
 }
