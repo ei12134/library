@@ -69,7 +69,7 @@ string Person::getEmail() const {
 
 string Person::print() {
 	stringstream ss;
-	ss << name << " ; " << age << " ; " << phone << " ; " << email;
+	ss << name << "   " << age << "   " << phone << "   " << email;
 	return ss.str();
 }
 

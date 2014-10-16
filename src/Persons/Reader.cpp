@@ -55,7 +55,7 @@ bool Reader::borrowLimit() {
 
 string Reader::print() {
 	stringstream ss;
-	ss << Person::print() << " ; " << card;
+	ss << Person::print() << "   " << card;
 	return ss.str();
 }
 

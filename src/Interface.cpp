@@ -20,7 +20,7 @@ void Interface::menu() {
 		cout << TAB << "[2] Enter as an Employee\n\n";
 		cout << TAB << "[3] Enter as a Supervisor\n\n";
 		cout << TAB << "[4] Display\n\n";
-		cout << TAB << "[5] Quit\n\n\n" << TAB << PROMPT_SYMBOL;
+		cout << TAB << "[5] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -57,29 +57,29 @@ void Interface::displayMenu() {
 		cout << TAB << "[3] Employees\n\n";
 		cout << TAB << "[4] Supervisors\n\n";
 		cout << TAB << "[5] Book\n\n";
-		cout << TAB << "[6] Exit to menu\n\n\n" << TAB << PROMPT_SYMBOL;
+		cout << TAB << "[6] Exit to menu\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
 		case '1':
 			clearScreen();
 			genericDisplay(library.getPersons(), "All",
-					"Name ; Age ; Phone ; Email ; [Card] ; Nif ; Wage");
+					"Name       Age       Phone       Email       [Card]       Nif       Wage");
 			break;
 		case '2':
 			clearScreen();
 			genericDisplay(library.getReaders(), "Readers",
-					"Name ; Age ; Phone ; Email ; Card");
+					" Name       Age       Phone       Email       Card");
 			break;
 		case '3':
 			clearScreen();
 			genericDisplay(library.getEmployees(), "Employees",
-					"Name ; Age ; Phone ; Email ; Nif ; Wage");
+					" Name       Age       Phone       Email       Nif       Wage");
 			break;
 		case '4':
 			clearScreen();
 			genericDisplay(library.getSupervisors(), "Supervisors",
-					"Name ; Age ; Phone ; Email ; Nif ; Wage");
+					" Name       Age       Phone       Email       Nif       Wage");
 			break;
 		case '5':
 			clearScreen();
@@ -106,8 +106,8 @@ void Interface::displayHeader(string header) {
 
 	cout << endl << string(22, ' ') << string(36, '#') << string(22, ' ');
 	cout << string(22, ' ') << "#" << string(34, ' ') << "#" << string(22, ' ');
-	cout << string(22, ' ') << "#"  << string(dynsize, ' ') << header << string(dynsize2, ' ')
-			<< "#" << string(22, ' ');
+	cout << string(22, ' ') << "#" << string(dynsize, ' ') << header
+			<< string(dynsize2, ' ') << "#" << string(22, ' ');
 	cout << string(22, ' ') << "#" << string(34, ' ') << "#" << string(22, ' ');
 	cout << string(22, ' ') << string(36, '#') << string(22, ' ') << endl;
 }
@@ -140,11 +140,12 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		progress = ceil((18.0 / pLimit) * pCount);
 		clearScreen();
 		displayHeader(listName);
-		cout << string(22, ' ') << "Page " << pCount << " out of " << pLimit << " ["
-				<< string(progress, '#') << string((18 - progress), ' ')
-				<< "]" << string(22, ' ') << endl;
+		cout << string(24, ' ') << "Page " << pCount << " of " << pLimit << " ["
+				<< string(progress, '#') << string((18 - progress), ' ') << "]"
+				<< string(24, ' ') << endl;
 		cout << " " << string(78, '-') << " ";
-		cout << " " << labels << string(79 - labels.length(), ' ');
+		cout << string((80 - labels.length()) / 2, ' ') << labels
+				<< string((80 - labels.length()) / 2, ' ');
 		cout << " " << string(78, '-') << " ";
 
 		while (vLimit < MAX_LINES && i < vecSize && !done) {

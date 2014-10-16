@@ -48,7 +48,7 @@ void createBorrow(Book *, Reader *, Employee *) {
 
 string Employee::print() {
 	stringstream ss;
-	ss << Person::print() << " ; " << nif << " ; " << wage;
+	ss << Person::print() << "   " << nif << "   " << wage;
 	return ss.str();
 }
 

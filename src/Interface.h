@@ -27,7 +27,8 @@ using namespace std;
 #endif
 
 #define MAX_LINES 5
-#define TAB "   "
+#define TAB string(26, ' ')
+#define SYMBOL_TAB string(22, ' ')
 
 class Interface {
 private:
