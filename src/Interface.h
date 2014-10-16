@@ -18,15 +18,16 @@ using namespace std;
 #ifdef _WIN32
 #define CLEAR "cls"
 #include <conio.h>
-#define PROMPT_SYMBOL " > "
+#define PROMPT_SYMBOL "> "
 #else // Other OS's
 #include <termios.h>    //termios, TCSANOW, ECHO, ICANON
 #include <unistd.h>     //STDIN_FILENO
-#define PROMPT_SYMBOL " $ "
+#define PROMPT_SYMBOL "$ "
 #define CLEAR "clear"
 #endif
 
 #define MAX_LINES 5
+#define TAB "   "
 
 class Interface {
 private:

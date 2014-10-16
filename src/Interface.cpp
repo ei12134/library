@@ -16,11 +16,11 @@ void Interface::menu() {
 	do {
 		clearScreen();
 		displayHeader("Library");
-		cout << "\n [1] Enter as a Reader\n\n";
-		cout << " [2] Enter as an Employee\n\n";
-		cout << " [3] Enter as a Supervisor\n\n";
-		cout << " [4] Display\n\n";
-		cout << " [5] Quit\n\n\n" << PROMPT_SYMBOL;
+		cout << endl << TAB << "[1] Enter as a Reader\n\n";
+		cout << TAB << "[2] Enter as an Employee\n\n";
+		cout << TAB << "[3] Enter as a Supervisor\n\n";
+		cout << TAB << "[4] Display\n\n";
+		cout << TAB << "[5] Quit\n\n\n" << TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -52,12 +52,12 @@ void Interface::displayMenu() {
 	do {
 		clearScreen();
 		displayHeader("Display");
-		cout << "\n [1] All\n\n";
-		cout << " [2] Readers\n\n";
-		cout << " [3] Employees\n\n";
-		cout << " [4] Supervisors\n\n";
-		cout << " [5] Book\n\n";
-		cout << " [6] Exit to menu\n\n\n" << PROMPT_SYMBOL;
+		cout << endl << TAB << "[1] All\n\n";
+		cout << TAB << "[2] Readers\n\n";
+		cout << TAB << "[3] Employees\n\n";
+		cout << TAB << "[4] Supervisors\n\n";
+		cout << TAB << "[5] Book\n\n";
+		cout << TAB << "[6] Exit to menu\n\n\n" << TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -104,12 +104,12 @@ void Interface::displayHeader(string header) {
 	if ((dynsize * 2 + size + 2) < 36)
 		dynsize2++;
 
-	cout << "\n " << string(36, '#') << "\n";
-	cout << " #" << string(34, ' ') << "#\n";
-	cout << " #" << string(dynsize, ' ') << header << string(dynsize2, ' ')
-			<< "#\n";
-	cout << " #" << string(34, ' ') << "#\n";
-	cout << " " << string(36, '#') << "\n\n";
+	cout << endl << string(22, ' ') << string(36, '#') << string(22, ' ');
+	cout << string(22, ' ') << "#" << string(34, ' ') << "#" << string(22, ' ');
+	cout << string(22, ' ') << "#"  << string(dynsize, ' ') << header << string(dynsize2, ' ')
+			<< "#" << string(22, ' ');
+	cout << string(22, ' ') << "#" << string(34, ' ') << "#" << string(22, ' ');
+	cout << string(22, ' ') << string(36, '#') << string(22, ' ') << endl;
 }
 
 bool Interface::confirmOperation(string& query) {
@@ -132,7 +132,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
 	float pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
 	bool done = false;
-	string vLimitDialog = " [q] to interrupt or any other key to continue...";
+	string vLimitMsg = " [q] to interrupt or any other key to continue...";
 	char ch;
 
 	while (i < vecSize && !done) {
@@ -140,9 +140,9 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		progress = ceil((18.0 / pLimit) * pCount);
 		clearScreen();
 		displayHeader(listName);
-		cout << " Page " << pCount << " out of " << pLimit << " ["
+		cout << string(22, ' ') << "Page " << pCount << " out of " << pLimit << " ["
 				<< string(progress, '#') << string((18 - progress), ' ')
-				<< "]\n\n";
+				<< "]" << string(22, ' ') << endl;
 		cout << " " << string(78, '-') << " ";
 		cout << " " << labels << string(79 - labels.length(), ' ');
 		cout << " " << string(78, '-') << " ";
@@ -154,7 +154,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 
 			if (vLimit == MAX_LINES && i < vecSize) {
 				pCount++;
-				cout << " " << string(78, '-') << " " << vLimitDialog;
+				cout << " " << string(78, '-') << " " << vLimitMsg;
 				ch = getKey();
 				if (ch == 'q')
 					done = true;
