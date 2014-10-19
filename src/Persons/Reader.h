@@ -29,6 +29,7 @@ public:
 	bool borrowLimit();
 	string print();
 	unsigned int getType();
+	string printType();
 };
 
 #endif /* READER_H_ */

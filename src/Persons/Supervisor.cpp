@@ -41,3 +41,6 @@ unsigned int Supervisor::getCard() const {
 	return 0;
 }
 
+string Supervisor::printType() {
+	return "Supervisor";
+}

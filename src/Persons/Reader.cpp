@@ -66,3 +66,7 @@ string Reader::print() {
 unsigned int Reader::getType() {
 	return 1;
 }
+
+string Reader::printType() {
+	return "[Reader]";
+}

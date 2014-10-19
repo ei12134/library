@@ -16,11 +16,10 @@ void Interface::menu() {
 	do {
 		clearScreen();
 		displayHeader("Library");
-		cout << endl << TAB << "[1] Enter as a Reader\n\n";
-		cout << TAB << "[2] Enter as an Employee\n\n";
-		cout << TAB << "[3] Enter as a Supervisor\n\n";
-		cout << TAB << "[4] Display\n\n";
-		cout << TAB << "[5] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
+		cout << endl << TAB << "[1] Login\n\n";
+		cout << TAB << "[2] Display\n\n";
+		cout << TAB << "[3] Search\n\n";
+		cout << TAB << "[4] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -28,13 +27,9 @@ void Interface::menu() {
 			searchPerson();
 			break;
 		case '2':
-			break;
-		case '3':
-			break;
-		case '4':
 			displayMenu();
 			break;
-		case '5':
+		case '4':
 			if (confirmOperation(exitDialog)) {
 				clearScreen();
 				exit = true;
@@ -50,22 +45,22 @@ void Interface::searchPerson() {
 	string query;
 	bool exit = false;
 	int key;
-	vector<Person*> readers = library.getReaders();
+	vector<Person*> persons = library.getPersons();
 
 	do {
 		clearScreen();
-		displayHeader("Search Reader");
+		displayHeader("Login");
 		cout << endl << endl;
 		if (query.size() > 0) {
-			for (size_t i = 0, z = 1; i < readers.size(); i++) {
-				string name = readers[i]->getName();
+			for (size_t i = 0, z = 1; i < persons.size(); i++) {
+				string name = persons[i]->getName();
 				if (matchQuery(query, name))
-					cout << " [" << z++ << "] " << readers[i]->getName()
-							<< endl;
+					cout << " [" << z++ << "] " << persons[i]->getName() << "\t"
+							<< persons[i]->printType() << endl << endl;
 			}
 		}
 
-		cout << "\n\n Enter person name [ESC to exit]\n\n" << SYMBOL_SHORT_TAB
+		cout << "\n Enter person name [ESC to exit]\n\n" << SYMBOL_SHORT_TAB
 				<< PROMPT_SYMBOL << query;
 		key = getKey();
 		if (key == 27)
@@ -223,7 +218,7 @@ char Interface::getKey() {
 
 	/*ICANON normally takes care that one line at a time will be processed
 	 that means it will return if it sees a "\n" or an EOF or an EOL*/
-	newt.c_lflag &= ~(ICANON | ECHO);
+	newt.c_lflag &= ~(ICANON); //| ECHO);
 
 	/*Those new settings will be set to STDIN
 	 TCSANOW tells tcsetattr to change attributes immediately. */

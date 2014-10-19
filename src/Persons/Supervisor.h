@@ -22,6 +22,7 @@ public:
 	string print();
 	unsigned int getType();
 	unsigned int getCard() const;
+	string printType();
 };
 
 #endif /* SUPERVISOR_H_ */

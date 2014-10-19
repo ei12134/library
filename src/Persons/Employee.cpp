@@ -60,3 +60,6 @@ unsigned int Employee::getCard() const {
 	return 0;
 }
 
+string Employee::printType() {
+	return "[Employee]";
+}
