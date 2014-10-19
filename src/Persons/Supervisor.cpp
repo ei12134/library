@@ -37,3 +37,7 @@ unsigned int Supervisor::getType() {
 	return 3;
 }
 
+unsigned int Supervisor::getCard() const {
+	return 0;
+}
+

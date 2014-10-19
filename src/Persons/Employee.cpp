@@ -56,3 +56,7 @@ unsigned int Employee::getType() {
 	return 2;
 }
 
+unsigned int Employee::getCard() const {
+	return 0;
+}
+

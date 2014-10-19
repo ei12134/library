@@ -25,6 +25,7 @@ void Interface::menu() {
 		input = getKey();
 		switch (input) {
 		case '1':
+			searchPerson();
 			break;
 		case '2':
 			break;
@@ -42,6 +43,39 @@ void Interface::menu() {
 		default:
 			break;
 		}
+	} while (!exit);
+}
+
+void Interface::searchPerson() {
+	string query;
+	bool exit = false;
+	int key;
+	vector<Person*> readers = library.getReaders();
+
+	do {
+		clearScreen();
+		displayHeader("Search Reader");
+		cout << endl << endl;
+		if (query.size() > 0) {
+			for (size_t i = 0, z = 1; i < readers.size(); i++) {
+				string name = readers[i]->getName();
+				if (matchQuery(query, name))
+					cout << " [" << z++ << "] " << readers[i]->getName()
+							<< endl;
+			}
+		}
+
+		cout << "\n\n Enter person name [ESC to exit]\n\n" << SYMBOL_SHORT_TAB
+				<< PROMPT_SYMBOL << query;
+		key = getKey();
+		if (key == 27)
+			exit = true;
+		else if (key == 8 || key == 83) {
+			if (query.length() > 0)
+				query.erase(query.end() - 1);
+		} else
+			query += char(key);
+
 	} while (!exit);
 }
 
@@ -174,9 +208,9 @@ char Interface::getKey() {
 #elif _WIN64
 	return getch();
 #else
-	//char buf[32] = { 0 };
-	//fgets(buf, sizeof(buf), stdin);
-	//return buf[0];
+//char buf[32] = { 0 };
+//fgets(buf, sizeof(buf), stdin);
+//return buf[0];
 
 	static struct termios oldt, newt;
 
@@ -205,3 +239,25 @@ char Interface::getKey() {
 	return key;
 #endif
 }
+
+bool Interface::matchQuery(const string & q, const string & n) {
+	if (q.size() == 0)
+		return false;
+	for (size_t i = 0; i < q.size() && i < n.size(); i++) {
+		if (tolower(q[i]) != tolower(n[i]))
+			return false;
+	}
+	return true;
+}
+
+bool Interface::is_Number(const int & c) {
+	return (c < 57) || (c > 48);
+}
+
+bool Interface::is_NON_ASCII_Letter(const int & c) {
+	return ((c < 65) || (c > 122) || (c > 90 && c < 97));
+}
+
+//bool Interface::is_All_ASCII_Letter(const string& s) {
+//	return find_if(s.begin(), s.end(), is_NON_ASCII_Letter) == s.end();
+//}

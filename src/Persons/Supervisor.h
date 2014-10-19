@@ -21,6 +21,7 @@ public:
 	bool removeEmployee(string name);
 	string print();
 	unsigned int getType();
+	unsigned int getCard() const;
 };
 
 #endif /* SUPERVISOR_H_ */

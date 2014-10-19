@@ -30,6 +30,10 @@ vector<Borrow*> Reader::getBorrowBorrowedBooks() const {
 	return borrowedBooks;
 }
 
+unsigned int Reader::getCard() const {
+	return card;
+}
+
 void Reader::setBorrowedBooks(vector<Borrow*> borrowedBooks) {
 	this->borrowedBooks = borrowedBooks;
 }
@@ -59,6 +63,6 @@ string Reader::print() {
 	return ss.str();
 }
 
-unsigned int Reader::getType(){
+unsigned int Reader::getType() {
 	return 1;
 }

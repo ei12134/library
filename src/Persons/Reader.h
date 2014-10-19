@@ -22,6 +22,7 @@ public:
 	Reader(fstream& s);
 	virtual ~Reader();
 	vector<Borrow*> getBorrowBorrowedBooks() const;
+	unsigned int getCard() const;
 	void setBorrowedBooks(vector<Borrow*> borrowedBooks);
 	void addBorrow(Borrow* borrow);
 	bool removeBorrow(Borrow* borrow);

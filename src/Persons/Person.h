@@ -19,6 +19,7 @@ public:
 	virtual ~Person();
 	virtual string print();
 	virtual unsigned int getType() = 0;
+	virtual unsigned int getCard() const = 0;
 	void setName(string name);
 	void setAge(unsigned int age);
 	void setPhone(unsigned int phoneNumber);

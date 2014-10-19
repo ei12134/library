@@ -26,6 +26,7 @@ public:
 	void createBorrow(Book *, Reader *, Employee *);
 	string print();
 	unsigned int getType();
+	unsigned int getCard() const;
 };
 #endif /* EMPLOYEE_H_ */
 

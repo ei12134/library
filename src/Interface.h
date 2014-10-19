@@ -29,6 +29,7 @@ using namespace std;
 #define MAX_LINES 5
 #define TAB string(26, ' ')
 #define SYMBOL_TAB string(22, ' ')
+#define SYMBOL_SHORT_TAB string(1, ' ')
 
 class Interface {
 private:
@@ -39,6 +40,7 @@ public:
 	void menu();
 	void displayMenu();
 	void clearScreen();
+	void searchPerson();
 	void displayHeader(string header);
 	bool confirmOperation(string& query);
 	string readInputString(string dialog);
@@ -47,6 +49,10 @@ public:
 	void genericDisplay(vector<T> vec, string listName, string labels);
 	virtual ~Interface();
 	char getKey();
+	bool is_NON_ASCII_Letter(const int & c);
+	bool is_All_ASCII_Letter(const string& s);
+	bool is_Number(const int & c);
+	bool matchQuery(const string & q, const string & n);
 };
 
 #endif /* INTERFACE_H_ */
