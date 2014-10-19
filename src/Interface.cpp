@@ -65,10 +65,12 @@ void Interface::searchPerson() {
 		key = getKey();
 		if (key == 27)
 			exit = true;
-		else if (key == 8 || key == 83) {
+		else if (key == 8) {
 			if (query.length() > 0)
 				query.erase(query.end() - 1);
-		} else
+		} else if (key == 83)
+			query.clear();
+		else
 			query += char(key);
 
 	} while (!exit);
