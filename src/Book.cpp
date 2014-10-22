@@ -11,6 +11,13 @@ Book::~Book() {
 
 }
 
+string Book::print(){
+	stringstream ss;
+	ss << author << "   " << borrowed << "   " << quota << "   " << pageNumber << "   " << isbn << "   " << title;
+
+	return ss.str();
+}
+
 string Book::getAuthor() {
 	return author;
 }

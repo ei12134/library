@@ -20,7 +20,8 @@ void Interface::menu() {
 		cout << endl << TAB << "[1] Login\n\n";
 		cout << TAB << "[2] Display\n\n";
 		cout << TAB << "[3] Search\n\n";
-		cout << TAB << "[4] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
+		cout << TAB << "[4] Create\n\n";
+		cout << TAB << "[5] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -30,7 +31,11 @@ void Interface::menu() {
 		case '2':
 			displayMenu();
 			break;
+
 		case '4':
+			create();
+			break;
+		case '5':
 			if (confirmOperation(exitDialog)) {
 				clearScreen();
 				exit = true;
@@ -142,7 +147,6 @@ string ConvertToString(unsigned int numberToConvert) {
 	return newString;
 }
 
-
 void Interface::createBook() {
 	string confirmDialog =
 			" Do you want to create a new book with this information?";
@@ -208,9 +212,9 @@ void Interface::createBook() {
 									<< "\n\n Is it correct? [yes to confirm]\n\n > ";
 							getline(cin, confirmString);
 
-							if (cin.fail())
+							if (cin.fail()) {
 								cin.clear();
-							else {
+							} else {
 								if (confirmString == "yes"
 										|| confirmString == "YES")
 									confirmauthor = true;
@@ -222,21 +226,53 @@ void Interface::createBook() {
 				}
 			}
 		}
-	}
 
-	while (!confirmpageNumber) {
-		string pageInput;
-		cout
-				<< "\n Enter the number of Pages or type [0] to return to main menu\n\n > ";
-		getline(cin, pageInput);
+		while (!confirmpageNumber) {
+			string pageInput;
+			cout
+					<< "\n Enter the number of Pages or type [0] to return to main menu\n\n > ";
+			getline(cin, pageInput);
 
-		if (cin.fail())
-			cin.clear();
-		else {
-			if (pageInput == "" || pageInput == "\n")
-				confirmpageNumber = false;
+			if (cin.fail())
+				cin.clear();
 			else {
-				if (pageInput[0] == '0') {
+				if (pageInput == "" || pageInput == "\n")
+					confirmpageNumber = false;
+				else {
+					if (pageInput[0] == '0') {
+						exitRequest = true;
+						confirmauthor = true;
+						confirmquota = true;
+						confirmpageNumber = true;
+						confirmisbn = true;
+						confirmtitle = true;
+						break;
+					} else {
+						if (CheckAllDigitString(pageInput)) {
+							istringstream iss(pageInput);
+							iss >> newpageNumber;
+
+							if (pageInput[0] != '0')
+								confirmpageNumber = true;
+							else
+								cout << "\n Wrong Input\n";
+						} else
+							cout << "\n Wrong Input\n";
+					}
+				}
+			}
+		}
+
+		while (!confirmquota) {
+
+			cout
+					<< "\n Enter the Quota or type [0] to return to main menu\n\n > ";
+			getline(cin, newquota);
+
+			if (cin.fail())
+				cin.clear();
+			else {
+				if (newquota[0] == '0') {
 					exitRequest = true;
 					confirmauthor = true;
 					confirmquota = true;
@@ -245,221 +281,194 @@ void Interface::createBook() {
 					confirmtitle = true;
 					break;
 				} else {
-					if (CheckAllDigitString(pageInput)) {
-						istringstream iss(pageInput);
-						iss >> newpageNumber;
+					if (newquota.size() > 10) {
+						newquota = newquota.substr(0, 10);
+					} else {
+						cout << "\n Your Quota used in display is: " << newquota
+								<< "\n\n Is it correct? [yes to confirm]\n\n > ";
+						getline(cin, confirmString);
 
-						if (pageInput[0] != '0')
-							confirmpageNumber = true;
-						else
-							cout << "\n Wrong Input\n";
-					} else
-						cout << "\n Wrong Input\n";
+						if (cin.fail())
+							cin.clear();
+						else {
+							if (confirmString == "yes"
+									|| confirmString == "YES")
+								confirmquota = true;
+							else
+								confirmquota = false;
+						}
+					}
 				}
 			}
 		}
-	}
 
-	while (!confirmquota) {
+		while (!confirmisbn) {
 
-		cout << "\n Enter the Quota or type [0] to return to main menu\n\n > ";
-		getline(cin, newquota);
+			cout << " Enter new ISB or type [0] to return to main menu\n\n > ";
+			getline(cin, newisbn);
 
-		if (cin.fail())
-			cin.clear();
-		else {
-			if (newquota[0] == '0') {
-				exitRequest = true;
-				confirmauthor = true;
-				confirmquota = true;
-				confirmpageNumber = true;
-				confirmisbn = true;
-				confirmtitle = true;
-				break;
-			} else {
-				if (newquota.size() > 10) {
-					newquota = newquota.substr(0, 10);
-				} else {
-					cout << "\n Your Quota used in display is: " << newquota
-							<< "\n\n Is it correct? [yes to confirm]\n\n > ";
-					getline(cin, confirmString);
+			if (cin.fail())
+				cin.clear();
+			else {
+				if (newisbn == "" || newisbn == "\n")
+					confirmisbn = false;
+				else {
+					if (newisbn[0] == '0') {
+						exitRequest = true;
+						confirmquota = true;
+						confirmpageNumber = true;
+						confirmisbn = true;
+						confirmtitle = true;
+						break;
+					}
 
-					if (cin.fail())
-						cin.clear();
 					else {
-						if (confirmString == "yes" || confirmString == "YES")
-							confirmquota = true;
-						else
-							confirmquota = false;
-					}
-				}
-			}
-		}
-	}
+						if (newisbn.size() > 10) {
+							newisbn = newisbn.substr(0, 10);
+						} else {
+							cout << "\n Your ISBN used in display is: "
+									<< newisbn
+									<< "\n\n Is it correct? [yes to confirm]\n\n > ";
+							getline(cin, confirmString);
 
-	while (!confirmisbn) {
-
-		cout << " Enter new ISB or type [0] to return to main menu\n\n > ";
-		getline(cin, newisbn);
-
-		if (cin.fail())
-			cin.clear();
-		else {
-			if (newisbn == "" || newisbn == "\n")
-				confirmisbn = false;
-			else {
-				if (newisbn[0] == '0') {
-					exitRequest = true;
-					confirmquota = true;
-					confirmpageNumber = true;
-					confirmisbn = true;
-					confirmtitle = true;
-					break;
-				}
-
-				else {
-					if (newisbn.size() > 10) {
-						newisbn = newisbn.substr(0, 10);
-					} else {
-						cout << "\n Your ISBN used in display is: " << newisbn
-								<< "\n\n Is it correct? [yes to confirm]\n\n > ";
-						getline(cin, confirmString);
-
-						if (cin.fail())
-							cin.clear();
-						else {
-							if (confirmString == "yes"
-									|| confirmString == "YES")
-								confirmisbn = true;
-							else
-								confirmisbn = false;
+							if (cin.fail())
+								cin.clear();
+							else {
+								if (confirmString == "yes"
+										|| confirmString == "YES")
+									confirmisbn = true;
+								else
+									confirmisbn = false;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
-	while (!confirmtitle) {
+		while (!confirmtitle) {
 
-		cout << " Enter new Title or type [0] to return to main menu\n\n > ";
-		getline(cin, newtitle);
+			cout
+					<< " Enter new Title or type [0] to return to main menu\n\n > ";
+			getline(cin, newtitle);
 
-		if (cin.fail())
-			cin.clear();
-		else {
-			if (newtitle == "" || newtitle == "\n")
-				confirmtitle = false;
+			if (cin.fail())
+				cin.clear();
 			else {
-				if (newtitle[0] == '0') {
-					exitRequest = true;
-					confirmquota = true;
-					confirmpageNumber = true;
-					confirmisbn = true;
-					confirmtitle = true;
-					break;
-				}
-
+				if (newtitle == "" || newtitle == "\n")
+					confirmtitle = false;
 				else {
-					if (newtitle.size() > 20) {
-						newtitle = newisbn.substr(0, 20);
-					} else {
-						cout << "\n Your Title used in display is: " << newtitle
-								<< "\n\n Is it correct? [yes to confirm]\n\n > ";
-						getline(cin, confirmString);
+					if (newtitle[0] == '0') {
+						exitRequest = true;
+						confirmquota = true;
+						confirmpageNumber = true;
+						confirmisbn = true;
+						confirmtitle = true;
+						break;
+					}
 
-						if (cin.fail())
-							cin.clear();
-						else {
-							if (confirmString == "yes"
-									|| confirmString == "YES")
-								confirmtitle = true;
-							else
-								confirmtitle = false;
+					else {
+						if (newtitle.size() > 20) {
+							newtitle = newisbn.substr(0, 20);
+						} else {
+							cout << "\n Your Title used in display is: "
+									<< newtitle
+									<< "\n\n Is it correct? [yes to confirm]\n\n > ";
+							getline(cin, confirmString);
+
+							if (cin.fail())
+								cin.clear();
+							else {
+								if (confirmString == "yes"
+										|| confirmString == "YES")
+									confirmtitle = true;
+								else
+									confirmtitle = false;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 
-	if (!exitRequest) {
-		cout << "\n\n " << string(38, '#') << "\n";
-		cout << " #" << string(36, ' ') << "#\n";
-		cout << " #" << string(5, ' ') << "New Book data" << string(18, ' ')
-				<< "#\n";
-		cout << " #" << string(36, ' ') << "#\n";
-		cout << " #" << string(5, ' ') << "Author: " << newauthor
-				<< string(25 - newauthor.size(), ' ') << "#\n";
-		cout << " #" << string(5, ' ') << "Paginas: "
-				<< ConvertToString(newpageNumber)
-				<< string(26 - ConvertToString(newpageNumber).size(), ' ')
-				<< "#\n";
-		cout << " #" << string(5, ' ') << "Quota: " << newquota
-				<< string(25 - newquota.size(), ' ') << "#\n";
-		cout << " #" << string(5, ' ') << "ISB: " << newisbn
-				<< string(25 - newisbn.size(), ' ') << "#\n";
-		cout << " #" << string(5, ' ') << "Title: " << newtitle
-				<< string(25 - newtitle.size(), ' ') << "#\n";
-		cout << " #" << string(36, ' ') << "#\n";
-		cout << " " << string(38, '#') << "\n\n\n";
+		if (!exitRequest) {
+			cout << "\n\n " << string(38, '#') << "\n";
+			cout << " #" << string(36, ' ') << "#\n";
+			cout << " #" << string(5, ' ') << "New Book data" << string(18, ' ')
+					<< "#\n";
+			cout << " #" << string(36, ' ') << "#\n";
+			cout << " #" << string(5, ' ') << "Author: " << newauthor
+					<< string(25 - newauthor.size(), ' ') << "#\n";
+			cout << " #" << string(5, ' ') << "Paginas: "
+					<< ConvertToString(newpageNumber)
+					<< string(26 - ConvertToString(newpageNumber).size(), ' ')
+					<< "#\n";
+			cout << " #" << string(5, ' ') << "Quota: " << newquota
+					<< string(25 - newquota.size(), ' ') << "#\n";
+			cout << " #" << string(5, ' ') << "ISB: " << newisbn
+					<< string(25 - newisbn.size(), ' ') << "#\n";
+			cout << " #" << string(5, ' ') << "Title: " << newtitle
+					<< string(25 - newtitle.size(), ' ') << "#\n";
+			cout << " #" << string(36, ' ') << "#\n";
+			cout << " " << string(38, '#') << "\n\n\n";
 
-		if (confirmOperation(confirmDialog)) {
-			exitRequest = false;
-			cout << "\n\n Writing to books.csv file\n\n";
-		} else {
+			if (confirmOperation(confirmDialog)) {
+				exitRequest = false;
+				cout << "\n\n Writing to books.csv file\n\n";
+			} else {
+				exitRequest = true;
+				cout
+						<< "\n\n Operation canceled\n Press any key to continue...";
+				getchar();
+				/*if ( getchar() != '\n' )
+				 cin.clear( 1024,'\n' );*/
+			}
+		}
+
+		if (!exitRequest) {
+			ofstream booksFile;
+
+			booksFile.open("books.csv", ios::out);
+
+			if (booksFile.is_open()) {
+
+				vector<Book*> books = library.getBooks();
+				Book *v0 = new Book(newauthor, false, newquota, newpageNumber,
+						newisbn, newtitle);
+				books.push_back(v0);
+
+				unsigned int lineNumber = 0;
+
+				while (lineNumber < books.size()) {
+					booksFile << books[lineNumber]->getAuthor();
+					booksFile << ';';
+					booksFile << books[lineNumber]->getBorrowed();
+					booksFile << ';';
+					booksFile << books[lineNumber]->getQuota();
+					booksFile << ';';
+					booksFile << books[lineNumber]->getPageNumber();
+					booksFile << ';';
+					booksFile << books[lineNumber]->getIsbn();
+					booksFile << ';';
+					booksFile << books[lineNumber]->getTitle();
+
+					if (lineNumber < books.size() - 1)
+						booksFile << endl;
+
+					lineNumber++;
+				}
+
+				booksFile.close();
+			}
+
+			library.loadPersons();
+
 			exitRequest = true;
-			cout << "\n\n Operation canceled\n Press any key to continue...";
-			getchar();
-			/*if ( getchar() != '\n' )
-			 cin.clear( 1024,'\n' );*/
+			cout << " Press any key to continue...";
+			if (getchar() != '\n')
+				cin.ignore(1024, '\n');
 		}
-	}
-
-	if (!exitRequest) {
-		ofstream booksFile;
-
-		booksFile.open("books.csv", ios::out);
-
-		if (booksFile.is_open()) {
-
-			vector<Book*> books = library.getBooks();
-			Book *v0 = new Book(newauthor, false, newquota, newpageNumber,
-					newisbn, newtitle);
-			books.push_back(v0);
-
-			unsigned int lineNumber = 0;
-
-			while (lineNumber < books.size()) {
-				booksFile << books[lineNumber]->getAuthor();
-				booksFile << ';';
-				booksFile << books[lineNumber]->getBorrowed();
-				booksFile << ';';
-				booksFile << books[lineNumber]->getQuota();
-				booksFile << ';';
-				booksFile << books[lineNumber]->getPageNumber();
-				booksFile << ';';
-				booksFile << books[lineNumber]->getIsbn();
-				booksFile << ';';
-				booksFile << books[lineNumber]->getTitle();
-
-				if (lineNumber < books.size() - 1)
-					booksFile << endl;
-
-				lineNumber++;
-			}
-
-			booksFile.close();
-		}
-
-		library.loadPersons();
-
-		exitRequest = true;
-		cout << " Press any key to continue...";
-		if (getchar() != '\n')
-			cin.ignore(1024, '\n');
 	}
 }
-
 void Interface::createEmployees() {
 
 }
@@ -545,6 +554,8 @@ void Interface::displayMenu() {
 			break;
 		case '5':
 			clearScreen();
+			genericDisplay(library.getBooks(), "Books",
+					"Author		Borrowed	Quota	PageNumber	ISBN	Title");
 			break;
 		case '6':
 			exit = true;

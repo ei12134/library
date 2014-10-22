@@ -2,6 +2,7 @@
 #define BOOK_H_
 
 #include <string>
+#include <sstream>
 using namespace std;
 
 class Book {
@@ -16,6 +17,7 @@ public:
 	Book(string author, bool borrowed, string quota, unsigned int pageNumber,
 			string isbn, string title);
 	virtual ~Book();
+	string print();
 	string getAuthor();
 	void setAuthor(string author);
 	bool getBorrowed();
