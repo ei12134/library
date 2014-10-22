@@ -1,15 +1,17 @@
 #ifndef DATA_H_
 #define DATA_H_
 
-//#include "Exception.h"// to handle the data exceptions xD
+#include "Exception.h"// to handle the data exceptions xD
 #include <string>
+#include <ctime>
+
 using namespace std;
 
 class Date {
 private:
 	unsigned int day, month, year;
 public:
-	Date():day(1),month(1),year(2000){};
+	Date();
 	Date(unsigned int day, unsigned int month, unsigned int year);
 
 	void setDate(unsigned int day, unsigned int month, unsigned int year);
@@ -23,6 +25,9 @@ public:
 	unsigned int getYear() const {
 		return year;
 	}
+
+	void addDays(unsigned int days);
+	void addOneDay();
 
 	string print() const;
 

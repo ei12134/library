@@ -2,6 +2,13 @@
 #include "Date.h"
 using namespace std;
 
+Date::Date() {
+	time_t t = time(0); // get time now
+	struct tm * now = localtime(&t);
+	setDate((now->tm_mday), (now->tm_mon + 1), (now->tm_year + 1900));
+	// e preciso free the now ?
+}
+
 Date::Date(unsigned int day, unsigned int month, unsigned int year) {
 	setDate(day, month, year);
 }
@@ -13,16 +20,33 @@ string Date::print() const {
 }
 
 void Date::setDate(unsigned int day, unsigned int month, unsigned int year) {
-//	if (month < 1 || month > 12)
-//		throw Exception<int>("Invalid Month", month); // throw exception <int> because of the template
-//	unsigned int days = GiveMonthDays(month, year);
-//	if (days == 0 || day < 1 || day > days)
-//		throw Exception<int>("Invalid Day", day); // throw exception <int> because of the template
+	if (month < 1 || month > 12)
+		throw Exception<int>("Invalid Month", month); // throw exception <int> because of the template
+	unsigned int days = GiveMonthDays(month, year);
+	if (days == 0 || day < 1 || day > days)
+		throw Exception<int>("Invalid Day", day); // throw exception <int> because of the template
 
 	this->day = day;
 	this->month = month;
 	this->year = year;
 }
+
+void Date::addDays(unsigned int days) {
+	while (days-- > 0)
+		addOneDay();
+}
+void Date::addOneDay() {
+	if (GiveMonthDays(this->month, this->year) >= (this->day + 1))
+		this->day++;
+	else if (this->month < 12) {
+		this->day = 1;
+		this->month++;
+	} else {
+		this->year++;
+		this->month = this->day = 1;
+	}
+}
+
 bool Date::operator <(Date d2) const {
 	if (this->year < d2.year)
 		return true;

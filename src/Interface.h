@@ -13,6 +13,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <sstream>
+#include <cstdlib>
 using namespace std;
 
 #ifdef _WIN32
@@ -40,6 +41,13 @@ public:
 	void menu();
 	void displayMenu();
 	void clearScreen();
+	void create();
+	void createPerson();
+	void createEmployees();
+	void createReaders();
+	void createSupervisors();
+	void createBook();
+
 	void searchPerson();
 	void displayHeader(string header);
 	bool confirmOperation(string& query);

@@ -11,6 +11,7 @@ Interface::~Interface() {
 void Interface::menu() {
 	char input;
 	string exitDialog = "Exit the program?";
+
 	bool exit = false;
 
 	do {
@@ -39,6 +40,436 @@ void Interface::menu() {
 			break;
 		}
 	} while (!exit);
+}
+
+void Interface::create() {
+	char input;
+	string exitDialog = "Exit the program?";
+	bool exit = false;
+
+	do {
+		clearScreen();
+		displayHeader("Create");
+		cout << endl << TAB << "[1] Create Person\n\n";
+		cout << TAB << "[2] Create Book\n\n";
+		cout << TAB << "[3] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			createPerson();
+			break;
+		case '2':
+			createBook();
+			break;
+		case '3':
+			if (confirmOperation(exitDialog)) {
+				clearScreen();
+				exit = true;
+			}
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+}
+
+void Interface::createPerson() {
+	char input;
+	string exitDialog = "Exit the program?";
+	bool exit = false;
+
+	do {
+		clearScreen();
+		displayHeader("Create Person");
+		cout << endl << TAB << "[1] Create Reader\n\n";
+		cout << TAB << "[2] Create Employee\n\n";
+		cout << TAB << "[3] Create Superviser\n\n";
+		cout << TAB << "[4] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			createReaders();
+			break;
+		case '2':
+			createEmployees();
+			break;
+
+		case '3':
+			createSupervisors();
+			break;
+		case '4':
+			if (confirmOperation(exitDialog)) {
+				clearScreen();
+				exit = true;
+			}
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+}
+
+bool CheckAllDigitString(string stringToCheck) {
+	bool allDigitString = true;
+
+	if (stringToCheck.size() == 0)
+		allDigitString = false;
+
+	for (unsigned int i = 0; i < stringToCheck.size(); i++) {
+		if (int(stringToCheck[i]) < 0 || int(stringToCheck[i] > 127)) {
+			allDigitString = false;
+			break;
+		}
+
+		if (!isdigit(stringToCheck[i])) {
+			allDigitString = false;
+			break;
+		}
+	}
+
+	return allDigitString;
+}
+
+string ConvertToString(unsigned int numberToConvert) {
+	string newString;
+
+	ostringstream tmpString;
+	tmpString << numberToConvert;
+	newString = tmpString.str();
+
+	return newString;
+}
+
+
+void Interface::createBook() {
+	string confirmDialog =
+			" Do you want to create a new book with this information?";
+	bool exitRequest = false;
+	bool confirmauthor = false;
+	bool confirmquota = false;
+	bool confirmpageNumber = false;
+	bool confirmisbn = false;
+	bool confirmtitle = false;
+	string newauthor;
+	unsigned int newpageNumber;
+	string newquota;
+	string newisbn;
+	string newtitle;
+
+	string confirmString;
+
+	while (!exitRequest) {
+		while (!confirmauthor) {
+			clearScreen();
+
+			cout << "\n " << string(30, '#') << "\n";
+			cout << " #" << string(28, ' ') << "#\n";
+			cout << " #" << string(5, ' ') << "Create new Book"
+					<< string(5, ' ') << "#\n";
+			cout << " #" << string(28, ' ') << "#\n";
+			cout << " " << string(30, '#') << "\n\n\n";
+			cout
+					<< " Enter new Author or type [0] to return to main menu\n\n > ";
+			getline(cin, newauthor);
+
+			if (cin.fail())
+				cin.clear();
+			else {
+				if (newauthor == "" || newauthor == "\n")
+					confirmauthor = false;
+				else {
+					if (newauthor[0] == '0') {
+						exitRequest = true;
+						confirmquota = true;
+						confirmpageNumber = true;
+						confirmisbn = true;
+						confirmtitle = true;
+						break;
+					}
+
+					else {
+						if (newauthor.size() > 20) {
+							newauthor = newauthor.substr(0, 20);
+						}
+						if (int(newauthor[0]) < 65
+								|| ((int(newauthor[0]) > 90)
+										&& (int(newauthor[0]) < 97))
+								|| int(newauthor[0]) > 122) {
+							cout
+									<< "\n Invalid input. The first character must be a letter\n";
+							confirmauthor = false;
+						}
+
+						else {
+							cout << "\n Your Author used in display is: "
+									<< newauthor
+									<< "\n\n Is it correct? [yes to confirm]\n\n > ";
+							getline(cin, confirmString);
+
+							if (cin.fail())
+								cin.clear();
+							else {
+								if (confirmString == "yes"
+										|| confirmString == "YES")
+									confirmauthor = true;
+								else
+									confirmauthor = false;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	while (!confirmpageNumber) {
+		string pageInput;
+		cout
+				<< "\n Enter the number of Pages or type [0] to return to main menu\n\n > ";
+		getline(cin, pageInput);
+
+		if (cin.fail())
+			cin.clear();
+		else {
+			if (pageInput == "" || pageInput == "\n")
+				confirmpageNumber = false;
+			else {
+				if (pageInput[0] == '0') {
+					exitRequest = true;
+					confirmauthor = true;
+					confirmquota = true;
+					confirmpageNumber = true;
+					confirmisbn = true;
+					confirmtitle = true;
+					break;
+				} else {
+					if (CheckAllDigitString(pageInput)) {
+						istringstream iss(pageInput);
+						iss >> newpageNumber;
+
+						if (pageInput[0] != '0')
+							confirmpageNumber = true;
+						else
+							cout << "\n Wrong Input\n";
+					} else
+						cout << "\n Wrong Input\n";
+				}
+			}
+		}
+	}
+
+	while (!confirmquota) {
+
+		cout << "\n Enter the Quota or type [0] to return to main menu\n\n > ";
+		getline(cin, newquota);
+
+		if (cin.fail())
+			cin.clear();
+		else {
+			if (newquota[0] == '0') {
+				exitRequest = true;
+				confirmauthor = true;
+				confirmquota = true;
+				confirmpageNumber = true;
+				confirmisbn = true;
+				confirmtitle = true;
+				break;
+			} else {
+				if (newquota.size() > 10) {
+					newquota = newquota.substr(0, 10);
+				} else {
+					cout << "\n Your Quota used in display is: " << newquota
+							<< "\n\n Is it correct? [yes to confirm]\n\n > ";
+					getline(cin, confirmString);
+
+					if (cin.fail())
+						cin.clear();
+					else {
+						if (confirmString == "yes" || confirmString == "YES")
+							confirmquota = true;
+						else
+							confirmquota = false;
+					}
+				}
+			}
+		}
+	}
+
+	while (!confirmisbn) {
+
+		cout << " Enter new ISB or type [0] to return to main menu\n\n > ";
+		getline(cin, newisbn);
+
+		if (cin.fail())
+			cin.clear();
+		else {
+			if (newisbn == "" || newisbn == "\n")
+				confirmisbn = false;
+			else {
+				if (newisbn[0] == '0') {
+					exitRequest = true;
+					confirmquota = true;
+					confirmpageNumber = true;
+					confirmisbn = true;
+					confirmtitle = true;
+					break;
+				}
+
+				else {
+					if (newisbn.size() > 10) {
+						newisbn = newisbn.substr(0, 10);
+					} else {
+						cout << "\n Your ISBN used in display is: " << newisbn
+								<< "\n\n Is it correct? [yes to confirm]\n\n > ";
+						getline(cin, confirmString);
+
+						if (cin.fail())
+							cin.clear();
+						else {
+							if (confirmString == "yes"
+									|| confirmString == "YES")
+								confirmisbn = true;
+							else
+								confirmisbn = false;
+						}
+					}
+				}
+			}
+		}
+	}
+	while (!confirmtitle) {
+
+		cout << " Enter new Title or type [0] to return to main menu\n\n > ";
+		getline(cin, newtitle);
+
+		if (cin.fail())
+			cin.clear();
+		else {
+			if (newtitle == "" || newtitle == "\n")
+				confirmtitle = false;
+			else {
+				if (newtitle[0] == '0') {
+					exitRequest = true;
+					confirmquota = true;
+					confirmpageNumber = true;
+					confirmisbn = true;
+					confirmtitle = true;
+					break;
+				}
+
+				else {
+					if (newtitle.size() > 20) {
+						newtitle = newisbn.substr(0, 20);
+					} else {
+						cout << "\n Your Title used in display is: " << newtitle
+								<< "\n\n Is it correct? [yes to confirm]\n\n > ";
+						getline(cin, confirmString);
+
+						if (cin.fail())
+							cin.clear();
+						else {
+							if (confirmString == "yes"
+									|| confirmString == "YES")
+								confirmtitle = true;
+							else
+								confirmtitle = false;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (!exitRequest) {
+		cout << "\n\n " << string(38, '#') << "\n";
+		cout << " #" << string(36, ' ') << "#\n";
+		cout << " #" << string(5, ' ') << "New Book data" << string(18, ' ')
+				<< "#\n";
+		cout << " #" << string(36, ' ') << "#\n";
+		cout << " #" << string(5, ' ') << "Author: " << newauthor
+				<< string(25 - newauthor.size(), ' ') << "#\n";
+		cout << " #" << string(5, ' ') << "Paginas: "
+				<< ConvertToString(newpageNumber)
+				<< string(26 - ConvertToString(newpageNumber).size(), ' ')
+				<< "#\n";
+		cout << " #" << string(5, ' ') << "Quota: " << newquota
+				<< string(25 - newquota.size(), ' ') << "#\n";
+		cout << " #" << string(5, ' ') << "ISB: " << newisbn
+				<< string(25 - newisbn.size(), ' ') << "#\n";
+		cout << " #" << string(5, ' ') << "Title: " << newtitle
+				<< string(25 - newtitle.size(), ' ') << "#\n";
+		cout << " #" << string(36, ' ') << "#\n";
+		cout << " " << string(38, '#') << "\n\n\n";
+
+		if (confirmOperation(confirmDialog)) {
+			exitRequest = false;
+			cout << "\n\n Writing to books.csv file\n\n";
+		} else {
+			exitRequest = true;
+			cout << "\n\n Operation canceled\n Press any key to continue...";
+			getchar();
+			/*if ( getchar() != '\n' )
+			 cin.clear( 1024,'\n' );*/
+		}
+	}
+
+	if (!exitRequest) {
+		ofstream booksFile;
+
+		booksFile.open("books.csv", ios::out);
+
+		if (booksFile.is_open()) {
+
+			vector<Book*> books = library.getBooks();
+			Book *v0 = new Book(newauthor, false, newquota, newpageNumber,
+					newisbn, newtitle);
+			books.push_back(v0);
+
+			unsigned int lineNumber = 0;
+
+			while (lineNumber < books.size()) {
+				booksFile << books[lineNumber]->getAuthor();
+				booksFile << ';';
+				booksFile << books[lineNumber]->getBorrowed();
+				booksFile << ';';
+				booksFile << books[lineNumber]->getQuota();
+				booksFile << ';';
+				booksFile << books[lineNumber]->getPageNumber();
+				booksFile << ';';
+				booksFile << books[lineNumber]->getIsbn();
+				booksFile << ';';
+				booksFile << books[lineNumber]->getTitle();
+
+				if (lineNumber < books.size() - 1)
+					booksFile << endl;
+
+				lineNumber++;
+			}
+
+			booksFile.close();
+		}
+
+		library.loadPersons();
+
+		exitRequest = true;
+		cout << " Press any key to continue...";
+		if (getchar() != '\n')
+			cin.ignore(1024, '\n');
+	}
+}
+
+void Interface::createEmployees() {
+
+}
+
+void Interface::createSupervisors() {
+
+}
+
+void Interface::createReaders() {
+
 }
 
 void Interface::searchPerson() {
