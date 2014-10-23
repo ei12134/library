@@ -3,6 +3,12 @@
 
 #include <string>
 #include <sstream>
+#include <string>
+#include <vector>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
 using namespace std;
 
 class Book {
@@ -17,6 +23,9 @@ public:
 	Book(string author, bool borrowed, string quota, unsigned int pageNumber,
 			string isbn, string title);
 	virtual ~Book();
+	Book(fstream& s) ;
+
+
 	string print();
 	string getAuthor();
 	void setAuthor(string author);

@@ -4,7 +4,7 @@ using namespace std;
 unsigned long int Library::readerID = 1;
 
 Library::Library() {
-//	loadBooks();
+	loadBooks();
 //	loadBorrows();
 	loadPersons();
 	/* ...
@@ -12,7 +12,20 @@ Library::Library() {
 	 */
 }
 
+void Library::saveBooks() {
+	ofstream pFile("books.csv");
+	for (unsigned int i = 0; i < books.size(); i++) {
+		pFile << endl << books[i]->getAuthor() << ";" << books[i]->getBorrowed()
+				<< ";" << books[i]->getQuota() << ";"
+				<< books[i]->getPageNumber() << ";" << books[i]->getIsbn()
+				<< ";" << books[i]->getTitle();
+	}
+	pFile.close();
+}
+
 Library::~Library() {
+	saveBooks();
+	//savePersons etc...
 	// save containers to files? then delete them
 }
 
@@ -133,6 +146,18 @@ void Library::loadPersons() {
 		while (file.good()) {
 			Supervisor* supervisor = new Supervisor(file);
 			persons.push_back(supervisor);
+		}
+	}
+	file.close();
+}
+
+void Library::loadBooks() {
+	fstream file;
+	file.open("books.csv");
+	if (file.is_open()) {
+		while (file.good()) {
+			Book* bk = new Book(file);
+			books.push_back(bk);
 		}
 	}
 	file.close();

@@ -10,10 +10,67 @@ Book::Book(string author, bool borrowed, string quota, unsigned int pageNumber,
 Book::~Book() {
 
 }
+Book::Book(fstream& s) {
+	{
+		stringstream ss;
 
-string Book::print(){
+		string newauthor;
+		string nborrowed;
+		string newquota;
+		string newpageNumber;
+
+		string newisbn;
+		string newtitle;
+
+		string author;
+		bool borrowed;
+		string quota;
+		unsigned int pageNumber;
+		string isbn;
+		string title;
+
+		getline(s, newauthor, ';');
+		ss << newauthor;
+		ss >> author;
+		ss.clear();
+		this->author = author;
+
+		getline(s, nborrowed, ';');
+		ss << nborrowed;
+		ss >> borrowed;
+		ss.clear();
+		this->borrowed = borrowed;
+
+		getline(s, newquota, ';');
+		ss << newquota;
+		ss >> quota;
+		ss.clear();
+		this->quota = quota;
+
+		getline(s, newpageNumber, ';');
+		ss << newpageNumber;
+		ss >> pageNumber;
+		ss.clear();
+		this->pageNumber = pageNumber;
+
+		getline(s, newisbn, ';');
+		ss << newisbn;
+		ss >> isbn;
+		ss.clear();
+		this->isbn = isbn;
+
+		getline(s, newtitle); // read last input until newline
+		ss << newtitle;
+		ss >> title;
+		ss.clear();
+		this->title = title;
+	}
+}
+
+string Book::print() {
 	stringstream ss;
-	ss << author << "   " << borrowed << "   " << quota << "   " << pageNumber << "   " << isbn << "   " << title;
+	ss << author << "   " << borrowed << "   " << quota << "   " << pageNumber
+			<< "   " << isbn << "   " << title;
 
 	return ss.str();
 }

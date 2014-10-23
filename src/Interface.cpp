@@ -425,42 +425,10 @@ void Interface::createBook() {
 		}
 
 		if (!exitRequest) {
-			ofstream booksFile;
-
-			booksFile.open("books.csv", ios::out);
-
-			if (booksFile.is_open()) {
-
-				vector<Book*> books = library.getBooks();
-				Book *v0 = new Book(newauthor, false, newquota, newpageNumber,
-						newisbn, newtitle);
-				books.push_back(v0);
-
-				unsigned int lineNumber = 0;
-
-				while (lineNumber < books.size()) {
-					booksFile << books[lineNumber]->getAuthor();
-					booksFile << ';';
-					booksFile << books[lineNumber]->getBorrowed();
-					booksFile << ';';
-					booksFile << books[lineNumber]->getQuota();
-					booksFile << ';';
-					booksFile << books[lineNumber]->getPageNumber();
-					booksFile << ';';
-					booksFile << books[lineNumber]->getIsbn();
-					booksFile << ';';
-					booksFile << books[lineNumber]->getTitle();
-
-					if (lineNumber < books.size() - 1)
-						booksFile << endl;
-
-					lineNumber++;
-				}
-
-				booksFile.close();
-			}
-
-			library.loadPersons();
+			vector<Book*> books = library.getBooks();
+			Book *v0 = new Book(newauthor, false, newquota, newpageNumber,
+					newisbn, newtitle);
+			library.addBook(v0);
 
 			exitRequest = true;
 			cout << " Press any key to continue...";

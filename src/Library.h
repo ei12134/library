@@ -35,7 +35,9 @@ public:
 	/** Library constructor reads *.csv files and stores
 	 * pointers to each object in their dedicated container */
 	Library();
-	virtual ~Library();
+
+	/** Library destructor saves in *.csv files and stores*/
+	~Library();
 
 	///@return books
 	vector<Book*> getBooks() const;
@@ -89,6 +91,15 @@ public:
 	 * Loads *.csv files to the persons vector
 	 */
 	void loadPersons();
+	/**
+	 *Guarda o vetor Books no ficheiro books.csv
+	 */
+	void saveBooks();
+
+	/** Loads stored books
+	 * Loads *.csv files to the persons vector
+	 */
+	void loadBooks();
 
 	/** removes a book from the library
 	 *@param book Book pointer
