@@ -7,8 +7,9 @@
 #include "./Persons/Employee.h"
 using namespace std;
 
-class Borrow {
+class Borrow { // acho que era melhor ter uma subclass para livros nao emprestados xD
 protected:
+	bool Returned;
 	Date borrowDate;
 	Date actuallyDeliveryDate;
 	Date expectedDeliveryDate;
@@ -20,7 +21,14 @@ protected:
 public:
 	Borrow(Book* book, Employee* employee, Reader* reader, Date borrowDate,
 			Date expectedDeliveryDate);
-	float CalcFee();
+
+	Book* getBook() const;
+	Employee* getEmployee() const;
+	Reader* getReader() const;
+
+	float CalcFee() const;
+
+	bool DeliveredBook(Date d); // false if already returned
 };
 
 #endif
