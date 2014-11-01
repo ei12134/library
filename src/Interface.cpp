@@ -1129,7 +1129,7 @@ void Interface::displayHeader(string& header) {
 }
 
 bool Interface::confirmOperation(string& query) {
-	cout << query << " [y] to confirm ";
+	cout << query << " [y] to confirm";
 	char answer = getKey();
 
 	if (answer == 'y' || answer == 'Y')
@@ -1221,25 +1221,3 @@ char Interface::getKey() {
 	return key;
 #endif
 }
-
-bool Interface::matchQuery(const string & q, const string & n) {
-	if (q.size() == 0)
-		return false;
-	for (size_t i = 0; i < q.size() && i < n.size(); i++) {
-		if (tolower(q[i]) != tolower(n[i]))
-			return false;
-	}
-	return true;
-}
-
-bool Interface::is_Number(const int & c) {
-	return (c < 57) || (c > 48);
-}
-
-bool Interface::is_NON_ASCII_Letter(const int & c) {
-	return ((c < 65) || (c > 122) || (c > 90 && c < 97));
-}
-
-//bool Interface::is_All_ASCII_Letter(const string& s) {
-//	return find_if(s.begin(), s.end(), is_NON_ASCII_Letter) == s.end();
-//}

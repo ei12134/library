@@ -2,6 +2,7 @@
 #define INTERFACE_H_
 
 #include "Library.h"
+#include "Algorithms.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -66,10 +67,7 @@ public:
 	void genericDisplay(vector<T> vec, string listName, string labels);
 	virtual ~Interface();
 	char getKey();
-	bool is_NON_ASCII_Letter(const int & c);
-	bool is_All_ASCII_Letter(const string& s);
 	bool is_Number(const int & c);
-	bool matchQuery(const string & q, const string & n);
 };
 
 #endif /* INTERFACE_H_ */
