@@ -177,7 +177,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 				<< endl;
 		cout << DOUBLE_TAB << TAB << "Wage :" << TAB << supervisor->getWage()
 				<< " euros" << endl;
-		cout << endl << DOUBLE_TAB << TAB << "[1] Manage employees team\n";
+		cout << endl << DOUBLE_TAB << TAB << "[1] Display employees team\n";
 		cout << DOUBLE_TAB << TAB << "[2] Manage employees\n";
 		cout << DOUBLE_TAB << TAB << "[3] Manage supervisors\n";
 		cout << DOUBLE_TAB << TAB << "[4] Logout\n\n" << DOUBLE_TAB << TAB
@@ -190,10 +190,45 @@ void Interface::supervisorMenu(Person* supervisor) {
 			clearScreen();
 			break;
 		case '2':
+			manageEmployees(supervisor);
 			break;
 		case '3':
 			break;
 		case '4':
+			clearScreen();
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+}
+
+void Interface::manageEmployees(Person* supervisor) {
+	char input;
+	bool exit = false;
+	string header = "Manage employees";
+
+	do {
+		clearScreen();
+		displayHeader(header);
+		cout << endl << DOUBLE_TAB << TAB << "[1] Create employee\n";
+		cout << DOUBLE_TAB << TAB << "[2] Edit employee\n";
+		cout << DOUBLE_TAB << TAB << "[3] Exit\n\n" << DOUBLE_TAB << TAB
+				<< PROMPT_SYMBOL;
+		input = getKey();
+		switch (input) {
+		case '1':
+			clearScreen();
+			createEmployee();
+			break;
+		case '2':
+			break;
+		case '3':
 			clearScreen();
 			exit = true;
 			break;
@@ -257,13 +292,13 @@ void Interface::createPerson() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			createReaders();
+			createReader();
 			break;
 		case '2':
-			createEmployees();
+			createEmployee();
 			break;
 		case '3':
-			createSupervisors();
+			createSupervisor();
 			break;
 		case '4':
 			if (confirmOperation(exitDialog)) {
@@ -599,7 +634,7 @@ void Interface::createBook() {
 	}
 }
 
-void Interface::createEmployees() {
+void Interface::createEmployee() {
 	string confirmDialog =
 			" Do you want to create a new employee with this information?";
 	bool exitRequest = false;
@@ -609,12 +644,12 @@ void Interface::createEmployees() {
 	bool confirmEmail = false;
 	bool confirmNif = false;
 	bool confirmWage = false;
-	string newname;
-	unsigned int newage;
-	unsigned int newphone;
-	string newemail;
-	unsigned int newnif;
-	unsigned int newwage;
+	string newName;
+	unsigned int newAge;
+	unsigned int newPhone;
+	string newEmail;
+	unsigned int newNif;
+	unsigned int newWage;
 
 	string confirmString;
 
@@ -630,15 +665,15 @@ void Interface::createEmployees() {
 			cout << " " << string(30, '#') << "\n\n\n";
 			cout
 					<< " Enter new Employee name or type [0] to return to main menu\n\n > ";
-			getline(cin, newname);
+			getline(cin, newName);
 
 			if (cin.fail())
 				cin.clear();
 			else {
-				if (newname == "" || newname == "\n")
+				if (newName == "" || newName == "\n")
 					confirmName = false;
 				else {
-					if (newname[0] == '0') {
+					if (newName[0] == '0') {
 						exitRequest = true;
 						confirmAge = true;
 						confirmPhone = true;
@@ -649,13 +684,13 @@ void Interface::createEmployees() {
 					}
 
 					else {
-						if (newname.size() > 20) {
-							newname = newname.substr(0, 20);
+						if (newName.size() > 20) {
+							newName = newName.substr(0, 20);
 						}
-						if (int(newname[0]) < 65
-								|| ((int(newname[0]) > 90)
-										&& (int(newname[0]) < 97))
-								|| int(newname[0]) > 122) {
+						if (int(newName[0]) < 65
+								|| ((int(newName[0]) > 90)
+										&& (int(newName[0]) < 97))
+								|| int(newName[0]) > 122) {
 							cout
 									<< "\n Invalid input. The first character must be a letter\n";
 							confirmName = false;
@@ -663,7 +698,7 @@ void Interface::createEmployees() {
 
 						else {
 							cout << "\n Your Name used in display is: "
-									<< newname
+									<< newName
 									<< "\n\n Is it correct? [yes to confirm]\n\n > ";
 							getline(cin, confirmString);
 
@@ -705,7 +740,7 @@ void Interface::createEmployees() {
 						if (CheckAllDigitString(ageInput)
 								&& ageInput.size() < 4) {
 							istringstream iss(ageInput);
-							iss >> newage;
+							iss >> newAge;
 
 							if (ageInput[0] != '0')
 								confirmAge = true;
@@ -741,7 +776,7 @@ void Interface::createEmployees() {
 					} else {
 						if (CheckAllDigitString(phoneInput)) {
 							istringstream iss(phoneInput);
-							iss >> newphone;
+							iss >> newPhone;
 
 							if (phoneInput[0] != '0')
 								confirmPhone = true;
@@ -757,15 +792,15 @@ void Interface::createEmployees() {
 		while (!confirmEmail) {
 
 			cout << " Enter email or type [0] to return to main menu\n\n > ";
-			getline(cin, newemail);
+			getline(cin, newEmail);
 
 			if (cin.fail())
 				cin.clear();
 			else {
-				if (newemail == "" || newemail == "\n")
+				if (newEmail == "" || newEmail == "\n")
 					confirmEmail = false;
 				else {
-					if (newemail[0] == '0') {
+					if (newEmail[0] == '0') {
 						exitRequest = true;
 						confirmName = true;
 						confirmAge = true;
@@ -776,11 +811,11 @@ void Interface::createEmployees() {
 					}
 
 					else {
-						if (newemail.size() > 10) {
-							newemail = newemail.substr(0, 10);
+						if (newEmail.size() > 10) {
+							newEmail = newEmail.substr(0, 10);
 						} else {
 							cout << "\n Your email used in display is: "
-									<< newemail
+									<< newEmail
 									<< "\n\n Is it correct? [yes to confirm]\n\n > ";
 							getline(cin, confirmString);
 
@@ -821,7 +856,7 @@ void Interface::createEmployees() {
 						if (CheckAllDigitString(nifInput)
 								&& nifInput.size() == 9) {
 							istringstream iss(nifInput);
-							iss >> newnif;
+							iss >> newNif;
 
 							if (nifInput[0] != '0')
 								confirmAge = true;
@@ -855,7 +890,7 @@ void Interface::createEmployees() {
 					} else {
 						if (CheckAllDigitString(wageInput)) {
 							istringstream iss(wageInput);
-							iss >> newwage;
+							iss >> newWage;
 
 							if (wageInput[0] != '0')
 								confirmWage = true;
@@ -874,23 +909,23 @@ void Interface::createEmployees() {
 			cout << " #" << string(5, ' ') << "New Employee data"
 					<< string(18, ' ') << "#\n";
 			cout << " #" << string(36, ' ') << "#\n";
-			cout << " #" << string(5, ' ') << "Name: " << newname
-					<< string(25 - newname.size(), ' ') << "#\n";
-			cout << " #" << string(5, ' ') << "age: " << ConvertToString(newage)
-					<< string(26 - ConvertToString(newage).size(), ' ')
+			cout << " #" << string(5, ' ') << "Name: " << newName
+					<< string(25 - newName.size(), ' ') << "#\n";
+			cout << " #" << string(5, ' ') << "age: " << ConvertToString(newAge)
+					<< string(26 - ConvertToString(newAge).size(), ' ')
 					<< "#\n";
 			cout << " #" << string(5, ' ') << "phone: "
-					<< ConvertToString(newphone)
-					<< string(26 - ConvertToString(newphone).size(), ' ')
+					<< ConvertToString(newPhone)
+					<< string(26 - ConvertToString(newPhone).size(), ' ')
 					<< "#\n";
-			cout << " #" << string(5, ' ') << "email: " << newemail
-					<< string(25 - newemail.size(), ' ') << "#\n";
-			cout << " #" << string(5, ' ') << "NIF: " << ConvertToString(newnif)
-					<< string(26 - ConvertToString(newnif).size(), ' ')
+			cout << " #" << string(5, ' ') << "email: " << newEmail
+					<< string(25 - newEmail.size(), ' ') << "#\n";
+			cout << " #" << string(5, ' ') << "NIF: " << ConvertToString(newNif)
+					<< string(26 - ConvertToString(newNif).size(), ' ')
 					<< "#\n";
 			cout << " #" << string(5, ' ') << "WAGE: "
-					<< ConvertToString(newwage)
-					<< string(26 - ConvertToString(newwage).size(), ' ')
+					<< ConvertToString(newWage)
+					<< string(26 - ConvertToString(newWage).size(), ' ')
 					<< "#\n";
 			cout << " #" << string(36, ' ') << "#\n";
 			cout << " " << string(38, '#') << "\n\n\n";
@@ -910,8 +945,8 @@ void Interface::createEmployees() {
 
 		if (!exitRequest) {
 			vector<Person*> empl = library.getEmployees(); //ver melhor isto
-			Employee *s0 = new Employee(newname, newage, newphone, newemail,
-					newnif, newwage);
+			Employee *s0 = new Employee(newName, newAge, newPhone, newEmail,
+					newNif, newWage);
 			library.addPerson(s0);
 
 			exitRequest = true;
@@ -923,11 +958,11 @@ void Interface::createEmployees() {
 
 }
 
-void Interface::createSupervisors() {
+void Interface::createSupervisor() {
 
 }
 
-void Interface::createReaders() {
+void Interface::createReader() {
 
 }
 

@@ -50,11 +50,12 @@ public:
 	void readerMenu(Person* reader);
 	void employeeMenu(Person* employee);
 	void supervisorMenu(Person* supervisor);
+	void manageEmployees(Person* supervisor);
 	void create();
 	void createPerson();
-	void createEmployees();
-	void createReaders();
-	void createSupervisors();
+	void createEmployee();
+	void createReader();
+	void createSupervisor();
 	void createBook();
 	Person* searchPerson(vector<Person*> persons);
 	void displayHeader(string& header);
