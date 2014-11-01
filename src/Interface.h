@@ -47,7 +47,6 @@ public:
 	void displayMenu();
 	void clearScreen();
 	void dispatchPerson(Person* person);
-	void searchMenu();
 	void readerMenu(Person* reader);
 	void employeeMenu(Person* employee);
 	void supervisorMenu(Person* supervisor);

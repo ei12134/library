@@ -85,8 +85,8 @@ void Interface::readerMenu(Person*reader) {
 		cout << endl << DOUBLE_TAB << TAB << "[1] Borrowed books\n";
 		cout << DOUBLE_TAB << TAB << "[2] Return a book\n";
 		cout << DOUBLE_TAB << TAB << "[3] History\n";
-		cout << DOUBLE_TAB << TAB << "[4] Logout\n\n" << DOUBLE_TAB
-				<< TAB << PROMPT_SYMBOL;
+		cout << DOUBLE_TAB << TAB << "[4] Logout\n\n" << DOUBLE_TAB << TAB
+				<< PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -132,9 +132,9 @@ void Interface::employeeMenu(Person* employee) {
 				<< " euros" << endl;
 		cout << endl << DOUBLE_TAB << TAB << "[1] Borrow a book\n";
 		cout << DOUBLE_TAB << TAB << "[2] Manage readers\n";
-		cout << DOUBLE_TAB << TAB << "[3] Manage book\n";
-		cout << DOUBLE_TAB << TAB << "[4] Logout\n\n" << DOUBLE_TAB
-				<< TAB << PROMPT_SYMBOL;
+		cout << DOUBLE_TAB << TAB << "[3] Manage books\n";
+		cout << DOUBLE_TAB << TAB << "[4] Logout\n\n" << DOUBLE_TAB << TAB
+				<< PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -177,15 +177,16 @@ void Interface::supervisorMenu(Person* supervisor) {
 				<< endl;
 		cout << DOUBLE_TAB << TAB << "Wage :" << TAB << supervisor->getWage()
 				<< " euros" << endl;
-		cout << endl << DOUBLE_TAB << TAB << "[1] Display employees team\n";
+		cout << endl << DOUBLE_TAB << TAB << "[1] Manage employees team\n";
 		cout << DOUBLE_TAB << TAB << "[2] Manage employees\n";
 		cout << DOUBLE_TAB << TAB << "[3] Manage supervisors\n";
-		cout << DOUBLE_TAB << TAB << "[4] Logout\n\n" << DOUBLE_TAB
-				<< TAB << PROMPT_SYMBOL;
+		cout << DOUBLE_TAB << TAB << "[4] Logout\n\n" << DOUBLE_TAB << TAB
+				<< PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
 		case '1':
+
 			clearScreen();
 			break;
 		case '2':
@@ -250,7 +251,7 @@ void Interface::createPerson() {
 		displayHeader(header);
 		cout << endl << TAB << "[1] Create Reader\n\n";
 		cout << TAB << "[2] Create Employee\n\n";
-		cout << TAB << "[3] Create Superviser\n\n";
+		cout << TAB << "[3] Create Supervisor\n\n";
 		cout << TAB << "[4] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
@@ -311,11 +312,11 @@ void Interface::createBook() {
 	string confirmDialog =
 			" Do you want to create a new book with this information?";
 	bool exitRequest = false;
-	bool confirmauthor = false;
-	bool confirmquota = false;
-	bool confirmpageNumber = false;
-	bool confirmisbn = false;
-	bool confirmtitle = false;
+	bool confirmAuthor = false;
+	bool confirmQuota = false;
+	bool confirmPageNumber = false;
+	bool confirmIsbn = false;
+	bool confirmTitle = false;
 	string newauthor;
 	unsigned int newpageNumber;
 	string newquota;
@@ -325,7 +326,7 @@ void Interface::createBook() {
 	string confirmString;
 
 	while (!exitRequest) {
-		while (!confirmauthor) {
+		while (!confirmAuthor) {
 			clearScreen();
 
 			cout << "\n " << string(30, '#') << "\n";
@@ -342,14 +343,14 @@ void Interface::createBook() {
 				cin.clear();
 			else {
 				if (newauthor == "" || newauthor == "\n")
-					confirmauthor = false;
+					confirmAuthor = false;
 				else {
 					if (newauthor[0] == '0') {
 						exitRequest = true;
-						confirmquota = true;
-						confirmpageNumber = true;
-						confirmisbn = true;
-						confirmtitle = true;
+						confirmQuota = true;
+						confirmPageNumber = true;
+						confirmIsbn = true;
+						confirmTitle = true;
 						break;
 					}
 
@@ -363,7 +364,7 @@ void Interface::createBook() {
 								|| int(newauthor[0]) > 122) {
 							cout
 									<< "\n Invalid input. The first character must be a letter\n";
-							confirmauthor = false;
+							confirmAuthor = false;
 						}
 
 						else {
@@ -377,9 +378,9 @@ void Interface::createBook() {
 							} else {
 								if (confirmString == "yes"
 										|| confirmString == "YES")
-									confirmauthor = true;
+									confirmAuthor = true;
 								else
-									confirmauthor = false;
+									confirmAuthor = false;
 							}
 						}
 					}
@@ -387,7 +388,7 @@ void Interface::createBook() {
 			}
 		}
 
-		while (!confirmpageNumber) {
+		while (!confirmPageNumber) {
 			string pageInput;
 			cout
 					<< "\n Enter the number of Pages or type [0] to return to main menu\n\n > ";
@@ -397,15 +398,15 @@ void Interface::createBook() {
 				cin.clear();
 			else {
 				if (pageInput == "" || pageInput == "\n")
-					confirmpageNumber = false;
+					confirmPageNumber = false;
 				else {
 					if (pageInput[0] == '0') {
 						exitRequest = true;
-						confirmauthor = true;
-						confirmquota = true;
-						confirmpageNumber = true;
-						confirmisbn = true;
-						confirmtitle = true;
+						confirmAuthor = true;
+						confirmQuota = true;
+						confirmPageNumber = true;
+						confirmIsbn = true;
+						confirmTitle = true;
 						break;
 					} else {
 						if (CheckAllDigitString(pageInput)) {
@@ -413,7 +414,7 @@ void Interface::createBook() {
 							iss >> newpageNumber;
 
 							if (pageInput[0] != '0')
-								confirmpageNumber = true;
+								confirmPageNumber = true;
 							else
 								cout << "\n Wrong Input\n";
 						} else
@@ -423,7 +424,7 @@ void Interface::createBook() {
 			}
 		}
 
-		while (!confirmquota) {
+		while (!confirmQuota) {
 
 			cout
 					<< "\n Enter the Quota or type [0] to return to main menu\n\n > ";
@@ -434,11 +435,11 @@ void Interface::createBook() {
 			else {
 				if (newquota[0] == '0') {
 					exitRequest = true;
-					confirmauthor = true;
-					confirmquota = true;
-					confirmpageNumber = true;
-					confirmisbn = true;
-					confirmtitle = true;
+					confirmAuthor = true;
+					confirmQuota = true;
+					confirmPageNumber = true;
+					confirmIsbn = true;
+					confirmTitle = true;
 					break;
 				} else {
 					if (newquota.size() > 10) {
@@ -453,16 +454,16 @@ void Interface::createBook() {
 						else {
 							if (confirmString == "yes"
 									|| confirmString == "YES")
-								confirmquota = true;
+								confirmQuota = true;
 							else
-								confirmquota = false;
+								confirmQuota = false;
 						}
 					}
 				}
 			}
 		}
 
-		while (!confirmisbn) {
+		while (!confirmIsbn) {
 
 			cout << " Enter new ISB or type [0] to return to main menu\n\n > ";
 			getline(cin, newisbn);
@@ -471,14 +472,14 @@ void Interface::createBook() {
 				cin.clear();
 			else {
 				if (newisbn == "" || newisbn == "\n")
-					confirmisbn = false;
+					confirmIsbn = false;
 				else {
 					if (newisbn[0] == '0') {
 						exitRequest = true;
-						confirmquota = true;
-						confirmpageNumber = true;
-						confirmisbn = true;
-						confirmtitle = true;
+						confirmQuota = true;
+						confirmPageNumber = true;
+						confirmIsbn = true;
+						confirmTitle = true;
 						break;
 					}
 
@@ -496,16 +497,16 @@ void Interface::createBook() {
 							else {
 								if (confirmString == "yes"
 										|| confirmString == "YES")
-									confirmisbn = true;
+									confirmIsbn = true;
 								else
-									confirmisbn = false;
+									confirmIsbn = false;
 							}
 						}
 					}
 				}
 			}
 		}
-		while (!confirmtitle) {
+		while (!confirmTitle) {
 
 			cout
 					<< " Enter new Title or type [0] to return to main menu\n\n > ";
@@ -515,14 +516,14 @@ void Interface::createBook() {
 				cin.clear();
 			else {
 				if (newtitle == "" || newtitle == "\n")
-					confirmtitle = false;
+					confirmTitle = false;
 				else {
 					if (newtitle[0] == '0') {
 						exitRequest = true;
-						confirmquota = true;
-						confirmpageNumber = true;
-						confirmisbn = true;
-						confirmtitle = true;
+						confirmQuota = true;
+						confirmPageNumber = true;
+						confirmIsbn = true;
+						confirmTitle = true;
 						break;
 					}
 
@@ -540,9 +541,9 @@ void Interface::createBook() {
 							else {
 								if (confirmString == "yes"
 										|| confirmString == "YES")
-									confirmtitle = true;
+									confirmTitle = true;
 								else
-									confirmtitle = false;
+									confirmTitle = false;
 							}
 						}
 					}
@@ -597,18 +598,17 @@ void Interface::createBook() {
 		}
 	}
 }
-//" Name       Age       Phone       Email       Nif       Wage");
 
 void Interface::createEmployees() {
 	string confirmDialog =
 			" Do you want to create a new employee with this information?";
 	bool exitRequest = false;
-	bool confirmname = false;
-	bool confirmage = false;
-	bool confirmphone = false;
-	bool confirmiemail = false;
-	bool confirmnif = false;
-	bool confirmwage = false;
+	bool confirmName = false;
+	bool confirmAge = false;
+	bool confirmPhone = false;
+	bool confirmEmail = false;
+	bool confirmNif = false;
+	bool confirmWage = false;
 	string newname;
 	unsigned int newage;
 	unsigned int newphone;
@@ -619,7 +619,7 @@ void Interface::createEmployees() {
 	string confirmString;
 
 	while (!exitRequest) {
-		while (!confirmname) {
+		while (!confirmName) {
 			clearScreen();
 
 			cout << "\n " << string(30, '#') << "\n";
@@ -636,15 +636,15 @@ void Interface::createEmployees() {
 				cin.clear();
 			else {
 				if (newname == "" || newname == "\n")
-					confirmname = false;
+					confirmName = false;
 				else {
 					if (newname[0] == '0') {
 						exitRequest = true;
-						confirmage = true;
-						confirmphone = true;
-						confirmiemail = true;
-						confirmnif = true;
-						confirmwage = true;
+						confirmAge = true;
+						confirmPhone = true;
+						confirmEmail = true;
+						confirmNif = true;
+						confirmWage = true;
 						break;
 					}
 
@@ -658,7 +658,7 @@ void Interface::createEmployees() {
 								|| int(newname[0]) > 122) {
 							cout
 									<< "\n Invalid input. The first character must be a letter\n";
-							confirmname = false;
+							confirmName = false;
 						}
 
 						else {
@@ -672,9 +672,9 @@ void Interface::createEmployees() {
 							} else {
 								if (confirmString == "yes"
 										|| confirmString == "YES")
-									confirmname = true;
+									confirmName = true;
 								else
-									confirmname = false;
+									confirmName = false;
 							}
 						}
 					}
@@ -682,7 +682,7 @@ void Interface::createEmployees() {
 			}
 		}
 
-		while (!confirmage) {
+		while (!confirmAge) {
 			string ageInput;
 			cout << "\n Enter age or type [0] to return to main menu\n\n > ";
 			getline(cin, ageInput);
@@ -691,15 +691,15 @@ void Interface::createEmployees() {
 				cin.clear();
 			else {
 				if (ageInput == "" || ageInput == "\n")
-					confirmage = false;
+					confirmAge = false;
 				else {
 					if (ageInput[0] == '0') {
 						exitRequest = true;
-						confirmname = true;
-						confirmphone = true;
-						confirmiemail = true;
-						confirmnif = true;
-						confirmwage = true;
+						confirmName = true;
+						confirmPhone = true;
+						confirmEmail = true;
+						confirmNif = true;
+						confirmWage = true;
 						break;
 					} else {
 						if (CheckAllDigitString(ageInput)
@@ -708,7 +708,7 @@ void Interface::createEmployees() {
 							iss >> newage;
 
 							if (ageInput[0] != '0')
-								confirmage = true;
+								confirmAge = true;
 							else
 								cout << "\n Wrong Input\n";
 						} else
@@ -718,7 +718,7 @@ void Interface::createEmployees() {
 			}
 		}
 
-		while (!confirmphone) {
+		while (!confirmPhone) {
 			string phoneInput;
 			cout
 					<< "\n Enter the phonenumber or type [0] to return to main menu\n\n > ";
@@ -728,15 +728,15 @@ void Interface::createEmployees() {
 				cin.clear();
 			else {
 				if (phoneInput == "" || phoneInput == "\n")
-					confirmphone = false;
+					confirmPhone = false;
 				else {
 					if (phoneInput[0] == '0') {
 						exitRequest = true;
-						confirmname = true;
-						confirmage = true;
-						confirmiemail = true;
-						confirmnif = true;
-						confirmwage = true;
+						confirmName = true;
+						confirmAge = true;
+						confirmEmail = true;
+						confirmNif = true;
+						confirmWage = true;
 						break;
 					} else {
 						if (CheckAllDigitString(phoneInput)) {
@@ -744,7 +744,7 @@ void Interface::createEmployees() {
 							iss >> newphone;
 
 							if (phoneInput[0] != '0')
-								confirmphone = true;
+								confirmPhone = true;
 							else
 								cout << "\n Wrong Input\n";
 						} else
@@ -754,7 +754,7 @@ void Interface::createEmployees() {
 			}
 		}
 
-		while (!confirmiemail) {
+		while (!confirmEmail) {
 
 			cout << " Enter email or type [0] to return to main menu\n\n > ";
 			getline(cin, newemail);
@@ -763,15 +763,15 @@ void Interface::createEmployees() {
 				cin.clear();
 			else {
 				if (newemail == "" || newemail == "\n")
-					confirmiemail = false;
+					confirmEmail = false;
 				else {
 					if (newemail[0] == '0') {
 						exitRequest = true;
-						confirmname = true;
-						confirmage = true;
-						confirmphone = true;
-						confirmnif = true;
-						confirmwage = true;
+						confirmName = true;
+						confirmAge = true;
+						confirmPhone = true;
+						confirmNif = true;
+						confirmWage = true;
 						break;
 					}
 
@@ -789,16 +789,16 @@ void Interface::createEmployees() {
 							else {
 								if (confirmString == "yes"
 										|| confirmString == "YES")
-									confirmiemail = true;
+									confirmEmail = true;
 								else
-									confirmiemail = false;
+									confirmEmail = false;
 							}
 						}
 					}
 				}
 			}
 		}
-		while (!confirmnif) {
+		while (!confirmNif) {
 			string nifInput;
 			cout << " Enter your NIF or type [0] to return to main menu\n\n > ";
 			getline(cin, nifInput);
@@ -807,15 +807,15 @@ void Interface::createEmployees() {
 				cin.clear();
 			else {
 				if (nifInput == "" || nifInput == "\n")
-					confirmnif = false;
+					confirmNif = false;
 				else {
 					if (nifInput[0] == '0') {
 						exitRequest = true;
-						confirmname = true;
-						confirmage = true;
-						confirmphone = true;
-						confirmiemail = true;
-						confirmwage = true;
+						confirmName = true;
+						confirmAge = true;
+						confirmPhone = true;
+						confirmEmail = true;
+						confirmWage = true;
 						break;
 					} else {
 						if (CheckAllDigitString(nifInput)
@@ -824,7 +824,7 @@ void Interface::createEmployees() {
 							iss >> newnif;
 
 							if (nifInput[0] != '0')
-								confirmage = true;
+								confirmAge = true;
 							else
 								cout << "\n Wrong Input\n";
 						} else
@@ -833,7 +833,7 @@ void Interface::createEmployees() {
 				}
 			}
 		}
-		while (!confirmwage) {
+		while (!confirmWage) {
 			string wageInput;
 			cout << "\n Enter wage or type [0] to return to main menu\n\n > ";
 			getline(cin, wageInput);
@@ -842,15 +842,15 @@ void Interface::createEmployees() {
 				cin.clear();
 			else {
 				if (wageInput == "" || wageInput == "\n")
-					confirmwage = false;
+					confirmWage = false;
 				else {
 					if (wageInput[0] == '0') {
 						exitRequest = true;
-						confirmname = true;
-						confirmage = true;
-						confirmphone = true;
-						confirmiemail = true;
-						confirmnif = true;
+						confirmName = true;
+						confirmAge = true;
+						confirmPhone = true;
+						confirmEmail = true;
+						confirmNif = true;
 						break;
 					} else {
 						if (CheckAllDigitString(wageInput)) {
@@ -858,7 +858,7 @@ void Interface::createEmployees() {
 							iss >> newwage;
 
 							if (wageInput[0] != '0')
-								confirmwage = true;
+								confirmWage = true;
 							else
 								cout << "\n Wrong Input\n";
 						} else
@@ -947,16 +947,17 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 			for (size_t i = 0, z = 1; i < persons.size() && z < 6; i++) {
 				string name = persons[i]->getName();
 				if (matchQuery(query, name)) {
-					cout << DOUBLE_TAB << "[" << z++ << "] "
-							<< persons[i]->getName() << DOUBLE_TAB
+					cout << DOUBLE_TAB << TAB << "[" << z++ << "] "
+							<< persons[i]->getName() << TAB
 							<< persons[i]->printType() << endl << endl;
 					matches.push_back(persons[i]);
 				}
 			}
 		}
 
-		cout << endl << DOUBLE_TAB << "Enter person name [ESC to exit]\n\n"
-				<< DOUBLE_TAB << PROMPT_SYMBOL << query;
+		cout << endl << DOUBLE_TAB << TAB
+				<< "Enter person name [ESC to exit]\n\n" << DOUBLE_TAB << TAB
+				<< PROMPT_SYMBOL << query;
 
 		key = getKey();
 
@@ -965,33 +966,33 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 			if (query.length() > 0)
 				query.erase(query.end() - 1);
 			break;
-		case 49:
+		case '1':
 			if (matches.size() > 0) {
 				exit = true;
 				return matches[0];
 			}
 			break;
-		case 50:
+		case '2':
 			if (matches.size() > 1) {
 				exit = true;
 				return matches[1];
 			}
 			break;
-		case 51:
+		case '3':
 			if (matches.size() > 2) {
 				exit = true;
 				return matches[2];
 			}
 			break;
 
-		case 52:
+		case '4':
 			if (matches.size() > 3) {
 				exit = true;
 				return matches[3];
 			}
 			break;
 
-		case 53:
+		case '5':
 			if (matches.size() > 4) {
 				exit = true;
 				return matches[4];
