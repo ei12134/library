@@ -11,12 +11,12 @@ Interface::~Interface() {
 void Interface::menu() {
 	char input;
 	string exitDialog = "Exit the program?";
-
+	string header = "Library";
 	bool exit = false;
 
 	do {
 		clearScreen();
-		displayHeader("Library");
+		displayHeader(header);
 		cout << endl << TAB << "[1] Login\n\n";
 		cout << TAB << "[2] Display\n\n";
 		cout << TAB << "[3] Search\n\n";
@@ -47,14 +47,53 @@ void Interface::menu() {
 	} while (!exit);
 }
 
+void Interface::readerMenu(Person* reader) {
+	char input;
+	bool exit = false;
+	string header = reader->getName();
+
+	do {
+		clearScreen();
+		displayHeader(header);
+
+		cout << "\t\t\tAge :\t" << reader->getAge() << endl;
+		cout << "\t\t\tCard :\t" << reader->getCard() << endl;
+		cout << "\t\t\tPhone :\t" << reader->getPhone() << endl;
+		cout << "\t\t\tEmail :\t" << reader->getEmail() << endl;
+		cout << endl << TAB << "[1] Borrows\n\n";
+		cout << TAB << "[2] Return a book\n\n";
+		cout << TAB << "[3] History\n\n";
+		cout << TAB << "[4] Return to main menu\n\n\n" << SYMBOL_TAB
+				<< PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+//			genericDisplay(reader->getBorrowBorrowedBooks(), "")
+			break;
+		case '2':
+			break;
+		case '3':
+			break;
+		case '4':
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+}
+
 void Interface::create() {
 	char input;
 	string exitDialog = "Exit the program?";
+	string header = "Create";
 	bool exit = false;
 
 	do {
 		clearScreen();
-		displayHeader("Create");
+		displayHeader(header);
 		cout << endl << TAB << "[1] Create Person\n\n";
 		cout << TAB << "[2] Create Book\n\n";
 		cout << TAB << "[3] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
@@ -82,11 +121,12 @@ void Interface::create() {
 void Interface::createPerson() {
 	char input;
 	string exitDialog = "Exit the program?";
+	string header = "Create Person";
 	bool exit = false;
 
 	do {
 		clearScreen();
-		displayHeader("Create Person");
+		displayHeader(header);
 		cout << endl << TAB << "[1] Create Reader\n\n";
 		cout << TAB << "[2] Create Employee\n\n";
 		cout << TAB << "[3] Create Superviser\n\n";
@@ -774,46 +814,70 @@ void Interface::createReaders() {
 
 void Interface::searchPerson() {
 	string query;
+	string header = "Login";
 	bool exit = false;
 	int key;
 	vector<Person*> persons = library.getPersons();
-
+	vector<Person*> matches;
 	do {
 		clearScreen();
-		displayHeader("Login");
+		displayHeader(header);
 		cout << endl << endl;
+		matches.clear();
 		if (query.size() > 0) {
-			for (size_t i = 0, z = 1; i < persons.size(); i++) {
+			for (size_t i = 0, z = 1; i < persons.size() && z < 6; i++) {
 				string name = persons[i]->getName();
-				if (matchQuery(query, name))
+				if (matchQuery(query, name)) {
 					cout << " [" << z++ << "] " << persons[i]->getName() << "\t"
 							<< persons[i]->printType() << endl << endl;
+					matches.push_back(persons[i]);
+				}
 			}
 		}
 
 		cout << "\n Enter person name [ESC to exit]\n\n" << SYMBOL_SHORT_TAB
 				<< PROMPT_SYMBOL << query;
+
 		key = getKey();
-		if (key == 27)
-			exit = true;
-		else if (key == 8) {
+
+		switch (key) {
+		case 8:
 			if (query.length() > 0)
 				query.erase(query.end() - 1);
-		} else if (key == 83)
+			break;
+		case 1:
+			if (matches.size() > 0) {
+				exit = true;
+				readerMenu(matches[0]);
+			}
+			break;
+		case 13:		// ENTER
+			if (matches.size() > 0) {
+				exit = true;
+				readerMenu(matches[0]);
+			}
+			break;
+		case 27:		// ESC
+			exit = true;
+			break;
+		case 83:		// DELETE - works only in Windows
 			query.clear();
-		else
+			break;
+		default:
 			query += char(key);
-
+			break;
+		}
 	} while (!exit);
 }
 
 void Interface::displayMenu() {
 	char input;
 	bool exit = false;
+	string header = "Display";
 
 	do {
 		clearScreen();
-		displayHeader("Display");
+		displayHeader(header);
 		cout << endl << TAB << "[1] All\n\n";
 		cout << TAB << "[2] Readers\n\n";
 		cout << TAB << "[3] Employees\n\n";
@@ -861,7 +925,7 @@ void Interface::clearScreen() {
 	system(CLEAR);
 }
 
-void Interface::displayHeader(string header) {
+void Interface::displayHeader(string& header) {
 	unsigned int size = header.size(), dynsize = ceil((34 - size) / 2),
 			dynsize2 = dynsize;
 
