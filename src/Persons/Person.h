@@ -1,7 +1,6 @@
 #ifndef PERSON_H_
 #define PERSON_H_
 
-
 class Borrow;
 
 #include <string>

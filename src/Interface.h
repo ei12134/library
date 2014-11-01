@@ -56,7 +56,7 @@ public:
 	void createReaders();
 	void createSupervisors();
 	void createBook();
-	void searchPerson();
+	Person* searchPerson(vector<Person*> persons);
 	void displayHeader(string& header);
 	bool confirmOperation(string& query);
 	string readInputString(string dialog);

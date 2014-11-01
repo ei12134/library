@@ -25,7 +25,7 @@ void Interface::menu() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			searchPerson();
+			dispatchPerson(searchPerson(library.getPersons()));
 			break;
 		case '2':
 			displayMenu();
@@ -47,18 +47,20 @@ void Interface::menu() {
 }
 
 void Interface::dispatchPerson(Person* person) {
-	switch (person->getType()) {
-	case 1:
-		readerMenu(person);
-		break;
-	case 2:
-		employeeMenu(person);
-		break;
-	case 3:
-		supervisorMenu(person);
-		break;
-	default:
-		break;
+	if (person != NULL) {
+		switch (person->getType()) {
+		case 1:
+			readerMenu(person);
+			break;
+		case 2:
+			employeeMenu(person);
+			break;
+		case 3:
+			supervisorMenu(person);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -867,12 +869,11 @@ void Interface::createReaders() {
 
 }
 
-void Interface::searchPerson() {
+Person* Interface::searchPerson(vector<Person*> persons) {
 	string query;
 	string header = "Login";
 	bool exit = false;
 	int key;
-	vector<Person*> persons = library.getPersons();
 	vector<Person*> matches;
 	do {
 		clearScreen();
@@ -905,39 +906,39 @@ void Interface::searchPerson() {
 		case 49:
 			if (matches.size() > 0) {
 				exit = true;
-				dispatchPerson(matches[0]);
+				return matches[0];
 			}
 			break;
 		case 50:
 			if (matches.size() > 1) {
 				exit = true;
-				dispatchPerson(matches[1]);
+				return matches[1];
 			}
 			break;
 		case 51:
 			if (matches.size() > 2) {
 				exit = true;
-				dispatchPerson(matches[2]);
+				return matches[2];
 			}
 			break;
 
 		case 52:
 			if (matches.size() > 3) {
 				exit = true;
-				dispatchPerson(matches[3]);
+				return matches[3];
 			}
 			break;
 
 		case 53:
 			if (matches.size() > 4) {
 				exit = true;
-				dispatchPerson(matches[4]);
+				return matches[4];
 			}
 			break;
 		case RETURN_KEY:
 			if (matches.size() > 0) {
 				exit = true;
-				dispatchPerson(matches[0]);
+				return matches[0];
 			}
 			break;
 		case ESCAPE_KEY:
@@ -951,6 +952,7 @@ void Interface::searchPerson() {
 			break;
 		}
 	} while (!exit);
+	return NULL;
 }
 
 void Interface::displayMenu() {

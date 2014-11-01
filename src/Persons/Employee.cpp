@@ -41,9 +41,11 @@ unsigned int Employee::getNif() const {
 void Employee::setNif(unsigned int nif) {
 	this->nif = nif;
 }
+
 unsigned int Employee::getWage() const {
 	return wage;
 }
+
 void Employee::setWage(unsigned int wage) {
 	this->wage = wage;
 }
