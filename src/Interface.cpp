@@ -940,7 +940,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << endl;
+		cout << endl;
 		matches.clear();
 		matches.reserve(6);
 		if (query.size() > 0) {

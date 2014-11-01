@@ -24,7 +24,6 @@ public:
 			string isbn, string title);
 	virtual ~Book();
 	Book(fstream& s);
-
 	string print();
 	string getAuthor();
 	string getQuota();
