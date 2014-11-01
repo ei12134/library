@@ -23,23 +23,21 @@ public:
 	Book(string author, bool borrowed, string quota, unsigned int pageNumber,
 			string isbn, string title);
 	virtual ~Book();
-	Book(fstream& s) ;
-
+	Book(fstream& s);
 
 	string print();
 	string getAuthor();
-	void setAuthor(string author);
-	bool getBorrowed();
-	void setBorrowed(bool borrowed);
 	string getQuota();
-	void setQuota(string quota);
-	int getPageNumber();
-	void setPageNumber(int pageNumber);
 	string getIsbn();
-	void setIsbn(string isbn);
 	string getTitle();
+	int getPageNumber();
+	bool getBorrowed();
+	void setAuthor(string author);
+	void setBorrowed(bool borrowed);
+	void setQuota(string quota);
+	void setPageNumber(int pageNumber);
+	void setIsbn(string isbn);
 	void setTitle(string title);
-
 };
 
 #endif /* BOOK_H_ */

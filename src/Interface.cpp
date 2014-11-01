@@ -60,19 +60,22 @@ void Interface::readerMenu(Person* reader) {
 		cout << "\t\t\tCard :\t" << reader->getCard() << endl;
 		cout << "\t\t\tPhone :\t" << reader->getPhone() << endl;
 		cout << "\t\t\tEmail :\t" << reader->getEmail() << endl;
-
 		cout << endl << TAB << "[1] Borrows\n\n";
-		cout << TAB << "[2] History\n\n";
-		cout << TAB << "[3] Return to main menu\n\n\n" << SYMBOL_TAB
+		cout << TAB << "[2] Return a book\n\n";
+		cout << TAB << "[3] History\n\n";
+		cout << TAB << "[4] Return to main menu\n\n\n" << SYMBOL_TAB
 				<< PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
 		case '1':
+//			genericDisplay(reader->getBorrowBorrowedBooks(), "")
 			break;
 		case '2':
 			break;
 		case '3':
+			break;
+		case '4':
 			clearScreen();
 			exit = true;
 			break;
