@@ -14,11 +14,12 @@ Library::Library() {
 
 void Library::saveBooks() {
 	ofstream pFile("books.csv");
+	//pFile<<"Author Borrowed Quota PageNumber Isbn Title";
 	for (unsigned int i = 0; i < books.size(); i++) {
-		pFile << endl << books[i]->getAuthor() << ";" << books[i]->getBorrowed()
+		pFile << books[i]->getAuthor() << ";" << books[i]->getBorrowed()
 				<< ";" << books[i]->getQuota() << ";"
 				<< books[i]->getPageNumber() << ";" << books[i]->getIsbn()
-				<< ";" << books[i]->getTitle();
+				<< ";" << books[i]->getTitle()<<endl ;
 	}
 	pFile.close();
 }
