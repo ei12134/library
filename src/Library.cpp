@@ -23,6 +23,19 @@ void Library::saveBooks() {
 	}
 	pFile.close();
 }
+void Library::saveEmployees() {
+	ofstream pFile("employees.csv");
+	//pFile<<"Author Borrowed Quota PageNumber Isbn Title";
+	for (unsigned int i = 0; i < getEmployees().size(); i++) {
+		pFile << getEmployees()[i]->getName() << ";" << getEmployees()[i]->getAge()
+				<< ";" << getEmployees()[i]->getEmail() ; //remover este ";" e descomentar o resto
+//
+//				<< ";"
+//				<< getEmployees()[i]->getnif<< ";" << getEmployees()[i]->getwage()
+//				<<endl ;
+	}
+	pFile.close();
+}
 
 Library::~Library() {
 	saveBooks();

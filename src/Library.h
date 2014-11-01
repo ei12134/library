@@ -51,7 +51,7 @@ public:
 	///@return readers
 	vector<Person*> getReaders() const;
 
-	///@return readers
+	///@return employes
 	vector<Person*> getEmployees() const;
 
 	///@return readers
@@ -95,7 +95,10 @@ public:
 	 *Guarda o vetor Books no ficheiro books.csv
 	 */
 	void saveBooks();
-
+	/**
+	 *Guarda o vetor persons no ficheiro employees.csv
+	 */
+	void saveEmployees();
 	/** Loads stored books
 	 * Loads *.csv files to the persons vector
 	 */
