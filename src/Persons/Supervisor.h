@@ -19,6 +19,7 @@ public:
 	virtual ~Supervisor();
 	void addEmployee(Employee *e1);
 	bool removeEmployee(string name);
+	vector<Borrow*> getBorrowedBooks() const;
 	string print();
 	unsigned int getType();
 	unsigned int getCard() const;

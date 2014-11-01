@@ -1,6 +1,9 @@
 #ifndef PERSON_H_
 #define PERSON_H_
 
+
+class Borrow;
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -20,6 +23,9 @@ public:
 	virtual string print();
 	virtual unsigned int getType() = 0;
 	virtual unsigned int getCard() const = 0;
+	virtual unsigned int getNif() const = 0;
+	virtual unsigned int getWage() const = 0;
+	virtual vector<Borrow*> getBorrowedBooks() const = 0;
 	virtual string printType() = 0;
 	void setName(string name);
 	void setAge(unsigned int age);

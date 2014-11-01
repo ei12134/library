@@ -25,6 +25,7 @@ public:
 	Book* getBook() const;
 	Employee* getEmployee() const;
 	Reader* getReader() const;
+	string print() const;
 
 	float CalcFee() const;
 

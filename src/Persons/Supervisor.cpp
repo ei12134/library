@@ -18,6 +18,11 @@ void Supervisor::addEmployee(Employee *e1) {
 	team.push_back(e1);
 }
 
+vector<Borrow*> Supervisor::getBorrowedBooks() const {
+	vector<Borrow*> empty;
+	return empty;
+}
+
 bool Supervisor::removeEmployee(string name) {
 	for (vector<Employee *>::iterator it = team.begin(); it != team.end();
 			it++) {

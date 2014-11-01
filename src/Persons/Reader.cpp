@@ -26,12 +26,20 @@ Reader::~Reader() {
 
 }
 
-vector<Borrow*> Reader::getBorrowBorrowedBooks() const {
+vector<Borrow*> Reader::getBorrowedBooks() const {
 	return borrowedBooks;
 }
 
 unsigned int Reader::getCard() const {
 	return card;
+}
+
+unsigned int Reader::getNif() const {
+	return 0;
+}
+
+unsigned int Reader::getWage() const {
+	return 0;
 }
 
 void Reader::setBorrowedBooks(vector<Borrow*> borrowedBooks) {

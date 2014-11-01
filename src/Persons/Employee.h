@@ -25,6 +25,7 @@ public:
 	void setWage(unsigned int wage);
 	void createBorrow(Book *, Reader *, Employee *);
 	string print();
+	vector<Borrow*> getBorrowedBooks() const;
 	unsigned int getType();
 	unsigned int getCard() const;
 	string printType();

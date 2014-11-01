@@ -17,10 +17,9 @@ void Interface::menu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TAB << "[1] Login\n\n";
-		cout << TAB << "[2] Display\n\n";
-		cout << TAB << "[3] Search\n\n";
-		cout << TAB << "[4] Create\n\n";
+		cout << endl << TAB << "[1] Login\n\n\n";
+		cout << TAB << "[2] Display\n\n\n";
+		cout << TAB << "[3] Search\n\n\n";
 		cout << TAB << "[5] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
@@ -47,10 +46,26 @@ void Interface::menu() {
 	} while (!exit);
 }
 
-void Interface::readerMenu(Person* reader) {
+void Interface::dispatchPerson(Person* person) {
+	switch (person->getType()) {
+	case 1:
+		readerMenu(person);
+		break;
+	case 2:
+		employeeMenu(person);
+		break;
+	case 3:
+		supervisorMenu(person);
+		break;
+	default:
+		break;
+	}
+}
+
+void Interface::readerMenu(Person*reader) {
 	char input;
 	bool exit = false;
-	string header = reader->getName();
+	string header = "Reader   " + reader->getName();
 
 	do {
 		clearScreen();
@@ -60,16 +75,17 @@ void Interface::readerMenu(Person* reader) {
 		cout << "\t\t\tCard :\t" << reader->getCard() << endl;
 		cout << "\t\t\tPhone :\t" << reader->getPhone() << endl;
 		cout << "\t\t\tEmail :\t" << reader->getEmail() << endl;
-		cout << endl << TAB << "[1] Borrows\n\n";
-		cout << TAB << "[2] Return a book\n\n";
-		cout << TAB << "[3] History\n\n";
-		cout << TAB << "[4] Return to main menu\n\n\n" << SYMBOL_TAB
+		cout << endl << TAB << "[1] Borrowed books\n";
+		cout << TAB << "[2] Return a book\n";
+		cout << TAB << "[3] History\n";
+		cout << TAB << "[4] Return to main menu\n\n" << SYMBOL_TAB
 				<< PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
 		case '1':
-//			genericDisplay(reader->getBorrowBorrowedBooks(), "")
+			clearScreen();
+			genericDisplay(reader->getBorrowedBooks(), "Borrowed books", "a");
 			break;
 		case '2':
 			break;
@@ -83,6 +99,47 @@ void Interface::readerMenu(Person* reader) {
 			break;
 		}
 	} while (!exit);
+}
+
+void Interface::employeeMenu(Person* employee) {
+	char input;
+	bool exit = false;
+	string header = "Employee   " + employee->getName();
+
+	do {
+		clearScreen();
+		displayHeader(header);
+		cout << "\t\t\tAge :\t" << employee->getAge() << endl;
+		cout << "\t\t\tCard :\t" << employee->getNif() << endl;
+		cout << "\t\t\tPhone :\t" << employee->getPhone() << endl;
+		cout << "\t\t\tEmail :\t" << employee->getEmail() << endl;
+		cout << "\t\t\tWage :\t" << employee->getWage() << " euros" << endl;
+		cout << endl << TAB << "[1] Borrow a book\n";
+		cout << TAB << "[2] Manage readers\n";
+		cout << TAB << "[3] Manage book\n";
+		cout << TAB << "[4] Return to main menu\n\n" << SYMBOL_TAB
+				<< PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			clearScreen();
+			break;
+		case '2':
+			break;
+		case '3':
+			break;
+		case '4':
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+}
+
+void Interface::supervisorMenu(Person* supervisor) {
 }
 
 void Interface::create() {
@@ -140,7 +197,6 @@ void Interface::createPerson() {
 		case '2':
 			createEmployees();
 			break;
-
 		case '3':
 			createSupervisors();
 			break;
@@ -748,7 +804,6 @@ void Interface::createEmployees() {
 			}
 		}
 
-
 		if (!exitRequest) {
 			cout << "\n\n " << string(38, '#') << "\n";
 			cout << " #" << string(36, ' ') << "#\n";
@@ -791,8 +846,8 @@ void Interface::createEmployees() {
 
 		if (!exitRequest) {
 			vector<Person*> empl = library.getEmployees(); //ver melhor isto
-			Employee *s0 = new Employee(newname, newage, newphone,
-					newemail, newnif,newwage);
+			Employee *s0 = new Employee(newname, newage, newphone, newemail,
+					newnif, newwage);
 			library.addPerson(s0);
 
 			exitRequest = true;
@@ -824,43 +879,71 @@ void Interface::searchPerson() {
 		displayHeader(header);
 		cout << endl << endl;
 		matches.clear();
+		matches.reserve(6);
 		if (query.size() > 0) {
 			for (size_t i = 0, z = 1; i < persons.size() && z < 6; i++) {
 				string name = persons[i]->getName();
 				if (matchQuery(query, name)) {
-					cout << " [" << z++ << "] " << persons[i]->getName() << "\t"
+					cout << DOUBLE_TAB << "[" << z++ << "] "
+							<< persons[i]->getName() << DOUBLE_TAB
 							<< persons[i]->printType() << endl << endl;
 					matches.push_back(persons[i]);
 				}
 			}
 		}
 
-		cout << "\n Enter person name [ESC to exit]\n\n" << SYMBOL_SHORT_TAB
-				<< PROMPT_SYMBOL << query;
+		cout << endl << DOUBLE_TAB << "Enter person name [ESC to exit]\n\n"
+				<< DOUBLE_TAB << PROMPT_SYMBOL << query;
 
 		key = getKey();
 
 		switch (key) {
-		case 8:
+		case BACSKPACE_KEY:
 			if (query.length() > 0)
 				query.erase(query.end() - 1);
 			break;
-		case 1:
+		case 49:
 			if (matches.size() > 0) {
 				exit = true;
-				readerMenu(matches[0]);
+				dispatchPerson(matches[0]);
 			}
 			break;
-		case 13:		// ENTER
+		case 50:
+			if (matches.size() > 1) {
+				exit = true;
+				dispatchPerson(matches[1]);
+			}
+			break;
+		case 51:
+			if (matches.size() > 2) {
+				exit = true;
+				dispatchPerson(matches[2]);
+			}
+			break;
+
+		case 52:
+			if (matches.size() > 3) {
+				exit = true;
+				dispatchPerson(matches[3]);
+			}
+			break;
+
+		case 53:
+			if (matches.size() > 4) {
+				exit = true;
+				dispatchPerson(matches[4]);
+			}
+			break;
+		case RETURN_KEY:
 			if (matches.size() > 0) {
 				exit = true;
-				readerMenu(matches[0]);
+				dispatchPerson(matches[0]);
 			}
 			break;
-		case 27:		// ESC
+		case ESCAPE_KEY:
 			exit = true;
 			break;
-		case 83:		// DELETE - works only in Windows
+		case DELETE_KEY:
 			query.clear();
 			break;
 		default:

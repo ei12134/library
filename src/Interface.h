@@ -29,8 +29,13 @@ using namespace std;
 
 #define MAX_LINES 5
 #define TAB string(26, ' ')
+#define DOUBLE_TAB "\t\t"
 #define SYMBOL_TAB string(22, ' ')
 #define SYMBOL_SHORT_TAB string(1, ' ')
+#define BACSKPACE_KEY 8
+#define RETURN_KEY 13
+#define ESCAPE_KEY 27
+#define DELETE_KEY 83
 
 class Interface {
 private:
@@ -41,7 +46,10 @@ public:
 	void menu();
 	void displayMenu();
 	void clearScreen();
+	void dispatchPerson(Person* person);
 	void readerMenu(Person* reader);
+	void employeeMenu(Person* employee);
+	void supervisorMenu(Person* supervisor);
 	void create();
 	void createPerson();
 	void createEmployees();

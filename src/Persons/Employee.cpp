@@ -29,6 +29,11 @@ Employee::Employee(fstream& s) :
 Employee::~Employee() {
 }
 
+vector<Borrow*> Employee::getBorrowedBooks() const {
+	vector<Borrow*> empty;
+	return empty;
+}
+
 unsigned int Employee::getNif() const {
 	return nif;
 }

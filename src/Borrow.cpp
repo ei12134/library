@@ -36,3 +36,9 @@ bool Borrow::DeliveredBook(Date d) {
 	this->actuallyDeliveryDate = d;
 	return true;
 }
+
+string Borrow::print() const {
+	stringstream ss;
+	ss << book->print();
+	return ss.str();
+}
