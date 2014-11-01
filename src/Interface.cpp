@@ -17,10 +17,10 @@ void Interface::menu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TAB << "[1] Login\n\n\n";
-		cout << TAB << "[2] Display\n\n\n";
-		cout << TAB << "[3] Search\n\n\n";
-		cout << TAB << "[5] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
+		cout << endl << DOUBLE_TAB << DOUBLE_TAB << "[1] Login\n\n";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "[2] Display\n\n";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "[3] Quit\n\n" << DOUBLE_TAB << TAB
+				<< PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -30,11 +30,13 @@ void Interface::menu() {
 		case '2':
 			displayMenu();
 			break;
-
-		case '4':
-			create();
+		case '3':
+			if (confirmOperation(exitDialog)) {
+				clearScreen();
+				exit = true;
+			}
 			break;
-		case '5':
+		case ESCAPE_KEY:
 			if (confirmOperation(exitDialog)) {
 				clearScreen();
 				exit = true;
@@ -73,15 +75,18 @@ void Interface::readerMenu(Person*reader) {
 		clearScreen();
 		displayHeader(header);
 
-		cout << "\t\t\tAge :\t" << reader->getAge() << endl;
-		cout << "\t\t\tCard :\t" << reader->getCard() << endl;
-		cout << "\t\t\tPhone :\t" << reader->getPhone() << endl;
-		cout << "\t\t\tEmail :\t" << reader->getEmail() << endl;
-		cout << endl << TAB << "[1] Borrowed books\n";
-		cout << TAB << "[2] Return a book\n";
-		cout << TAB << "[3] History\n";
-		cout << TAB << "[4] Return to main menu\n\n" << SYMBOL_TAB
-				<< PROMPT_SYMBOL;
+		cout << DOUBLE_TAB << TAB << "Age :" << TAB << reader->getAge() << endl;
+		cout << DOUBLE_TAB << TAB << "Card :" << TAB << reader->getCard()
+				<< endl;
+		cout << DOUBLE_TAB << TAB << "Phone :" << TAB << reader->getPhone()
+				<< endl;
+		cout << DOUBLE_TAB << TAB << "Email :" << TAB << reader->getEmail()
+				<< endl;
+		cout << endl << DOUBLE_TAB << TAB << "[1] Borrowed books\n";
+		cout << DOUBLE_TAB << TAB << "[2] Return a book\n";
+		cout << DOUBLE_TAB << TAB << "[3] History\n";
+		cout << DOUBLE_TAB << TAB << "[4] Logout\n\n" << DOUBLE_TAB
+				<< TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -94,6 +99,10 @@ void Interface::readerMenu(Person*reader) {
 		case '3':
 			break;
 		case '4':
+			clearScreen();
+			exit = true;
+			break;
+		case ESCAPE_KEY:
 			clearScreen();
 			exit = true;
 			break;
@@ -111,16 +120,21 @@ void Interface::employeeMenu(Person* employee) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << "\t\t\tAge :\t" << employee->getAge() << endl;
-		cout << "\t\t\tCard :\t" << employee->getNif() << endl;
-		cout << "\t\t\tPhone :\t" << employee->getPhone() << endl;
-		cout << "\t\t\tEmail :\t" << employee->getEmail() << endl;
-		cout << "\t\t\tWage :\t" << employee->getWage() << " euros" << endl;
-		cout << endl << TAB << "[1] Borrow a book\n";
-		cout << TAB << "[2] Manage readers\n";
-		cout << TAB << "[3] Manage book\n";
-		cout << TAB << "[4] Return to main menu\n\n" << SYMBOL_TAB
-				<< PROMPT_SYMBOL;
+		cout << DOUBLE_TAB << TAB << "Age :" << TAB << employee->getAge()
+				<< endl;
+		cout << DOUBLE_TAB << TAB << "Card :" << TAB << employee->getNif()
+				<< endl;
+		cout << DOUBLE_TAB << TAB << "Phone :" << TAB << employee->getPhone()
+				<< endl;
+		cout << DOUBLE_TAB << TAB << "Email :" << TAB << employee->getEmail()
+				<< endl;
+		cout << DOUBLE_TAB << TAB << "Wage :" << TAB << employee->getWage()
+				<< " euros" << endl;
+		cout << endl << DOUBLE_TAB << TAB << "[1] Borrow a book\n";
+		cout << DOUBLE_TAB << TAB << "[2] Manage readers\n";
+		cout << DOUBLE_TAB << TAB << "[3] Manage book\n";
+		cout << DOUBLE_TAB << TAB << "[4] Logout\n\n" << DOUBLE_TAB
+				<< TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -135,6 +149,10 @@ void Interface::employeeMenu(Person* employee) {
 			clearScreen();
 			exit = true;
 			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
 		default:
 			break;
 		}
@@ -142,6 +160,50 @@ void Interface::employeeMenu(Person* employee) {
 }
 
 void Interface::supervisorMenu(Person* supervisor) {
+	char input;
+	bool exit = false;
+	string header = "Supervisor   " + supervisor->getName();
+
+	do {
+		clearScreen();
+		displayHeader(header);
+		cout << DOUBLE_TAB << TAB << "Age :" << TAB << supervisor->getAge()
+				<< endl;
+		cout << DOUBLE_TAB << TAB << "Card :" << TAB << supervisor->getNif()
+				<< endl;
+		cout << DOUBLE_TAB << TAB << "Phone :" << TAB << supervisor->getPhone()
+				<< endl;
+		cout << DOUBLE_TAB << TAB << "Email :" << TAB << supervisor->getEmail()
+				<< endl;
+		cout << DOUBLE_TAB << TAB << "Wage :" << TAB << supervisor->getWage()
+				<< " euros" << endl;
+		cout << endl << DOUBLE_TAB << TAB << "[1] Display employees team\n";
+		cout << DOUBLE_TAB << TAB << "[2] Manage employees\n";
+		cout << DOUBLE_TAB << TAB << "[3] Manage supervisors\n";
+		cout << DOUBLE_TAB << TAB << "[4] Logout\n\n" << DOUBLE_TAB
+				<< TAB << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			clearScreen();
+			break;
+		case '2':
+			break;
+		case '3':
+			break;
+		case '4':
+			clearScreen();
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
 }
 
 void Interface::create() {
@@ -963,18 +1025,19 @@ void Interface::displayMenu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TAB << "[1] All\n\n";
-		cout << TAB << "[2] Readers\n\n";
-		cout << TAB << "[3] Employees\n\n";
-		cout << TAB << "[4] Supervisors\n\n";
-		cout << TAB << "[5] Book\n\n";
-		cout << TAB << "[6] Exit to menu\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
+		cout << endl << DOUBLE_TAB << DOUBLE_TAB << "[1] Persons\n\n";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "[2] Readers\n\n";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "[3] Employees\n\n";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "[4] Supervisors\n\n";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "[5] Books\n\n";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "[6] Exit to menu\n\n\n"
+				<< DOUBLE_TAB << TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
 		case '1':
 			clearScreen();
-			genericDisplay(library.getPersons(), "All",
+			genericDisplay(library.getPersons(), "Persons",
 					"Name       Age       Phone       Email       [Card]       Nif       Wage");
 			break;
 		case '2':
@@ -998,6 +1061,10 @@ void Interface::displayMenu() {
 					"Author		Borrowed	Quota	PageNumber	ISBN	Title");
 			break;
 		case '6':
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
 			exit = true;
 			break;
 		default:
@@ -1045,7 +1112,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
 	float pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
 	bool done = false;
-	string vLimitMsg = " [q] to interrupt or any other key to continue...";
+	string vLimitMsg = " [ESC] to interrupt or any other key to continue...";
 	char ch;
 
 	while (i < vecSize && !done) {
@@ -1070,7 +1137,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 				pCount++;
 				cout << " " << string(78, '-') << " " << vLimitMsg;
 				ch = getKey();
-				if (ch == 'q')
+				if (ch == ESCAPE_KEY)
 					done = true;
 			}
 		}

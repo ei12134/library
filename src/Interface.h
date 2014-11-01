@@ -28,7 +28,7 @@ using namespace std;
 #endif
 
 #define MAX_LINES 5
-#define TAB string(26, ' ')
+#define TAB "\t"
 #define DOUBLE_TAB "\t\t"
 #define SYMBOL_TAB string(22, ' ')
 #define SYMBOL_SHORT_TAB string(1, ' ')
@@ -47,6 +47,7 @@ public:
 	void displayMenu();
 	void clearScreen();
 	void dispatchPerson(Person* person);
+	void searchMenu();
 	void readerMenu(Person* reader);
 	void employeeMenu(Person* employee);
 	void supervisorMenu(Person* supervisor);
