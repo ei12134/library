@@ -1,0 +1,7 @@
+.settings
+.cproject
+.project
+/Debug
+/doc/report.log
+/doc/report.aux
+/doc/report.synctex
