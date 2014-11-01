@@ -41,15 +41,15 @@ public:
 	void menu();
 	void displayMenu();
 	void clearScreen();
+	void readerMenu(Person* reader);
 	void create();
 	void createPerson();
 	void createEmployees();
 	void createReaders();
 	void createSupervisors();
 	void createBook();
-
 	void searchPerson();
-	void displayHeader(string header);
+	void displayHeader(string& header);
 	bool confirmOperation(string& query);
 	string readInputString(string dialog);
 	void pressAnyKey();
