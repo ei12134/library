@@ -8,7 +8,7 @@ Employee::Employee(string name, unsigned int age, unsigned int phoneNumber,
 	this->supervisor = supervisor;
 }
 
-Employee::Employee(fstream& s) :
+Employee::Employee(fstream& s, bool superv) :
 		Person(s) {
 	stringstream ss;
 	string sNif, sWage, sSupervisor;
@@ -21,20 +21,38 @@ Employee::Employee(fstream& s) :
 	ss.clear();
 	this->nif = nif;
 
-	getline(s, sWage, ';');
+	if (!superv) // read last input until newline
+		getline(s, sWage);
+	else
+		getline(s, sWage, ';');
 	ss << sWage;
 	ss >> wage;
 	ss.clear();
 	this->wage = wage;
 
-	getline(s, sSupervisor); // read last input until newline
-	ss << sSupervisor;
-	ss >> supervisor;
-	ss.clear();
-	this->supervisor = supervisor;
+	this->supervisor = superv;
+}
+
+void Employee::saveData(ofstream &of) {
+	Person::saveData(of);
+	of << nif << ";" << wage;
+	if (supervisor) {
+		of << ";";
+		if (team.size() > 0)
+			of << team[0]->getName();
+		for (unsigned x = 1; x < team.size(); x++) {
+			of << "," << team[x]->getName();
+		}
+	}
+	of << endl;
 }
 
 Employee::~Employee() {
+}
+
+void Employee::addEmplyee(Employee * e) {
+	if (supervisor)
+		this->team.push_back(e);
 }
 
 vector<Borrow*> Employee::getBorrowedBooks() const {

@@ -19,6 +19,8 @@ public:
 	Person(string name, unsigned int age, unsigned int phone, string email);
 	Person(fstream& s);
 	virtual ~Person();
+
+	virtual void saveData(ofstream &of) = 0;
 	virtual string print();
 	virtual unsigned int getType() = 0;
 	virtual unsigned int getCard() const = 0;

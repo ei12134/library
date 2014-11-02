@@ -13,9 +13,20 @@ Library::Library() {
 }
 
 Library::~Library() {
-	//saveBooks();
+	saveBooks();
 	// savePersons etc...
 	// save containers to files? then delete them
+	// destruir os poiter dos vectores
+
+	for (unsigned x = 0; x < books.size(); x++)
+		delete books[x];
+	books.clear();
+	for (unsigned x = 0; x < borrows.size(); x++)
+		delete borrows[x];
+	borrows.clear();
+	for (unsigned x = 0; x < persons.size(); x++)
+		delete persons[x];
+	persons.clear();
 }
 
 vector<Book*> Library::getBooks() const {
@@ -114,7 +125,45 @@ bool Library::removePerson(Person* person) {
 // Load ---------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------
 void Library::loadPersons() {
+// read employees
 	fstream file;
+	file.open(EMPLOYEES_FILE);
+	vector<Employee*> temp;
+	if (file.is_open()) {
+		while (file.good()) {
+			Employee* employee = new Employee(file, false);
+			temp.push_back(employee);
+		}
+	}
+	file.close();
+
+// read supercisores
+	stringstream ss;
+	string employs;
+	string e;
+	file.open(SUPERVISOR_FILE);
+	if (file.is_open()) {
+		while (file.good()) {
+			Employee* employee = new Employee(file, true);
+			getline(file, employs);	// read last input until newline
+			ss << employs;
+			while (getline(ss, e, ',')) {
+				for (unsigned x = 0; x < temp.size(); x++) {
+					if (temp[x]->getName() == e) {// emplyee existe em memoria (se nao existir nao adiciona)
+						employee->addEmplyee(temp[x]);
+						break;
+					}
+				}
+			}
+			ss.clear();
+			persons.push_back(employee);
+		}
+	}
+	file.close();
+// now add all the employees to the main vector
+	persons.insert(persons.end(), temp.begin(), temp.end());
+
+//
 	file.open(READERS_FILE);
 	if (file.is_open()) {
 		while (file.good()) {
@@ -123,20 +172,11 @@ void Library::loadPersons() {
 		}
 	}
 	file.close();
-
-	file.open(EMPLOYEES_FILE);
-	if (file.is_open()) {
-		while (file.good()) {
-			Employee* employee = new Employee(file);
-			persons.push_back(employee);
-		}
-	}
-	file.close();
 }
 
 void Library::loadBooks() {
 	fstream file;
-	file.open("books.csv");
+	file.open(BOOKS_FILE);
 	if (file.is_open()) {
 		while (file.good()) {
 			Book* bk = new Book(file);
@@ -146,13 +186,18 @@ void Library::loadBooks() {
 	file.close();
 }
 
+void Library::loadBorrowBooks() {
+
+
+	// no final adicionar borrow books aos readers
+}
+
 // --------------------------------------------------------------------------------------
 // save ---------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------
 
 void Library::saveBooks() {
-	ofstream pFile("books.csv");
-	//pFile<<"Author Borrowed Quota PageNumber Isbn Title";
+	ofstream pFile(BOOKS_FILE);
 	for (unsigned int i = 0; i < books.size(); i++) {
 		vector<string> authors = books[i]->getAuthors();
 		if (authors.size() > 0) {
@@ -167,17 +212,34 @@ void Library::saveBooks() {
 	pFile.close();
 }
 
-void Library::saveEmployees() {
-	ofstream pFile("employees.csv");
-	//pFile<<"Author Borrowed Quota PageNumber Isbn Title";
-	for (unsigned int i = 0; i < getEmployees().size(); i++) {
-		pFile << getEmployees()[i]->getName() << ";"
-				<< getEmployees()[i]->getAge() << ";"
-				<< getEmployees()[i]->getEmail(); //remover este ";" e descomentar o resto
-//
-//				<< ";"
-//				<< getEmployees()[i]->getnif<< ";" << getEmployees()[i]->getwage()
-//				<<endl ;
+void Library::savePersons() {
+	ofstream pFileEmplayees(EMPLOYEES_FILE);
+	ofstream pFileSuperviseres(SUPERVISOR_FILE);
+	ofstream pFileReaders(READERS_FILE);
+
+	for (unsigned int i = 0; i < persons.size(); i++) {
+		switch (persons[i]->getType()) {
+		case 1:	// reader
+			persons[i]->saveData(pFileReaders);
+			break;
+		case 2:	// employee
+			persons[i]->saveData(pFileEmplayees);
+			break;
+		case 3: // supervisor
+			persons[i]->saveData(pFileSuperviseres);
+			break;
+		default:
+			break;
+		}
 	}
+
+	pFileReaders.close();
+	pFileSuperviseres.close();
+	pFileEmplayees.close();
+}
+
+void Library::SaveBorrows() {
+	ofstream pFile(BORROWS_FILE);
+
 	pFile.close();
 }

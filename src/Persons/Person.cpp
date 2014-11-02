@@ -32,6 +32,10 @@ Person::Person(fstream& s) {
 	this->email = email;
 }
 
+void Person::saveData(ofstream &of) {
+	of << name << ";" << age << ";" << phone << ";" << email << ";";
+}
+
 Person::~Person() {
 }
 

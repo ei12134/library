@@ -17,16 +17,21 @@ class Employee: public Person {
 	bool supervisor;
 	vector<Employee *> team;
 public:
-	Employee(fstream& s);
+	Employee(fstream& s,bool superv);
 	Employee(string name, unsigned int age, unsigned int phone, string email,
 			unsigned int nif, unsigned int wage, bool supervisor);
 	virtual ~Employee();
+
+	void saveData(ofstream &of);
+
 	unsigned int getNif() const;
 	unsigned int getWage() const;
 	unsigned int getType();
 	unsigned int getCard() const;
 	void setSupervisor(bool super);
 	bool isSupervisor() const;
+
+	void addEmplyee(Employee * e);
 
 	void setNif(unsigned int nif);
 	void setWage(unsigned int wage);

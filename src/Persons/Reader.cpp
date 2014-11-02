@@ -22,6 +22,18 @@ Reader::Reader(fstream& s) :
 //	readerID++;
 }
 
+void Reader::saveData(ofstream &of) {
+	Person::saveData(of);
+	of << card << ";";
+
+	if (borrowedBooks.size() > 0)
+		//of << borrowedBooks[0]->getID();
+	for (unsigned x = 1; x < borrowedBooks.size(); x++) {
+		//of << "," << borrowedBooks[x]->getID();
+	}
+	of << endl;
+}
+
 Reader::~Reader() {
 
 }

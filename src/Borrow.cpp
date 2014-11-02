@@ -1,9 +1,9 @@
 #include "Borrow.h"
 
 Borrow::Borrow(Book* book, Employee* employee, Reader* reader, Date borrowDate,
-		Date expectedDeliveryDate) :
+		Date expectedDeliveryDate, unsigned long int borrowId) :
 		book(book), employee(employee), reader(reader), borrowDate(borrowDate), expectedDeliveryDate(
-				expectedDeliveryDate), Returned { false } {
+				expectedDeliveryDate), Returned { false }, id(borrowId) {
 }
 
 Book* Borrow::getBook() const {
@@ -16,6 +16,9 @@ Employee* Borrow::getEmployee() const {
 
 Reader* Borrow::getReader() const {
 	return reader;
+}
+unsigned long int Borrow::getID() const {
+	return id;
 }
 
 float Borrow::CalcFee() const {

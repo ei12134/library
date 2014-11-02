@@ -8,6 +8,7 @@ class Borrow;
 #include <fstream>
 #include <iostream>
 #include "Person.h"
+
 using namespace std;
 
 static const unsigned int MAX_BORROWS = 3;
@@ -23,6 +24,9 @@ public:
 			unsigned int card);
 	Reader(fstream& s);
 	virtual ~Reader();
+
+	void saveData(ofstream &of);
+
 	vector<Borrow*> getBorrowedBooks() const;
 	unsigned int getCard() const;
 	unsigned int getNif() const;

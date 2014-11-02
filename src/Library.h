@@ -3,8 +3,8 @@
 
 #define BOOKS_FILE "books.csv"
 #define BORROWS_FILE "borrows.csv"
-#define READERS_FILE "readers.csv"
 
+#define READERS_FILE "readers.csv"
 #define EMPLOYEES_FILE "employees.csv"
 #define SUPERVISOR_FILE "supervisor.csv"
 
@@ -29,7 +29,6 @@ private:
 	/// vector to Person pointer type objects
 	vector<Person*> persons;
 
-
 	/** Loads stored books
 	 * Loads *.csv files to the persons vector
 	 */
@@ -47,11 +46,17 @@ private:
 	/**
 	 *Guarda o vetor persons no ficheiro employees.csv
 	 */
-	void saveEmployees();
+	void savePersons();
+
+	void SaveBorrows();
+
+	void loadBorrowBooks();
 
 public:
-	/// reader unique identifier
+	/// reader unique identifier(solution save in separate file this unique ids)
 	static unsigned long int readerID;
+	static unsigned long int borrowID;
+
 	/** Library constructor reads *.csv files and stores
 	 * pointers to each object in their dedicated container */
 	Library();
