@@ -5,42 +5,16 @@ unsigned long int Library::readerID = 1;
 
 Library::Library() {
 	loadBooks();
-//	loadBorrows();
-	loadPersons();
+	//loadPersons();
+	//loadBorrows();
 	/* ...
 	 * associations?
 	 */
 }
 
-void Library::saveBooks() {
-	ofstream pFile("books.csv");
-	//pFile<<"Author Borrowed Quota PageNumber Isbn Title";
-	for (unsigned int i = 0; i < books.size(); i++) {
-		pFile << books[i]->getAuthor() << ";" << books[i]->getBorrowed() << ";"
-				<< books[i]->getQuota() << ";" << books[i]->getPageNumber()
-				<< ";" << books[i]->getIsbn() << ";" << books[i]->getTitle()
-				<< endl;
-	}
-	pFile.close();
-}
-void Library::saveEmployees() {
-	ofstream pFile("employees.csv");
-	//pFile<<"Author Borrowed Quota PageNumber Isbn Title";
-	for (unsigned int i = 0; i < getEmployees().size(); i++) {
-		pFile << getEmployees()[i]->getName() << ";"
-				<< getEmployees()[i]->getAge() << ";"
-				<< getEmployees()[i]->getEmail(); //remover este ";" e descomentar o resto
-//
-//				<< ";"
-//				<< getEmployees()[i]->getnif<< ";" << getEmployees()[i]->getwage()
-//				<<endl ;
-	}
-	pFile.close();
-}
-
 Library::~Library() {
-	saveBooks();
-	//savePersons etc...
+	//saveBooks();
+	// savePersons etc...
 	// save containers to files? then delete them
 }
 
@@ -136,6 +110,9 @@ bool Library::removePerson(Person* person) {
 	return false;
 }
 
+// --------------------------------------------------------------------------------------
+// Load ---------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------
 void Library::loadPersons() {
 	fstream file;
 	file.open(READERS_FILE);
@@ -167,4 +144,40 @@ void Library::loadBooks() {
 		}
 	}
 	file.close();
+}
+
+// --------------------------------------------------------------------------------------
+// save ---------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------
+
+void Library::saveBooks() {
+	ofstream pFile("books.csv");
+	//pFile<<"Author Borrowed Quota PageNumber Isbn Title";
+	for (unsigned int i = 0; i < books.size(); i++) {
+		vector<string> authors = books[i]->getAuthors();
+		if (authors.size() > 0) {
+			pFile << authors.at(0);
+			for (unsigned x = 1; x < authors.size(); x++)
+				pFile << "," << authors.at(x);
+		}
+		pFile << ";" << books[i]->getBorrowed() << ";" << books[i]->getQuota()
+				<< ";" << books[i]->getPageNumber() << ";"
+				<< books[i]->getIsbn() << ";" << books[i]->getTitle() << endl;
+	}
+	pFile.close();
+}
+
+void Library::saveEmployees() {
+	ofstream pFile("employees.csv");
+	//pFile<<"Author Borrowed Quota PageNumber Isbn Title";
+	for (unsigned int i = 0; i < getEmployees().size(); i++) {
+		pFile << getEmployees()[i]->getName() << ";"
+				<< getEmployees()[i]->getAge() << ";"
+				<< getEmployees()[i]->getEmail(); //remover este ";" e descomentar o resto
+//
+//				<< ";"
+//				<< getEmployees()[i]->getnif<< ";" << getEmployees()[i]->getwage()
+//				<<endl ;
+	}
+	pFile.close();
 }

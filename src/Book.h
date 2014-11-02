@@ -13,7 +13,7 @@ using namespace std;
 
 class Book {
 private:
-	string author;
+	vector<string> authors;
 	bool borrowed;
 	string quota;
 	int pageNumber;
@@ -25,13 +25,13 @@ public:
 	virtual ~Book();
 	Book(fstream& s);
 	string print();
-	string getAuthor();
+	vector<string> getAuthors();
 	string getQuota();
 	string getIsbn();
 	string getTitle();
 	int getPageNumber();
 	bool getBorrowed();
-	void setAuthor(string author);
+	void addAuthor(string author);
 	void setBorrowed(bool borrowed);
 	void setQuota(string quota);
 	void setPageNumber(int pageNumber);

@@ -4,7 +4,9 @@
 #define BOOKS_FILE "books.csv"
 #define BORROWS_FILE "borrows.csv"
 #define READERS_FILE "readers.csv"
+
 #define EMPLOYEES_FILE "employees.csv"
+#define SUPERVISOR_FILE "supervisor.csv"
 
 #include <vector>
 #include <fstream>
@@ -26,6 +28,26 @@ private:
 	vector<Borrow*> borrows;
 	/// vector to Person pointer type objects
 	vector<Person*> persons;
+
+
+	/** Loads stored books
+	 * Loads *.csv files to the persons vector
+	 */
+	void loadBooks();
+
+	/** Loads stored persons
+	 * Loads *.csv files to the persons vector
+	 */
+	void loadPersons();
+	/**
+	 *Guarda o vetor Books no ficheiro books.csv
+	 */
+
+	void saveBooks();
+	/**
+	 *Guarda o vetor persons no ficheiro employees.csv
+	 */
+	void saveEmployees();
 
 public:
 	/// reader unique identifier
@@ -84,23 +106,6 @@ public:
 	 *@param person Person pointer
 	 */
 	void addPerson(Person* person);
-
-	/** Loads stored persons
-	 * Loads *.csv files to the persons vector
-	 */
-	void loadPersons();
-	/**
-	 *Guarda o vetor Books no ficheiro books.csv
-	 */
-	void saveBooks();
-	/**
-	 *Guarda o vetor persons no ficheiro employees.csv
-	 */
-	void saveEmployees();
-	/** Loads stored books
-	 * Loads *.csv files to the persons vector
-	 */
-	void loadBooks();
 
 	/** removes a book from the library
 	 *@param book Book pointer

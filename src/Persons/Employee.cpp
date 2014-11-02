@@ -74,6 +74,14 @@ unsigned int Employee::getType() {
 		return 3;
 }
 
+void Employee::setSupervisor(bool super) {
+	this->supervisor = super;
+}
+
+bool Employee::isSupervisor() const {
+	return supervisor;
+}
+
 unsigned int Employee::getCard() const {
 	return 0;
 }

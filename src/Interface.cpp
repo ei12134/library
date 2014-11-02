@@ -351,13 +351,16 @@ void PressAnyKey() {
 	cin.get();
 }
 
-
 void Interface::createBook() {
 
+	string header = "Create Book";
 	string newAuthor, newPageNumber, newQuota, newIsbn, newTitle;
 	stringstream ss;
 	unsigned int newPageNumbe;
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	bool valid = false;
+	char ch;
+	clearScreen();
+	displayHeader(header);
 
 	while (newAuthor == "" || !is_All_ASCII_Letter(newAuthor)) {
 		cout << " Author: ";
@@ -379,339 +382,82 @@ void Interface::createBook() {
 	while (newTitle == "") {
 		cout << " Title: ";
 		getline(cin, newTitle, '\n');
-	}
 
-	ss << newPageNumber;
-	ss >> newPageNumbe;
-	Book *b = new Book(newAuthor, false, newQuota, newPageNumbe, newIsbn,
-			newTitle);
-	library.addBook(b);
-	cout << " " << newAuthor << " adicionado com sucesso.\n";
+	}
+	cout << "Press S to save" << endl;
+	ch = cin.get();
+	if (ch == 's' || ch == 'S') {
+		valid = true;
+	}
+	if (valid) {
+		ss << newPageNumber;
+		ss >> newPageNumbe;
+		vector<Book*> books = library.getBooks();
+		Book *b = new Book(newAuthor, false, newQuota, newPageNumbe, newIsbn,
+				newTitle);
+		library.addBook(b);
+		cout << " " << newAuthor << " adicionado com sucesso.\n";
+	}
 	PressAnyKey();
 }
 
 void Interface::createEmployee() {
-	string confirmDialog =
-			" Do you want to create a new employee with this information?";
-	bool exitRequest = false;
-	bool confirmName = false;
-	bool confirmAge = false;
-	bool confirmPhone = false;
-	bool confirmEmail = false;
-	bool confirmNif = false;
-	bool confirmWage = false;
-	string newName;
-	unsigned int newAge;
-	unsigned int newPhone;
-	string newEmail;
-	unsigned int newNif;
-	unsigned int newWage;
+	string header = "Create Employee";
+	string newName, newAge, newPhone, newEmail, newNif, newWage;
+	stringstream ss;
+	unsigned int newAg, newPhon, newNi, newWag;
+	bool valid = false;
+	char ch;
+	clearScreen();
+	displayHeader(header);
 
-	string confirmString;
-
-	while (!exitRequest) {
-		while (!confirmName) {
-			clearScreen();
-
-			cout << "\n " << string(30, '#') << "\n";
-			cout << " #" << string(28, ' ') << "#\n";
-			cout << " #" << string(5, ' ') << "Create new Employee"
-					<< string(5, ' ') << "#\n";
-			cout << " #" << string(28, ' ') << "#\n";
-			cout << " " << string(30, '#') << "\n\n\n";
-			cout
-					<< " Enter new Employee name or type [0] to return to main menu\n\n > ";
-			getline(cin, newName);
-
-			if (cin.fail())
-				cin.clear();
-			else {
-				if (newName == "" || newName == "\n")
-					confirmName = false;
-				else {
-					if (newName[0] == '0') {
-						exitRequest = true;
-						confirmAge = true;
-						confirmPhone = true;
-						confirmEmail = true;
-						confirmNif = true;
-						confirmWage = true;
-						break;
-					}
-
-					else {
-						if (newName.size() > 20) {
-							newName = newName.substr(0, 20);
-						}
-						if (int(newName[0]) < 65
-								|| ((int(newName[0]) > 90)
-										&& (int(newName[0]) < 97))
-								|| int(newName[0]) > 122) {
-							cout
-									<< "\n Invalid input. The first character must be a letter\n";
-							confirmName = false;
-						}
-
-						else {
-							cout << "\n Your Name used in display is: "
-									<< newName
-									<< "\n\n Is it correct? [yes to confirm]\n\n > ";
-							getline(cin, confirmString);
-
-							if (cin.fail()) {
-								cin.clear();
-							} else {
-								if (confirmString == "yes"
-										|| confirmString == "YES")
-									confirmName = true;
-								else
-									confirmName = false;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		while (!confirmAge) {
-			string ageInput;
-			cout << "\n Enter age or type [0] to return to main menu\n\n > ";
-			getline(cin, ageInput);
-
-			if (cin.fail())
-				cin.clear();
-			else {
-				if (ageInput == "" || ageInput == "\n")
-					confirmAge = false;
-				else {
-					if (ageInput[0] == '0') {
-						exitRequest = true;
-						confirmName = true;
-						confirmPhone = true;
-						confirmEmail = true;
-						confirmNif = true;
-						confirmWage = true;
-						break;
-					} else {
-						if (CheckAllDigitString(ageInput)
-								&& ageInput.size() < 4) {
-							istringstream iss(ageInput);
-							iss >> newAge;
-
-							if (ageInput[0] != '0')
-								confirmAge = true;
-							else
-								cout << "\n Wrong Input\n";
-						} else
-							cout << "\n Wrong Input\n";
-					}
-				}
-			}
-		}
-
-		while (!confirmPhone) {
-			string phoneInput;
-			cout
-					<< "\n Enter the phonenumber or type [0] to return to main menu\n\n > ";
-			getline(cin, phoneInput);
-
-			if (cin.fail())
-				cin.clear();
-			else {
-				if (phoneInput == "" || phoneInput == "\n")
-					confirmPhone = false;
-				else {
-					if (phoneInput[0] == '0') {
-						exitRequest = true;
-						confirmName = true;
-						confirmAge = true;
-						confirmEmail = true;
-						confirmNif = true;
-						confirmWage = true;
-						break;
-					} else {
-						if (CheckAllDigitString(phoneInput)) {
-							istringstream iss(phoneInput);
-							iss >> newPhone;
-
-							if (phoneInput[0] != '0')
-								confirmPhone = true;
-							else
-								cout << "\n Wrong Input\n";
-						} else
-							cout << "\n Wrong Input\n";
-					}
-				}
-			}
-		}
-
-		while (!confirmEmail) {
-
-			cout << " Enter email or type [0] to return to main menu\n\n > ";
-			getline(cin, newEmail);
-
-			if (cin.fail())
-				cin.clear();
-			else {
-				if (newEmail == "" || newEmail == "\n")
-					confirmEmail = false;
-				else {
-					if (newEmail[0] == '0') {
-						exitRequest = true;
-						confirmName = true;
-						confirmAge = true;
-						confirmPhone = true;
-						confirmNif = true;
-						confirmWage = true;
-						break;
-					}
-
-					else {
-						if (newEmail.size() > 10) {
-							newEmail = newEmail.substr(0, 10);
-						} else {
-							cout << "\n Your email used in display is: "
-									<< newEmail
-									<< "\n\n Is it correct? [yes to confirm]\n\n > ";
-							getline(cin, confirmString);
-
-							if (cin.fail())
-								cin.clear();
-							else {
-								if (confirmString == "yes"
-										|| confirmString == "YES")
-									confirmEmail = true;
-								else
-									confirmEmail = false;
-							}
-						}
-					}
-				}
-			}
-		}
-		while (!confirmNif) {
-			string nifInput;
-			cout << " Enter your NIF or type [0] to return to main menu\n\n > ";
-			getline(cin, nifInput);
-
-			if (cin.fail())
-				cin.clear();
-			else {
-				if (nifInput == "" || nifInput == "\n")
-					confirmNif = false;
-				else {
-					if (nifInput[0] == '0') {
-						exitRequest = true;
-						confirmName = true;
-						confirmAge = true;
-						confirmPhone = true;
-						confirmEmail = true;
-						confirmWage = true;
-						break;
-					} else {
-						if (CheckAllDigitString(nifInput)
-								&& nifInput.size() == 9) {
-							istringstream iss(nifInput);
-							iss >> newNif;
-
-							if (nifInput[0] != '0')
-								confirmAge = true;
-							else
-								cout << "\n Wrong Input\n";
-						} else
-							cout << "\n Wrong Input\n";
-					}
-				}
-			}
-		}
-		while (!confirmWage) {
-			string wageInput;
-			cout << "\n Enter wage or type [0] to return to main menu\n\n > ";
-			getline(cin, wageInput);
-
-			if (cin.fail())
-				cin.clear();
-			else {
-				if (wageInput == "" || wageInput == "\n")
-					confirmWage = false;
-				else {
-					if (wageInput[0] == '0') {
-						exitRequest = true;
-						confirmName = true;
-						confirmAge = true;
-						confirmPhone = true;
-						confirmEmail = true;
-						confirmNif = true;
-						break;
-					} else {
-						if (CheckAllDigitString(wageInput)) {
-							istringstream iss(wageInput);
-							iss >> newWage;
-
-							if (wageInput[0] != '0')
-								confirmWage = true;
-							else
-								cout << "\n Wrong Input\n";
-						} else
-							cout << "\n Wrong Input\n";
-					}
-				}
-			}
-		}
-
-		if (!exitRequest) {
-			cout << "\n\n " << string(38, '#') << "\n";
-			cout << " #" << string(36, ' ') << "#\n";
-			cout << " #" << string(5, ' ') << "New Employee data"
-					<< string(18, ' ') << "#\n";
-			cout << " #" << string(36, ' ') << "#\n";
-			cout << " #" << string(5, ' ') << "Name: " << newName
-					<< string(25 - newName.size(), ' ') << "#\n";
-			cout << " #" << string(5, ' ') << "age: " << ConvertToString(newAge)
-					<< string(26 - ConvertToString(newAge).size(), ' ')
-					<< "#\n";
-			cout << " #" << string(5, ' ') << "phone: "
-					<< ConvertToString(newPhone)
-					<< string(26 - ConvertToString(newPhone).size(), ' ')
-					<< "#\n";
-			cout << " #" << string(5, ' ') << "email: " << newEmail
-					<< string(25 - newEmail.size(), ' ') << "#\n";
-			cout << " #" << string(5, ' ') << "NIF: " << ConvertToString(newNif)
-					<< string(26 - ConvertToString(newNif).size(), ' ')
-					<< "#\n";
-			cout << " #" << string(5, ' ') << "WAGE: "
-					<< ConvertToString(newWage)
-					<< string(26 - ConvertToString(newWage).size(), ' ')
-					<< "#\n";
-			cout << " #" << string(36, ' ') << "#\n";
-			cout << " " << string(38, '#') << "\n\n\n";
-
-			if (confirmOperation(confirmDialog)) {
-				exitRequest = false;
-				cout << "\n\n Writing to employee.csv file\n\n";
-			} else {
-				exitRequest = true;
-				cout
-						<< "\n\n Operation canceled\n Press any key to continue...";
-				getchar();
-				/*if ( getchar() != '\n' )
-				 cin.clear( 1024,'\n' );*/
-			}
-		}
-
-		if (!exitRequest) {
-			vector<Person*> empl = library.getEmployees(); //ver melhor isto
-			Employee *s0 = new Employee(newName, newAge, newPhone, newEmail,
-					newNif, newWage, false);
-			library.addPerson(s0);
-
-			exitRequest = true;
-			cout << " Press any key to continue...";
-			if (getchar() != '\n')
-				cin.ignore(1024, '\n');
-		}
+	while (newName == "" || !is_All_ASCII_Letter(newName)) {
+		cout << " Name: ";
+		getline(cin, newName, '\n');
 	}
+	while (newAge == "" || !CheckAllDigitString(newAge) || newAge.size() > 2) {
+		cout << " Age: ";
+		getline(cin, newAge, '\n');
+	}
+	while (newPhone == "" || !CheckAllDigitString(newPhone)
+			|| newPhone.size() < 6 || newPhone.size() > 12) {
+		cout << " Phone: ";
+		getline(cin, newPhone, '\n');
+	}
+	while (newEmail == "" || newEmail.size() < 10) {
+		cout << " Mail: ";
+		getline(cin, newEmail, '\n');
+	}
+	while (newNif == "" || !CheckAllDigitString(newNif) || newNif.size() != 9) {
+		cout << " NIF: ";
+		getline(cin, newNif, '\n');
+	}
+	while (newWage == "" || !CheckAllDigitString(newWage)) {
+		cout << " Wage: ";
+		getline(cin, newWage, '\n');
+	}
+	cout << "Press S to save" << endl;
+	ch = cin.get();
+	if (ch == 's' || ch == 'S') {
+		valid = true;
+	}
+	if (valid) {
+		ss << newAge;
+		ss >> newAg;
+		ss << newPhone;
+		ss >> newPhon;
+		ss << newNif;
+		ss >> newNi;
+		ss << newWage;
+		ss >> newWag;
 
+		vector<Person*> empl = library.getEmployees();
+		Employee *s0 = new Employee(newName, newAg, newPhon, newEmail, newNi,
+				newWag,false);
+		library.addPerson(s0);
+		cout << " " << newName << " adicionado com sucesso.\n";
+	}
+	PressAnyKey();
 }
 
 void Interface::createSupervisor() {
@@ -895,8 +641,10 @@ bool Interface::confirmOperation(string& query) {
 }
 
 void Interface::pressAnyKey() {
-	cout << " Press any key to continue...";
-	getKey();
+	cout << " Pressione qualquer tecla para continuar... ";
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	cin.get();
 }
 
 template<typename T>

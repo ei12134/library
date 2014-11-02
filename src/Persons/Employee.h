@@ -25,6 +25,9 @@ public:
 	unsigned int getWage() const;
 	unsigned int getType();
 	unsigned int getCard() const;
+	void setSupervisor(bool super);
+	bool isSupervisor() const;
+
 	void setNif(unsigned int nif);
 	void setWage(unsigned int wage);
 	void createBorrow(Book *, Reader *, Employee *);
