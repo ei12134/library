@@ -18,7 +18,6 @@ Book::Book(fstream& s) {
 		string nborrowed;
 		string newquota;
 		string newpageNumber;
-
 		string newisbn;
 		string newtitle;
 
