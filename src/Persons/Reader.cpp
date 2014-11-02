@@ -4,12 +4,12 @@ Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,
 		string email, unsigned int card) :
 		Person(name, age, phoneNumber, email) {
 	this->card = card;
-	borrowedBooks.reserve(3); // limit to 3 borrowed books
+	borrowedBooks.reserve(MAX_BORROWS); // limit to 3 borrowed books
 }
 
 Reader::Reader(fstream& s) :
 		Person(s) {
-	borrowedBooks.reserve(3);
+	borrowedBooks.reserve(MAX_BORROWS);
 	stringstream ss;
 	string sCard;
 	unsigned int card;
@@ -62,7 +62,7 @@ bool Reader::removeBorrow(Borrow* borrow) {
 }
 
 bool Reader::borrowLimit() {
-	return borrowedBooks.size() > 2;
+	return borrowedBooks.size() >= MAX_BORROWS;
 }
 
 string Reader::print() {

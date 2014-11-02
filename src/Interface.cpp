@@ -254,7 +254,7 @@ void Interface::create() {
 		displayHeader(header);
 		cout << endl << TAB << "[1] Create Person\n\n";
 		cout << TAB << "[2] Create Book\n\n";
-		cout << TAB << "[3] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
+		cout << TAB << "[3] Quit\n\n\n" << TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -288,7 +288,7 @@ void Interface::createPerson() {
 		cout << endl << TAB << "[1] Create Reader\n\n";
 		cout << TAB << "[2] Create Employee\n\n";
 		cout << TAB << "[3] Create Supervisor\n\n";
-		cout << TAB << "[4] Quit\n\n\n" << SYMBOL_TAB << PROMPT_SYMBOL;
+		cout << TAB << "[4] Quit\n\n\n" << TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -702,7 +702,7 @@ void Interface::createEmployee() {
 		if (!exitRequest) {
 			vector<Person*> empl = library.getEmployees(); //ver melhor isto
 			Employee *s0 = new Employee(newName, newAge, newPhone, newEmail,
-					newNif, newWage);
+					newNif, newWage, false);
 			library.addPerson(s0);
 
 			exitRequest = true;

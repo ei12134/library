@@ -1,17 +1,19 @@
 #include "Employee.h"
 
 Employee::Employee(string name, unsigned int age, unsigned int phoneNumber,
-		string email, unsigned int nif, unsigned int wage) :
+		string email, unsigned int nif, unsigned int wage, bool supervisor) :
 		Person(name, age, phoneNumber, email) {
 	this->nif = nif;
 	this->wage = wage;
+	this->supervisor = supervisor;
 }
 
 Employee::Employee(fstream& s) :
 		Person(s) {
 	stringstream ss;
-	string sNif, sWage;
+	string sNif, sWage, sSupervisor;
 	unsigned int nif, wage;
+	bool supervisor;
 
 	getline(s, sNif, ';');
 	ss << sNif;
@@ -19,11 +21,17 @@ Employee::Employee(fstream& s) :
 	ss.clear();
 	this->nif = nif;
 
-	getline(s, sWage); // read last input until newline
+	getline(s, sWage, ';');
 	ss << sWage;
 	ss >> wage;
 	ss.clear();
 	this->wage = wage;
+
+	getline(s, sSupervisor); // read last input until newline
+	ss << sSupervisor;
+	ss >> supervisor;
+	ss.clear();
+	this->supervisor = supervisor;
 }
 
 Employee::~Employee() {
@@ -60,7 +68,10 @@ string Employee::print() {
 }
 
 unsigned int Employee::getType() {
-	return 2;
+	if (!supervisor)
+		return 2;
+	else
+		return 3;
 }
 
 unsigned int Employee::getCard() const {
@@ -68,5 +79,8 @@ unsigned int Employee::getCard() const {
 }
 
 string Employee::printType() {
-	return "[Employee]";
+	if (!supervisor)
+		return "[Employee]";
+	else
+		return "[Supervisor]";
 }

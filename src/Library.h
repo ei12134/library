@@ -5,12 +5,10 @@
 #define BORROWS_FILE "borrows.csv"
 #define READERS_FILE "readers.csv"
 #define EMPLOYEES_FILE "employees.csv"
-#define SUPERVISORS_FILE "supervisors.csv"
 
 #include <vector>
 #include <fstream>
 #include "./Persons/Person.h"
-#include "./Persons/Supervisor.h"
 #include "Book.h"
 #include "Borrow.h"
 using namespace std;

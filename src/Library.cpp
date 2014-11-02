@@ -27,8 +27,9 @@ void Library::saveEmployees() {
 	ofstream pFile("employees.csv");
 	//pFile<<"Author Borrowed Quota PageNumber Isbn Title";
 	for (unsigned int i = 0; i < getEmployees().size(); i++) {
-		pFile << getEmployees()[i]->getName() << ";" << getEmployees()[i]->getAge()
-				<< ";" << getEmployees()[i]->getEmail() ; //remover este ";" e descomentar o resto
+		pFile << getEmployees()[i]->getName() << ";"
+				<< getEmployees()[i]->getAge() << ";"
+				<< getEmployees()[i]->getEmail(); //remover este ";" e descomentar o resto
 //
 //				<< ";"
 //				<< getEmployees()[i]->getnif<< ";" << getEmployees()[i]->getwage()
@@ -151,15 +152,6 @@ void Library::loadPersons() {
 		while (file.good()) {
 			Employee* employee = new Employee(file);
 			persons.push_back(employee);
-		}
-	}
-	file.close();
-
-	file.open(SUPERVISORS_FILE);
-	if (file.is_open()) {
-		while (file.good()) {
-			Supervisor* supervisor = new Supervisor(file);
-			persons.push_back(supervisor);
 		}
 	}
 	file.close();

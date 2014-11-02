@@ -28,11 +28,9 @@ using namespace std;
 #define CLEAR "clear"
 #endif
 
-#define MAX_LINES 5
 #define TAB "\t"
 #define DOUBLE_TAB "\t\t"
-#define SYMBOL_TAB string(22, ' ')
-#define SYMBOL_SHORT_TAB string(1, ' ')
+#define MAX_LINES 5
 #define BACSKPACE_KEY 8
 #define RETURN_KEY 13
 #define ESCAPE_KEY 27

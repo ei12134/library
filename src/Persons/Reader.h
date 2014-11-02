@@ -10,6 +10,8 @@ class Borrow;
 #include "Person.h"
 using namespace std;
 
+static const unsigned int MAX_BORROWS = 3;
+
 class Reader: public Person {
 
 private:
