@@ -17,7 +17,7 @@ class Person {
 	string name;
 public:
 	Person(string name, unsigned int age, unsigned int phone, string email);
-	Person(fstream& s);
+	Person(ifstream& s);
 	virtual ~Person();
 
 	virtual void saveData(ofstream &of) = 0;

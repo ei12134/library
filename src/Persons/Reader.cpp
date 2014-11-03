@@ -7,7 +7,7 @@ Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,
 	borrowedBooks.reserve(MAX_BORROWS); // limit to 3 borrowed books
 }
 
-Reader::Reader(fstream& s) :
+Reader::Reader(ifstream& s) :
 		Person(s) {
 	borrowedBooks.reserve(MAX_BORROWS);
 	stringstream ss;
@@ -31,7 +31,7 @@ void Reader::saveData(ofstream &of) {
 	for (unsigned x = 1; x < borrowedBooks.size(); x++) {
 		of << "," << borrowedBooks[x]->getID();
 	}
-	of << endl;
+	//nao poem endl
 }
 
 Reader::~Reader() {

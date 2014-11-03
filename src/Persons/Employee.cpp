@@ -8,7 +8,7 @@ Employee::Employee(string name, unsigned int age, unsigned int phoneNumber,
 	this->supervisor = supervisor;
 }
 
-Employee::Employee(fstream& s, bool superv) :
+Employee::Employee(ifstream& s, bool superv) :
 		Person(s) {
 	stringstream ss;
 	string sNif, sWage, sSupervisor;
@@ -44,7 +44,7 @@ void Employee::saveData(ofstream &of) {
 			of << "," << team[x]->getName();
 		}
 	}
-	of << endl;
+	// nao poem endl
 }
 
 Employee::~Employee() {
@@ -82,6 +82,14 @@ void createBorrow(Book *, Reader *, Employee *) {
 string Employee::print() {
 	stringstream ss;
 	ss << Person::print() << "   " << nif << "   " << wage;
+	if (supervisor) {
+		ss << "   ";
+		if (team.size() > 0)
+			ss << team[0]->getName();
+		for (unsigned x = 1; x < team.size(); x++) {
+			ss << "   " << team[x]->getName();
+		}
+	}
 	return ss.str();
 }
 

@@ -22,7 +22,7 @@ private:
 public:
 	Reader(string name, unsigned int age, unsigned int phone, string email,
 			unsigned int card);
-	Reader(fstream& s);
+	Reader(ifstream& s);
 	virtual ~Reader();
 
 	void saveData(ofstream &of);

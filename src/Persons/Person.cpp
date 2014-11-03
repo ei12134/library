@@ -8,7 +8,7 @@ Person::Person(string name, unsigned int age, unsigned int phone,
 	this->email = email;
 }
 
-Person::Person(fstream& s) {
+Person::Person(ifstream& s) {
 	stringstream ss;
 	string name, email, sAge, sPhone;
 	unsigned int age, phone;

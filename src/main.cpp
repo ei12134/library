@@ -4,7 +4,8 @@
 using namespace std;
 
 int main() {
-	Interface();
+	//Interface();
 
+	Library l = Library();
 	return 0;
 }
