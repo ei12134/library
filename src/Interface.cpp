@@ -242,13 +242,21 @@ void Interface::manageEmployees(Person* supervisor) {
 	char input;
 	bool exit = false;
 	string header = "Manage employees";
+	string message;
 
 	do {
 		clearScreen();
 		displayHeader(header);
 		cout << endl << TRI_TAB << "[1] Create employee\n";
 		cout << TRI_TAB << "[2] Edit employee\n";
-		cout << TRI_TAB << "[3] Exit\n\n" << DOUBLE_TAB << TAB << PROMPT_SYMBOL;
+		cout << TRI_TAB << "[3] Remove employee\n";
+		cout << TRI_TAB << "[4] Exit\n\n";
+		if (message != "") {
+			cout << TRI_TAB << message << endl << endl;
+			message.clear();
+		}
+		cout << TRI_TAB << PROMPT_SYMBOL;
+
 		input = getKey();
 		switch (input) {
 		case '1':
@@ -258,6 +266,14 @@ void Interface::manageEmployees(Person* supervisor) {
 		case '2':
 			break;
 		case '3':
+			clearScreen();
+			if (removeEmployee(searchPerson(library.getEmployees()),
+					supervisor))
+				message = "Employee removed successfully";
+			else
+				message = "You can't remove yourself";
+			break;
+		case '4':
 			clearScreen();
 			exit = true;
 			break;
@@ -388,11 +404,11 @@ void Interface::editBook(Book* book) {
 	char input;
 	bool exit = false;
 	string header = "Edit book";
-
 	do {
 		string newQuota, newTitle, newIsbn, newPageNumberStr, changesMessage;
 		unsigned int newPageNumber;
 		stringstream ss;
+		istringstream s;
 
 		clearScreen();
 		displayHeader(header);
@@ -487,6 +503,19 @@ void Interface::removeBook(Book* book) {
 			break;
 		}
 	library.setBooks(books);
+}
+
+bool Interface::removeEmployee(Person* employee, Person* supervisor) {
+	if (employee == supervisor)
+		return false;
+	vector<Person*> persons = library.getPersons();
+	for (size_t i = 0; i < persons.size(); i++)
+		if (persons[i] == employee) {
+			persons.erase(persons.begin() + i);
+			break;
+		}
+	library.setPersons(persons);
+	return true;
 }
 
 Person* Interface::searchPerson(vector<Person*> persons) {
@@ -854,9 +883,3 @@ vector<string> Interface::editAuthors() {
 	}
 	return authors;
 }
-
-//template<class T>
-//ostream Interface::optionalString(std::ostream &os, T s) {
-//	os << "[" << s << "]";
-//	return os;
-//}

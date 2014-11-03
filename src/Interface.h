@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
-#include <sstream>
 #include <fstream>
 #include <limits>
 #include <math.h>
@@ -59,6 +58,7 @@ public:
 	void createReader();
 	void editBook(Book* book);
 	void removeBook(Book* book);
+	bool removeEmployee(Person* employee, Person* supervisor);
 	vector<string> editAuthors();
 	Person* searchPerson(vector<Person*> persons);
 	Book* searchBook(vector<Book*> books);
@@ -70,8 +70,6 @@ public:
 	void genericDisplay(vector<T> vec, string listName, string labels);
 	virtual ~Interface();
 	char getKey();
-//	template<class T>
-//	ostream optionalString(std::ostream &os, T s);
 	bool is_Number(const int & c);
 };
 
