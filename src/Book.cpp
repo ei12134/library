@@ -1,10 +1,12 @@
 #include "Book.h"
 using namespace std;
 
+unsigned long int Book::bookID = 0;
+
 Book::Book(vector<string> authors, bool borrowed, string quota,
 		unsigned int pageNumber, string isbn, string title) :
 		authors(authors), borrowed(borrowed), quota(quota), pageNumber(
-				pageNumber), isbn(isbn), title(title) {
+				pageNumber), isbn(isbn), title(title), ID(++bookID) {
 }
 
 Book::~Book() {
@@ -13,7 +15,7 @@ Book::~Book() {
 Book::Book(fstream& s) {
 	stringstream ss;
 	string newAuthors, newBorrowed, newQuota, newPageNumber, newIsbn, newTitle,
-			newAuthor;
+			newAuthor, newID;
 	bool borrowed;
 	unsigned int pageNumber;
 
@@ -42,8 +44,16 @@ Book::Book(fstream& s) {
 	getline(s, newIsbn, ';');
 	this->isbn = newIsbn;
 
-	getline(s, newTitle);
+	getline(s, newTitle, ';');
 	this->title = newTitle;
+
+	getline(s, newID);
+	ss << newID;
+	ss >> this->ID;
+	ss.clear();
+
+	if (this->ID > bookID)
+		bookID = this->ID;
 }
 
 string Book::print() {
@@ -57,6 +67,10 @@ string Book::print() {
 			<< "   " << pageNumber << "   " << isbn << "   " << title;
 
 	return ss.str();
+}
+
+unsigned long int Book::getID() {
+	return ID;
 }
 
 vector<string> Book::getAuthors() {

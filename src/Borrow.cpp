@@ -33,6 +33,7 @@ float Borrow::CalcFee() const {
 }
 
 bool Borrow::DeliveredBook(Date d) {
+	//used to read from the files to
 	if (Returned)
 		return false;
 	Returned = true;
@@ -42,6 +43,26 @@ bool Borrow::DeliveredBook(Date d) {
 
 string Borrow::print() const {
 	stringstream ss;
-	ss << book->print();
+	ss << "Book: " << book->print() << endl;
+	ss << "Employee: " << employee->print() << endl;
+	ss << "Reader: " << reader->print() << endl;
+	ss << "Borrow date: " << borrowDate.print() << endl;
+	ss << "Expected date: " << expectedDeliveryDate.print() << endl;
+	if (Returned)
+		ss << "Returned date: " << actuallyDeliveryDate.print() << endl;
 	return ss.str();
+}
+
+void Borrow::saveData(ofstream &pFile) {
+	pFile << book->getID() << ";" << employee->getNif() << ";"
+			<< reader->getCard() << ";" << borrowDate.getDay() << ","
+			<< borrowDate.getMonth() << "," << borrowDate.getYear() << ";"
+			<< expectedDeliveryDate.getDay() << ","
+			<< expectedDeliveryDate.getMonth() << ","
+			<< expectedDeliveryDate.getYear() << ";" << Returned;
+	if (Returned) {
+		pFile << ";" << actuallyDeliveryDate.getDay() << ","
+				<< actuallyDeliveryDate.getMonth() << ","
+				<< actuallyDeliveryDate.getYear();
+	}
 }

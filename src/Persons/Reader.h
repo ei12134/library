@@ -16,12 +16,13 @@ static const unsigned int MAX_BORROWS = 3;
 class Reader: public Person {
 
 private:
+
 	vector<Borrow *> borrowedBooks;
 	unsigned int card;
-
 public:
-	Reader(string name, unsigned int age, unsigned int phone, string email,
-			unsigned int card);
+	static unsigned long int readerID;
+
+	Reader(string name, unsigned int age, unsigned int phone, string email);
 	Reader(ifstream& s);
 	virtual ~Reader();
 

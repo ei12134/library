@@ -20,7 +20,6 @@ using namespace std;
  * stores containers used in the library management
  */
 class Library {
-
 private:
 	/// vector to Book pointer type objects
 	vector<Book*> books;
@@ -55,8 +54,8 @@ private:
 
 public:
 	/// reader unique identifier(solution save in separate file this unique ids)
-	static unsigned long int readerID;
-	static unsigned long int borrowID;
+	// employee and supervisores have a unique id nif
+	static unsigned long int borrowID;	// for teh borrow Book
 
 	/** Library constructor reads *.csv files and stores
 	 * pointers to each object in their dedicated container */

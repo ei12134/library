@@ -1,9 +1,10 @@
 #include "Reader.h"
 
+unsigned long int Reader::readerID { 0 };
+
 Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,
-		string email, unsigned int card) :
-		Person(name, age, phoneNumber, email) {
-	this->card = card;
+		string email) :
+		Person(name, age, phoneNumber, email), card(++readerID) {
 	borrowedBooks.reserve(MAX_BORROWS); // limit to 3 borrowed books
 }
 
@@ -19,18 +20,14 @@ Reader::Reader(ifstream& s) :
 	ss >> card;
 	ss.clear();
 	this->card = card;
-//	readerID++;
+
+	if (card > readerID) // give the biggest card read from files to the unique id
+		readerID = card;
 }
 
 void Reader::saveData(ofstream &of) {
 	Person::saveData(of);
-	of << card << ";";
-
-	if (borrowedBooks.size() > 0)
-		of << borrowedBooks[0]->getID();
-	for (unsigned x = 1; x < borrowedBooks.size(); x++) {
-		of << "," << borrowedBooks[x]->getID();
-	}
+	of << card;
 	//nao poem endl
 }
 

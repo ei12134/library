@@ -13,6 +13,8 @@ using namespace std;
 
 class Book {
 private:
+	unsigned long int ID;
+
 	vector<string> authors;
 	bool borrowed;
 	string quota;
@@ -20,6 +22,8 @@ private:
 	string isbn;
 	string title;
 public:
+	static unsigned long int bookID;
+
 	Book(vector<string> authors, bool borrowed, string quota,
 			unsigned int pageNumber, string isbn, string title);
 	virtual ~Book();
@@ -29,6 +33,9 @@ public:
 	string getQuota();
 	string getIsbn();
 	string getTitle();
+
+	unsigned long int getID();
+
 	int getPageNumber();
 	bool getBorrowed();
 	void addAuthor(string author);

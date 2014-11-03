@@ -6,6 +6,8 @@ class Employee;
 
 #include "Book.h"
 #include "Date.h"
+#include "./Persons/Person.h"
+#include "./Persons/Employee.h"
 using namespace std;
 
 class Borrow { // acho que era melhor ter uma subclass para livros nao emprestados xD
@@ -34,7 +36,13 @@ public:
 
 	float CalcFee() const;
 
+	bool isReturned() const {
+		return Returned;
+	}
+
 	bool DeliveredBook(Date d); // false if already returned
+
+	void saveData(ofstream &pFile);
 };
 
 #endif
