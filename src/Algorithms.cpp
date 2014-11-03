@@ -5,7 +5,7 @@ bool is_Number(const int & c) {
 }
 
 bool is_Not_Number(const int & c) {
-	return !(c < 57) || (c > 48);
+	return !((c < 57) || (c > 48));
 }
 
 bool is_NON_ASCII_Letter(const int & c) {

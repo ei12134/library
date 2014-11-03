@@ -30,7 +30,7 @@ using namespace std;
 
 #define TAB "\t"
 #define DOUBLE_TAB "\t\t"
-#define MAX_LINES 5
+#define MAX_LINES 4
 #define BACSKPACE_KEY 8
 #define RETURN_KEY 13
 #define ESCAPE_KEY 27
@@ -49,13 +49,16 @@ public:
 	void readerMenu(Person* reader);
 	void employeeMenu(Person* employee);
 	void supervisorMenu(Person* supervisor);
+	void manageBooks();
+	void manageReaders();
 	void manageEmployees(Person* supervisor);
-	void create();
-	void createPerson();
+	void createBook();
 	void createEmployee();
 	void createReader();
-	void createBook();
+	void editBook(Book* book);
+	vector<string> editAuthors();
 	Person* searchPerson(vector<Person*> persons);
+	Book* searchBook(vector<Book*> books);
 	void displayHeader(string& header);
 	bool confirmOperation(string& query);
 	string readInputString(string dialog);

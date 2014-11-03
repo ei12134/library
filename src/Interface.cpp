@@ -143,7 +143,7 @@ void Interface::employeeMenu(Person* employee) {
 		case '2':
 			break;
 		case '3':
-			createBook(); //a alterar futuramente
+			manageBooks();
 			break;
 		case '4':
 			clearScreen();
@@ -208,6 +208,45 @@ void Interface::supervisorMenu(Person* supervisor) {
 	} while (!exit);
 }
 
+void Interface::manageBooks() {
+	char input;
+	bool exit = false;
+	string header = "Manage books";
+
+	do {
+		clearScreen();
+		displayHeader(header);
+		cout << endl << DOUBLE_TAB << TAB << "[1] Create book\n";
+		cout << DOUBLE_TAB << TAB << "[2] Edit book\n";
+		cout << DOUBLE_TAB << TAB << "[3] Remove book\n";
+		cout << DOUBLE_TAB << TAB << "[4] Exit\n\n" << DOUBLE_TAB << TAB
+				<< PROMPT_SYMBOL;
+		input = getKey();
+		switch (input) {
+		case '1':
+			clearScreen();
+			createBook();
+			break;
+		case '2':
+			clearScreen();
+			editBook(searchBook(library.getBooks()));
+			break;
+		case '3':
+			break;
+		case '4':
+			clearScreen();
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+}
+
 void Interface::manageEmployees(Person* supervisor) {
 	char input;
 	bool exit = false;
@@ -242,150 +281,46 @@ void Interface::manageEmployees(Person* supervisor) {
 	} while (!exit);
 }
 
-void Interface::create() {
-	char input;
-	string exitDialog = "Exit the program?";
-	string header = "Create";
-	bool exit = false;
-
-	do {
-		clearScreen();
-		displayHeader(header);
-		cout << endl << TAB << "[1] Create Person\n\n";
-		cout << TAB << "[2] Create Book\n\n";
-		cout << TAB << "[3] Quit\n\n\n" << TAB << PROMPT_SYMBOL;
-
-		input = getKey();
-		switch (input) {
-		case '1':
-			createPerson();
-			break;
-		case '2':
-			createBook();
-			break;
-		case '3':
-			if (confirmOperation(exitDialog)) {
-				clearScreen();
-				exit = true;
-			}
-			break;
-		default:
-			break;
-		}
-	} while (!exit);
-}
-
-void Interface::createPerson() {
-	char input;
-	string exitDialog = "Exit the program?";
-	string header = "Create Person";
-	bool exit = false;
-
-	do {
-		clearScreen();
-		displayHeader(header);
-		cout << endl << TAB << "[1] Create new Reader\n\n";
-		cout << TAB << "[2] Create new Employee\n\n";
-		cout << TAB << "[3] Quit\n\n\n" << TAB << PROMPT_SYMBOL;
-
-		input = getKey();
-		switch (input) {
-		case '1':
-			createReader();
-			break;
-		case '2':
-			createEmployee();
-			break;
-		case '3':
-			if (confirmOperation(exitDialog)) {
-				clearScreen();
-				exit = true;
-			}
-			break;
-		default:
-			break;
-		}
-	} while (!exit);
-}
-
-bool CheckAllDigitString(string stringToCheck) {
-	bool allDigitString = true;
-
-	if (stringToCheck.size() == 0)
-		allDigitString = false;
-
-	for (unsigned int i = 0; i < stringToCheck.size(); i++) {
-		if (int(stringToCheck[i]) < 0 || int(stringToCheck[i] > 127)) {
-			allDigitString = false;
-			break;
-		}
-
-		if (!isdigit(stringToCheck[i])) {
-			allDigitString = false;
-			break;
-		}
-	}
-
-	return allDigitString;
-}
-
-string ConvertToString(unsigned int numberToConvert) {
-	string newString;
-
-	ostringstream tmpString;
-	tmpString << numberToConvert;
-	newString = tmpString.str();
-
-	return newString;
-}
-
 void Interface::createBook() {
-
-	string header = "Create Book";
-	string newAuthor, newPageNumber, newQuota, newIsbn, newTitle;
+	string header = "Create Book", authorsDialog = "\t\t\tAdd another author?";
+	string newAuthor, newPageNumberStr, newQuota, newIsbn, newTitle;
 	stringstream ss;
-	unsigned int newPageNumbe;
-	bool valid = false;
-	char ch;
+	unsigned int newPageNumber;
+
 	clearScreen();
 	displayHeader(header);
 
-	while (newAuthor == "" || !is_All_ASCII_Letter(newAuthor)) {
-		cout << " Author: ";
-		getline(cin, newAuthor, '\n');
-	}
+	vector<string> authors = editAuthors();
 	while (newQuota == "") {
-		cout << " Quota: ";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "Quota: ";
 		getline(cin, newQuota, '\n');
 	}
-	while (newPageNumber == "" || !CheckAllDigitString(newPageNumber)) {
-		cout << " PageNumber: ";
-		getline(cin, newPageNumber, '\n');
+	while (newPageNumberStr == "" || !is_All_Number(newPageNumberStr)) {
+		cout << DOUBLE_TAB << DOUBLE_TAB << "PageNumber: ";
+		getline(cin, newPageNumberStr, '\n');
 	}
-	while (newIsbn == "") {
-		cout << " Isbn: ";
+	while (newIsbn == "" || (newIsbn.size() != 13 && newIsbn.size() != 10)) {
+		cout << DOUBLE_TAB << DOUBLE_TAB << "Isbn: ";
 		getline(cin, newIsbn, '\n');
 	}
-
 	while (newTitle == "") {
-		cout << " Title: ";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "Title: ";
 		getline(cin, newTitle, '\n');
 
 	}
-	cout << "Press S to save" << endl;
-	ch = cin.get();
+	cout << endl << DOUBLE_TAB << DOUBLE_TAB << "Press S to save"
+			<< PROMPT_SYMBOL;
+	char ch = cin.get();
 	if (ch == 's' || ch == 'S') {
-		valid = true;
-	}
-	if (valid) {
-		ss << newPageNumber;
-		ss >> newPageNumbe;
+		ss << newPageNumberStr;
+		ss >> newPageNumber;
 		vector<Book*> books = library.getBooks();
-		Book *b = new Book(newAuthor, false, newQuota, newPageNumbe, newIsbn,
+		Book *b = new Book(authors, false, newQuota, newPageNumber, newIsbn,
 				newTitle);
 		library.addBook(b);
-		cout << " " << newAuthor << " adicionado com sucesso.\n";
-	}
+		cout << DOUBLE_TAB << TAB << newTitle << " successfully added.\n";
+	} else
+		cout << "Book creation cancelled\n";
 	pressAnyKey();
 }
 
@@ -395,9 +330,8 @@ void Interface::createEmployee() {
 	string supervisorDialog = "\t\t\t\tSupervisor?";
 	stringstream ss;
 	unsigned int newAge, newPhone, newNif, newWage;
-	bool valid = false;
 	bool supervisor = false;
-	char ch;
+
 	clearScreen();
 	displayHeader(header);
 
@@ -405,12 +339,11 @@ void Interface::createEmployee() {
 		cout << DOUBLE_TAB << DOUBLE_TAB << "Name: ";
 		getline(cin, newName, '\n');
 	}
-	while (newAgeStr == "" || !CheckAllDigitString(newAgeStr)
-			|| newAgeStr.size() > 2) {
+	while (newAgeStr == "" || !!is_All_Number(newAgeStr) || newAgeStr.size() > 2) {
 		cout << DOUBLE_TAB << DOUBLE_TAB << "Age: ";
 		getline(cin, newAgeStr, '\n');
 	}
-	while (newPhoneStr == "" || !CheckAllDigitString(newPhoneStr)
+	while (newPhoneStr == "" || !!is_All_Number(newPhoneStr)
 			|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
 		cout << DOUBLE_TAB << DOUBLE_TAB << "Phone: ";
 		getline(cin, newPhoneStr, '\n');
@@ -419,12 +352,12 @@ void Interface::createEmployee() {
 		cout << DOUBLE_TAB << DOUBLE_TAB << "Mail: ";
 		getline(cin, newEmail, '\n');
 	}
-	while (newNifStr == "" || !CheckAllDigitString(newNifStr)
+	while (newNifStr == "" || !!is_All_Number(newNifStr)
 			|| newNifStr.size() != 9) {
 		cout << DOUBLE_TAB << DOUBLE_TAB << "NIF: ";
 		getline(cin, newNifStr, '\n');
 	}
-	while (newWageStr == "" || !CheckAllDigitString(newWageStr)) {
+	while (newWageStr == "" || !!is_All_Number(newWageStr)) {
 		cout << DOUBLE_TAB << DOUBLE_TAB << "Wage: ";
 		getline(cin, newWageStr, '\n');
 	}
@@ -432,12 +365,10 @@ void Interface::createEmployee() {
 	if (confirmOperation(supervisorDialog))
 		supervisor = true;
 
-	cout << endl << DOUBLE_TAB << DOUBLE_TAB << "Press S to save: ";
-	ch = cin.get();
+	cout << endl << DOUBLE_TAB << DOUBLE_TAB << "Press S to save"
+			<< PROMPT_SYMBOL;
+	char ch = cin.get();
 	if (ch == 's' || ch == 'S') {
-		valid = true;
-	}
-	if (valid) {
 		ss << newAgeStr;
 		ss >> newAge;
 		ss.clear();
@@ -455,13 +386,84 @@ void Interface::createEmployee() {
 		Employee *s0 = new Employee(newName, newAge, newPhone, newEmail, newNif,
 				newWage, supervisor);
 		library.addPerson(s0);
-		cout << TAB << newName << " successfully added.\n";
-	}
+		cout << DOUBLE_TAB << TAB << newName << " successfully added.\n";
+	} else
+		cout << "Employee creation cancelled\n";
 	pressAnyKey();
 }
 
 void Interface::createReader() {
 
+}
+
+void Interface::editBook(Book* book) {
+	char input;
+	bool exit = false;
+	string header = "Edit book";
+	string newQuota, changesMessage;
+
+	do {
+		clearScreen();
+		displayHeader(header);
+		cout << endl << DOUBLE_TAB << TAB << "[1] Author\n";
+		cout << DOUBLE_TAB << TAB << "[2] Quota\n";
+		cout << DOUBLE_TAB << TAB << "[3] Page number\n";
+		cout << DOUBLE_TAB << TAB << "[4] Isbn\n";
+		cout << DOUBLE_TAB << TAB << "[5] Title\n";
+		cout << DOUBLE_TAB << TAB << "[6] Exit\n";
+
+		if (changesMessage != ""){
+			cout << DOUBLE_TAB << TAB << changesMessage << endl;
+			changesMessage = "";
+		}
+		cout << endl << DOUBLE_TAB << TAB << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			cout << endl;
+			book->setAuthors(editAuthors());
+			changesMessage = "\n\t\t\tChanges saved successfully";
+			break;
+		case '2':
+			while (newQuota == "") {
+				cout << DOUBLE_TAB << DOUBLE_TAB << "Quota: ";
+				getline(cin, newQuota, '\n');
+			}
+			book->setQuota(newQuota);
+			changesMessage = "\n\t\t\tChanges saved successfully";
+			break;
+		case '3':
+			//				while (newPageNumberStr == "" || !is_All_Number(newPageNumberStr)) {
+			//					cout << DOUBLE_TAB << DOUBLE_TAB << "PageNumber: ";
+			//					getline(cin, newPageNumberStr, '\n');
+			//				}
+			//				while (newIsbn == "" || (newIsbn.size() != 13 && newIsbn.size() != 10)) {
+			//					cout << DOUBLE_TAB << DOUBLE_TAB << "Isbn: ";
+			//					getline(cin, newIsbn, '\n');
+			//				}
+			//				while (newTitle == "") {
+			//					cout << DOUBLE_TAB << DOUBLE_TAB << "Title: ";
+			//					getline(cin, newTitle, '\n');
+			//
+			//				}
+			break;
+		case '4':
+			break;
+		case '5':
+			break;
+		case '6':
+			clearScreen();
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
 }
 
 Person* Interface::searchPerson(vector<Person*> persons) {
@@ -490,6 +492,96 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 
 		cout << endl << DOUBLE_TAB << TAB
 				<< "Enter person name [ESC to exit]\n\n" << DOUBLE_TAB << TAB
+				<< PROMPT_SYMBOL << query;
+
+		key = getKey();
+
+		switch (key) {
+		case BACSKPACE_KEY:
+			if (query.length() > 0)
+				query.erase(query.end() - 1);
+			break;
+		case '1':
+			if (matches.size() > 0) {
+				exit = true;
+				return matches[0];
+			}
+			break;
+		case '2':
+			if (matches.size() > 1) {
+				exit = true;
+				return matches[1];
+			}
+			break;
+		case '3':
+			if (matches.size() > 2) {
+				exit = true;
+				return matches[2];
+			}
+			break;
+
+		case '4':
+			if (matches.size() > 3) {
+				exit = true;
+				return matches[3];
+			}
+			break;
+
+		case '5':
+			if (matches.size() > 4) {
+				exit = true;
+				return matches[4];
+			}
+			break;
+		case RETURN_KEY:
+			if (matches.size() > 0) {
+				exit = true;
+				return matches[0];
+			}
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		case DELETE_KEY:
+			query.clear();
+			break;
+		default:
+			query += char(key);
+			break;
+		}
+	} while (!exit);
+	return NULL;
+}
+
+Book* Interface::searchBook(vector<Book*> books) {
+	string query;
+	string header = "Search books";
+	bool exit = false;
+	int key;
+	vector<Book*> matches;
+	do {
+		clearScreen();
+		displayHeader(header);
+		cout << endl;
+		matches.clear();
+		matches.reserve(6);
+		if (query.size() > 0) {
+			for (size_t i = 0, z = 1; i < books.size() && z < 6; i++) {
+				string title = books[i]->getTitle();
+				if (matchQuery(query, title)) {
+					cout << DOUBLE_TAB << TAB << "[" << z++ << "] "
+							<< ((books[i]->getTitle()).size() > 14 ?
+									books[i]->getTitle().substr(0, 14) :
+									books[i]->getTitle()) << TAB
+							<< (books[i]->getBorrowed() == 1 ?
+									"[Borrowed]" : "[Available]") << endl
+							<< endl;
+					matches.push_back(books[i]);
+				}
+			}
+		}
+		cout << endl << DOUBLE_TAB << TAB
+				<< "Enter book title [ESC to exit]\n\n" << DOUBLE_TAB << TAB
 				<< PROMPT_SYMBOL << query;
 
 		key = getKey();
@@ -592,7 +684,7 @@ void Interface::displayMenu() {
 		case '5':
 			clearScreen();
 			genericDisplay(library.getBooks(), "Books",
-					"Author		Borrowed	Quota	PageNumber	ISBN	Title");
+					"Authors       Borrowed       Quota       PageNumber       ISBN       Title");
 			break;
 		case '6':
 			exit = true;
@@ -720,3 +812,23 @@ char Interface::getKey() {
 	return key;
 #endif
 }
+
+vector<string> Interface::editAuthors() {
+	vector<string> authors;
+	string newAuthor, authorsDialog = "\t\t\tAdd another author?";
+	for (int i = 1; authors.size() == 0 || authors.size() < 8; i++) {
+		while (newAuthor == "" || !is_All_ASCII_Letter(newAuthor)) {
+			cout << DOUBLE_TAB << DOUBLE_TAB << "Author " << i << ": ";
+			getline(cin, newAuthor, '\n');
+		}
+		authors.push_back(newAuthor);
+		newAuthor = "";
+		if (!confirmOperation(authorsDialog)) {
+			cout << endl;
+			break;
+		}
+		cout << endl;
+	}
+	return authors;
+}
+

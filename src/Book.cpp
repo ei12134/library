@@ -1,70 +1,49 @@
 #include "Book.h"
 using namespace std;
 
-Book::Book(string author, bool borrowed, string quota, unsigned int pageNumber,
-		string isbn, string title) :
-		borrowed(borrowed), quota(quota), pageNumber(pageNumber), isbn(isbn), title(
-				title) {
-	authors.push_back(author);
+Book::Book(vector<string> authors, bool borrowed, string quota,
+		unsigned int pageNumber, string isbn, string title) :
+		authors(authors), borrowed(borrowed), quota(quota), pageNumber(
+				pageNumber), isbn(isbn), title(title) {
 }
 
 Book::~Book() {
-
 }
+
 Book::Book(fstream& s) {
 	stringstream ss;
-
-	string newauthor;
-	string nborrowed;
-	string newquota;
-	string newpageNumber;
-	string newisbn;
-	string newtitle;
-
-	string author;
+	string newAuthors, newBorrowed, newQuota, newPageNumber, newIsbn, newTitle,
+			newAuthor;
 	bool borrowed;
-	string quota;
 	unsigned int pageNumber;
-	string isbn;
-	string title;
 
-	getline(s, newauthor, ';');
-	ss << newauthor;
-
-	while (getline(ss, author, ',')) {
-		this->authors.push_back(author);
+	getline(s, newAuthors, ';');
+	ss << newAuthors;
+	while (getline(ss, newAuthor, ',')) {
+		this->authors.push_back(newAuthor);
 	}
 	ss.clear();
 
-	getline(s, nborrowed, ';');
-	ss << nborrowed;
+	getline(s, newBorrowed, ';');
+	ss << newBorrowed;
 	ss >> borrowed;
 	ss.clear();
 	this->borrowed = borrowed;
 
-	getline(s, newquota, ';');
-	ss << newquota;
-	ss >> quota;
-	ss.clear();
-	this->quota = quota;
+	getline(s, newQuota, ';');
+	this->quota = newQuota;
 
-	getline(s, newpageNumber, ';');
-	ss << newpageNumber;
+	getline(s, newPageNumber, ';');
+	ss << newPageNumber;
 	ss >> pageNumber;
 	ss.clear();
 	this->pageNumber = pageNumber;
 
-	getline(s, newisbn, ';');
-	ss << newisbn;
-	ss >> isbn;
-	ss.clear();
-	this->isbn = isbn;
+	getline(s, newIsbn, ';');
+	this->isbn = newIsbn;
 
-	getline(s, newtitle); // read last input until newline
-	ss << newtitle;
-	ss >> title;
-	ss.clear();
-	this->title = title;
+	getline(s, newTitle);
+	this->title = newTitle;
 }
 
 string Book::print() {
@@ -74,8 +53,8 @@ string Book::print() {
 		for (unsigned x = 1; x < authors.size(); x++)
 			ss << ", " << authors.at(x);
 	}
-	ss << "   " << borrowed << "   " << quota << "   " << pageNumber << "   "
-			<< isbn << "   " << title;
+	ss << "   " << (borrowed == 1 ? "Borrowed" : "Available") << "   " << quota
+			<< "   " << pageNumber << "   " << isbn << "   " << title;
 
 	return ss.str();
 }
@@ -83,6 +62,11 @@ string Book::print() {
 vector<string> Book::getAuthors() {
 	return authors;
 }
+
+void Book::setAuthors(vector<string> authors) {
+	this->authors = authors;
+}
+
 void Book::addAuthor(string author) {
 	this->authors.push_back(author);
 }
@@ -90,12 +74,15 @@ void Book::addAuthor(string author) {
 bool Book::getBorrowed() {
 	return borrowed;
 }
+
 void Book::setBorrowed(bool borrowed) {
 	this->borrowed = borrowed;
 }
+
 string Book::getQuota() {
 	return quota;
 }
+
 void Book::setQuota(string quota) {
 	this->quota = quota;
 }
