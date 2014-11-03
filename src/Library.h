@@ -3,14 +3,14 @@
 
 #define BOOKS_FILE "books.csv"
 #define BORROWS_FILE "borrows.csv"
-
 #define READERS_FILE "readers.csv"
 #define EMPLOYEES_FILE "employees.csv"
-#define SUPERVISOR_FILE "supervisor.csv"
+#define SUPERVISORS_FILE "supervisors.csv"
 
 #include <vector>
 #include <fstream>
 #include "./Persons/Person.h"
+#include "./Persons/Employee.h"
 #include "Book.h"
 #include "Borrow.h"
 using namespace std;
@@ -38,13 +38,14 @@ private:
 	 * Loads *.csv files to the persons vector
 	 */
 	void loadPersons();
-	/**
-	 *Guarda o vetor Books no ficheiro books.csv
-	 */
 
-	void saveBooks();
 	/**
-	 *Guarda o vetor persons no ficheiro employees.csv
+	 * Saves books in books.csv file
+	 */
+	void saveBooks();
+
+	/**
+	 * Saves persons in appropriate *.csv files
 	 */
 	void savePersons();
 
@@ -76,7 +77,7 @@ public:
 	///@return readers
 	vector<Person*> getReaders() const;
 
-	///@return employes
+	///@return employees
 	vector<Person*> getEmployees() const;
 
 	///@return readers

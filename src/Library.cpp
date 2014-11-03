@@ -5,15 +5,15 @@ unsigned long int Library::readerID = 1;
 
 Library::Library() {
 	loadBooks();
-	//loadPersons();
-	//loadBorrows();
+	loadPersons();
+//	loadBorrows();
 	/* ...
 	 * associations?
 	 */
 }
 
 Library::~Library() {
-	saveBooks();
+//	saveBooks();
 	// savePersons etc...
 	// save containers to files? then delete them
 	// destruir os poiter dos vectores
@@ -137,11 +137,11 @@ void Library::loadPersons() {
 	}
 	file.close();
 
-// read supercisores
+// read supervisors
 	stringstream ss;
 	string employs;
 	string e;
-	file.open(SUPERVISOR_FILE);
+	file.open(SUPERVISORS_FILE);
 	if (file.is_open()) {
 		while (file.good()) {
 			Employee* employee = new Employee(file, true);
@@ -188,7 +188,6 @@ void Library::loadBooks() {
 
 void Library::loadBorrowBooks() {
 
-
 	// no final adicionar borrow books aos readers
 }
 
@@ -214,7 +213,7 @@ void Library::saveBooks() {
 
 void Library::savePersons() {
 	ofstream pFileEmplayees(EMPLOYEES_FILE);
-	ofstream pFileSuperviseres(SUPERVISOR_FILE);
+	ofstream pFileSuperviseres(SUPERVISORS_FILE);
 	ofstream pFileReaders(READERS_FILE);
 
 	for (unsigned int i = 0; i < persons.size(); i++) {
@@ -232,7 +231,6 @@ void Library::savePersons() {
 			break;
 		}
 	}
-
 	pFileReaders.close();
 	pFileSuperviseres.close();
 	pFileEmplayees.close();
@@ -240,6 +238,5 @@ void Library::savePersons() {
 
 void Library::SaveBorrows() {
 	ofstream pFile(BORROWS_FILE);
-
 	pFile.close();
 }

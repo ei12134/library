@@ -453,7 +453,7 @@ void Interface::createEmployee() {
 
 		vector<Person*> empl = library.getEmployees();
 		Employee *s0 = new Employee(newName, newAg, newPhon, newEmail, newNi,
-				newWag,false);
+				newWag, false);
 		library.addPerson(s0);
 		cout << " " << newName << " adicionado com sucesso.\n";
 	}
@@ -616,18 +616,19 @@ void Interface::clearScreen() {
 }
 
 void Interface::displayHeader(string& header) {
-	unsigned int size = header.size(), dynsize = ceil((34 - size) / 2),
-			dynsize2 = dynsize;
+	unsigned int size = header.size();
+	unsigned int dynSizeLeft = ceil((31 - size) / 2);
+	unsigned int dynSizeRight = dynSizeLeft;
 
-	if ((dynsize * 2 + size + 2) < 36)
-		dynsize2++;
+	if (dynSizeLeft + dynSizeRight + size < 31)
+		dynSizeRight++;
 
-	cout << endl << string(22, ' ') << string(36, '#') << string(22, ' ');
-	cout << string(22, ' ') << "#" << string(34, ' ') << "#" << string(22, ' ');
-	cout << string(22, ' ') << "#" << string(dynsize, ' ') << header
-			<< string(dynsize2, ' ') << "#" << string(22, ' ');
-	cout << string(22, ' ') << "#" << string(34, ' ') << "#" << string(22, ' ');
-	cout << string(22, ' ') << string(36, '#') << string(22, ' ') << endl;
+	cout << DOUBLE_TAB << TAB << string(33, '#') << endl;
+	cout << DOUBLE_TAB << TAB << "#" << DOUBLE_TAB << DOUBLE_TAB << "#" << endl;
+	cout << DOUBLE_TAB << TAB << "#" << string(dynSizeLeft, ' ') << header
+			<< string(dynSizeRight, ' ') << "#" << endl;
+	cout << DOUBLE_TAB << TAB << "#" << DOUBLE_TAB << DOUBLE_TAB << "#" << endl;
+	cout << DOUBLE_TAB << TAB << string(33, '#') << endl << endl;
 }
 
 bool Interface::confirmOperation(string& query) {
