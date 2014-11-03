@@ -4,7 +4,7 @@ using namespace std;
 unsigned long int Library::readerID = 1;
 
 Library::Library() {
-	//loadBooks();
+	loadBooks();
 	loadPersons();
 //	loadBorrows();
 	/* ...
@@ -13,7 +13,7 @@ Library::Library() {
 }
 
 Library::~Library() {
-//	saveBooks();
+	saveBooks();
 	savePersons();
 	// save containers to files? then delete them
 
@@ -125,7 +125,7 @@ bool Library::removePerson(Person* person) {
 // Load ---------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------
 void Library::loadPersons() {
-	cout << "load" << endl;
+//	cout << "load" << endl;
 
 // read employees
 	ifstream file;
@@ -225,7 +225,7 @@ void Library::saveBooks() {
 }
 
 void Library::savePersons() {
-	cout << "save" << endl;
+//	cout << "save" << endl;
 
 	// solution for the endl line in the final of the files
 	bool notFistRead = false;
@@ -237,7 +237,7 @@ void Library::savePersons() {
 	ofstream pFileReaders(READERS_FILE);
 
 	for (unsigned int i = 0; i < persons.size(); i++) {
-		cout << persons[i]->print() << endl;
+//		cout << persons[i]->print() << endl;
 
 		switch (persons[i]->getType()) {
 		case 1:	// reader

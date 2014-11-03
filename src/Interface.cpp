@@ -1,7 +1,6 @@
 #include "Interface.h"
 
 Interface::Interface() {
-	this->library = Library();
 	menu();
 }
 
@@ -13,7 +12,7 @@ void Interface::menu() {
 	string exitDialog = "Exit the program?";
 	string header = "Library";
 	bool exit = false;
-
+	vector<Person*> persons = library.getPersons();
 	do {
 		clearScreen();
 		displayHeader(header);
