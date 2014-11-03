@@ -297,19 +297,19 @@ void Interface::createBook() {
 	displayHeader(header);
 
 	vector<string> authors = editAuthors();
-	while (newQuota == "") {
+	while (newQuota.size() == 0) {
 		cout << TETRA_TAB << "Quota: ";
 		getline(cin, newQuota, '\n');
 	}
-	while (newPageNumberStr == "" || !is_All_Number(newPageNumberStr)) {
+	while (newPageNumberStr.size() == 0 || !is_All_Number(newPageNumberStr)) {
 		cout << TETRA_TAB << "PageNumber: ";
 		getline(cin, newPageNumberStr, '\n');
 	}
-	while (newIsbn == "" || (newIsbn.size() != 13 && newIsbn.size() != 10)) {
+	while (newIsbn.size() == 0 || (newIsbn.size() != 13 && newIsbn.size() != 10)) {
 		cout << TETRA_TAB << "Isbn: ";
 		getline(cin, newIsbn, '\n');
 	}
-	while (newTitle == "") {
+	while (newTitle.size() == 0) {
 		cout << TETRA_TAB << "Title: ";
 		getline(cin, newTitle, '\n');
 
@@ -340,29 +340,30 @@ void Interface::createEmployee() {
 	clearScreen();
 	displayHeader(header);
 
-	while (newName == "" || !is_All_ASCII_Letter(newName)) {
+	while (newName.size() == 0 || !is_All_ASCII_Letter(newName)) {
 		cout << TETRA_TAB << "Name: ";
 		getline(cin, newName, '\n');
 	}
-	while (newAgeStr == "" || !!is_All_Number(newAgeStr) || newAgeStr.size() > 2) {
+	while (newAgeStr.size() == 0 || !!is_All_Number(newAgeStr)
+			|| newAgeStr.size() > 2) {
 		cout << TETRA_TAB << "Age: ";
 		getline(cin, newAgeStr, '\n');
 	}
-	while (newPhoneStr == "" || !!is_All_Number(newPhoneStr)
+	while (newPhoneStr.size() == 0 || !!is_All_Number(newPhoneStr)
 			|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
 		cout << TETRA_TAB << "Phone: ";
 		getline(cin, newPhoneStr, '\n');
 	}
-	while (newEmail == "" || newEmail.size() < 10) {
+	while (newEmail.size() == 0 || newEmail.size() < 10) {
 		cout << TETRA_TAB << "Mail: ";
 		getline(cin, newEmail, '\n');
 	}
-	while (newNifStr == "" || !!is_All_Number(newNifStr)
+	while (newNifStr.size() == 0 || !!is_All_Number(newNifStr)
 			|| newNifStr.size() != 9) {
 		cout << TETRA_TAB << "NIF: ";
 		getline(cin, newNifStr, '\n');
 	}
-	while (newWageStr == "" || !!is_All_Number(newWageStr)) {
+	while (newWageStr.size() == 0 || !!is_All_Number(newWageStr)) {
 		cout << TETRA_TAB << "Wage: ";
 		getline(cin, newWageStr, '\n');
 	}
@@ -441,7 +442,7 @@ void Interface::editBook(Book* book) {
 
 		case '2':
 			cout << endl;
-			while (newQuota == "") {
+			while (newQuota.size() == 0) {
 				cout << TETRA_TAB << "Quota: ";
 				getline(cin, newQuota, '\n');
 			}
@@ -451,7 +452,8 @@ void Interface::editBook(Book* book) {
 
 		case '3':
 			cout << endl;
-			while (newPageNumberStr == "" || !is_All_Number(newPageNumberStr)) {
+			while (newPageNumberStr.size() == 0
+					|| !is_All_Number(newPageNumberStr)) {
 				cout << TETRA_TAB << "Page number: ";
 				getline(cin, newPageNumberStr, '\n');
 			}
@@ -463,7 +465,7 @@ void Interface::editBook(Book* book) {
 
 		case '4':
 			cout << endl;
-			while (newIsbn == ""
+			while (newIsbn.size() == 0
 					|| (newIsbn.size() != 13 && newIsbn.size() != 10)) {
 				cout << TETRA_TAB << "Isbn: ";
 				getline(cin, newIsbn, '\n');
@@ -474,7 +476,7 @@ void Interface::editBook(Book* book) {
 
 		case '5':
 			cout << endl;
-			while (newTitle == "") {
+			while (newTitle.size() == 0) {
 				cout << TETRA_TAB << "Title: ";
 				getline(cin, newTitle, '\n');
 			}
@@ -780,7 +782,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		cout << " " << string(78, '-') << " ";
 
 		while (vLimit < MAX_LINES && i < vecSize && !done) {
-			cout << "\n " << vec[i]->print() << "\n"; // maybe overload << operator??
+			cout << " " << vec[i]->print() << endl;
 			i++;
 			vLimit++;
 
@@ -795,7 +797,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 	}
 	if (i == vecSize) {
 		cout << " " << string(78, '-') << " ";
-		cout << "Press any key to continue...";
+		cout << " Press any key to continue...";
 		getchar();
 	}
 }
@@ -842,12 +844,12 @@ vector<string> Interface::editAuthors() {
 	vector<string> authors;
 	string newAuthor, authorsDialog = "\t\t\tAdd another author?";
 	for (int i = 1; authors.size() == 0 || authors.size() < 8; i++) {
-		while (newAuthor == "" || !is_All_ASCII_Letter(newAuthor)) {
+		while (newAuthor.size() == 0 || !is_All_ASCII_Letter(newAuthor)) {
 			cout << TETRA_TAB << "Author " << i << ": ";
 			getline(cin, newAuthor, '\n');
 		}
 		authors.push_back(newAuthor);
-		newAuthor = "";
+		newAuthor.clear();
 		if (!confirmOperation(authorsDialog)) {
 			cout << endl;
 			break;
