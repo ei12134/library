@@ -57,6 +57,7 @@ public:
 	void createEmployee();
 	void createReader();
 	void editBook(Book* book);
+	void editEmployee(Person* employee);
 	vector<string> editAuthors();
 	Person* searchPerson(vector<Person*> persons);
 	Book* searchBook(vector<Book*> books);

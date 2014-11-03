@@ -264,6 +264,8 @@ void Interface::manageEmployees(Person* supervisor) {
 			createEmployee();
 			break;
 		case '2':
+			editEmployee(searchPerson(library.getEmployees()));
+
 			break;
 		case '3':
 			clearScreen();
@@ -344,12 +346,12 @@ void Interface::createEmployee() {
 		cout << TETRA_TAB << "Name: ";
 		getline(cin, newName, '\n');
 	}
-	while (newAgeStr.size() == 0 || !!is_All_Number(newAgeStr)
+	while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
 			|| newAgeStr.size() > 2) {
 		cout << TETRA_TAB << "Age: ";
 		getline(cin, newAgeStr, '\n');
 	}
-	while (newPhoneStr.size() == 0 || !!is_All_Number(newPhoneStr)
+	while (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
 			|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
 		cout << TETRA_TAB << "Phone: ";
 		getline(cin, newPhoneStr, '\n');
@@ -358,12 +360,12 @@ void Interface::createEmployee() {
 		cout << TETRA_TAB << "Mail: ";
 		getline(cin, newEmail, '\n');
 	}
-	while (newNifStr.size() == 0 || !!is_All_Number(newNifStr)
+	while (newNifStr.size() == 0 || !is_All_Number(newNifStr)
 			|| newNifStr.size() != 9) {
 		cout << TETRA_TAB << "NIF: ";
 		getline(cin, newNifStr, '\n');
 	}
-	while (newWageStr.size() == 0 || !!is_All_Number(newWageStr)) {
+	while (newWageStr.size() == 0 || !is_All_Number(newWageStr)) {
 		cout << TETRA_TAB << "Wage: ";
 		getline(cin, newWageStr, '\n');
 	}
@@ -426,7 +428,7 @@ void Interface::editBook(Book* book) {
 		cout << TRI_TAB << "[6] Exit" << endl;
 
 		if (changesMessage != "") {
-			cout << endl << TRI_TAB  << changesMessage << endl;
+			cout << endl << TRI_TAB << changesMessage << endl;
 			changesMessage.clear();
 		}
 		cout << TRI_TAB << endl << PROMPT_SYMBOL;
@@ -497,6 +499,144 @@ void Interface::editBook(Book* book) {
 	} while (!exit);
 }
 
+void Interface::editEmployee(Person* employee) {
+	char input;
+	bool exit = false;
+	string header = "Edit Employee";
+	do {
+		string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr,
+				changesMessage;
+		unsigned int newAge, newPhone, newNif, newWage;
+		bool supervisor = false;
+		char ch;
+		stringstream ss;
+		istringstream s;
+
+		clearScreen();
+		displayHeader(header);
+		cout << endl << TRI_TAB << "[1] Name" << TAB << "["
+				<< employee->getName().substr(0, 15) << "]" << endl;
+		cout << TRI_TAB << "[2] Age" << TAB << "[" << employee->getAge() << "]";
+		cout << endl;
+		cout << TRI_TAB << "[3] Phone" << TAB << "[" << employee->getPhone()
+				<< "]" << endl;
+		cout << TRI_TAB << "[4] Email" << TAB << "[" << employee->getEmail()
+				<< "]" << endl;
+		cout << TRI_TAB << "[5] NIF" << TAB << "[" << employee->getNif() << "]"
+				<< endl;
+		cout << TRI_TAB << "[6] Wage" << TAB << "[" << employee->getWage()
+				<< "]";
+		cout << endl;
+		cout << TRI_TAB << "[7] Promotions/Demotions" << TAB << "["
+				<< employee->printType() << "]";
+		cout << endl;
+		cout << TRI_TAB << "[8] Exit" << endl;
+
+		if (changesMessage != "") {
+			cout << endl << TRI_TAB << changesMessage << endl;
+			changesMessage.clear();
+		}
+		cout << TRI_TAB << endl << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+
+		case '1':
+			cout << endl;
+			while (newName.size() == 0 || !is_All_ASCII_Letter(newName)) {
+				cout << TETRA_TAB << "Name: ";
+				getline(cin, newName, '\n');
+			}
+			employee->setName(newName);
+			changesMessage = "Changes saved successfully";
+			break;
+
+		case '2':
+			cout << endl;
+			while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
+					|| newAgeStr.size() > 2) {
+				cout << TETRA_TAB << "Age: ";
+				getline(cin, newAgeStr, '\n');
+			}
+			ss << newAgeStr;
+			ss >> newAge;
+			employee->setAge(newAge);
+			changesMessage = "Changes saved successfully";
+			break;
+
+		case '3':
+			cout << endl;
+			while (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
+					|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
+				cout << TETRA_TAB << "Phone: ";
+				getline(cin, newPhoneStr, '\n');
+			}
+			ss << newPhoneStr;
+			ss >> newPhone;
+			employee->setPhone(newPhone);
+			changesMessage = "Changes saved successfully";
+			break;
+
+		case '4':
+			cout << endl;
+			while (newEmail.size() == 0 || newEmail.size() < 10) {
+				cout << TETRA_TAB << "Mail: ";
+				getline(cin, newEmail, '\n');
+			}
+			employee->setEmail(newEmail);
+			changesMessage = "Changes saved successfully";
+			break;
+
+		case '5':
+			cout << endl;
+			while (newNifStr.size() == 0 || !is_All_Number(newNifStr)
+					|| newNifStr.size() != 9) {
+				cout << TETRA_TAB << "NIF: ";
+				getline(cin, newNifStr, '\n');
+			}
+			ss << newNifStr;
+			ss >> newNif;
+			employee->setNif(newNif);
+			changesMessage = "Changes saved successfully";
+			break;
+		case '6':
+			cout << endl;
+			while (newWageStr.size() == 0 || !is_All_Number(newWageStr)) {
+				cout << TETRA_TAB << "Wage: ";
+				getline(cin, newWageStr, '\n');
+			}
+			ss << newWageStr;
+			ss >> newWage;
+			employee->setWage(newWage);
+			changesMessage = "Changes saved successfully";
+			break;
+		case '7':
+			cout << endl << TETRA_TAB
+					<< "Press S to set as superviser or E as employee"
+					<< PROMPT_SYMBOL;
+			ch = cin.get();
+			if (ch == 's' || ch == 'S') {
+				supervisor = 1;
+			} else if (ch == 'e' || ch == 'E') {
+				supervisor = 0;
+			}
+			employee->setSupervisor(supervisor);
+			changesMessage = "Changes saved successfully";
+			break;
+		case '8':
+			clearScreen();
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+
+}
 Person* Interface::searchPerson(vector<Person*> persons) {
 	string query;
 	string header = "Login";
@@ -782,7 +922,8 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		cout << " " << string(78, '-') << " ";
 
 		while (vLimit < MAX_LINES && i < vecSize && !done) {
-			cout << " " << vec[i]->print() << endl;
+			cout << " " << vec[i]->print();
+			cout << endl;
 			i++;
 			vLimit++;
 
