@@ -27,9 +27,9 @@ void Reader::saveData(ofstream &of) {
 	of << card << ";";
 
 	if (borrowedBooks.size() > 0)
-		//of << borrowedBooks[0]->getID();
+		of << borrowedBooks[0]->getID();
 	for (unsigned x = 1; x < borrowedBooks.size(); x++) {
-		//of << "," << borrowedBooks[x]->getID();
+		of << "," << borrowedBooks[x]->getID();
 	}
 	of << endl;
 }

@@ -1,12 +1,12 @@
 #ifndef READER_H_
 #define READER_H_
 
-class Borrow;
 
 #include <string>
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include "../Borrow.h"
 #include "Person.h"
 
 using namespace std;

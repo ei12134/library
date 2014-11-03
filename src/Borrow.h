@@ -1,11 +1,11 @@
 #ifndef BORROW_H_
 #define BORROW_H_
 
+class Reader;
+class Employee;
 
 #include "Book.h"
 #include "Date.h"
-#include "./Persons/Reader.h"
-#include "./Persons/Employee.h"
 using namespace std;
 
 class Borrow { // acho que era melhor ter uma subclass para livros nao emprestados xD
