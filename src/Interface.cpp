@@ -204,9 +204,9 @@ void Interface::manageBooks() {
 		cout << TETRA_TAB << "[2] Edit book\n";
 		cout << TETRA_TAB << "[3] Remove book\n";
 		cout << TETRA_TAB << "[4] Exit\n\n";
-		if (message != "") {
+		if (message.size() > 0) {
 			cout << TRI_TAB << message << endl << endl;
-			message = "";
+			message.clear();
 		}
 		cout << TRI_TAB << PROMPT_SYMBOL;
 
@@ -221,7 +221,7 @@ void Interface::manageBooks() {
 			editBook(searchBook(library.getBooks()));
 			break;
 		case '3':
-			removeBook(searchBook(library.getBooks()));
+			library.removeBook(searchBook(library.getBooks()));
 			message = "Book removed successfully";
 			break;
 		case '4':
@@ -251,7 +251,7 @@ void Interface::manageEmployees(Person* supervisor) {
 		cout << TRI_TAB << "[2] Edit employee\n";
 		cout << TRI_TAB << "[3] Remove employee\n";
 		cout << TRI_TAB << "[4] Exit\n\n";
-		if (message != "") {
+		if (message.size() > 0) {
 			cout << TRI_TAB << message << endl << endl;
 			message.clear();
 		}
@@ -267,11 +267,11 @@ void Interface::manageEmployees(Person* supervisor) {
 			break;
 		case '3':
 			clearScreen();
-			if (removeEmployee(searchPerson(library.getEmployees()),
+			if (library.removePerson((searchPerson(library.getEmployees())),
 					supervisor))
 				message = "Employee removed successfully";
 			else
-				message = "You can't remove yourself";
+				message = "Error removing an employee";
 			break;
 		case '4':
 			clearScreen();
@@ -323,10 +323,10 @@ void Interface::createBook() {
 		Book *b = new Book(authors, false, newQuota, newPageNumber, newIsbn,
 				newTitle);
 		library.addBook(b);
-		cout << TRI_TAB << newTitle << " successfully added.\n";
+		cout << endl << TRI_TAB << newTitle << " successfully created.";
 	} else
 		cout << "Book creation cancelled\n";
-	pressAnyKey();
+	getKey();
 }
 
 void Interface::createEmployee() {
@@ -390,10 +390,10 @@ void Interface::createEmployee() {
 		Employee *s0 = new Employee(newName, newAge, newPhone, newEmail, newNif,
 				newWage, supervisor);
 		library.addPerson(s0);
-		cout << TRI_TAB << newName << " successfully added.\n";
+		cout << endl << TRI_TAB << newName << " successfully created.";
 	} else
 		cout << "Employee creation cancelled\n";
-	pressAnyKey();
+	getKey();
 }
 
 void Interface::createReader() {
@@ -493,29 +493,6 @@ void Interface::editBook(Book* book) {
 			break;
 		}
 	} while (!exit);
-}
-
-void Interface::removeBook(Book* book) {
-	vector<Book*> books = library.getBooks();
-	for (size_t i = 0; i < books.size(); i++)
-		if (books[i] == book) {
-			books.erase(books.begin() + i);
-			break;
-		}
-	library.setBooks(books);
-}
-
-bool Interface::removeEmployee(Person* employee, Person* supervisor) {
-	if (employee == supervisor)
-		return false;
-	vector<Person*> persons = library.getPersons();
-	for (size_t i = 0; i < persons.size(); i++)
-		if (persons[i] == employee) {
-			persons.erase(persons.begin() + i);
-			break;
-		}
-	library.setPersons(persons);
-	return true;
 }
 
 Person* Interface::searchPerson(vector<Person*> persons) {
@@ -781,11 +758,6 @@ bool Interface::confirmOperation(string& query) {
 		return false;
 }
 
-void Interface::pressAnyKey() {
-	cout << " Pressione qualquer tecla para continuar... ";
-	getKey();
-}
-
 template<typename T>
 void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
@@ -823,7 +795,8 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 	}
 	if (i == vecSize) {
 		cout << " " << string(78, '-') << " ";
-		pressAnyKey();
+		cout << "Press any key to continue...";
+		getchar();
 	}
 }
 

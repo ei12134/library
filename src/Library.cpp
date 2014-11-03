@@ -90,34 +90,35 @@ void Library::addPerson(Person* person) {
 }
 
 bool Library::removeBook(Book* book) {
-	for (vector<Book*>::iterator it = books.begin(); it != books.end(); it++) {
-		if (*it == book) {
-			books.erase(it);
+	if (book == NULL)
+		return false;
+	for (size_t i = 0; i < books.size(); i++)
+		if (books[i] == book) {
+			books.erase(books.begin() + i);
 			return true;
 		}
-	}
 	return false;
 }
 
 bool Library::removeBorrow(Borrow* borrow) {
-	vector<Borrow*>::iterator it;
-	for (it = borrows.begin(); it != borrows.end(); it++) {
-		if (*it == borrow) {
-			borrows.erase(it);
+	if (borrow == NULL)
+		return false;
+	for (size_t i = 0; i < borrows.size(); i++)
+		if (borrows[i] == borrow) {
+			borrows.erase(borrows.begin() + i);
 			return true;
 		}
-	}
 	return false;
 }
 
-bool Library::removePerson(Person* person) {
-	for (vector<Person*>::iterator it = persons.begin(); it != persons.end();
-			it++) {
-		if (*it == person) {
-			persons.erase(it);
+bool Library::removePerson(Person* person, Person* employee) {
+	if (employee == NULL || employee == person)
+		return false;
+	for (size_t i = 0; i < persons.size(); i++)
+		if (persons[i] == person) {
+			persons.erase(persons.begin() + i);
 			return true;
 		}
-	}
 	return false;
 }
 

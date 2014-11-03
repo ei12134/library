@@ -57,15 +57,12 @@ public:
 	void createEmployee();
 	void createReader();
 	void editBook(Book* book);
-	void removeBook(Book* book);
-	bool removeEmployee(Person* employee, Person* supervisor);
 	vector<string> editAuthors();
 	Person* searchPerson(vector<Person*> persons);
 	Book* searchBook(vector<Book*> books);
 	void displayHeader(string& header);
 	bool confirmOperation(string& query);
 	string readInputString(string dialog);
-	void pressAnyKey();
 	template<typename T>
 	void genericDisplay(vector<T> vec, string listName, string labels);
 	virtual ~Interface();

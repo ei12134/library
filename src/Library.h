@@ -126,7 +126,7 @@ public:
 	/** removes a person from the library
 	 *@param person Person pointer
 	 */
-	bool removePerson(Person* person);
+	bool removePerson(Person* person, Person* employee);
 };
 
 #endif /* LIBRARY_H_ */
