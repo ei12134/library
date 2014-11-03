@@ -9,11 +9,11 @@
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <limits>
 #include <math.h>
 #include <stdio.h>
-#include <sstream>
 #include <cstdlib>
 using namespace std;
 
@@ -30,6 +30,8 @@ using namespace std;
 
 #define TAB "\t"
 #define DOUBLE_TAB "\t\t"
+#define TRI_TAB "\t\t\t"
+#define TETRA_TAB "\t\t\t\t"
 #define MAX_LINES 4
 #define BACSKPACE_KEY 8
 #define RETURN_KEY 13
@@ -56,6 +58,7 @@ public:
 	void createEmployee();
 	void createReader();
 	void editBook(Book* book);
+	void removeBook(Book* book);
 	vector<string> editAuthors();
 	Person* searchPerson(vector<Person*> persons);
 	Book* searchBook(vector<Book*> books);
@@ -67,6 +70,8 @@ public:
 	void genericDisplay(vector<T> vec, string listName, string labels);
 	virtual ~Interface();
 	char getKey();
+//	template<class T>
+//	ostream optionalString(std::ostream &os, T s);
 	bool is_Number(const int & c);
 };
 
