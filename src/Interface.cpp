@@ -116,7 +116,7 @@ void Interface::employeeMenu(Person* employee) {
 		clearScreen();
 		displayHeader(header);
 		cout << TRI_TAB << "Age :" << TAB << employee->getAge() << endl;
-		cout << TRI_TAB << "Card :" << TAB << employee->getNif() << endl;
+		cout << TRI_TAB << "Nif :" << TAB << employee->getNif() << endl;
 		cout << TRI_TAB << "Phone :" << TAB << employee->getPhone() << endl;
 		cout << TRI_TAB << "Email :" << TAB << employee->getEmail() << endl;
 		cout << TRI_TAB << "Wage :" << TAB << employee->getWage() << " euros"
@@ -160,7 +160,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 		clearScreen();
 		displayHeader(header);
 		cout << TRI_TAB << "Age :" << TAB << supervisor->getAge() << endl;
-		cout << TRI_TAB << "Card :" << TAB << supervisor->getNif() << endl;
+		cout << TRI_TAB << "Nif :" << TAB << supervisor->getNif() << endl;
 		cout << TRI_TAB << "Phone :" << TAB << supervisor->getPhone() << endl;
 		cout << TRI_TAB << "Email :" << TAB << supervisor->getEmail() << endl;
 		cout << TRI_TAB << "Wage :" << TAB << supervisor->getWage() << " euros"
@@ -288,7 +288,7 @@ void Interface::manageEmployees(Person* supervisor) {
 }
 
 void Interface::createBook() {
-	string header = "Create Book", authorsDialog = "\t\t\tAdd another author?";
+	string header = "Create Book";
 	string newAuthor, newPageNumberStr, newQuota, newIsbn, newTitle;
 	stringstream ss;
 	unsigned int newPageNumber;
@@ -426,10 +426,10 @@ void Interface::editBook(Book* book) {
 		cout << TRI_TAB << "[6] Exit" << endl;
 
 		if (changesMessage != "") {
-			cout << TRI_TAB << changesMessage << endl;
-			changesMessage = "";
+			cout << endl << TRI_TAB  << changesMessage << endl;
+			changesMessage.clear();
 		}
-		cout << endl << TRI_TAB << PROMPT_SYMBOL;
+		cout << TRI_TAB << endl << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -437,7 +437,7 @@ void Interface::editBook(Book* book) {
 		case '1':
 			cout << endl;
 			book->setAuthors(editAuthors());
-			changesMessage = "\n\t\t\tChanges saved successfully";
+			changesMessage = "Changes saved successfully";
 			break;
 
 		case '2':
@@ -447,7 +447,7 @@ void Interface::editBook(Book* book) {
 				getline(cin, newQuota, '\n');
 			}
 			book->setQuota(newQuota);
-			changesMessage = "\n\t\t\tChanges saved successfully";
+			changesMessage = "Changes saved successfully";
 			break;
 
 		case '3':
@@ -460,7 +460,7 @@ void Interface::editBook(Book* book) {
 			ss << newPageNumberStr;
 			ss >> newPageNumber;
 			book->setPageNumber(newPageNumber);
-			changesMessage = "\n\t\t\tChanges saved successfully";
+			changesMessage = "Changes saved successfully";
 			break;
 
 		case '4':
@@ -471,7 +471,7 @@ void Interface::editBook(Book* book) {
 				getline(cin, newIsbn, '\n');
 			}
 			book->setIsbn(newIsbn);
-			changesMessage = "\n\t\t\tChanges saved successfully";
+			changesMessage = "Changes saved successfully";
 			break;
 
 		case '5':
@@ -481,7 +481,7 @@ void Interface::editBook(Book* book) {
 				getline(cin, newTitle, '\n');
 			}
 			book->setTitle(newTitle);
-			changesMessage = "\n\t\t\tChanges saved successfully";
+			changesMessage = "Changes saved successfully";
 			break;
 		case '6':
 			clearScreen();

@@ -51,7 +51,7 @@ vector<Person*> Library::getReaders() const {
 vector<Person*> Library::getEmployees() const {
 	vector<Person*> employees;
 	for (size_t i = 0; i < persons.size(); i++)
-		if (persons[i]->getType() == 2)
+		if (persons[i]->getType() == 2 || persons[i]->getType() == 3)
 			employees.push_back(persons[i]);
 	return employees;
 }
