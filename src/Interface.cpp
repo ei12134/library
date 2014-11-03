@@ -284,10 +284,9 @@ void Interface::createPerson() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TAB << "[1] Create Reader\n\n";
-		cout << TAB << "[2] Create Employee\n\n";
-		cout << TAB << "[3] Create Supervisor\n\n";
-		cout << TAB << "[4] Quit\n\n\n" << TAB << PROMPT_SYMBOL;
+		cout << endl << TAB << "[1] Create new Reader\n\n";
+		cout << TAB << "[2] Create new Employee\n\n";
+		cout << TAB << "[3] Quit\n\n\n" << TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -298,9 +297,6 @@ void Interface::createPerson() {
 			createEmployee();
 			break;
 		case '3':
-			createSupervisor();
-			break;
-		case '4':
 			if (confirmOperation(exitDialog)) {
 				clearScreen();
 				exit = true;
@@ -341,13 +337,6 @@ string ConvertToString(unsigned int numberToConvert) {
 	newString = tmpString.str();
 
 	return newString;
-}
-
-void PressAnyKey() {
-	cout << " Pressione qualquer tecla para continuar... ";
-	cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	cin.get();
 }
 
 void Interface::createBook() {
@@ -397,70 +386,78 @@ void Interface::createBook() {
 		library.addBook(b);
 		cout << " " << newAuthor << " adicionado com sucesso.\n";
 	}
-	PressAnyKey();
+	pressAnyKey();
 }
 
 void Interface::createEmployee() {
 	string header = "Create Employee";
-	string newName, newAge, newPhone, newEmail, newNif, newWage;
+	string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr;
+	string supervisorDialog = "\t\t\t\tSupervisor?";
 	stringstream ss;
-	unsigned int newAg, newPhon, newNi, newWag;
+	unsigned int newAge, newPhone, newNif, newWage;
 	bool valid = false;
+	bool supervisor = false;
 	char ch;
 	clearScreen();
 	displayHeader(header);
 
 	while (newName == "" || !is_All_ASCII_Letter(newName)) {
-		cout << " Name: ";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "Name: ";
 		getline(cin, newName, '\n');
 	}
-	while (newAge == "" || !CheckAllDigitString(newAge) || newAge.size() > 2) {
-		cout << " Age: ";
-		getline(cin, newAge, '\n');
+	while (newAgeStr == "" || !CheckAllDigitString(newAgeStr)
+			|| newAgeStr.size() > 2) {
+		cout << DOUBLE_TAB << DOUBLE_TAB << "Age: ";
+		getline(cin, newAgeStr, '\n');
 	}
-	while (newPhone == "" || !CheckAllDigitString(newPhone)
-			|| newPhone.size() < 6 || newPhone.size() > 12) {
-		cout << " Phone: ";
-		getline(cin, newPhone, '\n');
+	while (newPhoneStr == "" || !CheckAllDigitString(newPhoneStr)
+			|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
+		cout << DOUBLE_TAB << DOUBLE_TAB << "Phone: ";
+		getline(cin, newPhoneStr, '\n');
 	}
 	while (newEmail == "" || newEmail.size() < 10) {
-		cout << " Mail: ";
+		cout << DOUBLE_TAB << DOUBLE_TAB << "Mail: ";
 		getline(cin, newEmail, '\n');
 	}
-	while (newNif == "" || !CheckAllDigitString(newNif) || newNif.size() != 9) {
-		cout << " NIF: ";
-		getline(cin, newNif, '\n');
+	while (newNifStr == "" || !CheckAllDigitString(newNifStr)
+			|| newNifStr.size() != 9) {
+		cout << DOUBLE_TAB << DOUBLE_TAB << "NIF: ";
+		getline(cin, newNifStr, '\n');
 	}
-	while (newWage == "" || !CheckAllDigitString(newWage)) {
-		cout << " Wage: ";
-		getline(cin, newWage, '\n');
+	while (newWageStr == "" || !CheckAllDigitString(newWageStr)) {
+		cout << DOUBLE_TAB << DOUBLE_TAB << "Wage: ";
+		getline(cin, newWageStr, '\n');
 	}
-	cout << "Press S to save" << endl;
+
+	if (confirmOperation(supervisorDialog))
+		supervisor = true;
+
+	cout << endl << DOUBLE_TAB << DOUBLE_TAB << "Press S to save: ";
 	ch = cin.get();
 	if (ch == 's' || ch == 'S') {
 		valid = true;
 	}
 	if (valid) {
-		ss << newAge;
-		ss >> newAg;
-		ss << newPhone;
-		ss >> newPhon;
-		ss << newNif;
-		ss >> newNi;
-		ss << newWage;
-		ss >> newWag;
+		ss << newAgeStr;
+		ss >> newAge;
+		ss.clear();
+		ss << newPhoneStr;
+		ss >> newPhone;
+		ss.clear();
+		ss << newNifStr;
+		ss >> newNif;
+		ss.clear();
+		ss << newWageStr;
+		ss >> newWage;
+		ss.clear();
 
 		vector<Person*> empl = library.getEmployees();
-		Employee *s0 = new Employee(newName, newAg, newPhon, newEmail, newNi,
-				newWag, false);
+		Employee *s0 = new Employee(newName, newAge, newPhone, newEmail, newNif,
+				newWage, supervisor);
 		library.addPerson(s0);
-		cout << " " << newName << " adicionado com sucesso.\n";
+		cout << TAB << newName << " successfully added.\n";
 	}
-	PressAnyKey();
-}
-
-void Interface::createSupervisor() {
-
+	pressAnyKey();
 }
 
 void Interface::createReader() {
@@ -642,9 +639,7 @@ bool Interface::confirmOperation(string& query) {
 
 void Interface::pressAnyKey() {
 	cout << " Pressione qualquer tecla para continuar... ";
-	cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	cin.get();
+	getKey();
 }
 
 template<typename T>

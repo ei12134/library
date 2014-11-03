@@ -54,7 +54,6 @@ public:
 	void createPerson();
 	void createEmployee();
 	void createReader();
-	void createSupervisor();
 	void createBook();
 	Person* searchPerson(vector<Person*> persons);
 	void displayHeader(string& header);
