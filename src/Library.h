@@ -48,7 +48,7 @@ private:
 	 */
 	void savePersons();
 
-	void SaveBorrows();
+	void saveBorrows();
 
 	void loadBorrowBooks();
 

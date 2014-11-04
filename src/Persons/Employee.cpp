@@ -13,7 +13,6 @@ Employee::Employee(ifstream& s, bool superv) :
 	stringstream ss;
 	string sNif, sWage, sSupervisor;
 	unsigned int nif, wage;
-	bool supervisor;
 
 	getline(s, sNif, ';');
 	ss << sNif;
@@ -79,7 +78,7 @@ void Employee::setWage(unsigned int wage) {
 void createBorrow(Book *, Reader *, Employee *) {
 }
 
-string Employee::print() {
+string Employee::print() const {
 	stringstream ss;
 	ss << Person::print() << "   " << nif << "   " << wage;
 	if (supervisor) {
@@ -93,7 +92,7 @@ string Employee::print() {
 	return ss.str();
 }
 
-unsigned int Employee::getType() {
+unsigned int Employee::getType() const {
 	if (!supervisor)
 		return 2;
 	else
@@ -112,7 +111,7 @@ unsigned int Employee::getCard() const {
 	return 0;
 }
 
-string Employee::printType() {
+string Employee::printType() const {
 	if (!supervisor)
 		return "[Employee]";
 	else

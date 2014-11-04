@@ -36,9 +36,9 @@ public:
 	void addBorrow(Borrow* borrow);
 	bool removeBorrow(Borrow* borrow);
 	bool borrowLimit();
-	string print();
-	unsigned int getType();
-	string printType();
+	string print() const;
+	unsigned int getType() const;
+	string printType() const;
 };
 
 #endif /* READER_H_ */

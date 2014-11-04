@@ -427,11 +427,11 @@ void Interface::editBook(Book* book) {
 				<< book->getTitle().substr(0, 16) << "]" << endl;
 		cout << TRI_TAB << "[6] Exit" << endl;
 
-		if (changesMessage != "") {
+		if (changesMessage.size() > 0) {
 			cout << endl << TRI_TAB << changesMessage << endl;
 			changesMessage.clear();
 		}
-		cout << TRI_TAB << endl << PROMPT_SYMBOL;
+		cout << endl << TRI_TAB  << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {

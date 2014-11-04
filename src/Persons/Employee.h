@@ -23,22 +23,19 @@ public:
 	virtual ~Employee();
 
 	void saveData(ofstream &of);
-
 	unsigned int getNif() const;
 	unsigned int getWage() const;
-	unsigned int getType();
+	unsigned int getType() const;
 	unsigned int getCard() const;
 	void setSupervisor(bool super);
 	bool isSupervisor() const;
-
 	void addEmplyee(Employee * e);
-
 	void setNif(unsigned int nif);
 	void setWage(unsigned int wage);
 	void createBorrow(Book *, Reader *, Employee *);
 	vector<Borrow*> getBorrowedBooks() const;
-	string print();
-	string printType();
+	string print() const;
+	string printType() const;
 };
 #endif /* EMPLOYEE_H_ */
 

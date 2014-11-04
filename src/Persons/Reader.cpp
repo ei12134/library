@@ -1,6 +1,6 @@
 #include "Reader.h"
 
-unsigned long int Reader::readerID { 0 };
+unsigned long int Reader::readerID = 0;
 
 Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,
 		string email) :
@@ -74,16 +74,16 @@ bool Reader::borrowLimit() {
 	return borrowedBooks.size() >= MAX_BORROWS;
 }
 
-string Reader::print() {
+string Reader::print() const{
 	stringstream ss;
 	ss << Person::print() << "   " << card;
 	return ss.str();
 }
 
-unsigned int Reader::getType() {
+unsigned int Reader::getType() const{
 	return 1;
 }
 
-string Reader::printType() {
+string Reader::printType() const{
 	return "[Reader]";
 }

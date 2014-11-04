@@ -28,9 +28,9 @@ using namespace std;
 #endif
 
 #define TAB "\t"
-#define DOUBLE_TAB "\t\t"
-#define TRI_TAB "\t\t\t"
-#define TETRA_TAB "\t\t\t\t"
+#define DOUBLE_TAB TAB TAB
+#define TRI_TAB DOUBLE_TAB TAB
+#define TETRA_TAB DOUBLE_TAB DOUBLE_TAB
 #define MAX_LINES 9
 #define BACSKPACE_KEY 8
 #define RETURN_KEY 13

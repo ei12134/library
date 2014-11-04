@@ -28,16 +28,14 @@ public:
 			unsigned int pageNumber, string isbn, string title);
 	virtual ~Book();
 	Book(fstream& s);
-	string print();
-	vector<string> getAuthors();
-	string getQuota();
-	string getIsbn();
-	string getTitle();
-
-	unsigned long int getID();
-
-	int getPageNumber();
-	bool getBorrowed();
+	string print() const;
+	vector<string> getAuthors() const;
+	string getQuota() const;
+	string getIsbn() const;
+	string getTitle() const;
+	int getPageNumber() const;
+	bool getBorrowed() const;
+	unsigned long int getID() const;
 	void addAuthor(string author);
 	void setAuthors(vector<string> authors);
 	void setBorrowed(bool borrowed);

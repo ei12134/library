@@ -13,7 +13,7 @@ Library::Library() {
 Library::~Library() {
 	saveBooks();
 	savePersons();
-	SaveBorrows();
+	saveBorrows();
 	// save containers to files? then delete them
 
 	// destruir os pointer dos vectores
@@ -220,9 +220,7 @@ void Library::loadBorrowBooks() {
 			unsigned long int ReaderCard;
 			unsigned int dia, mes, ano;
 			int delivered;
-			unsigned int PosBook = -1;
-			unsigned int PosEmplo = -1;
-			unsigned int PosRead = -1;
+			int posBook, posEmplo, posRead = -1;
 
 			try {
 				getline(file, data, ';');
@@ -234,7 +232,7 @@ void Library::loadBorrowBooks() {
 				// book association
 				for (unsigned x = 0; x < books.size(); x++)
 					if (books[x]->getID() == bookID) {
-						PosBook = x;
+						posBook = x;
 						break;
 					}
 
@@ -254,10 +252,10 @@ void Library::loadBorrowBooks() {
 				// Employee association (nunca e zero)
 				for (unsigned x = 0; x < persons.size(); x++) {
 					if (persons[x]->getNif() == EmpoyeeNIF) {
-						PosEmplo = x;
+						posEmplo = x;
 					}
 					if (persons[x]->getCard() == ReaderCard) {
-						PosRead = x;
+						posRead = x;
 					}
 				}
 
@@ -305,17 +303,17 @@ void Library::loadBorrowBooks() {
 				temps.clear();
 				data.clear();
 
-				if (PosBook == -1 || PosEmplo == -1 || PosRead == -1) {
+				if (posBook == -1 || posEmplo == -1 || posRead == -1) {
 					// checking error
 				} else {
 					// creating borrow
-					Employee* emplo = dynamic_cast<Employee*>(persons[PosEmplo]);
-					Reader* read = dynamic_cast<Reader*>(persons[PosRead]);
+					Employee* emplo = dynamic_cast<Employee*>(persons[posEmplo]);
+					Reader* read = dynamic_cast<Reader*>(persons[posRead]);
 
 					if (emplo == NULL || read == NULL) {
 						// error casting
 					} else {
-						Borrow* borrow = new Borrow(books[PosBook], emplo, read,
+						Borrow* borrow = new Borrow(books[posBook], emplo, read,
 								dBorrow, dExpect, false);// false quando se faz DeliveredBook(dB) returned passa a true
 						if (delivered == 1) {
 							//cout << "delivered" << endl;
@@ -341,7 +339,7 @@ void Library::loadBorrowBooks() {
 							borrow->DeliveredBook(dD);
 						} else {// se nao tiver sido entrege e pk esta com o reader
 							read->addBorrow(borrow);// add the borrow book to the reader
-							books[PosBook]->setBorrowed(true);// set the book as borrowed
+							books[posBook]->setBorrowed(true);// set the book as borrowed
 						}
 						//cout << borrow->print() << endl;
 
@@ -377,7 +375,7 @@ void Library::saveBooks() {
 				<< ";" << books[i]->getPageNumber() << ";"
 				<< books[i]->getIsbn() << ";" << books[i]->getTitle() << ";"
 				<< books[i]->getID();
-		if (i < ((int) books.size() - 1))
+		if (i < (-1 + books.size()))
 			pFile << endl;
 	}
 	pFile.close();
@@ -385,8 +383,7 @@ void Library::saveBooks() {
 
 void Library::savePersons() {
 	cout << "save person" << endl;
-
-// solution for the endl line in the final of the files
+	// solution for the endl line in the final of the files
 	bool notFistRead = false;
 	bool notFistEmp = false;
 	bool notFistSup = false;
@@ -397,7 +394,6 @@ void Library::savePersons() {
 
 	for (unsigned int i = 0; i < persons.size(); i++) {
 //		cout << persons[i]->print() << endl;
-
 		switch (persons[i]->getType()) {
 		case 1:	// reader
 			if (notFistRead)
@@ -433,12 +429,12 @@ void Library::savePersons() {
 	pFileEmplayees.close();
 }
 
-void Library::SaveBorrows() {
-	cout << "save borrow" << endl;
+void Library::saveBorrows() {
+//	cout << "save borrow" << endl;
 	ofstream pFile(BORROWS_FILE);
 	for (unsigned int x = 0; x < borrows.size(); x++) {
 		borrows[x]->saveData(pFile);
-		if (x < ((int) borrows.size() - 1))
+		if (x < (-1 + borrows.size()))
 			pFile << endl;
 	}
 	pFile.close();

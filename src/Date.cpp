@@ -25,8 +25,9 @@ void Date::setDate(unsigned int day, unsigned int month, unsigned int year) {
 	unsigned int days = GiveMonthDays(month, year);
 	if (days == 0 || day < 1 || day > days)
 		throw Exception<int>("Invalid Day", day); // throw exception <int> because of the template
-    if(year<2000)
-    	throw Exception<int>("Invalid Year(because of the julianDays method)", year); // throw exception <int> because of the template
+	if (year < 2000)
+		throw Exception<int>("Invalid Year(because of the julianDays method)",
+				year); // throw exception <int> because of the template
 
 	this->day = day;
 	this->month = month;
@@ -50,9 +51,9 @@ void Date::addOneDay() {
 }
 
 int Date::julianDays() const { // julian days days since 1/1/2000
-	int a { (14 - month) / 12 };
-	int y { year + 4800 - a };
-	int m { month + 12 * a - 3 };
+	int a = (14 - month) / 12;
+	int y = year + 4800 - a;
+	int m = month + 12 * a - 3;
 	if (year > 1582 || (year == 1582 && month > 10)
 			|| (year == 1582 && month == 10 && day >= 15))
 		return day + (153 * m + 2) / 5 + 365 * y + y / 4 - y / 100 + y / 400

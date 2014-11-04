@@ -6,7 +6,8 @@ unsigned long int Book::bookID = 0;
 Book::Book(vector<string> authors, bool borrowed, string quota,
 		unsigned int pageNumber, string isbn, string title) :
 		authors(authors), borrowed(borrowed), quota(quota), pageNumber(
-				pageNumber), isbn(isbn), title(title), ID(++bookID) {
+				pageNumber), isbn(isbn), title(title) {
+	ID = ++bookID;
 }
 
 Book::~Book() {
@@ -15,9 +16,9 @@ Book::~Book() {
 Book::Book(fstream& s) {
 	stringstream ss;
 	string newAuthors, newBorrowed, newQuota, newPageNumber, newIsbn, newTitle,
-			newAuthor, newID;
+			newAuthor, newIdStr;
 	bool borrowed;
-	unsigned int pageNumber;
+	unsigned int pageNumber, newId;
 
 	getline(s, newAuthors, ';');
 	ss << newAuthors;
@@ -47,16 +48,17 @@ Book::Book(fstream& s) {
 	getline(s, newTitle, ';');
 	this->title = newTitle;
 
-	getline(s, newID);
-	ss << newID;
-	ss >> this->ID;
+	getline(s, newIdStr);
+	ss << newIdStr;
+	ss >> newId;
+	this->ID = newId;
 	ss.clear();
 
 	if (this->ID > bookID)
 		bookID = this->ID;
 }
 
-string Book::print() {
+string Book::print() const {
 	stringstream ss;
 	if (authors.size() > 0) {
 		ss << authors.at(0);
@@ -69,11 +71,11 @@ string Book::print() {
 	return ss.str();
 }
 
-unsigned long int Book::getID() {
+unsigned long int Book::getID() const {
 	return ID;
 }
 
-vector<string> Book::getAuthors() {
+vector<string> Book::getAuthors() const {
 	return authors;
 }
 
@@ -85,7 +87,7 @@ void Book::addAuthor(string author) {
 	this->authors.push_back(author);
 }
 
-bool Book::getBorrowed() {
+bool Book::getBorrowed() const {
 	return borrowed;
 }
 
@@ -93,7 +95,7 @@ void Book::setBorrowed(bool borrowed) {
 	this->borrowed = borrowed;
 }
 
-string Book::getQuota() {
+string Book::getQuota() const {
 	return quota;
 }
 
@@ -101,19 +103,19 @@ void Book::setQuota(string quota) {
 	this->quota = quota;
 }
 
-int Book::getPageNumber() {
+int Book::getPageNumber() const {
 	return pageNumber;
 }
 void Book::setPageNumber(int pageNumber) {
 	this->pageNumber = pageNumber;
 }
-string Book::getIsbn() {
+string Book::getIsbn() const {
 	return isbn;
 }
 void Book::setIsbn(string isbn) {
 	this->isbn = isbn;
 }
-string Book::getTitle() {
+string Book::getTitle() const {
 	return title;
 }
 void Book::setTitle(string title) {

@@ -1,9 +1,9 @@
 #include "Borrow.h"
 
 Borrow::Borrow(Book* book, Employee* employee, Reader* reader, Date borrowDate,
-		Date expectedDeliveryDate, unsigned long int borrowId) :
-		book(book), employee(employee), reader(reader), borrowDate(borrowDate), expectedDeliveryDate(
-				expectedDeliveryDate), Returned { false }, id(borrowId) {
+		Date limitReturnDate, unsigned long int borrowId) :
+		book(book), employee(employee), reader(reader), borrowDate(borrowDate), limitReturnDate(
+				limitReturnDate), returned(false), id(borrowId) {
 }
 
 Book* Borrow::getBook() const {
@@ -22,9 +22,9 @@ unsigned long int Borrow::getID() const {
 }
 
 float Borrow::CalcFee() const {
-	if (!Returned)
+	if (!returned)
 		return 0;
-	int days { actuallyDeliveryDate - expectedDeliveryDate };
+	int days = returnDate - limitReturnDate;
 	if (days <= 0)
 		return 0;
 	if (days <= 7)
@@ -34,10 +34,10 @@ float Borrow::CalcFee() const {
 
 bool Borrow::DeliveredBook(Date d) {
 	//used to read from the files to
-	if (Returned)
+	if (returned)
 		return false;
-	Returned = true;
-	this->actuallyDeliveryDate = d;
+	returned = true;
+	this->returnDate = d;
 	return true;
 }
 
@@ -47,9 +47,9 @@ string Borrow::print() const {
 	ss << "Employee: " << employee->print() << endl;
 	ss << "Reader: " << reader->print() << endl;
 	ss << "Borrow date: " << borrowDate.print() << endl;
-	ss << "Expected date: " << expectedDeliveryDate.print() << endl;
-	if (Returned)
-		ss << "Returned date: " << actuallyDeliveryDate.print() << endl;
+	ss << "Limit return date: " << limitReturnDate.print() << endl;
+	if (returned)
+		ss << "Return date: " << returnDate.print() << endl;
 	return ss.str();
 }
 
@@ -57,12 +57,14 @@ void Borrow::saveData(ofstream &pFile) {
 	pFile << book->getID() << ";" << employee->getNif() << ";"
 			<< reader->getCard() << ";" << borrowDate.getDay() << ","
 			<< borrowDate.getMonth() << "," << borrowDate.getYear() << ";"
-			<< expectedDeliveryDate.getDay() << ","
-			<< expectedDeliveryDate.getMonth() << ","
-			<< expectedDeliveryDate.getYear() << ";" << Returned;
-	if (Returned) {
-		pFile << ";" << actuallyDeliveryDate.getDay() << ","
-				<< actuallyDeliveryDate.getMonth() << ","
-				<< actuallyDeliveryDate.getYear();
+			<< limitReturnDate.getDay() << "," << limitReturnDate.getMonth()
+			<< "," << limitReturnDate.getYear() << ";" << returned;
+	if (returned) {
+		pFile << ";" << returnDate.getDay() << "," << returnDate.getMonth()
+				<< "," << returnDate.getYear();
 	}
+}
+
+bool Borrow::isReturned() const {
+	return returned;
 }

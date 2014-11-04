@@ -21,13 +21,13 @@ public:
 	virtual ~Person();
 
 	virtual void saveData(ofstream &of) = 0;
-	virtual string print();
-	virtual unsigned int getType() = 0;
+	virtual string print() const;
+	virtual unsigned int getType() const = 0;
 	virtual unsigned int getCard() const = 0;
 	virtual unsigned int getNif() const = 0;
 	virtual unsigned int getWage() const = 0;
 	virtual vector<Borrow*> getBorrowedBooks() const = 0;
-	virtual string printType() = 0;
+	virtual string printType() const = 0;
 	void setName(string name);
 	void setAge(unsigned int age);
 	void setPhone(unsigned int phoneNumber);
