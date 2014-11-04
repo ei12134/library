@@ -73,10 +73,10 @@ void Interface::readerMenu(Person*reader) {
 		clearScreen();
 		displayHeader(header);
 
-		cout << TRI_TAB << "Age :" << TAB << reader->getAge() << endl;
-		cout << TRI_TAB << "Card :" << TAB << reader->getCard() << endl;
-		cout << TRI_TAB << "Phone :" << TAB << reader->getPhone() << endl;
-		cout << TRI_TAB << "Email :" << TAB << reader->getEmail() << endl;
+		cout << TRI_TAB << "Age:" << TAB << reader->getAge() << endl;
+		cout << TRI_TAB << "Card:" << TAB << reader->getCard() << endl;
+		cout << TRI_TAB << "Phone:" << TAB << reader->getPhone() << endl;
+		cout << TRI_TAB << "Email:" << TAB << reader->getEmail() << endl;
 		cout << endl << TRI_TAB << "[1] Borrowed books\n";
 		cout << TRI_TAB << "[2] Return a book\n";
 		cout << TRI_TAB << "[3] History\n";
@@ -115,11 +115,11 @@ void Interface::employeeMenu(Person* employee) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << TRI_TAB << "Age :" << TAB << employee->getAge() << endl;
-		cout << TRI_TAB << "Nif :" << TAB << employee->getNif() << endl;
-		cout << TRI_TAB << "Phone :" << TAB << employee->getPhone() << endl;
-		cout << TRI_TAB << "Email :" << TAB << employee->getEmail() << endl;
-		cout << TRI_TAB << "Wage :" << TAB << employee->getWage() << " euros"
+		cout << TRI_TAB << "Age:" << TAB << employee->getAge() << endl;
+		cout << TRI_TAB << "Nif:" << TAB << employee->getNif() << endl;
+		cout << TRI_TAB << "Phone:" << TAB << employee->getPhone() << endl;
+		cout << TRI_TAB << "Email:" << TAB << employee->getEmail() << endl;
+		cout << TRI_TAB << "Wage:" << TAB << employee->getWage() << " euros"
 				<< endl;
 		cout << endl << TRI_TAB << "[1] Borrow a book\n";
 		cout << TRI_TAB << "[2] Manage readers\n";
@@ -159,11 +159,11 @@ void Interface::supervisorMenu(Person* supervisor) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << TRI_TAB << "Age :" << TAB << supervisor->getAge() << endl;
-		cout << TRI_TAB << "Nif :" << TAB << supervisor->getNif() << endl;
-		cout << TRI_TAB << "Phone :" << TAB << supervisor->getPhone() << endl;
-		cout << TRI_TAB << "Email :" << TAB << supervisor->getEmail() << endl;
-		cout << TRI_TAB << "Wage :" << TAB << supervisor->getWage() << " euros"
+		cout << TRI_TAB << "Age:" << TAB << supervisor->getAge() << endl;
+		cout << TRI_TAB << "Nif:" << TAB << supervisor->getNif() << endl;
+		cout << TRI_TAB << "Phone:" << TAB << supervisor->getPhone() << endl;
+		cout << TRI_TAB << "Email:" << TAB << supervisor->getEmail() << endl;
+		cout << TRI_TAB << "Wage:" << TAB << supervisor->getWage() << " euros"
 				<< endl;
 		cout << endl << TRI_TAB << "[1] Display employees team\n";
 		cout << TRI_TAB << "[2] Manage employees\n";
@@ -415,16 +415,18 @@ void Interface::editBook(Book* book) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TRI_TAB << "[1] Author" << TAB << "["
-				<< book->getAuthors()[0] << "]" << endl;
-		cout << TRI_TAB << "[2] Quota" << TAB << "[" << book->getQuota() << "]"
+		cout << endl << TRI_TAB << "[1] Author" << TAB
+				<< optParam(book->getAuthors()[0]) << endl;
+		cout << TRI_TAB << "[2] Quota" << TAB << optParam(book->getQuota())
 				<< endl;
-		cout << TRI_TAB << "[3] Page number" << TAB << "["
-				<< book->getPageNumber() << "]" << endl;
-		cout << TRI_TAB << "[4] Isbn" << TAB << "[" << book->getIsbn() << "]"
+		cout << TRI_TAB << "[3] Page number" << TAB <<
+		optParam(book->getPageNumber()) << endl;
+		cout << TRI_TAB << "[4] Isbn" << TAB << optParam(book->getIsbn())
 				<< endl;
-		cout << TRI_TAB << "[5] Title" << TAB << "["
-				<< book->getTitle().substr(0, 16) << "]" << endl;
+		cout << TRI_TAB << "[5] Title" << TAB
+				<< (book->getTitle().size() > 16 ?
+						optParam(book->getTitle().substr(0, 16)) :
+						optParam(book->getTitle())) << endl; //
 		cout << TRI_TAB << "[6] Exit" << endl;
 
 		if (changesMessage.size() > 0) {
@@ -997,4 +999,11 @@ vector<string> Interface::editAuthors() {
 		cout << endl;
 	}
 	return authors;
+}
+
+template<typename T>
+string Interface::optParam(const T &p) {
+	stringstream ss;
+	ss << "[" << p << "]";
+	return ss.str();
 }

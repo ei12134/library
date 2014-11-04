@@ -69,6 +69,8 @@ public:
 	virtual ~Interface();
 	char getKey();
 	bool is_Number(const int & c);
+	template<typename T>
+	string optParam(const T &p);
 };
 
 #endif /* INTERFACE_H_ */

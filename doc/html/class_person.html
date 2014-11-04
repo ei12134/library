@@ -45,6 +45,7 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_person-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Person Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -56,9 +57,8 @@ Inheritance diagram for Person:</div>
  <div class="center">
   <img src="class_person.png" usemap="#Person_map" alt=""/>
   <map id="Person_map" name="Person_map">
-<area href="class_employee.html" alt="Employee" shape="rect" coords="0,56,74,80"/>
-<area href="class_reader.html" alt="Reader" shape="rect" coords="84,56,158,80"/>
-<area href="class_supervisor.html" alt="Supervisor" shape="rect" coords="0,112,74,136"/>
+<area href="class_employee.html" alt="Employee" shape="rect" coords="0,56,67,80"/>
+<area href="class_reader.html" alt="Reader" shape="rect" coords="77,56,144,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -67,15 +67,33 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a883c9d749b3ae65a1867d4f860dd0c87"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a883c9d749b3ae65a1867d4f860dd0c87"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Person</b> (string name, unsigned int age, unsigned int phone, string email)</td></tr>
 <tr class="separator:a883c9d749b3ae65a1867d4f860dd0c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1121595d2d5a9488bd12dc8009cf770"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1121595d2d5a9488bd12dc8009cf770"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Person</b> (fstream &amp;s)</td></tr>
-<tr class="separator:ad1121595d2d5a9488bd12dc8009cf770"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae17270a8d7c5c70d0e8bb521297edf89"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae17270a8d7c5c70d0e8bb521297edf89"></a>
-virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> ()</td></tr>
-<tr class="separator:ae17270a8d7c5c70d0e8bb521297edf89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6da6cd45f6958bad22627e3e43df8c60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6da6cd45f6958bad22627e3e43df8c60"></a>
-virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> ()=0</td></tr>
-<tr class="separator:a6da6cd45f6958bad22627e3e43df8c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacdb97fa9aede5061411395f7a4bd671"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacdb97fa9aede5061411395f7a4bd671"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Person</b> (ifstream &amp;s)</td></tr>
+<tr class="separator:aacdb97fa9aede5061411395f7a4bd671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e21598eb50f203def9c5aaf1cc9a39c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e21598eb50f203def9c5aaf1cc9a39c"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>saveData</b> (ofstream &amp;of)=0</td></tr>
+<tr class="separator:a8e21598eb50f203def9c5aaf1cc9a39c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88bfd2f28c0df451c61bd2f43f9aac7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88bfd2f28c0df451c61bd2f43f9aac7f"></a>
+virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> () const </td></tr>
+<tr class="separator:a88bfd2f28c0df451c61bd2f43f9aac7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43e54dd820e3f2fabf3759b20c36840a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43e54dd820e3f2fabf3759b20c36840a"></a>
+virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> () const =0</td></tr>
+<tr class="separator:a43e54dd820e3f2fabf3759b20c36840a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f39538a215158abdf86071bd5d772a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f39538a215158abdf86071bd5d772a2"></a>
+virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getCard</b> () const =0</td></tr>
+<tr class="separator:a7f39538a215158abdf86071bd5d772a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eed584538418e0f2f9503fc783b456a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2eed584538418e0f2f9503fc783b456a"></a>
+virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getNif</b> () const =0</td></tr>
+<tr class="separator:a2eed584538418e0f2f9503fc783b456a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70c15704325b703f6a9700271cb211a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70c15704325b703f6a9700271cb211a1"></a>
+virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getWage</b> () const =0</td></tr>
+<tr class="separator:a70c15704325b703f6a9700271cb211a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc01bb4ec1b3e1a13155be61e102f98e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afc01bb4ec1b3e1a13155be61e102f98e"></a>
+virtual vector&lt; <a class="el" href="class_borrow.html">Borrow</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getBorrowedBooks</b> () const =0</td></tr>
+<tr class="separator:afc01bb4ec1b3e1a13155be61e102f98e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75acc73b3b91cb47499aa311d6b1bb86"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75acc73b3b91cb47499aa311d6b1bb86"></a>
+virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>printType</b> () const =0</td></tr>
+<tr class="separator:a75acc73b3b91cb47499aa311d6b1bb86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fa68f82727e6de0137b3c1b1537a0bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fa68f82727e6de0137b3c1b1537a0bf"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (string name)</td></tr>
 <tr class="separator:a9fa68f82727e6de0137b3c1b1537a0bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -88,6 +106,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setPhone</b> (unsigne
 <tr class="memitem:aa8e37990f68dc17e94432e8d1d3e43c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8e37990f68dc17e94432e8d1d3e43c4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setEmail</b> (string email)</td></tr>
 <tr class="separator:aa8e37990f68dc17e94432e8d1d3e43c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a809028e63a59c42ac0d5122f70de0b49"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a809028e63a59c42ac0d5122f70de0b49"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setNif</b> (unsigned int nif)</td></tr>
+<tr class="separator:a809028e63a59c42ac0d5122f70de0b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa896a85c2a1fb2cc418f0cabbe8f402c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa896a85c2a1fb2cc418f0cabbe8f402c"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setWage</b> (unsigned int wage)</td></tr>
+<tr class="separator:aa896a85c2a1fb2cc418f0cabbe8f402c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93a0d67ed39f494c66a901d80c99d979"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a93a0d67ed39f494c66a901d80c99d979"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setSupervisor</b> (bool super)</td></tr>
+<tr class="separator:a93a0d67ed39f494c66a901d80c99d979"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c06a41731a2656caec65e3bc39f5ebe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c06a41731a2656caec65e3bc39f5ebe"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> () const </td></tr>
 <tr class="separator:a5c06a41731a2656caec65e3bc39f5ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -100,15 +127,30 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getAge</b> ()
 <tr class="memitem:a4fd71a7cde4a35e133ebb160aa8b1b7a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fd71a7cde4a35e133ebb160aa8b1b7a"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getPhone</b> () const </td></tr>
 <tr class="separator:a4fd71a7cde4a35e133ebb160aa8b1b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a821d801ffc30ff9d5f12c4be38f03aec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a821d801ffc30ff9d5f12c4be38f03aec"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>age</b></td></tr>
+<tr class="separator:a821d801ffc30ff9d5f12c4be38f03aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcd0b3efc90ee8d67c84da7ecc1637ff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adcd0b3efc90ee8d67c84da7ecc1637ff"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>phone</b></td></tr>
+<tr class="separator:adcd0b3efc90ee8d67c84da7ecc1637ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53f89f658cf5579cfa0b1c0f9de9cfe5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53f89f658cf5579cfa0b1c0f9de9cfe5"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>email</b></td></tr>
+<tr class="separator:a53f89f658cf5579cfa0b1c0f9de9cfe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a669b64897b4d823a27bb5866368d4dfa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a669b64897b4d823a27bb5866368d4dfa"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
+<tr class="separator:a669b64897b4d823a27bb5866368d4dfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>C:/Users/User/Eclipse/library/src/Persons/<a class="el" href="_person_8h_source.html">Person.h</a></li>
-<li>C:/Users/User/Eclipse/library/src/Persons/Person.cpp</li>
+<li>C:/Users/User/Documents/Source/git/library/src/Persons/<a class="el" href="_person_8h_source.html">Person.h</a></li>
+<li>C:/Users/User/Documents/Source/git/library/src/Persons/Person.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 15 2014 22:38:08 for Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Nov 4 2014 14:03:55 for Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

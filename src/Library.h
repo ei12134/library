@@ -29,14 +29,19 @@ private:
 	vector<Person*> persons;
 
 	/** Loads stored books
-	 * Loads *.csv files to the persons vector
+	 * Loads books.csv file to the books vector
 	 */
 	void loadBooks();
 
 	/** Loads stored persons
-	 * Loads *.csv files to the persons vector
+	 * Loads readers.csv, employees.csv and supervisors.csv files to the persons vector
 	 */
 	void loadPersons();
+
+	/** Loads stored borrows
+	 * Loads borrows.csv file to the borrows vector
+	 */
+	void loadBorrowBooks();
 
 	/**
 	 * Saves books in books.csv file
@@ -44,18 +49,19 @@ private:
 	void saveBooks();
 
 	/**
-	 * Saves persons in appropriate *.csv files
+	 * Saves persons in corresponding readers.csv, employees.csv and supervisors.csv files
 	 */
 	void savePersons();
 
+	/**
+	 * Saves borrows in borrows.csv file
+	 */
 	void saveBorrows();
 
-	void loadBorrowBooks();
-
 public:
-	/// reader unique identifier(solution save in separate file this unique ids)
-	// employee and supervisores have a unique id nif
-	static unsigned long int borrowID;	// for teh borrow Book
+
+	/// unique borrow Id
+	static unsigned long int borrowID;
 
 	/** Library constructor reads *.csv files and stores
 	 * pointers to each object in their dedicated container */

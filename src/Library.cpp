@@ -14,9 +14,7 @@ Library::~Library() {
 	saveBooks();
 	savePersons();
 	saveBorrows();
-	// save containers to files? then delete them
 
-	// destruir os pointer dos vectores
 	for (unsigned x = 0; x < books.size(); x++)
 		delete books[x];
 	books.clear();
@@ -119,9 +117,6 @@ bool Library::removePerson(Person* person, Person* employee) {
 	return false;
 }
 
-// --------------------------------------------------------------------------------------
-// Load ---------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------
 void Library::loadPersons() {
 	cout << "load persons" << endl;
 
@@ -141,7 +136,6 @@ void Library::loadPersons() {
 	file.close();
 
 // read supervisors
-
 	stringstream ss;
 	string employs;
 	string e;
@@ -154,11 +148,8 @@ void Library::loadPersons() {
 			ss << employs;
 			while (getline(ss, e, ',')) {
 				for (unsigned x = 0; x < temp.size(); x++) {
-					if (temp[x]->getName() == e) {// emplyee existe em memoria (se nao existir nao adiciona)
+					if (temp[x]->getName() == e) { // check if employee exists in memory
 						employee->addEmplyee(temp[x]);
-
-						//cout << employee->print() << endl;
-
 						break;
 					}
 				}
@@ -168,24 +159,15 @@ void Library::loadPersons() {
 		}
 	}
 	file.close();
-// now add all the employees to the main vector
-	persons.insert(persons.end(), temp.begin(), temp.end());
 
-	/*cout
-	 << endl << "************** printing all the date read**************  from files **************"
-	 << endl << endl;
-	 for (unsigned int x = 0; x < persons.size(); x++) {
-	 cout << persons[x]->print() << endl;
-	 }*/
+// add all employees to the main vector
+	persons.insert(persons.end(), temp.begin(), temp.end());
 
 	// read readers
 	file.open(READERS_FILE);
 	if (file.is_open()) {
 		while (file.good()) {
 			Reader* reader = new Reader(file);
-
-			//cout << reader->print() << endl;
-
 			persons.push_back(reader);
 		}
 	}
@@ -194,8 +176,6 @@ void Library::loadPersons() {
 }
 
 void Library::loadBooks() {
-	cout << "load books" << endl;
-
 	fstream file;
 	file.open(BOOKS_FILE);
 	if (file.is_open()) {
@@ -248,8 +228,8 @@ void Library::loadBorrowBooks() {
 				ss.clear();
 				data.clear();
 
-				// Reader association (nunca e zero)
-				// Employee association (nunca e zero)
+				// Reader association (shouldn't be 0)
+				// Employee association (shouldn't be 0)
 				for (unsigned x = 0; x < persons.size(); x++) {
 					if (persons[x]->getNif() == EmpoyeeNIF) {
 						posEmplo = x;
@@ -356,10 +336,6 @@ void Library::loadBorrowBooks() {
 // no final adicionar borrow books aos readers
 }
 
-// --------------------------------------------------------------------------------------
-// save ---------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------
-
 void Library::saveBooks() {
 	cout << "save books" << endl;
 
@@ -382,8 +358,6 @@ void Library::saveBooks() {
 }
 
 void Library::savePersons() {
-	cout << "save person" << endl;
-	// solution for the endl line in the final of the files
 	bool notFistRead = false;
 	bool notFistEmp = false;
 	bool notFistSup = false;
@@ -393,7 +367,6 @@ void Library::savePersons() {
 	ofstream pFileReaders(READERS_FILE);
 
 	for (unsigned int i = 0; i < persons.size(); i++) {
-//		cout << persons[i]->print() << endl;
 		switch (persons[i]->getType()) {
 		case 1:	// reader
 			if (notFistRead)
@@ -430,7 +403,6 @@ void Library::savePersons() {
 }
 
 void Library::saveBorrows() {
-//	cout << "save borrow" << endl;
 	ofstream pFile(BORROWS_FILE);
 	for (unsigned int x = 0; x < borrows.size(); x++) {
 		borrows[x]->saveData(pFile);
