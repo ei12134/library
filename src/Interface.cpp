@@ -196,6 +196,7 @@ void Interface::manageBooks() {
 	char input;
 	bool exit = false;
 	string header = "Manage books", message;
+	string confirmRemove = "Remove book?";
 	Book* book;
 
 	do {
@@ -226,9 +227,13 @@ void Interface::manageBooks() {
 				message = "Error editing a book";
 			break;
 		case '3':
-			if (library.removeBook(searchBook(library.getBooks())))
-				message = "Book removed successfully";
-			else
+			book = searchBook(library.getBooks());
+			if (book != NULL && confirmOperation(confirmRemove)) {
+				if (library.removeBook(book))
+					message = "Book removed successfully";
+				else
+					message = "Error removing a book";
+			} else
 				message = "Error removing a book";
 			break;
 		case '4':
@@ -302,7 +307,7 @@ void Interface::manageEmployees(Person* supervisor) {
 
 void Interface::createBook() {
 	string header = "Create Book";
-	string newAuthor, newPageNumberStr, newQuota, newIsbn, newTitle;
+	string newAuthor, newPageNumberStr, newQuota, newISBN, newTitle;
 	stringstream ss;
 	unsigned int newPageNumber;
 
@@ -318,9 +323,9 @@ void Interface::createBook() {
 		cout << THREE_TABS << "PageNumber: ";
 		getline(cin, newPageNumberStr, '\n');
 	}
-	while (newIsbn.size() == 0 || (newIsbn.size() != 13 && newIsbn.size() != 10)) {
-		cout << THREE_TABS << "Isbn: ";
-		getline(cin, newIsbn, '\n');
+	while (newISBN.size() == 0 || (newISBN.size() != 13 && newISBN.size() != 10)) {
+		cout << THREE_TABS << "ISBN: ";
+		getline(cin, newISBN, '\n');
 	}
 	while (newTitle.size() == 0) {
 		cout << THREE_TABS << "Title: ";
@@ -333,7 +338,7 @@ void Interface::createBook() {
 		ss << newPageNumberStr;
 		ss >> newPageNumber;
 		vector<Book*> books = library.getBooks();
-		Book *b = new Book(authors, false, newQuota, newPageNumber, newIsbn,
+		Book *b = new Book(authors, false, newQuota, newPageNumber, newISBN,
 				newTitle);
 		library.addBook(b);
 		cout << endl << THREE_TABS << newTitle << " successfully created.";
@@ -419,7 +424,7 @@ void Interface::editBook(Book* book) {
 	bool exit = false;
 	string header = "Edit book";
 	do {
-		string newQuota, newTitle, newIsbn, newPageNumberStr, changesMessage;
+		string newQuota, newTitle, newISBN, newPageNumberStr, changesMessage;
 		unsigned int newPageNumber;
 		stringstream ss;
 		istringstream s;
@@ -432,7 +437,7 @@ void Interface::editBook(Book* book) {
 				<< endl;
 		cout << THREE_TABS << "[3] Page number" << TAB <<
 		optParam(book->getPageNumber()) << endl;
-		cout << THREE_TABS << "[4] Isbn" << TAB << optParam(book->getIsbn())
+		cout << THREE_TABS << "[4] ISBN" << TAB << optParam(book->getISBN())
 				<< endl;
 		cout << THREE_TABS << "[5] Title" << TAB
 				<< (book->getTitle().size() > 16 ?
@@ -480,12 +485,12 @@ void Interface::editBook(Book* book) {
 
 		case '4':
 			cout << endl;
-			while (newIsbn.size() == 0
-					|| (newIsbn.size() != 13 && newIsbn.size() != 10)) {
-				cout << THREE_TABS << "Isbn: ";
-				getline(cin, newIsbn, '\n');
+			while (newISBN.size() == 0
+					|| (newISBN.size() != 13 && newISBN.size() != 10)) {
+				cout << THREE_TABS << "ISBN: ";
+				getline(cin, newISBN, '\n');
 			}
-			book->setIsbn(newIsbn);
+			book->setISBN(newISBN);
 			changesMessage = "Changes saved successfully";
 			break;
 
@@ -752,9 +757,9 @@ Book* Interface::searchBook(vector<Book*> books) {
 		displayHeader(header);
 		cout << endl;
 		matches.clear();
-		matches.reserve(6);
+		matches.reserve(4);
 		if (query.size() > 0) {
-			for (size_t i = 0, z = 1; i < books.size() && z < 6; i++) {
+			for (size_t i = 0, z = 1; i < books.size() && z < 5; i++) {
 				string title = books[i]->getTitle();
 				vector<string> authors = books[i]->getAuthors();
 				bool matchAuthor = false;
@@ -763,12 +768,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 
 				if (partialMatchQuery(query, title) || matchAuthor) {
 					cout << TWO_TABS << "[" << z++ << "] "
-							<< ((books[i]->getTitle()).size() > 32 ?
-									books[i]->getTitle().substr(0, 32) :
-									books[i]->getTitle()) << TAB
-							<< (books[i]->getBorrowed() == 1 ?
-									"[Borrowed]" : "[Available]") << endl
-							<< endl;
+							<< books[i]->printShort() << endl << endl;
 					matches.push_back(books[i]);
 				}
 			}
@@ -809,12 +809,6 @@ Book* Interface::searchBook(vector<Book*> books) {
 				return matches[3];
 			}
 			break;
-
-		case '5':
-			if (matches.size() > 4) {
-				exit = true;
-				return matches[4];
-			}
 			break;
 		case RETURN_KEY:
 			if (matches.size() > 0) {
@@ -877,7 +871,7 @@ void Interface::displayMenu() {
 		case '5':
 			clearScreen();
 			genericDisplay(library.getBooks(), "Books",
-					"\tAuthors\t\tBorrowed\tQuota\tPageNumber\tISBN\tTitle");
+					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
 			break;
 		case '6':
 			exit = true;

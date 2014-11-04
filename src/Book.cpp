@@ -4,9 +4,9 @@ using namespace std;
 unsigned long int Book::bookID = 0;
 
 Book::Book(vector<string> authors, bool borrowed, string quota,
-		unsigned int pageNumber, string isbn, string title) :
+		unsigned int pageNumber, string ISBN, string title) :
 		authors(authors), borrowed(borrowed), quota(quota), pageNumber(
-				pageNumber), isbn(isbn), title(title) {
+				pageNumber), ISBN(ISBN), title(title) {
 	ID = ++bookID;
 }
 
@@ -15,7 +15,7 @@ Book::~Book() {
 
 Book::Book(fstream& s) {
 	stringstream ss;
-	string newAuthors, newBorrowed, newQuota, newPageNumber, newIsbn, newTitle,
+	string newAuthors, newBorrowed, newQuota, newPageNumber, newISBN, newTitle,
 			newAuthor, newIdStr;
 	bool borrowed;
 	unsigned int pageNumber, newId;
@@ -42,8 +42,8 @@ Book::Book(fstream& s) {
 	ss.clear();
 	this->pageNumber = pageNumber;
 
-	getline(s, newIsbn, ';');
-	this->isbn = newIsbn;
+	getline(s, newISBN, ';');
+	this->ISBN = newISBN;
 
 	getline(s, newTitle, ';');
 	this->title = newTitle;
@@ -59,14 +59,44 @@ Book::Book(fstream& s) {
 }
 
 string Book::print() const {
-	stringstream ss;
+	stringstream ss, authorsSs;
+
+	ss << (title.size() > 22 ? title.substr(0, 22) : title);
+	ss << (title.size() >= 22 ? "\t" : "");
+	for (int i = 22 - title.size(); i > 0; i -= 8)
+		ss << "\t";
+
 	if (authors.size() > 0) {
-		ss << authors.at(0);
+		authorsSs << authors.at(0);
 		for (unsigned x = 1; x < authors.size(); x++)
-			ss << ", " << authors.at(x);
+			authorsSs << ", " << authors.at(x);
 	}
-	ss << "   " << (borrowed == 1 ? "Borrowed" : "Available") << "   " << quota
-			<< "   " << pageNumber << "   " << isbn << "   " << title;
+
+	ss
+			<< (authorsSs.str().size() > 22 ?
+					authorsSs.str().substr(0, 22) : authorsSs.str());
+	ss << (authorsSs.str().size() >= 22 ? "\t" : "");
+	for (int i = 22 - authorsSs.str().size(); i > 0; i -= 8)
+		ss << "\t";
+
+	ss << ISBN << "\t" << (borrowed == 1 ? "Borrowed" : "Available");
+	return ss.str();
+}
+
+string Book::printShort() const {
+	stringstream ss, authorsSs;
+
+	ss << (title.size() > 42 ? title.substr(0, 42) : title) << " ";
+	ss << (borrowed == 1 ? "[Borrowed]" : "[Available]") << "\n";
+
+	if (authors.size() > 0) {
+		authorsSs << authors.at(0);
+		for (unsigned x = 1; x < authors.size(); x++)
+			authorsSs << ", " << authors.at(x);
+	}
+	ss << "\t\t"
+			<< (authorsSs.str().size() > 42 ?
+					authorsSs.str().substr(0, 42) : authorsSs.str());
 
 	return ss.str();
 }
@@ -109,11 +139,11 @@ int Book::getPageNumber() const {
 void Book::setPageNumber(int pageNumber) {
 	this->pageNumber = pageNumber;
 }
-string Book::getIsbn() const {
-	return isbn;
+string Book::getISBN() const {
+	return ISBN;
 }
-void Book::setIsbn(string isbn) {
-	this->isbn = isbn;
+void Book::setISBN(string ISBN) {
+	this->ISBN = ISBN;
 }
 string Book::getTitle() const {
 	return title;

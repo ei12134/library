@@ -19,19 +19,20 @@ private:
 	bool borrowed;
 	string quota;
 	int pageNumber;
-	string isbn;
+	string ISBN;
 	string title;
 public:
 	static unsigned long int bookID;
 
 	Book(vector<string> authors, bool borrowed, string quota,
-			unsigned int pageNumber, string isbn, string title);
+			unsigned int pageNumber, string ISBN, string title);
 	virtual ~Book();
 	Book(fstream& s);
 	string print() const;
+	string printShort() const;
 	vector<string> getAuthors() const;
 	string getQuota() const;
-	string getIsbn() const;
+	string getISBN() const;
 	string getTitle() const;
 	int getPageNumber() const;
 	bool getBorrowed() const;
@@ -41,7 +42,7 @@ public:
 	void setBorrowed(bool borrowed);
 	void setQuota(string quota);
 	void setPageNumber(int pageNumber);
-	void setIsbn(string isbn);
+	void setISBN(string ISBN);
 	void setTitle(string title);
 };
 
