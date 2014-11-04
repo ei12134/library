@@ -12,6 +12,7 @@ class Borrow;
 using namespace std;
 
 class Person {
+protected:
 	unsigned int age, phone;
 	string email;
 	string name;

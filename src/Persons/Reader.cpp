@@ -74,16 +74,25 @@ bool Reader::borrowLimit() {
 	return borrowedBooks.size() >= MAX_BORROWS;
 }
 
-string Reader::print() const{
+string Reader::print() const {
 	stringstream ss;
-	ss << Person::print() << "   " << card;
+
+	ss << Person::print();
+
+	if (email.size() >= 22)
+		ss << "\t";
+	else
+		for (int i = 24 - email.size(); i > 0; i -= 8)
+			ss << "\t";
+
+	ss << card;
 	return ss.str();
 }
 
-unsigned int Reader::getType() const{
+unsigned int Reader::getType() const {
 	return 1;
 }
 
-string Reader::printType() const{
+string Reader::printType() const {
 	return "[Reader]";
 }

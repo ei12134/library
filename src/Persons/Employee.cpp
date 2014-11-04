@@ -80,40 +80,52 @@ void createBorrow(Book *, Reader *, Employee *) {
 
 string Employee::print() const {
 	stringstream ss;
-	ss << Person::print() << "   " << nif << "   " << wage;
-	if (supervisor) {
-		ss << "   ";
-		if (team.size() > 0)
-			ss << team[0]->getName();
-		for (unsigned x = 1; x < team.size(); x++) {
-			ss << "   " << team[x]->getName();
+	ss << Person::print();
+
+	if (email.size() >= 22)
+		ss << "\t";
+	else
+		for (int i = 24 - email.size(); i > 0; i -= 8)
+			ss << "\t";
+
+	stringstream nifStr;
+	nifStr << nif;
+	string nifS = nifStr.str();
+	ss << ("*" + (nifS.size() > 3 ? nifS.substr(nifS.size() - 3, nifS.size()) : nifS));
+
+//	if (supervisor) {
+//		ss << "   ";
+//		if (team.size() > 0)
+//			ss << team[0]->getName();
+//		for (unsigned x = 1; x < team.size(); x++) {
+//			ss << "   " << team[x]->getName();
+//		}
+//	}
+			return ss.str();
 		}
-	}
-	return ss.str();
-}
 
-unsigned int Employee::getType() const {
-	if (!supervisor)
-		return 2;
-	else
-		return 3;
-}
+		unsigned int Employee::getType() const {
+			if (!supervisor)
+				return 2;
+			else
+				return 3;
+		}
 
-void Employee::setSupervisor(bool super) {
-	this->supervisor = super;
-}
+		void Employee::setSupervisor(bool super) {
+			this->supervisor = super;
+		}
 
-bool Employee::isSupervisor() const {
-	return supervisor;
-}
+		bool Employee::isSupervisor() const {
+			return supervisor;
+		}
 
-unsigned int Employee::getCard() const {
-	return 0;
-}
+		unsigned int Employee::getCard() const {
+			return 0;
+		}
 
-string Employee::printType() const {
-	if (!supervisor)
-		return "[Employee]";
-	else
-		return "[Supervisor]";
-}
+		string Employee::printType() const {
+			if (!supervisor)
+				return "[Employee]";
+			else
+				return "[Supervisor]";
+		}

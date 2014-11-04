@@ -431,7 +431,7 @@ void Interface::editBook(Book* book) {
 			cout << endl << TRI_TAB << changesMessage << endl;
 			changesMessage.clear();
 		}
-		cout << endl << TRI_TAB  << PROMPT_SYMBOL;
+		cout << endl << TRI_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -835,27 +835,27 @@ void Interface::displayMenu() {
 		case '1':
 			clearScreen();
 			genericDisplay(library.getPersons(), "Persons",
-					"Name       Age       Phone       Email       [Card]       Nif       Wage");
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
 			break;
 		case '2':
 			clearScreen();
 			genericDisplay(library.getReaders(), "Readers",
-					" Name       Age       Phone       Email       Card");
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard");
 			break;
 		case '3':
 			clearScreen();
 			genericDisplay(library.getEmployees(), "Employees",
-					" Name       Age       Phone       Email       Nif       Wage");
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
 			break;
 		case '4':
 			clearScreen();
 			genericDisplay(library.getSupervisors(), "Supervisors",
-					" Name       Age       Phone       Email       Nif       Wage");
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
 			break;
 		case '5':
 			clearScreen();
 			genericDisplay(library.getBooks(), "Books",
-					"Authors       Borrowed       Quota       PageNumber       ISBN       Title");
+					"\tAuthors\t\tBorrowed\tQuota\tPageNumber\tISBN\tTitle");
 			break;
 		case '6':
 			exit = true;
@@ -910,16 +910,15 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 
 	while (i < vecSize && !done) {
 		vLimit = 0;
-		progress = ceil((18.0 / pLimit) * pCount);
+		progress = ceil((19.0 / pLimit) * pCount);
 		clearScreen();
 		displayHeader(listName);
-		cout << string(24, ' ') << "Page " << pCount << " of " << pLimit << " ["
-				<< string(progress, '#') << string((18 - progress), ' ') << "]"
-				<< string(24, ' ') << endl;
-		cout << " " << string(78, '-') << " ";
-		cout << string((80 - labels.length()) / 2, ' ') << labels
-				<< string((80 - labels.length()) / 2, ' ');
-		cout << " " << string(78, '-') << " ";
+		cout << TRI_TAB << "Page " << pCount << " of " << pLimit << " ["
+				<< string(progress, '#') << string((19 - progress), ' ') << "]"
+				<< endl;
+		cout << " " << string(77, '-') << " " << endl;
+		cout << " " << labels << endl;
+		cout << " " << string(77, '-') << " " << endl;
 
 		while (vLimit < MAX_LINES && i < vecSize && !done) {
 			cout << " " << vec[i]->print();

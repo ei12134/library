@@ -71,9 +71,17 @@ string Person::getEmail() const {
 	return email;
 }
 
-string Person::print() const{
+string Person::print() const {
 	stringstream ss;
-	ss << name << "   " << age << "   " << phone << "   " << email;
+	ss << name.substr(0, 22);
+
+	if (name.size() >= 23)
+		ss << "\t";
+	else
+		for (int i = 23 - name.size(); i > 0; i -= 8)
+			ss << "\t";
+
+	ss << age << "\t" << phone << "\t" << email.substr(0, 22);
 	return ss.str();
 }
 
