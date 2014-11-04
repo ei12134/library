@@ -136,3 +136,7 @@ string Employee::printType() const {
 bool Employee::removeBorrow(Borrow* borrow) {
 	return false;
 }
+
+void Employee::addBorrow(Borrow* borrow){
+
+}

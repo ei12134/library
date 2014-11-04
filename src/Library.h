@@ -7,12 +7,12 @@
 #define EMPLOYEES_FILE "employees.csv"
 #define SUPERVISORS_FILE "supervisors.csv"
 
-#include <vector>
-#include <fstream>
 #include "./Persons/Person.h"
 #include "./Persons/Employee.h"
 #include "Book.h"
 #include "Borrow.h"
+#include <fstream>
+#include <vector>
 using namespace std;
 
 /**
@@ -59,10 +59,6 @@ private:
 	void saveBorrows();
 
 public:
-
-	/// unique borrow Id
-	static unsigned long int borrowID;
-
 	/** Library constructor reads *.csv files and stores
 	 * pointers to each object in their dedicated container */
 	Library();

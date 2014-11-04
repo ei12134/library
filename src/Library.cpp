@@ -307,14 +307,14 @@ void Library::loadBorrowBooks() {
 					// checking error
 				} else {
 					// creating borrow
-					Employee* emplo = dynamic_cast<Employee*>(persons[posEmplo]);
-					Reader* read = dynamic_cast<Reader*>(persons[posRead]);
+					Person* employee = persons[posEmplo];
+					Person* reader = persons[posRead];
 
-					if (emplo == NULL || read == NULL) {
+					if (employee == NULL || reader == NULL) {
 						// error casting
 					} else {
-						Borrow* borrow = new Borrow(books[posBook], emplo, read,
-								dBorrow, dExpect, false);// false quando se faz DeliveredBook(dB) returned passa a true
+						Borrow* borrow = new Borrow(books[posBook], employee,
+								reader, dBorrow, dExpect);// false quando se faz DeliveredBook(dB) returned passa a true
 						if (delivered == 1) {
 							//cout << "delivered" << endl;
 
@@ -338,7 +338,7 @@ void Library::loadBorrowBooks() {
 
 							borrow->DeliveredBook(dD);
 						} else {// se nao tiver sido entrege e pk esta com o reader
-							read->addBorrow(borrow);// add the borrow book to the reader
+							reader->addBorrow(borrow);// add the borrow book to the reader
 							books[posBook]->setBorrowed(true);// set the book as borrowed
 						}
 						//cout << borrow->print() << endl;

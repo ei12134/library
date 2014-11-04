@@ -13,22 +13,22 @@ using namespace std;
 class Borrow {
 protected:
 	Book* book;
-	Employee* employee;
-	Reader* reader;
+	Person* employee;
+	Person* reader;
 	Date borrowDate;
 	Date returnDate;
 	Date limitReturnDate;
 	bool returned;
-	unsigned long int id;
+	unsigned long int ID;
 
 public:
-	Borrow(Book* book, Employee* employee, Reader* reader, Date borrowDate,
-			Date expectedDeliveryDate, unsigned long int borrowId);
-
+	Borrow(Book* book, Person* employee, Person* reader, Date borrowDate,
+			Date limitReturnDate);
+	static unsigned long int borrowID;
 	unsigned long int getID() const;
 	Book* getBook() const;
-	Employee* getEmployee() const;
-	Reader* getReader() const;
+	Person* getEmployee() const;
+	Person* getReader() const;
 	void setReturned(bool returned);
 
 	string print() const;

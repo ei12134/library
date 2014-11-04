@@ -28,15 +28,19 @@ public:
 	virtual unsigned int getNif() const = 0;
 	virtual unsigned int getWage() const = 0;
 	virtual bool removeBorrow(Borrow* borrow) = 0;
+	virtual void addBorrow(Borrow* borrow) = 0;
 	virtual vector<Borrow*> getBorrowedBooks() const = 0;
 	virtual string printType() const = 0;
 	void setName(string name);
 	void setAge(unsigned int age);
 	void setPhone(unsigned int phoneNumber);
 	void setEmail(string email);
-	virtual void setNif(unsigned int nif) {}
-	virtual void setWage(unsigned int wage){}
-	virtual void setSupervisor(bool super){}
+	virtual void setNif(unsigned int nif) {
+	}
+	virtual void setWage(unsigned int wage) {
+	}
+	virtual void setSupervisor(bool super) {
+	}
 	string getName() const;
 	string getEmail() const;
 	unsigned int getAge() const;

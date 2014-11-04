@@ -222,7 +222,7 @@ void Interface::manageBooks() {
 		cout << FOUR_TABS << "[3] Remove book\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << warningParam(message) << endl << endl;
+			cout << THREE_TABS << warningParameter(message) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -280,7 +280,7 @@ void Interface::manageReaders() {
 		cout << FOUR_TABS << "[3] Remove reader\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << warningParam(message) << endl << endl;
+			cout << THREE_TABS << warningParameter(message) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -334,7 +334,7 @@ void Interface::manageEmployees(Person* supervisor) {
 		cout << FOUR_TABS << "[3] Remove employee\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << warningParam(message) << endl << endl;
+			cout << THREE_TABS << warningParameter(message) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -492,7 +492,7 @@ void Interface::createEmployee() {
 		getline(cin, newEmail, '\n');
 	}
 	while (newNifStr.size() == 0 || !is_All_Number(newNifStr)
-			|| newNifStr.size() != 9 || seekNif(newNifStr)) {
+			|| newNifStr.size() != 9 || seekNIF(newNifStr)) {
 		cout << THREE_TABS << "NIF: ";
 		getline(cin, newNifStr, '\n');
 	}
@@ -553,7 +553,8 @@ void Interface::createBorrow(Person* employee) {
 		cout << FOUR_TABS << "[4] Exit" << endl << endl;
 
 		if (createMessage.size() > 0) {
-			cout << THREE_TABS << warningParam(createMessage) << endl << endl;
+			cout << THREE_TABS << warningParameter(createMessage) << endl
+					<< endl;
 			createMessage.clear();
 		}
 
@@ -579,8 +580,13 @@ void Interface::createBorrow(Person* employee) {
 		case '3':
 			if (reader != NULL && book != NULL) {
 				Date borrowDate;
-//				Borrow* borrow = new Borrow(book, employee, reader, borrowDate,
-//						limitReturnDate, borrowId);
+				Borrow* borrow = new Borrow(book, employee, reader, borrowDate,
+						borrowDate);
+				library.addBorrow(borrow);
+				reader->addBorrow(borrow);
+				createMessage = "Borrow created successfully";
+				reader = NULL;
+				book = NULL;
 			} else
 				createMessage = "Select a reader and a book";
 			break;
@@ -611,17 +617,17 @@ void Interface::editBook(Book* book) {
 		clearScreen();
 		displayHeader(header);
 		cout << endl << THREE_TABS << "[1] Author" << TAB
-				<< optParam(book->getAuthors()[0]) << endl;
-		cout << THREE_TABS << "[2] Quota" << TAB << optParam(book->getQuota())
-				<< endl;
+				<< optionalParameter(book->getAuthors()[0]) << endl;
+		cout << THREE_TABS << "[2] Quota" << TAB
+				<< optionalParameter(book->getQuota()) << endl;
 		cout << THREE_TABS << "[3] Page number" << TAB <<
-		optParam(book->getPageNumber()) << endl;
-		cout << THREE_TABS << "[4] ISBN" << TAB << optParam(book->getISBN())
-				<< endl;
+		optionalParameter(book->getPageNumber()) << endl;
+		cout << THREE_TABS << "[4] ISBN" << TAB
+				<< optionalParameter(book->getISBN()) << endl;
 		cout << THREE_TABS << "[5] Title" << TAB
 				<< (book->getTitle().size() > 16 ?
-						optParam(book->getTitle().substr(0, 16)) :
-						optParam(book->getTitle())) << endl; //
+						optionalParameter(book->getTitle().substr(0, 16)) :
+						optionalParameter(book->getTitle())) << endl; //
 		cout << THREE_TABS << "[6] Exit" << endl;
 
 		if (changesMessage.size() > 0) {
@@ -869,7 +875,7 @@ void Interface::editEmployee(Person* employee) {
 		case '5':
 			cout << endl;
 			while (newNifStr.size() == 0 || !is_All_Number(newNifStr)
-					|| newNifStr.size() != 9 || seekNif(newNifStr)) {
+					|| newNifStr.size() != 9 || seekNIF(newNifStr)) {
 				cout << THREE_TABS << "NIF: ";
 				getline(cin, newNifStr, '\n');
 			}
@@ -935,7 +941,8 @@ void Interface::editBorrow(Person* reader) {
 					<< endl;
 		}
 		if (returnMessage.size() > 0) {
-			cout << THREE_TABS << warningParam(returnMessage) << endl << endl;
+			cout << THREE_TABS << warningParameter(returnMessage) << endl
+					<< endl;
 			returnMessage.clear();
 		}
 
@@ -1350,20 +1357,20 @@ vector<string> Interface::editAuthors() {
 }
 
 template<typename T>
-string Interface::optParam(const T &p) {
+string Interface::optionalParameter(const T &p) {
 	stringstream ss;
 	ss << "[" << p << "]";
 	return ss.str();
 }
 
 template<typename T>
-string Interface::warningParam(const T &p) {
+string Interface::warningParameter(const T &p) {
 	stringstream ss;
 	ss << "*** " << p << " ***";
 	return ss.str();
 }
 
-bool Interface::seekNif(const string &s) {
+bool Interface::seekNIF(const string &s) {
 	vector<Person*> employees = library.getEmployees();
 	unsigned int nif;
 	stringstream ss;

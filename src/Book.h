@@ -14,7 +14,6 @@ using namespace std;
 class Book {
 private:
 	unsigned long int ID;
-
 	vector<string> authors;
 	bool borrowed;
 	string quota;
@@ -23,7 +22,6 @@ private:
 	string title;
 public:
 	static unsigned long int bookID;
-
 	Book(vector<string> authors, bool borrowed, string quota,
 			unsigned int pageNumber, string ISBN, string title);
 	virtual ~Book();

@@ -1,24 +1,27 @@
 #include "Borrow.h"
 
-Borrow::Borrow(Book* book, Employee* employee, Reader* reader, Date borrowDate,
-		Date limitReturnDate, unsigned long int borrowId) :
+unsigned long int Borrow::borrowID = 0;
+
+Borrow::Borrow(Book* book, Person* employee, Person* reader, Date borrowDate,
+		Date limitReturnDate) :
 		book(book), employee(employee), reader(reader), borrowDate(borrowDate), limitReturnDate(
-				limitReturnDate), returned(false), id(borrowId) {
+				limitReturnDate), returned(false) {
+	ID = ++borrowID;
 }
 
 Book* Borrow::getBook() const {
 	return book;
 }
 
-Employee* Borrow::getEmployee() const {
+Person* Borrow::getEmployee() const {
 	return employee;
 }
 
-Reader* Borrow::getReader() const {
+Person* Borrow::getReader() const {
 	return reader;
 }
 unsigned long int Borrow::getID() const {
-	return id;
+	return ID;
 }
 
 float Borrow::CalcFee() const {
@@ -64,7 +67,8 @@ string Borrow::printShort() const {
 	stringstream ss;
 	ss << "Book: " << book->getTitle() << endl;
 	ss << "\t\t\t" << "    Borrow date: " << borrowDate.print() << endl;
-	ss << "\t\t\t" << "    Limit return date: " << limitReturnDate.print() << endl;
+	ss << "\t\t\t" << "    Limit return date: " << limitReturnDate.print()
+			<< endl;
 	if (returned)
 		ss << "Return date: " << returnDate.print() << endl;
 	return ss.str();

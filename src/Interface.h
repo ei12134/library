@@ -3,17 +3,13 @@
 
 #include "Library.h"
 #include "Algorithms.h"
-#include <iostream>
-#include <vector>
-#include <string>
-#include <algorithm>
 #include <cstdlib>
-#include <iostream>
 #include <fstream>
-#include <limits>
+#include <iostream>
 #include <math.h>
 #include <stdio.h>
-#include <cstdlib>
+#include <string>
+#include <vector>
 using namespace std;
 
 #ifdef _WIN32
@@ -44,8 +40,9 @@ private:
 
 public:
 	Interface();
+	~Interface();
+
 	void menu();
-	void credits();
 	void displayMenu();
 	void clearScreen();
 	void dispatchPerson(Person* person);
@@ -73,17 +70,19 @@ public:
 
 	void displayHeader(string& header);
 	bool confirmOperation(string& query);
-	string readInputString(string dialog);
+
 	template<typename T>
 	void genericDisplay(vector<T> vec, string listName, string labels);
-	virtual ~Interface();
+
+	template<typename T>
+	string optionalParameter(const T &p);
+
+	template<typename T>
+	string warningParameter(const T &p);
+
 	char getKey();
 	bool is_Number(const int & c);
-	template<typename T>
-	string optParam(const T &p);
-	template<typename T>
-	string warningParam(const T &p);
-	bool seekNif(const string &s);
+	bool seekNIF(const string &s);
 };
 
 #endif /* INTERFACE_H_ */
