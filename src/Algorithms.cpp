@@ -20,8 +20,28 @@ bool is_All_Number(const string& s) {
 	return find_if(s.begin(), s.end(), is_Not_Number) == s.end();
 }
 
+bool partialMatchQuery(const string & q, const string & n) {
+	if (q.size() == 0 || q.size() > n.size())
+		return false;
+	bool partialMatch = false;
+	for (size_t i = 0; i < n.size(); i++) {
+		if (tolower(q[0]) == tolower(n[i])) {
+			partialMatch = true;
+			for (size_t z = 1, y = i + 1; z < q.size(); z++, y++) {
+				if (tolower(q[z]) != tolower(n[y])) {
+					partialMatch = false;
+					break;
+				}
+			}
+			if (partialMatch)
+				return true;
+		}
+	}
+	return false;
+}
+
 bool matchQuery(const string & q, const string & n) {
-	if (q.size() == 0)
+	if (q.size() == 0 || q.size() > n.size())
 		return false;
 	for (size_t i = 0; i < q.size() && i < n.size(); i++) {
 		if (tolower(q[i]) != tolower(n[i]))

@@ -10,6 +10,7 @@ bool is_Not_Number(const int & c);
 bool is_NON_ASCII_Letter(const int & c);
 bool is_All_ASCII_Letter(const string& s);
 bool is_All_Number(const string& s);
+bool partialMatchQuery(const string & q, const string & n);
 bool matchQuery(const string & q, const string & n);
 
 #endif /* _ALGORITHMS_H_ */

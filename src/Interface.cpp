@@ -196,6 +196,7 @@ void Interface::manageBooks() {
 	char input;
 	bool exit = false;
 	string header = "Manage books", message;
+	Book* book;
 
 	do {
 		clearScreen();
@@ -218,11 +219,17 @@ void Interface::manageBooks() {
 			break;
 		case '2':
 			clearScreen();
-			editBook(searchBook(library.getBooks()));
+			book = searchBook(library.getBooks());
+			if (book != NULL) {
+				editBook(book);
+			} else
+				message = "Error editing a book";
 			break;
 		case '3':
-			library.removeBook(searchBook(library.getBooks()));
-			message = "Book removed successfully";
+			if (library.removeBook(searchBook(library.getBooks())))
+				message = "Book removed successfully";
+			else
+				message = "Error removing a book";
 			break;
 		case '4':
 			clearScreen();
@@ -741,10 +748,15 @@ Book* Interface::searchBook(vector<Book*> books) {
 		if (query.size() > 0) {
 			for (size_t i = 0, z = 1; i < books.size() && z < 6; i++) {
 				string title = books[i]->getTitle();
-				if (matchQuery(query, title)) {
-					cout << TRI_TAB << "[" << z++ << "] "
-							<< ((books[i]->getTitle()).size() > 14 ?
-									books[i]->getTitle().substr(0, 14) :
+				vector<string> authors = books[i]->getAuthors();
+				bool matchAuthor = false;
+				for (size_t y = 0; y < authors.size(); y++)
+					matchAuthor |= partialMatchQuery(query, authors[y]);
+
+				if (partialMatchQuery(query, title) || matchAuthor) {
+					cout << DOUBLE_TAB << "[" << z++ << "] "
+							<< ((books[i]->getTitle()).size() > 32 ?
+									books[i]->getTitle().substr(0, 32) :
 									books[i]->getTitle()) << TAB
 							<< (books[i]->getBorrowed() == 1 ?
 									"[Borrowed]" : "[Available]") << endl
