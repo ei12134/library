@@ -1,7 +1,7 @@
 #include "Algorithms.h"
 
 bool is_Number(const int & c) {
-	return (c < 57) || (c > 48);
+	return (c >= 48 && c <= 57);
 }
 
 bool is_Not_Number(const int & c) {

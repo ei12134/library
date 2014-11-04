@@ -16,9 +16,9 @@ void Interface::menu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TETRA_TAB << "[1] Login\n\n";
-		cout << TETRA_TAB << "[2] Display\n\n";
-		cout << TETRA_TAB << "[3] Quit\n\n" << TRI_TAB << PROMPT_SYMBOL;
+		cout << endl << FOUR_TABS << "[1] Login\n\n";
+		cout << FOUR_TABS << "[2] Display\n\n";
+		cout << FOUR_TABS << "[3] Quit\n\n" << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -73,14 +73,14 @@ void Interface::readerMenu(Person*reader) {
 		clearScreen();
 		displayHeader(header);
 
-		cout << TRI_TAB << "Age:" << TAB << reader->getAge() << endl;
-		cout << TRI_TAB << "Card:" << TAB << reader->getCard() << endl;
-		cout << TRI_TAB << "Phone:" << TAB << reader->getPhone() << endl;
-		cout << TRI_TAB << "Email:" << TAB << reader->getEmail() << endl;
-		cout << endl << TRI_TAB << "[1] Borrowed books\n";
-		cout << TRI_TAB << "[2] Return a book\n";
-		cout << TRI_TAB << "[3] History\n";
-		cout << TRI_TAB << "[4] Logout\n\n" << DOUBLE_TAB << TAB
+		cout << THREE_TABS << "Age:" << TAB << reader->getAge() << endl;
+		cout << THREE_TABS << "Card:" << TAB << reader->getCard() << endl;
+		cout << THREE_TABS << "Phone:" << TAB << reader->getPhone() << endl;
+		cout << THREE_TABS << "Email:" << TAB << reader->getEmail() << endl;
+		cout << endl << THREE_TABS << "[1] Borrowed books\n";
+		cout << THREE_TABS << "[2] Return a book\n";
+		cout << THREE_TABS << "[3] History\n";
+		cout << THREE_TABS << "[4] Logout\n\n" << TWO_TABS << TAB
 				<< PROMPT_SYMBOL;
 
 		input = getKey();
@@ -115,16 +115,16 @@ void Interface::employeeMenu(Person* employee) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << TRI_TAB << "Age:" << TAB << employee->getAge() << endl;
-		cout << TRI_TAB << "Nif:" << TAB << employee->getNif() << endl;
-		cout << TRI_TAB << "Phone:" << TAB << employee->getPhone() << endl;
-		cout << TRI_TAB << "Email:" << TAB << employee->getEmail() << endl;
-		cout << TRI_TAB << "Wage:" << TAB << employee->getWage() << " euros"
+		cout << THREE_TABS << "Age:" << TAB << employee->getAge() << endl;
+		cout << THREE_TABS << "Nif:" << TAB << employee->getNif() << endl;
+		cout << THREE_TABS << "Phone:" << TAB << employee->getPhone() << endl;
+		cout << THREE_TABS << "Email:" << TAB << employee->getEmail() << endl;
+		cout << THREE_TABS << "Wage:" << TAB << employee->getWage() << " euros"
 				<< endl;
-		cout << endl << TRI_TAB << "[1] Borrow a book\n";
-		cout << TRI_TAB << "[2] Manage readers\n";
-		cout << TRI_TAB << "[3] Manage books\n";
-		cout << TRI_TAB << "[4] Logout\n\n" << DOUBLE_TAB << TAB
+		cout << endl << THREE_TABS << "[1] Borrow a book\n";
+		cout << THREE_TABS << "[2] Manage readers\n";
+		cout << THREE_TABS << "[3] Manage books\n";
+		cout << THREE_TABS << "[4] Logout\n\n" << TWO_TABS << TAB
 				<< PROMPT_SYMBOL;
 
 		input = getKey();
@@ -159,15 +159,15 @@ void Interface::supervisorMenu(Person* supervisor) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << TRI_TAB << "Age:" << TAB << supervisor->getAge() << endl;
-		cout << TRI_TAB << "Nif:" << TAB << supervisor->getNif() << endl;
-		cout << TRI_TAB << "Phone:" << TAB << supervisor->getPhone() << endl;
-		cout << TRI_TAB << "Email:" << TAB << supervisor->getEmail() << endl;
-		cout << TRI_TAB << "Wage:" << TAB << supervisor->getWage() << " euros"
-				<< endl;
-		cout << endl << TRI_TAB << "[1] Display employees team\n";
-		cout << TRI_TAB << "[2] Manage employees\n";
-		cout << TRI_TAB << "[3] Logout\n\n" << DOUBLE_TAB << TAB
+		cout << THREE_TABS << "Age:" << TAB << supervisor->getAge() << endl;
+		cout << THREE_TABS << "Nif:" << TAB << supervisor->getNif() << endl;
+		cout << THREE_TABS << "Phone:" << TAB << supervisor->getPhone() << endl;
+		cout << THREE_TABS << "Email:" << TAB << supervisor->getEmail() << endl;
+		cout << THREE_TABS << "Wage:" << TAB << supervisor->getWage()
+				<< " euros" << endl;
+		cout << endl << THREE_TABS << "[1] Display employees team\n";
+		cout << THREE_TABS << "[2] Manage employees\n";
+		cout << THREE_TABS << "[3] Logout\n\n" << TWO_TABS << TAB
 				<< PROMPT_SYMBOL;
 
 		input = getKey();
@@ -201,15 +201,15 @@ void Interface::manageBooks() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TETRA_TAB << "[1] Create book\n";
-		cout << TETRA_TAB << "[2] Edit book\n";
-		cout << TETRA_TAB << "[3] Remove book\n";
-		cout << TETRA_TAB << "[4] Exit\n\n";
+		cout << endl << FOUR_TABS << "[1] Create book\n";
+		cout << FOUR_TABS << "[2] Edit book\n";
+		cout << FOUR_TABS << "[3] Remove book\n";
+		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << TRI_TAB << message << endl << endl;
+			cout << THREE_TABS << message << endl << endl;
 			message.clear();
 		}
-		cout << TRI_TAB << PROMPT_SYMBOL;
+		cout << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -250,19 +250,20 @@ void Interface::manageEmployees(Person* supervisor) {
 	bool exit = false;
 	string header = "Manage employees";
 	string message;
+	Person* employee;
 
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TRI_TAB << "[1] Create employee\n";
-		cout << TRI_TAB << "[2] Edit employee\n";
-		cout << TRI_TAB << "[3] Remove employee\n";
-		cout << TRI_TAB << "[4] Exit\n\n";
+		cout << endl << FOUR_TABS << "[1] Create employee\n";
+		cout << FOUR_TABS << "[2] Edit employee\n";
+		cout << FOUR_TABS << "[3] Remove employee\n";
+		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << TRI_TAB << message << endl << endl;
+			cout << THREE_TABS << message << endl << endl;
 			message.clear();
 		}
-		cout << TRI_TAB << PROMPT_SYMBOL;
+		cout << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -271,8 +272,11 @@ void Interface::manageEmployees(Person* supervisor) {
 			createEmployee();
 			break;
 		case '2':
-			editEmployee(searchPerson(library.getEmployees()));
-
+			employee = searchPerson(library.getEmployees());
+			if (employee != NULL)
+				editEmployee(employee);
+			else
+				message = "Error editing an employee";
 			break;
 		case '3':
 			clearScreen();
@@ -307,23 +311,23 @@ void Interface::createBook() {
 
 	vector<string> authors = editAuthors();
 	while (newQuota.size() == 0) {
-		cout << TETRA_TAB << "Quota: ";
+		cout << THREE_TABS << "Quota: ";
 		getline(cin, newQuota, '\n');
 	}
 	while (newPageNumberStr.size() == 0 || !is_All_Number(newPageNumberStr)) {
-		cout << TETRA_TAB << "PageNumber: ";
+		cout << THREE_TABS << "PageNumber: ";
 		getline(cin, newPageNumberStr, '\n');
 	}
 	while (newIsbn.size() == 0 || (newIsbn.size() != 13 && newIsbn.size() != 10)) {
-		cout << TETRA_TAB << "Isbn: ";
+		cout << THREE_TABS << "Isbn: ";
 		getline(cin, newIsbn, '\n');
 	}
 	while (newTitle.size() == 0) {
-		cout << TETRA_TAB << "Title: ";
+		cout << THREE_TABS << "Title: ";
 		getline(cin, newTitle, '\n');
 
 	}
-	cout << endl << TETRA_TAB << "Press S to save" << PROMPT_SYMBOL;
+	cout << endl << THREE_TABS << "Press S to save" << PROMPT_SYMBOL;
 	char ch = cin.get();
 	if (ch == 's' || ch == 'S') {
 		ss << newPageNumberStr;
@@ -332,7 +336,7 @@ void Interface::createBook() {
 		Book *b = new Book(authors, false, newQuota, newPageNumber, newIsbn,
 				newTitle);
 		library.addBook(b);
-		cout << endl << TRI_TAB << newTitle << " successfully created.";
+		cout << endl << THREE_TABS << newTitle << " successfully created.";
 	} else
 		cout << "Book creation cancelled\n";
 	getKey();
@@ -350,37 +354,37 @@ void Interface::createEmployee() {
 	displayHeader(header);
 
 	while (newName.size() == 0 || !is_All_ASCII_Letter(newName)) {
-		cout << TETRA_TAB << "Name: ";
+		cout << THREE_TABS << "Name: ";
 		getline(cin, newName, '\n');
 	}
 	while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
 			|| newAgeStr.size() > 2) {
-		cout << TETRA_TAB << "Age: ";
+		cout << THREE_TABS << "Age: ";
 		getline(cin, newAgeStr, '\n');
 	}
 	while (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
 			|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
-		cout << TETRA_TAB << "Phone: ";
+		cout << THREE_TABS << "Phone: ";
 		getline(cin, newPhoneStr, '\n');
 	}
 	while (newEmail.size() == 0 || newEmail.size() < 10) {
-		cout << TETRA_TAB << "Mail: ";
+		cout << THREE_TABS << "Mail: ";
 		getline(cin, newEmail, '\n');
 	}
 	while (newNifStr.size() == 0 || !is_All_Number(newNifStr)
 			|| newNifStr.size() != 9) {
-		cout << TETRA_TAB << "NIF: ";
+		cout << THREE_TABS << "NIF: ";
 		getline(cin, newNifStr, '\n');
 	}
 	while (newWageStr.size() == 0 || !is_All_Number(newWageStr)) {
-		cout << TETRA_TAB << "Wage: ";
+		cout << THREE_TABS << "Wage: ";
 		getline(cin, newWageStr, '\n');
 	}
 
 	if (confirmOperation(supervisorDialog))
 		supervisor = true;
 
-	cout << endl << TETRA_TAB << "Press S to save" << PROMPT_SYMBOL;
+	cout << endl << THREE_TABS << "Press S to save" << PROMPT_SYMBOL;
 	char ch = cin.get();
 	if (ch == 's' || ch == 'S') {
 		ss << newAgeStr;
@@ -400,7 +404,7 @@ void Interface::createEmployee() {
 		Employee *s0 = new Employee(newName, newAge, newPhone, newEmail, newNif,
 				newWage, supervisor);
 		library.addPerson(s0);
-		cout << endl << TRI_TAB << newName << " successfully created.";
+		cout << endl << THREE_TABS << newName << " successfully created.";
 	} else
 		cout << "Employee creation cancelled\n";
 	getKey();
@@ -422,25 +426,25 @@ void Interface::editBook(Book* book) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TRI_TAB << "[1] Author" << TAB
+		cout << endl << THREE_TABS << "[1] Author" << TAB
 				<< optParam(book->getAuthors()[0]) << endl;
-		cout << TRI_TAB << "[2] Quota" << TAB << optParam(book->getQuota())
+		cout << THREE_TABS << "[2] Quota" << TAB << optParam(book->getQuota())
 				<< endl;
-		cout << TRI_TAB << "[3] Page number" << TAB <<
+		cout << THREE_TABS << "[3] Page number" << TAB <<
 		optParam(book->getPageNumber()) << endl;
-		cout << TRI_TAB << "[4] Isbn" << TAB << optParam(book->getIsbn())
+		cout << THREE_TABS << "[4] Isbn" << TAB << optParam(book->getIsbn())
 				<< endl;
-		cout << TRI_TAB << "[5] Title" << TAB
+		cout << THREE_TABS << "[5] Title" << TAB
 				<< (book->getTitle().size() > 16 ?
 						optParam(book->getTitle().substr(0, 16)) :
 						optParam(book->getTitle())) << endl; //
-		cout << TRI_TAB << "[6] Exit" << endl;
+		cout << THREE_TABS << "[6] Exit" << endl;
 
 		if (changesMessage.size() > 0) {
-			cout << endl << TRI_TAB << changesMessage << endl;
+			cout << endl << THREE_TABS << changesMessage << endl;
 			changesMessage.clear();
 		}
-		cout << endl << TRI_TAB << PROMPT_SYMBOL;
+		cout << endl << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -454,7 +458,7 @@ void Interface::editBook(Book* book) {
 		case '2':
 			cout << endl;
 			while (newQuota.size() == 0) {
-				cout << TETRA_TAB << "Quota: ";
+				cout << THREE_TABS << "Quota: ";
 				getline(cin, newQuota, '\n');
 			}
 			book->setQuota(newQuota);
@@ -465,7 +469,7 @@ void Interface::editBook(Book* book) {
 			cout << endl;
 			while (newPageNumberStr.size() == 0
 					|| !is_All_Number(newPageNumberStr)) {
-				cout << TETRA_TAB << "Page number: ";
+				cout << THREE_TABS << "Page number: ";
 				getline(cin, newPageNumberStr, '\n');
 			}
 			ss << newPageNumberStr;
@@ -478,7 +482,7 @@ void Interface::editBook(Book* book) {
 			cout << endl;
 			while (newIsbn.size() == 0
 					|| (newIsbn.size() != 13 && newIsbn.size() != 10)) {
-				cout << TETRA_TAB << "Isbn: ";
+				cout << THREE_TABS << "Isbn: ";
 				getline(cin, newIsbn, '\n');
 			}
 			book->setIsbn(newIsbn);
@@ -488,7 +492,7 @@ void Interface::editBook(Book* book) {
 		case '5':
 			cout << endl;
 			while (newTitle.size() == 0) {
-				cout << TETRA_TAB << "Title: ";
+				cout << THREE_TABS << "Title: ";
 				getline(cin, newTitle, '\n');
 			}
 			book->setTitle(newTitle);
@@ -523,29 +527,30 @@ void Interface::editEmployee(Person* employee) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TRI_TAB << "[1] Name" << TAB << "["
+		cout << endl << THREE_TABS << "[1] Name" << TAB << "["
 				<< employee->getName().substr(0, 15) << "]" << endl;
-		cout << TRI_TAB << "[2] Age" << TAB << "[" << employee->getAge() << "]";
-		cout << endl;
-		cout << TRI_TAB << "[3] Phone" << TAB << "[" << employee->getPhone()
-				<< "]" << endl;
-		cout << TRI_TAB << "[4] Email" << TAB << "[" << employee->getEmail()
-				<< "]" << endl;
-		cout << TRI_TAB << "[5] NIF" << TAB << "[" << employee->getNif() << "]"
-				<< endl;
-		cout << TRI_TAB << "[6] Wage" << TAB << "[" << employee->getWage()
+		cout << THREE_TABS << "[2] Age" << TAB << "[" << employee->getAge()
 				<< "]";
 		cout << endl;
-		cout << TRI_TAB << "[7] Promotions/Demotions" << TAB << "["
+		cout << THREE_TABS << "[3] Phone" << TAB << "[" << employee->getPhone()
+				<< "]" << endl;
+		cout << THREE_TABS << "[4] Email" << TAB << "[" << employee->getEmail()
+				<< "]" << endl;
+		cout << THREE_TABS << "[5] NIF" << TAB << "[" << employee->getNif()
+				<< "]" << endl;
+		cout << THREE_TABS << "[6] Wage" << TAB << "[" << employee->getWage()
+				<< "]";
+		cout << endl;
+		cout << THREE_TABS << "[7] Promotions/Demotions" << TAB << "["
 				<< employee->printType() << "]";
 		cout << endl;
-		cout << TRI_TAB << "[8] Exit" << endl;
+		cout << THREE_TABS << "[8] Exit" << endl;
 
 		if (changesMessage != "") {
-			cout << endl << TRI_TAB << changesMessage << endl;
+			cout << endl << THREE_TABS << changesMessage << endl;
 			changesMessage.clear();
 		}
-		cout << TRI_TAB << endl << PROMPT_SYMBOL;
+		cout << THREE_TABS << endl << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -553,7 +558,7 @@ void Interface::editEmployee(Person* employee) {
 		case '1':
 			cout << endl;
 			while (newName.size() == 0 || !is_All_ASCII_Letter(newName)) {
-				cout << TETRA_TAB << "Name: ";
+				cout << THREE_TABS << "Name: ";
 				getline(cin, newName, '\n');
 			}
 			employee->setName(newName);
@@ -564,7 +569,7 @@ void Interface::editEmployee(Person* employee) {
 			cout << endl;
 			while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
 					|| newAgeStr.size() > 2) {
-				cout << TETRA_TAB << "Age: ";
+				cout << THREE_TABS << "Age: ";
 				getline(cin, newAgeStr, '\n');
 			}
 			ss << newAgeStr;
@@ -577,7 +582,7 @@ void Interface::editEmployee(Person* employee) {
 			cout << endl;
 			while (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
 					|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
-				cout << TETRA_TAB << "Phone: ";
+				cout << THREE_TABS << "Phone: ";
 				getline(cin, newPhoneStr, '\n');
 			}
 			ss << newPhoneStr;
@@ -589,7 +594,7 @@ void Interface::editEmployee(Person* employee) {
 		case '4':
 			cout << endl;
 			while (newEmail.size() == 0 || newEmail.size() < 10) {
-				cout << TETRA_TAB << "Mail: ";
+				cout << THREE_TABS << "Mail: ";
 				getline(cin, newEmail, '\n');
 			}
 			employee->setEmail(newEmail);
@@ -600,7 +605,7 @@ void Interface::editEmployee(Person* employee) {
 			cout << endl;
 			while (newNifStr.size() == 0 || !is_All_Number(newNifStr)
 					|| newNifStr.size() != 9) {
-				cout << TETRA_TAB << "NIF: ";
+				cout << THREE_TABS << "NIF: ";
 				getline(cin, newNifStr, '\n');
 			}
 			ss << newNifStr;
@@ -611,7 +616,7 @@ void Interface::editEmployee(Person* employee) {
 		case '6':
 			cout << endl;
 			while (newWageStr.size() == 0 || !is_All_Number(newWageStr)) {
-				cout << TETRA_TAB << "Wage: ";
+				cout << THREE_TABS << "Wage: ";
 				getline(cin, newWageStr, '\n');
 			}
 			ss << newWageStr;
@@ -620,7 +625,7 @@ void Interface::editEmployee(Person* employee) {
 			changesMessage = "Changes saved successfully";
 			break;
 		case '7':
-			cout << endl << TETRA_TAB
+			cout << endl << THREE_TABS
 					<< "Press S to set as superviser or E as employee"
 					<< PROMPT_SYMBOL;
 			ch = cin.get();
@@ -661,18 +666,21 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 		if (query.size() > 0) {
 			for (size_t i = 0, z = 1; i < persons.size() && z < 6; i++) {
 				string name = persons[i]->getName();
-				if (matchQuery(query, name)) {
-					cout << TRI_TAB << "[" << z++ << "] "
-							<< persons[i]->getName() << TAB
-							<< persons[i]->printType() << endl << endl;
+				if (partialMatchQuery(query, name)) {
+					cout << THREE_TABS << "[" << z++ << "] "
+							<< persons[i]->getName() << TAB;
+
+					if (persons[i]->getName().size() < 12)
+						cout << TAB;
+
+					cout << persons[i]->printType() << endl << endl;
 					matches.push_back(persons[i]);
 				}
 			}
 		}
 
-		cout << endl << DOUBLE_TAB << TAB
-				<< "Enter person name [ESC to exit]\n\n" << DOUBLE_TAB << TAB
-				<< PROMPT_SYMBOL << query;
+		cout << endl << TWO_TABS << TAB << "Enter person name [ESC exits]\n\n"
+				<< TWO_TABS << TAB << PROMPT_SYMBOL << query;
 
 		key = getKey();
 
@@ -754,7 +762,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 					matchAuthor |= partialMatchQuery(query, authors[y]);
 
 				if (partialMatchQuery(query, title) || matchAuthor) {
-					cout << DOUBLE_TAB << "[" << z++ << "] "
+					cout << TWO_TABS << "[" << z++ << "] "
 							<< ((books[i]->getTitle()).size() > 32 ?
 									books[i]->getTitle().substr(0, 32) :
 									books[i]->getTitle()) << TAB
@@ -765,9 +773,9 @@ Book* Interface::searchBook(vector<Book*> books) {
 				}
 			}
 		}
-		cout << endl << DOUBLE_TAB << TAB
-				<< "Enter book title [ESC to exit]\n\n" << DOUBLE_TAB << TAB
-				<< PROMPT_SYMBOL << query;
+		cout << endl << THREE_TABS << "Enter title or author [ESC exits]"
+				<< endl << endl;
+		cout << THREE_TABS << PROMPT_SYMBOL << query;
 
 		key = getKey();
 
@@ -836,13 +844,13 @@ void Interface::displayMenu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << TETRA_TAB << "[1] Persons\n\n";
-		cout << TETRA_TAB << "[2] Readers\n\n";
-		cout << TETRA_TAB << "[3] Employees\n\n";
-		cout << TETRA_TAB << "[4] Supervisors\n\n";
-		cout << TETRA_TAB << "[5] Books\n\n";
-		cout << TETRA_TAB << "[6] Exit to menu\n\n\n" << TRI_TAB
-				<< PROMPT_SYMBOL;
+		cout << endl << FOUR_TABS << "[1] Persons\n\n";
+		cout << FOUR_TABS << "[2] Readers\n\n";
+		cout << FOUR_TABS << "[3] Employees\n\n";
+		cout << FOUR_TABS << "[4] Supervisors\n\n";
+		cout << FOUR_TABS << "[5] Books\n\n";
+		cout << FOUR_TABS << "[6] Exit to menu\n\n\n";
+		cout << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -896,12 +904,12 @@ void Interface::displayHeader(string& header) {
 	if (dynSizeLeft + dynSizeRight + size < 31)
 		dynSizeRight++;
 
-	cout << TRI_TAB << string(33, '#') << endl;
-	cout << TRI_TAB << "#" << TETRA_TAB << "#" << endl;
-	cout << TRI_TAB << "#" << string(dynSizeLeft, ' ') << header
+	cout << THREE_TABS << string(33, '#') << endl;
+	cout << THREE_TABS << "#" << FOUR_TABS << "#" << endl;
+	cout << THREE_TABS << "#" << string(dynSizeLeft, ' ') << header
 			<< string(dynSizeRight, ' ') << "#" << endl;
-	cout << TRI_TAB << "#" << TETRA_TAB << "#" << endl;
-	cout << TRI_TAB << string(33, '#') << endl << endl;
+	cout << THREE_TABS << "#" << FOUR_TABS << "#" << endl;
+	cout << THREE_TABS << string(33, '#') << endl << endl;
 }
 
 bool Interface::confirmOperation(string& query) {
@@ -927,7 +935,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		progress = ceil((19.0 / pLimit) * pCount);
 		clearScreen();
 		displayHeader(listName);
-		cout << TRI_TAB << "Page " << pCount << " of " << pLimit << " ["
+		cout << THREE_TABS << "Page " << pCount << " of " << pLimit << " ["
 				<< string(progress, '#') << string((19 - progress), ' ') << "]"
 				<< endl;
 		cout << " " << string(77, '-') << " " << endl;
@@ -999,7 +1007,7 @@ vector<string> Interface::editAuthors() {
 	string newAuthor, authorsDialog = "\t\t\tAdd another author?";
 	for (int i = 1; authors.size() == 0 || authors.size() < 8; i++) {
 		while (newAuthor.size() == 0 || !is_All_ASCII_Letter(newAuthor)) {
-			cout << TETRA_TAB << "Author " << i << ": ";
+			cout << THREE_TABS << "Author " << i << ": ";
 			getline(cin, newAuthor, '\n');
 		}
 		authors.push_back(newAuthor);
