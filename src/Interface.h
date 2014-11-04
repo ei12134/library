@@ -77,6 +77,7 @@ public:
 	bool is_Number(const int & c);
 	template<typename T>
 	string optParam(const T &p);
+	bool seekNif(const string &s);
 };
 
 #endif /* INTERFACE_H_ */

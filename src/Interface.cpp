@@ -68,6 +68,8 @@ void Interface::readerMenu(Person*reader) {
 	char input;
 	bool exit = false;
 	string header = "Reader   " + reader->getName();
+	string message;
+//	Book* book;
 
 	do {
 		clearScreen();
@@ -83,6 +85,11 @@ void Interface::readerMenu(Person*reader) {
 		cout << THREE_TABS << "[4] Logout\n\n" << TWO_TABS << TAB
 				<< PROMPT_SYMBOL;
 
+		if (message.size() > 0) {
+			cout << THREE_TABS << message << endl << endl;
+			message.clear();
+		}
+
 		input = getKey();
 		switch (input) {
 		case '1':
@@ -90,6 +97,10 @@ void Interface::readerMenu(Person*reader) {
 			genericDisplay(reader->getBorrowedBooks(), "Borrowed books", "a");
 			break;
 		case '2':
+//			book = searchBook(reader->getBorrowedBooks());
+//			if (book == NULL)
+//				message = "No book selected";
+			//else
 			break;
 		case '3':
 			break;
@@ -160,15 +171,18 @@ void Interface::supervisorMenu(Person* supervisor) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << THREE_TABS << "Age:" << TAB << supervisor->getAge() << endl;
+		cout << THREE_TABS << "Age:" << TAB << supervisor->getAge() << " years"
+				<< endl;
 		cout << THREE_TABS << "Nif:" << TAB << supervisor->getNif() << endl;
 		cout << THREE_TABS << "Phone:" << TAB << supervisor->getPhone() << endl;
 		cout << THREE_TABS << "Email:" << TAB << supervisor->getEmail() << endl;
 		cout << THREE_TABS << "Wage:" << TAB << supervisor->getWage()
 				<< " euros" << endl;
 		cout << endl << THREE_TABS << "[1] Display employees team\n";
-		cout << THREE_TABS << "[2] Manage employees\n";
-		cout << THREE_TABS << "[3] Logout\n\n" << TWO_TABS << TAB
+		cout << THREE_TABS << "[2] Manage books\n";
+		cout << THREE_TABS << "[3] Manage readers\n";
+		cout << THREE_TABS << "[4] Manage employees\n";
+		cout << THREE_TABS << "[5] Logout\n\n" << TWO_TABS << TAB
 				<< PROMPT_SYMBOL;
 
 		input = getKey();
@@ -177,9 +191,14 @@ void Interface::supervisorMenu(Person* supervisor) {
 			clearScreen();
 			break;
 		case '2':
+			manageBooks();
+		case '3':
+			manageReaders();
+			break;
+		case '4':
 			manageEmployees(supervisor);
 			break;
-		case '3':
+		case '5':
 			clearScreen();
 			exit = true;
 			break;
@@ -280,16 +299,16 @@ void Interface::manageReaders() {
 		case '2':
 			reader = searchPerson(library.getReaders());
 			if (reader != NULL)
-				editEmployee(reader);
+				editReader(reader);
 			else
 				message = "Error editing a reader";
 			break;
 		case '3':
 			clearScreen();
 			if (library.removeReader(searchPerson(library.getReaders())))
-				message = "Employee removed successfully";
+				message = "Reader removed successfully";
 			else
-				message = "Error removing an employee";
+				message = "Error removing a reader";
 			break;
 		case '4':
 			clearScreen();
@@ -478,7 +497,7 @@ void Interface::createEmployee() {
 		getline(cin, newEmail, '\n');
 	}
 	while (newNifStr.size() == 0 || !is_All_Number(newNifStr)
-			|| newNifStr.size() != 9) {
+			|| newNifStr.size() != 9 || seekNif(newNifStr)) {
 		cout << THREE_TABS << "NIF: ";
 		getline(cin, newNifStr, '\n');
 	}
@@ -625,23 +644,19 @@ void Interface::editReader(Person* reader) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << THREE_TABS << "[1] Name" << TAB << "["
-				<< reader->getName().substr(0, 15) << "]" << endl;
-		cout << THREE_TABS << "[2] Age" << TAB << "[" << reader->getAge()
-				<< "]";
-		cout << endl;
-		cout << THREE_TABS << "[3] Phone" << TAB << "[" << reader->getPhone()
-				<< "]" << endl;
-		cout << THREE_TABS << "[4] Email" << TAB << "[" << reader->getEmail()
-				<< "]" << endl;
-		cout << endl;
+		cout << endl << THREE_TABS << "[1] Name" << TAB
+				<< reader->getName().substr(0, 15) << endl;
+		cout << THREE_TABS << "[2] Age:" << TAB << reader->getAge() << " years"
+				<< endl;
+		cout << THREE_TABS << "[3] Phone:" << TAB << reader->getPhone() << endl;
+		cout << THREE_TABS << "[4] Email:" << TAB << reader->getEmail() << endl;
 		cout << THREE_TABS << "[5] Exit" << endl;
 
 		if (changesMessage != "") {
 			cout << endl << THREE_TABS << changesMessage << endl;
 			changesMessage.clear();
 		}
-		cout << THREE_TABS << endl << PROMPT_SYMBOL;
+		cout << endl << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -713,37 +728,31 @@ void Interface::editEmployee(Person* employee) {
 		string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr,
 				changesMessage;
 		unsigned int newAge, newPhone, newNif, newWage;
-		bool supervisor = false;
 		char ch;
 		stringstream ss;
 		istringstream s;
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << THREE_TABS << "[1] Name" << TAB << "["
-				<< employee->getName().substr(0, 15) << "]" << endl;
-		cout << THREE_TABS << "[2] Age" << TAB << "[" << employee->getAge()
-				<< "]";
-		cout << endl;
-		cout << THREE_TABS << "[3] Phone" << TAB << "[" << employee->getPhone()
-				<< "]" << endl;
-		cout << THREE_TABS << "[4] Email" << TAB << "[" << employee->getEmail()
-				<< "]" << endl;
-		cout << THREE_TABS << "[5] NIF" << TAB << "[" << employee->getNif()
-				<< "]" << endl;
-		cout << THREE_TABS << "[6] Wage" << TAB << "[" << employee->getWage()
-				<< "]";
-		cout << endl;
-		cout << THREE_TABS << "[7] Promotions/Demotions" << TAB << "["
-				<< employee->printType() << "]";
-		cout << endl;
+		cout << endl << THREE_TABS << "[1] Name:" << TAB << employee->getName()
+				<< endl;
+		cout << THREE_TABS << "[2] Age:" << TAB << employee->getAge()
+				<< " years" << endl;
+		cout << THREE_TABS << "[3] Phone:" << TAB << employee->getPhone()
+				<< endl;
+		cout << THREE_TABS << "[4] Email:" << TAB << employee->getEmail()
+				<< endl;
+		cout << THREE_TABS << "[5] NIF:" << TAB << employee->getNif() << endl;
+		cout << THREE_TABS << "[6] Wage:" << TAB << employee->getWage() << endl;
+		cout << THREE_TABS << "[7] Hierarchy:" << TAB << employee->printType()
+				<< endl;
 		cout << THREE_TABS << "[8] Exit" << endl;
 
 		if (changesMessage != "") {
 			cout << endl << THREE_TABS << changesMessage << endl;
 			changesMessage.clear();
 		}
-		cout << THREE_TABS << endl << PROMPT_SYMBOL;
+		cout << endl << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -797,7 +806,7 @@ void Interface::editEmployee(Person* employee) {
 		case '5':
 			cout << endl;
 			while (newNifStr.size() == 0 || !is_All_Number(newNifStr)
-					|| newNifStr.size() != 9) {
+					|| newNifStr.size() != 9 || seekNif(newNifStr)) {
 				cout << THREE_TABS << "NIF: ";
 				getline(cin, newNifStr, '\n');
 			}
@@ -819,16 +828,17 @@ void Interface::editEmployee(Person* employee) {
 			break;
 		case '7':
 			cout << endl << THREE_TABS
-					<< "Press S to set as superviser or E as employee"
+					<< "[S] to set as supervisor [E] as employee"
 					<< PROMPT_SYMBOL;
 			ch = cin.get();
-			if (ch == 's' || ch == 'S') {
-				supervisor = 1;
-			} else if (ch == 'e' || ch == 'E') {
-				supervisor = 0;
+			if (tolower(ch) == 's') {
+				employee->setSupervisor(1);
+				changesMessage = "Changes saved successfully";
+			} else if (tolower(ch) == 'e') {
+				employee->setSupervisor(0);
+				changesMessage = "Changes saved successfully";
 			}
-			employee->setSupervisor(supervisor);
-			changesMessage = "Changes saved successfully";
+			cin.ignore();
 			break;
 		case '8':
 			clearScreen();
@@ -1208,4 +1218,18 @@ string Interface::optParam(const T &p) {
 	stringstream ss;
 	ss << "[" << p << "]";
 	return ss.str();
+}
+
+bool Interface::seekNif(const string &s) {
+	vector<Person*> employees = library.getEmployees();
+	unsigned int nif;
+	stringstream ss;
+	ss << s;
+	ss >> nif;
+
+	for (size_t i = 0; i < employees.size(); i++)
+		if (employees[i]->getNif() == nif)
+			return true;
+
+	return false;
 }
