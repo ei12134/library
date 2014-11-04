@@ -32,6 +32,13 @@ float Borrow::CalcFee() const {
 	return (7 * 0.25 + (days - 7) * 0.5);
 }
 
+void Borrow::setReturned(bool returned) {
+	Date d;
+	if (returned)
+		returnDate = d;
+	this->returned = returned;
+}
+
 bool Borrow::DeliveredBook(Date d) {
 	//used to read from the files to
 	if (returned)
@@ -43,11 +50,21 @@ bool Borrow::DeliveredBook(Date d) {
 
 string Borrow::print() const {
 	stringstream ss;
-	ss << "Book: " << book->print() << endl;
-	ss << "Employee: " << employee->print() << endl;
-	ss << "Reader: " << reader->print() << endl;
-	ss << "Borrow date: " << borrowDate.print() << endl;
-	ss << "Limit return date: " << limitReturnDate.print() << endl;
+	ss << "Book: " << book->getTitle() << endl << endl;
+	ss << "\t\t\t" << "Employee: " << employee->getName() << endl;
+	ss << "\t\t\t" << "Reader: " << reader->getName() << endl;
+	ss << "\t\t\t" << "Borrow date: " << borrowDate.print() << endl;
+	ss << "\t\t\t" << "Limit return date: " << limitReturnDate.print() << endl;
+	if (returned)
+		ss << "Return date: " << returnDate.print() << endl;
+	return ss.str();
+}
+
+string Borrow::printShort() const {
+	stringstream ss;
+	ss << "Book: " << book->getTitle() << endl;
+	ss << "\t\t\t" << "    Borrow date: " << borrowDate.print() << endl;
+	ss << "\t\t\t" << "    Limit return date: " << limitReturnDate.print() << endl;
 	if (returned)
 		ss << "Return date: " << returnDate.print() << endl;
 	return ss.str();

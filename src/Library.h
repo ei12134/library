@@ -123,7 +123,7 @@ public:
 	 */
 	bool removeBook(Book* book);
 
-	/** removes a borrow from the library
+	/** returns a borrow to the library
 	 *@param borrow Borrow pointer
 	 */
 	bool removeBorrow(Borrow* borrow);

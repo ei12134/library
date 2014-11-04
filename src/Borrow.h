@@ -29,7 +29,10 @@ public:
 	Book* getBook() const;
 	Employee* getEmployee() const;
 	Reader* getReader() const;
+	void setReturned(bool returned);
+
 	string print() const;
+	string printShort() const;
 	float CalcFee() const;
 	bool isReturned() const;
 	bool DeliveredBook(Date d); // false if already returned

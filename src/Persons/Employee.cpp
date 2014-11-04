@@ -91,7 +91,10 @@ string Employee::print() const {
 	stringstream nifStr;
 	nifStr << nif;
 	string nifS = nifStr.str();
-	ss << ("*" + (nifS.size() > 3 ? nifS.substr(nifS.size() - 3, nifS.size()) : nifS));
+	ss
+			<< ("*"
+					+ (nifS.size() > 3 ?
+							nifS.substr(nifS.size() - 3, nifS.size()) : nifS));
 
 //	if (supervisor) {
 //		ss << "   ";
@@ -101,31 +104,35 @@ string Employee::print() const {
 //			ss << "   " << team[x]->getName();
 //		}
 //	}
-			return ss.str();
-		}
+	return ss.str();
+}
 
-		unsigned int Employee::getType() const {
-			if (!supervisor)
-				return 2;
-			else
-				return 3;
-		}
+unsigned int Employee::getType() const {
+	if (!supervisor)
+		return 2;
+	else
+		return 3;
+}
 
-		void Employee::setSupervisor(bool super) {
-			this->supervisor = super;
-		}
+void Employee::setSupervisor(bool super) {
+	this->supervisor = super;
+}
 
-		bool Employee::isSupervisor() const {
-			return supervisor;
-		}
+bool Employee::isSupervisor() const {
+	return supervisor;
+}
 
-		unsigned int Employee::getCard() const {
-			return 0;
-		}
+unsigned int Employee::getCard() const {
+	return 0;
+}
 
-		string Employee::printType() const {
-			if (!supervisor)
-				return "[Employee]";
-			else
-				return "[Supervisor]";
-		}
+string Employee::printType() const {
+	if (!supervisor)
+		return "[Employee]";
+	else
+		return "[Supervisor]";
+}
+
+bool Employee::removeBorrow(Borrow* borrow) {
+	return false;
+}

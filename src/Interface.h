@@ -63,10 +63,12 @@ public:
 	void editBook(Book* book);
 	void editReader(Person* reader);
 	void editEmployee(Person* employee);
-
+	void editBorrow(Person* reader);
 	vector<string> editAuthors();
+
 	Person* searchPerson(vector<Person*> persons);
 	Book* searchBook(vector<Book*> books);
+
 	void displayHeader(string& header);
 	bool confirmOperation(string& query);
 	string readInputString(string dialog);
@@ -77,6 +79,8 @@ public:
 	bool is_Number(const int & c);
 	template<typename T>
 	string optParam(const T &p);
+	template<typename T>
+	string warningParam(const T &p);
 	bool seekNif(const string &s);
 };
 

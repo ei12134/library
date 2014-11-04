@@ -27,6 +27,7 @@ public:
 	virtual unsigned int getCard() const = 0;
 	virtual unsigned int getNif() const = 0;
 	virtual unsigned int getWage() const = 0;
+	virtual bool removeBorrow(Borrow* borrow) = 0;
 	virtual vector<Borrow*> getBorrowedBooks() const = 0;
 	virtual string printType() const = 0;
 	void setName(string name);

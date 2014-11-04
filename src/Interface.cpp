@@ -64,12 +64,11 @@ void Interface::dispatchPerson(Person* person) {
 	}
 }
 
-void Interface::readerMenu(Person*reader) {
+void Interface::readerMenu(Person *reader) {
 	char input;
 	bool exit = false;
 	string header = "Reader   " + reader->getName();
 	string message;
-//	Book* book;
 
 	do {
 		clearScreen();
@@ -79,32 +78,20 @@ void Interface::readerMenu(Person*reader) {
 		cout << THREE_TABS << "Card:" << TAB << reader->getCard() << endl;
 		cout << THREE_TABS << "Phone:" << TAB << reader->getPhone() << endl;
 		cout << THREE_TABS << "Email:" << TAB << reader->getEmail() << endl;
-		cout << endl << THREE_TABS << "[1] Borrowed books\n";
-		cout << THREE_TABS << "[2] Return a book\n";
-		cout << THREE_TABS << "[3] History\n";
-		cout << THREE_TABS << "[4] Logout\n\n" << TWO_TABS << TAB
+		cout << endl << THREE_TABS << "[1] Display borrows\n";
+		cout << THREE_TABS << "[2] Borrow history\n";
+		cout << THREE_TABS << "[3] Logout\n\n" << TWO_TABS << TAB
 				<< PROMPT_SYMBOL;
-
-		if (message.size() > 0) {
-			cout << THREE_TABS << message << endl << endl;
-			message.clear();
-		}
 
 		input = getKey();
 		switch (input) {
 		case '1':
 			clearScreen();
-			genericDisplay(reader->getBorrowedBooks(), "Borrowed books", "a");
+			editBorrow(reader);
 			break;
 		case '2':
-//			book = searchBook(reader->getBorrowedBooks());
-//			if (book == NULL)
-//				message = "No book selected";
-			//else
 			break;
 		case '3':
-			break;
-		case '4':
 			clearScreen();
 			exit = true;
 			break;
@@ -227,7 +214,7 @@ void Interface::manageBooks() {
 		cout << FOUR_TABS << "[3] Remove book\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << message << endl << endl;
+			cout << THREE_TABS << warningParam(message) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -285,7 +272,7 @@ void Interface::manageReaders() {
 		cout << FOUR_TABS << "[3] Remove reader\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << message << endl << endl;
+			cout << THREE_TABS << warningParam(message) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -339,7 +326,7 @@ void Interface::manageEmployees(Person* supervisor) {
 		cout << FOUR_TABS << "[3] Remove employee\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << message << endl << endl;
+			cout << THREE_TABS << warningParam(message) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -854,6 +841,79 @@ void Interface::editEmployee(Person* employee) {
 	} while (!exit);
 }
 
+void Interface::editBorrow(Person* reader) {
+	char key;
+	bool exit = false;
+	vector<Borrow*> borrows;
+	string header = "Display borrows";
+	string returnDialog = "Return book?";
+	string returnMessage;
+
+	do {
+		clearScreen();
+		displayHeader(header);
+		borrows = reader->getBorrowedBooks();
+
+		for (size_t i = 0, z = 1; i < borrows.size(); i++) {
+			cout << THREE_TABS << "[" << z++ << "] " << borrows[i]->printShort()
+					<< endl;
+		}
+		if (returnMessage.size() > 0) {
+			cout << THREE_TABS << warningParam(returnMessage) << endl << endl;
+			returnMessage.clear();
+		}
+
+		cout << THREE_TABS << "Select book to return [ESC exits]" << endl
+				<< endl << THREE_TABS << PROMPT_SYMBOL;
+
+		key = getKey();
+		switch (key) {
+		case '1':
+			if (borrows.size() > 0) {
+				if (confirmOperation(returnDialog)) {
+					library.removeBorrow(borrows[0]);
+					reader->removeBorrow(borrows[0]);
+					returnMessage = "Book returned successfully";
+				}
+			}
+			break;
+		case '2':
+			if (borrows.size() > 1) {
+				if (confirmOperation(returnDialog)) {
+					library.removeBorrow(borrows[1]);
+					reader->removeBorrow(borrows[1]);
+					returnMessage = "Book returned successfully";
+				}
+			}
+			break;
+		case '3':
+			if (borrows.size() > 2) {
+				if (confirmOperation(returnDialog)) {
+					library.removeBorrow(borrows[2]);
+					reader->removeBorrow(borrows[2]);
+					returnMessage = "Book returned successfully";
+				}
+			}
+			break;
+		case RETURN_KEY:
+			if (borrows.size() > 0) {
+				if (confirmOperation(returnDialog)) {
+					library.removeBorrow(borrows[0]);
+					reader->removeBorrow(borrows[0]);
+					returnMessage = "Book returned successfully";
+				}
+			}
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		default:
+			break;
+		}
+
+	} while (!exit);
+}
+
 Person* Interface::searchPerson(vector<Person*> persons) {
 	string query;
 	string header = "Login";
@@ -1217,6 +1277,13 @@ template<typename T>
 string Interface::optParam(const T &p) {
 	stringstream ss;
 	ss << "[" << p << "]";
+	return ss.str();
+}
+
+template<typename T>
+string Interface::warningParam(const T &p) {
+	stringstream ss;
+	ss << "*** " << p << " ***";
 	return ss.str();
 }
 

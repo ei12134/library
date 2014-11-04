@@ -96,15 +96,12 @@ bool Library::removeBook(Book* book) {
 		}
 	return false;
 }
+
 bool Library::removeBorrow(Borrow* borrow) {
 	if (borrow == NULL)
 		return false;
-	for (size_t i = 0; i < borrows.size(); i++)
-		if (borrows[i] == borrow) {
-			borrows.erase(borrows.begin() + i);
-			return true;
-		}
-	return false;
+	borrow->setReturned(borrow);
+	return true;
 }
 
 bool Library::removeReader(Person* reader) {
