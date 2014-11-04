@@ -70,8 +70,11 @@ public:
 	/** Library destructor saves in *.csv files and stores*/
 	~Library();
 
-	///@return books
+	///@return all books
 	vector<Book*> getBooks() const;
+
+	///@return available books
+	vector<Book*> getAvailableBooks() const;
 
 	///@return borrows
 	vector<Borrow*> getBorrows() const;

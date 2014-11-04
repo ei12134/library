@@ -27,6 +27,7 @@ using namespace std;
 #define CLEAR "clear"
 #endif
 
+#define HALF_TAB string(4,' ')
 #define TAB "\t"
 #define TWO_TABS TAB TAB
 #define THREE_TABS TWO_TABS TAB
@@ -59,6 +60,7 @@ public:
 	void createBook();
 	void createReader();
 	void createEmployee();
+	void createBorrow(Person* employee);
 
 	void editBook(Book* book);
 	void editReader(Person* reader);

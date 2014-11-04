@@ -30,6 +30,15 @@ vector<Book*> Library::getBooks() const {
 	return books;
 }
 
+vector<Book*> Library::getAvailableBooks() const {
+	vector<Book*> available;
+	for (size_t i = 0; i < books.size(); i++)
+		if (!books[i]->getBorrowed())
+			available.push_back(books[i]);
+
+	return available;
+}
+
 vector<Borrow*> Library::getBorrows() const {
 	return borrows;
 }
@@ -174,7 +183,7 @@ void Library::loadPersons() {
 // add all employees to the main vector
 	persons.insert(persons.end(), temp.begin(), temp.end());
 
-	// read readers
+// read readers
 	file.open(READERS_FILE);
 	if (file.is_open()) {
 		while (file.good()) {

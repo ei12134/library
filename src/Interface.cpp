@@ -113,22 +113,24 @@ void Interface::employeeMenu(Person* employee) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << THREE_TABS << "Age:" << TAB << employee->getAge() << endl;
-		cout << THREE_TABS << "Nif:" << TAB << employee->getNif() << endl;
-		cout << THREE_TABS << "Phone:" << TAB << employee->getPhone() << endl;
-		cout << THREE_TABS << "Email:" << TAB << employee->getEmail() << endl;
-		cout << THREE_TABS << "Wage:" << TAB << employee->getWage() << " euros"
+		cout << THREE_TABS << HALF_TAB << "Age: " << employee->getAge() << endl;
+		cout << THREE_TABS << HALF_TAB << "Nif: " << employee->getNif() << endl;
+		cout << THREE_TABS << HALF_TAB << "Phone: " << employee->getPhone()
 				<< endl;
-		cout << endl << THREE_TABS << "[1] Borrow a book\n";
-		cout << THREE_TABS << "[2] Manage readers\n";
-		cout << THREE_TABS << "[3] Manage books\n";
-		cout << THREE_TABS << "[4] Logout\n\n" << TWO_TABS << TAB
+		cout << THREE_TABS << HALF_TAB << "Email: " << employee->getEmail()
+				<< endl;
+		cout << THREE_TABS << HALF_TAB << "Wage: " << employee->getWage()
+				<< " euros" << endl;
+		cout << endl << THREE_TABS << HALF_TAB << "[1] Borrow a book\n";
+		cout << THREE_TABS << HALF_TAB << "[2] Manage readers\n";
+		cout << THREE_TABS << HALF_TAB << "[3] Manage books\n";
+		cout << THREE_TABS << HALF_TAB << "[4] Logout\n\n" << TWO_TABS << TAB
 				<< PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
 		case '1':
-			clearScreen();
+			createBorrow(employee);
 			break;
 		case '2':
 			manageReaders();
@@ -158,24 +160,28 @@ void Interface::supervisorMenu(Person* supervisor) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << THREE_TABS << "Age:" << TAB << supervisor->getAge() << " years"
+		cout << THREE_TABS << HALF_TAB << "Age: " << supervisor->getAge()
+				<< " years" << endl;
+		cout << THREE_TABS << HALF_TAB << "Nif: " << supervisor->getNif()
 				<< endl;
-		cout << THREE_TABS << "Nif:" << TAB << supervisor->getNif() << endl;
-		cout << THREE_TABS << "Phone:" << TAB << supervisor->getPhone() << endl;
-		cout << THREE_TABS << "Email:" << TAB << supervisor->getEmail() << endl;
-		cout << THREE_TABS << "Wage:" << TAB << supervisor->getWage()
+		cout << THREE_TABS << HALF_TAB << "Phone: " << supervisor->getPhone()
+				<< endl;
+		cout << THREE_TABS << HALF_TAB << "Email: " << supervisor->getEmail()
+				<< endl;
+		cout << THREE_TABS << HALF_TAB << "Wage: " << supervisor->getWage()
 				<< " euros" << endl;
-		cout << endl << THREE_TABS << "[1] Display employees team\n";
-		cout << THREE_TABS << "[2] Manage books\n";
-		cout << THREE_TABS << "[3] Manage readers\n";
-		cout << THREE_TABS << "[4] Manage employees\n";
-		cout << THREE_TABS << "[5] Logout\n\n" << TWO_TABS << TAB
+		cout << endl << THREE_TABS + HALF_TAB << "[1] Borrow a book\n";
+		cout << THREE_TABS << HALF_TAB << "[2] Manage books\n";
+		cout << THREE_TABS << HALF_TAB << "[3] Manage readers\n";
+		cout << THREE_TABS << HALF_TAB << "[4] Manage employees\n";
+		cout << THREE_TABS << HALF_TAB << "[5] Employees team\n";
+		cout << THREE_TABS << HALF_TAB << "[6] Logout\n\n" << TWO_TABS << TAB
 				<< PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
 		case '1':
-			clearScreen();
+			createBorrow(supervisor);
 			break;
 		case '2':
 			manageBooks();
@@ -186,6 +192,8 @@ void Interface::supervisorMenu(Person* supervisor) {
 			manageEmployees(supervisor);
 			break;
 		case '5':
+			break;
+		case '6':
 			clearScreen();
 			exit = true;
 			break;
@@ -520,6 +528,74 @@ void Interface::createEmployee() {
 	} else
 		cout << "Employee creation cancelled\n";
 	getKey();
+}
+
+void Interface::createBorrow(Person* employee) {
+	char input;
+	bool exit = false;
+	string header = "Create borrow";
+	string createMessage;
+	Person* reader = NULL;
+	Book* book = NULL;
+
+	do {
+		clearScreen();
+		displayHeader(header);
+
+		if (reader != NULL)
+			cout << THREE_TABS << "Reader name: " << reader->getName() << endl;
+		if (book != NULL)
+			cout << THREE_TABS << "Book title: " << book->getTitle() << endl;
+
+		cout << endl << FOUR_TABS << "[1] Select reader" << endl;
+		cout << FOUR_TABS << "[2] Select book" << endl;
+		cout << FOUR_TABS << "[3] Create borrow" << endl;
+		cout << FOUR_TABS << "[4] Exit" << endl << endl;
+
+		if (createMessage.size() > 0) {
+			cout << THREE_TABS << warningParam(createMessage) << endl << endl;
+			createMessage.clear();
+		}
+
+		cout << THREE_TABS << "Select book to return [ESC exits]" << endl
+				<< endl << THREE_TABS << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			reader = searchPerson(library.getReaders());
+			if (reader == NULL || reader->getBorrowedBooks().size() > 2) {
+				reader = NULL;
+				createMessage = "Select another reader";
+			}
+			break;
+		case '2':
+			book = searchBook(library.getAvailableBooks());
+			if (book == NULL || book->getBorrowed()) {
+				book = NULL;
+				createMessage = "Select another book";
+			}
+			break;
+		case '3':
+			if (reader != NULL && book != NULL) {
+				Date borrowDate;
+//				Borrow* borrow = new Borrow(book, employee, reader, borrowDate,
+//						limitReturnDate, borrowId);
+			} else
+				createMessage = "Select a reader and a book";
+			break;
+		case '4':
+			clearScreen();
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
 }
 
 void Interface::editBook(Book* book) {
