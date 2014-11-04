@@ -44,20 +44,26 @@ private:
 public:
 	Interface();
 	void menu();
+	void credits();
 	void displayMenu();
 	void clearScreen();
 	void dispatchPerson(Person* person);
 	void readerMenu(Person* reader);
 	void employeeMenu(Person* employee);
 	void supervisorMenu(Person* supervisor);
+
 	void manageBooks();
 	void manageReaders();
 	void manageEmployees(Person* supervisor);
+
 	void createBook();
-	void createEmployee();
 	void createReader();
+	void createEmployee();
+
 	void editBook(Book* book);
+	void editReader(Person* reader);
 	void editEmployee(Person* employee);
+
 	vector<string> editAuthors();
 	Person* searchPerson(vector<Person*> persons);
 	Book* searchBook(vector<Book*> books);

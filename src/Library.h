@@ -128,10 +128,16 @@ public:
 	 */
 	bool removeBorrow(Borrow* borrow);
 
-	/** removes a person from the library
-	 *@param person Person pointer
+	/** removes an employee from the library
+	 *@param supervisor Person pointer
+	 *@param employee Person pointer
 	 */
-	bool removePerson(Person* person, Person* employee);
+	bool removeEmployee(Person* person, Person* employee);
+
+	/** removes a reader from the library
+	 *@param reader Person pointer
+	 */
+	bool removeReader(Person* reader);
 };
 
 #endif /* LIBRARY_H_ */

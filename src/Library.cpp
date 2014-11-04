@@ -106,7 +106,20 @@ bool Library::removeBorrow(Borrow* borrow) {
 		}
 	return false;
 }
-bool Library::removePerson(Person* person, Person* employee) {
+
+bool Library::removeReader(Person* reader) {
+//	if (employee == NULL || employee == person)
+//		return false;
+//	for (size_t i = 0; i < persons.size(); i++)
+//		if (persons[i] == person) {
+//			persons.erase(persons.begin() + i);
+//			return true;
+//		}
+	return false;
+}
+
+
+bool Library::removeEmployee(Person* person, Person* employee) {
 	if (employee == NULL || employee == person)
 		return false;
 	for (size_t i = 0; i < persons.size(); i++)

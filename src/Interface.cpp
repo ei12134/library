@@ -133,6 +133,7 @@ void Interface::employeeMenu(Person* employee) {
 			clearScreen();
 			break;
 		case '2':
+			manageReaders();
 			break;
 		case '3':
 			manageBooks();
@@ -250,6 +251,60 @@ void Interface::manageBooks() {
 	} while (!exit);
 }
 
+void Interface::manageReaders() {
+	char input;
+	bool exit = false;
+	string header = "Manage readers";
+	string message;
+	Person* reader;
+
+	do {
+		clearScreen();
+		displayHeader(header);
+		cout << endl << FOUR_TABS << "[1] Create reader\n";
+		cout << FOUR_TABS << "[2] Edit reader\n";
+		cout << FOUR_TABS << "[3] Remove reader\n";
+		cout << FOUR_TABS << "[4] Exit\n\n";
+		if (message.size() > 0) {
+			cout << THREE_TABS << message << endl << endl;
+			message.clear();
+		}
+		cout << THREE_TABS << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			clearScreen();
+			createReader();
+			break;
+		case '2':
+			reader = searchPerson(library.getReaders());
+			if (reader != NULL)
+				editEmployee(reader);
+			else
+				message = "Error editing a reader";
+			break;
+		case '3':
+			clearScreen();
+			if (library.removeReader(searchPerson(library.getReaders())))
+				message = "Employee removed successfully";
+			else
+				message = "Error removing an employee";
+			break;
+		case '4':
+			clearScreen();
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+}
+
 void Interface::manageEmployees(Person* supervisor) {
 	char input;
 	bool exit = false;
@@ -285,7 +340,7 @@ void Interface::manageEmployees(Person* supervisor) {
 			break;
 		case '3':
 			clearScreen();
-			if (library.removePerson((searchPerson(library.getEmployees())),
+			if (library.removeEmployee((searchPerson(library.getEmployees())),
 					supervisor))
 				message = "Employee removed successfully";
 			else
@@ -347,6 +402,52 @@ void Interface::createBook() {
 	getKey();
 }
 
+void Interface::createReader() {
+	string header = "Create Reader";
+	string newName, newAgeStr, newPhoneStr, newEmail;
+	stringstream ss;
+	unsigned int newAge, newPhone;
+
+	clearScreen();
+	displayHeader(header);
+
+	while (newName.size() == 0 || !is_All_ASCII_Letter(newName)) {
+		cout << THREE_TABS << "Name: ";
+		getline(cin, newName, '\n');
+	}
+	while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
+			|| newAgeStr.size() > 3) {
+		cout << THREE_TABS << "Age: ";
+		getline(cin, newAgeStr, '\n');
+	}
+	while (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
+			|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
+		cout << THREE_TABS << "Phone: ";
+		getline(cin, newPhoneStr, '\n');
+	}
+	while (newEmail.size() == 0 || newEmail.size() < 7) {
+		cout << THREE_TABS << "Mail: ";
+		getline(cin, newEmail, '\n');
+	}
+
+	cout << endl << THREE_TABS << "Press S to save" << PROMPT_SYMBOL;
+	char ch = cin.get();
+	if (ch == 's' || ch == 'S') {
+		ss << newAgeStr;
+		ss >> newAge;
+		ss.clear();
+		ss << newPhoneStr;
+		ss >> newPhone;
+		ss.clear();
+
+		Person *reader = new Reader(newName, newAge, newPhone, newEmail);
+		library.addPerson(reader);
+		cout << endl << THREE_TABS << newName << " successfully created.";
+	} else
+		cout << "Reader creation cancelled\n";
+	getKey();
+}
+
 void Interface::createEmployee() {
 	string header = "Create Employee";
 	string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr;
@@ -363,7 +464,7 @@ void Interface::createEmployee() {
 		getline(cin, newName, '\n');
 	}
 	while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
-			|| newAgeStr.size() > 2) {
+			|| newAgeStr.size() > 3) {
 		cout << THREE_TABS << "Age: ";
 		getline(cin, newAgeStr, '\n');
 	}
@@ -372,7 +473,7 @@ void Interface::createEmployee() {
 		cout << THREE_TABS << "Phone: ";
 		getline(cin, newPhoneStr, '\n');
 	}
-	while (newEmail.size() == 0 || newEmail.size() < 10) {
+	while (newEmail.size() == 0 || newEmail.size() < 7) {
 		cout << THREE_TABS << "Mail: ";
 		getline(cin, newEmail, '\n');
 	}
@@ -413,10 +514,6 @@ void Interface::createEmployee() {
 	} else
 		cout << "Employee creation cancelled\n";
 	getKey();
-}
-
-void Interface::createReader() {
-
 }
 
 void Interface::editBook(Book* book) {
@@ -517,6 +614,97 @@ void Interface::editBook(Book* book) {
 	} while (!exit);
 }
 
+void Interface::editReader(Person* reader) {
+	char input;
+	bool exit = false;
+	string header = "Edit Reader";
+	do {
+		string newName, newAgeStr, newPhoneStr, newEmail, changesMessage;
+		unsigned int newAge, newPhone;
+		stringstream ss;
+
+		clearScreen();
+		displayHeader(header);
+		cout << endl << THREE_TABS << "[1] Name" << TAB << "["
+				<< reader->getName().substr(0, 15) << "]" << endl;
+		cout << THREE_TABS << "[2] Age" << TAB << "[" << reader->getAge()
+				<< "]";
+		cout << endl;
+		cout << THREE_TABS << "[3] Phone" << TAB << "[" << reader->getPhone()
+				<< "]" << endl;
+		cout << THREE_TABS << "[4] Email" << TAB << "[" << reader->getEmail()
+				<< "]" << endl;
+		cout << endl;
+		cout << THREE_TABS << "[5] Exit" << endl;
+
+		if (changesMessage != "") {
+			cout << endl << THREE_TABS << changesMessage << endl;
+			changesMessage.clear();
+		}
+		cout << THREE_TABS << endl << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+
+		case '1':
+			cout << endl;
+			while (newName.size() == 0 || !is_All_ASCII_Letter(newName)) {
+				cout << THREE_TABS << "Name: ";
+				getline(cin, newName, '\n');
+			}
+			reader->setName(newName);
+			changesMessage = "Changes saved successfully";
+			break;
+
+		case '2':
+			cout << endl;
+			while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
+					|| newAgeStr.size() > 3) {
+				cout << THREE_TABS << "Age: ";
+				getline(cin, newAgeStr, '\n');
+			}
+			ss << newAgeStr;
+			ss >> newAge;
+			reader->setAge(newAge);
+			changesMessage = "Changes saved successfully";
+			break;
+
+		case '3':
+			cout << endl;
+			while (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
+					|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
+				cout << THREE_TABS << "Phone: ";
+				getline(cin, newPhoneStr, '\n');
+			}
+			ss << newPhoneStr;
+			ss >> newPhone;
+			reader->setPhone(newPhone);
+			changesMessage = "Changes saved successfully";
+			break;
+
+		case '4':
+			cout << endl;
+			while (newEmail.size() == 0 || newEmail.size() < 7) {
+				cout << THREE_TABS << "Mail: ";
+				getline(cin, newEmail, '\n');
+			}
+			reader->setEmail(newEmail);
+			changesMessage = "Changes saved successfully";
+			break;
+		case '5':
+			clearScreen();
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+}
+
 void Interface::editEmployee(Person* employee) {
 	char input;
 	bool exit = false;
@@ -573,7 +761,7 @@ void Interface::editEmployee(Person* employee) {
 		case '2':
 			cout << endl;
 			while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
-					|| newAgeStr.size() > 2) {
+					|| newAgeStr.size() > 3) {
 				cout << THREE_TABS << "Age: ";
 				getline(cin, newAgeStr, '\n');
 			}
@@ -598,7 +786,7 @@ void Interface::editEmployee(Person* employee) {
 
 		case '4':
 			cout << endl;
-			while (newEmail.size() == 0 || newEmail.size() < 10) {
+			while (newEmail.size() == 0 || newEmail.size() < 7) {
 				cout << THREE_TABS << "Mail: ";
 				getline(cin, newEmail, '\n');
 			}
@@ -654,8 +842,8 @@ void Interface::editEmployee(Person* employee) {
 			break;
 		}
 	} while (!exit);
-
 }
+
 Person* Interface::searchPerson(vector<Person*> persons) {
 	string query;
 	string header = "Login";
