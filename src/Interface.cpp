@@ -1285,7 +1285,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 
 			if (vLimit == MAX_LINES && i < vecSize) {
 				pCount++;
-				cout << " " << string(78, '-') << " " << vLimitMsg;
+				cout << " " << string(77, '-') << endl << vLimitMsg;
 				ch = getKey();
 				if (ch == ESCAPE_KEY)
 					done = true;
@@ -1293,7 +1293,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		}
 	}
 	if (i == vecSize) {
-		cout << " " << string(78, '-') << " ";
+		cout << " " << string(77, '-') << endl;
 		cout << " Press any key to continue...";
 		getchar();
 	}
