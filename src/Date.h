@@ -2,7 +2,6 @@
 #define DATA_H_
 
 #include "Exception.h"// to handle the data exceptions xD#include <string>#include <ctime>using namespace std;
-
 /**
  * Date Class
  * to handle dates in the program

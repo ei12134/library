@@ -51,12 +51,16 @@ unsigned int Reader::getWage() const {
 	return 0;
 }
 
-void Reader::setBorrowedBooks(vector<Borrow*> borrowedBooks) {
+bool Reader::setBorrowedBooks(vector<Borrow*> borrowedBooks) {
+	if(MAX_BORROWS > borrowedBooks.size())return false;
 	this->borrowedBooks = borrowedBooks;
+	return true;
 }
 
-void Reader::addBorrow(Borrow* borrow) {
+bool Reader::addBorrow(Borrow* borrow) {
+	if(MAX_BORROWS >= borrowedBooks.size())return false;
 	borrowedBooks.push_back(borrow);
+	return true;
 }
 
 bool Reader::removeBorrow(Borrow* borrow) {

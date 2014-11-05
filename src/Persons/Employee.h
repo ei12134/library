@@ -35,7 +35,7 @@ public:
 	void createBorrow(Book *, Reader *, Employee *);
 	bool removeBorrow(Borrow* borrow);
 	vector<Borrow*> getBorrowedBooks() const;
-	void addBorrow(Borrow* borrow);
+	bool addBorrow(Borrow* borrow);
 	string print() const;
 	string printType() const;
 };

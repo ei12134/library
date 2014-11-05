@@ -5,8 +5,16 @@ unsigned long int Borrow::borrowID = 0;
 Borrow::Borrow(Book* book, Person* employee, Person* reader, Date borrowDate,
 		Date limitReturnDate) :
 		book(book), employee(employee), reader(reader), borrowDate(borrowDate), limitReturnDate(
-				limitReturnDate), returned(false) {
+				limitReturnDate), returned { false } {
 	ID = ++borrowID;
+}
+/*
+ * borrowDate the empty constructor is automatically called when this instance is created
+ * the empty constructor in the borrowDate and the LimitReturnDate gives the current system date
+ **/
+Borrow::Borrow(Book* book, Person* employee, Person* reader) :
+		book(book), employee(employee), reader(reader) {
+	limitReturnDate.addDays(7); // adds 7 days to the current system date
 }
 
 Book* Borrow::getBook() const {
@@ -27,7 +35,7 @@ unsigned long int Borrow::getID() const {
 float Borrow::CalcFee() const {
 	if (!returned)
 		return 0;
-	int days = returnDate - limitReturnDate;
+	int days { returnDate - limitReturnDate };
 	if (days <= 0)
 		return 0;
 	if (days <= 7)
@@ -49,6 +57,18 @@ bool Borrow::DeliveredBook(Date d) {
 	returned = true;
 	this->returnDate = d;
 	return true;
+}
+
+Date Borrow::getBorrowDate() {
+	return borrowDate;
+}
+Date Borrow::getReturnDate() {
+	if (!returned)
+		throw Exception<bool>("Book not returned yet!", returned); // throw exception <bool> because of the template
+	return returnDate;
+}
+Date Borrow::getLimitReturnDate() {
+	return limitReturnDate;
 }
 
 string Borrow::print() const {

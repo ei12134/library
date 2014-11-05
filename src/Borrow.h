@@ -24,12 +24,18 @@ protected:
 public:
 	Borrow(Book* book, Person* employee, Person* reader, Date borrowDate,
 			Date limitReturnDate);
+	Borrow(Book* book, Person* employee, Person* reader);
+
 	static unsigned long int borrowID;
 	unsigned long int getID() const;
 	Book* getBook() const;
 	Person* getEmployee() const;
 	Person* getReader() const;
 	void setReturned(bool returned);
+
+	Date getBorrowDate();
+	Date getReturnDate();
+	Date getLimitReturnDate();
 
 	string print() const;
 	string printShort() const;

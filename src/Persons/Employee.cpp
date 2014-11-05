@@ -137,6 +137,6 @@ bool Employee::removeBorrow(Borrow* borrow) {
 	return false;
 }
 
-void Employee::addBorrow(Borrow* borrow){
+bool Employee::addBorrow(Borrow* borrow){
 
 }

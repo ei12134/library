@@ -32,8 +32,8 @@ public:
 	unsigned int getCard() const;
 	unsigned int getNif() const;
 	unsigned int getWage() const;
-	void setBorrowedBooks(vector<Borrow*> borrowedBooks);
-	void addBorrow(Borrow* borrow);
+	bool setBorrowedBooks(vector<Borrow*> borrowedBooks);
+	bool addBorrow(Borrow* borrow);
 	bool removeBorrow(Borrow* borrow);
 	bool borrowLimit();
 	string print() const;

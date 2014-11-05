@@ -579,11 +579,14 @@ void Interface::createBorrow(Person* employee) {
 			break;
 		case '3':
 			if (reader != NULL && book != NULL) {
-				Date borrowDate;
-				Borrow* borrow = new Borrow(book, employee, reader, borrowDate,
-						borrowDate);
-				library.addBorrow(borrow);
-				reader->addBorrow(borrow);
+				Borrow* borrow = new Borrow(book, employee, reader);
+				if (reader->addBorrow(borrow)) {
+					library.addBorrow(borrow);
+					book->setBorrowed(true);
+				}else{
+					delete borrow;
+				}
+
 				createMessage = "Borrow created successfully";
 				reader = NULL;
 				book = NULL;
