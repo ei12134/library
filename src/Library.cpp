@@ -109,6 +109,7 @@ bool Library::removeBook(Book* book) {
 bool Library::removeBorrow(Borrow* borrow) {
 	if (borrow == NULL)
 		return false;
+	borrow->getBook()->setBorrowed(false);
 	borrow->setReturned(borrow);
 	return true;
 }
@@ -336,7 +337,7 @@ void Library::loadBorrowBooks() {
 							ss.clear();
 							Date dD(dia, mes, ano);
 
-							borrow->DeliveredBook(dD);
+							borrow->deliveredBook(dD);
 						} else {// se nao tiver sido entrege e pk esta com o reader
 							reader->addBorrow(borrow);// add the borrow book to the reader
 							books[posBook]->setBorrowed(true);// set the book as borrowed
@@ -430,4 +431,59 @@ void Library::saveBorrows() {
 			pFile << endl;
 	}
 	pFile.close();
+}
+
+bool compareName(const Person* p1, const Person* p2) {
+	return p1->getName() < p2->getName();
+}
+
+bool compareAge(const Person* p1, const Person* p2) {
+	return p1->getAge() < p2->getAge();
+}
+
+bool compareCard(const Person* p1, const Person* p2) {
+	if (p1->getType() == 1 && p1->getType() == 1)
+		return p1->getCard() < p2->getCard();
+	else
+		return false;
+}
+
+bool compareType(const Person* p1, const Person* p2) {
+	return p1->getType() < p2->getType();
+}
+
+bool compareBorrow(const Person* p1, const Person* p2) {
+	return p1->getBorrowedBooks().size() > p2->getBorrowedBooks().size();
+}
+
+bool compareTitle(const Book* b1, const Book* b2) {
+	return b1->getTitle() < b2->getTitle();
+}
+
+bool compareISBN(const Book* b1, const Book* b2) {
+	return b1->getISBN() < b2->getISBN();
+}
+
+void Library::sortByType() {
+	sort(persons.begin(), persons.end(), compareType);
+}
+
+void Library::sortByName() {
+	sort(persons.begin(), persons.end(), compareName);
+}
+
+void Library::sortByAge() {
+	sort(persons.begin(), persons.end(), compareAge);
+}
+
+void Library::sortByBorrow() {
+	sort(persons.begin(), persons.end(), compareBorrow);
+}
+
+void Library::sortByTitle() {
+	sort(books.begin(), books.end(), compareTitle);
+}
+
+void Library::sortByISBN() {
+	sort(books.begin(), books.end(), compareISBN);
 }

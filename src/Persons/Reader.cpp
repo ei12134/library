@@ -52,22 +52,24 @@ unsigned int Reader::getWage() const {
 }
 
 bool Reader::setBorrowedBooks(vector<Borrow*> borrowedBooks) {
-	if(MAX_BORROWS > borrowedBooks.size())return false;
+	if (MAX_BORROWS > borrowedBooks.size())
+		return false;
 	this->borrowedBooks = borrowedBooks;
 	return true;
 }
 
 bool Reader::addBorrow(Borrow* borrow) {
-	if(MAX_BORROWS >= borrowedBooks.size())return false;
-	borrowedBooks.push_back(borrow);
+	if (borrowedBooks.size() >= MAX_BORROWS)
+		return false;
+	else
+		borrowedBooks.push_back(borrow);
 	return true;
 }
 
 bool Reader::removeBorrow(Borrow* borrow) {
-	vector<Borrow*>::iterator it;
-	for (it = borrowedBooks.begin(); it != borrowedBooks.end(); it++) {
-		if (*it == borrow) {
-			borrowedBooks.erase(it);
+	for (size_t i = 0; i < borrowedBooks.size(); i++) {
+		if (borrowedBooks[i] == borrow) {
+			borrowedBooks.erase(borrowedBooks.begin() + i);
 			return true;
 		}
 	}
@@ -80,7 +82,6 @@ bool Reader::borrowLimit() {
 
 string Reader::print() const {
 	stringstream ss;
-
 	ss << Person::print();
 
 	if (email.size() >= 22)

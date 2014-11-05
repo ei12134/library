@@ -43,7 +43,9 @@ public:
 	~Interface();
 
 	void menu();
+	void sortMenu();
 	void displayMenu();
+
 	void clearScreen();
 	void dispatchPerson(Person* person);
 	void readerMenu(Person* reader);

@@ -5,9 +5,10 @@ unsigned long int Borrow::borrowID = 0;
 Borrow::Borrow(Book* book, Person* employee, Person* reader, Date borrowDate,
 		Date limitReturnDate) :
 		book(book), employee(employee), reader(reader), borrowDate(borrowDate), limitReturnDate(
-				limitReturnDate), returned { false } {
+				limitReturnDate), returned(false) {
 	ID = ++borrowID;
 }
+
 /*
  * borrowDate the empty constructor is automatically called when this instance is created
  * the empty constructor in the borrowDate and the LimitReturnDate gives the current system date
@@ -15,6 +16,8 @@ Borrow::Borrow(Book* book, Person* employee, Person* reader, Date borrowDate,
 Borrow::Borrow(Book* book, Person* employee, Person* reader) :
 		book(book), employee(employee), reader(reader) {
 	limitReturnDate.addDays(7); // adds 7 days to the current system date
+	ID = ++borrowID;
+	returned = false;
 }
 
 Book* Borrow::getBook() const {
@@ -28,14 +31,16 @@ Person* Borrow::getEmployee() const {
 Person* Borrow::getReader() const {
 	return reader;
 }
+
 unsigned long int Borrow::getID() const {
 	return ID;
 }
 
-float Borrow::CalcFee() const {
-	if (!returned)
-		return 0;
-	int days { returnDate - limitReturnDate };
+float Borrow::calcFee() const {
+	Date d;
+	if (returned)
+		d = returnDate;
+	int days = d - limitReturnDate;
 	if (days <= 0)
 		return 0;
 	if (days <= 7)
@@ -50,7 +55,7 @@ void Borrow::setReturned(bool returned) {
 	this->returned = returned;
 }
 
-bool Borrow::DeliveredBook(Date d) {
+bool Borrow::deliveredBook(Date d) {
 	//used to read from the files to
 	if (returned)
 		return false;
@@ -62,11 +67,13 @@ bool Borrow::DeliveredBook(Date d) {
 Date Borrow::getBorrowDate() {
 	return borrowDate;
 }
+
 Date Borrow::getReturnDate() {
 	if (!returned)
 		throw Exception<bool>("Book not returned yet!", returned); // throw exception <bool> because of the template
 	return returnDate;
 }
+
 Date Borrow::getLimitReturnDate() {
 	return limitReturnDate;
 }
@@ -89,6 +96,7 @@ string Borrow::printShort() const {
 	ss << "\t\t\t" << "    Borrow date: " << borrowDate.print() << endl;
 	ss << "\t\t\t" << "    Limit return date: " << limitReturnDate.print()
 			<< endl;
+	ss << "\t\t\t" << "    Fee: " << calcFee() << " euros" << endl;
 	if (returned)
 		ss << "Return date: " << returnDate.print() << endl;
 	return ss.str();

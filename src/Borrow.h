@@ -39,9 +39,9 @@ public:
 
 	string print() const;
 	string printShort() const;
-	float CalcFee() const;
+	float calcFee() const;
 	bool isReturned() const;
-	bool DeliveredBook(Date d); // false if already returned
+	bool deliveredBook(Date d); // false if already returned
 	void saveData(ofstream &pFile);
 };
 

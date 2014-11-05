@@ -1,5 +1,4 @@
 #include "Interface.h"
-#include <ctime>
 
 using namespace std;
 

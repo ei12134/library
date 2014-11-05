@@ -9,8 +9,10 @@
 
 #include "./Persons/Person.h"
 #include "./Persons/Employee.h"
+#include "Algorithms.h"
 #include "Book.h"
 #include "Borrow.h"
+#include <algorithm>
 #include <fstream>
 #include <vector>
 using namespace std;
@@ -137,6 +139,12 @@ public:
 	 *@param reader Person pointer
 	 */
 	bool removeReader(Person* reader);
+	void sortByType();
+	void sortByName();
+	void sortByAge();
+	void sortByBorrow();
+	void sortByTitle();
+	void sortByISBN();
 };
 
 #endif /* LIBRARY_H_ */

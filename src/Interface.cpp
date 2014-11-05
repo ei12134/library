@@ -17,18 +17,23 @@ void Interface::menu() {
 		clearScreen();
 		displayHeader(header);
 		cout << endl << FOUR_TABS << "[1] Login\n\n";
-		cout << FOUR_TABS << "[2] Display\n\n";
-		cout << FOUR_TABS << "[3] Quit\n\n" << THREE_TABS << PROMPT_SYMBOL;
+		cout << FOUR_TABS << "[2] Sort\n\n";
+		cout << FOUR_TABS << "[3] Display\n\n";
+		cout << FOUR_TABS << "[4] Quit\n\n" << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
 		case '1':
+			library.sortByName();
 			dispatchPerson(searchPerson(library.getPersons()));
 			break;
 		case '2':
-			displayMenu();
+			sortMenu();
 			break;
 		case '3':
+			displayMenu();
+			break;
+		case '4':
 			if (confirmOperation(exitDialog)) {
 				clearScreen();
 				exit = true;
@@ -62,6 +67,131 @@ void Interface::dispatchPerson(Person* person) {
 			break;
 		}
 	}
+}
+
+void Interface::sortMenu() {
+	char input;
+	bool exit = false;
+	string header = "Sort";
+	vector<Person*> persons;
+	do {
+		clearScreen();
+		displayHeader(header);
+		cout << endl << FOUR_TABS << "[1] By person name\n\n";
+		cout << FOUR_TABS << "[2] By person age\n\n";
+		cout << FOUR_TABS << "[3] By person type\n\n";
+		cout << FOUR_TABS << "[4] By reader borrows\n\n";
+		cout << FOUR_TABS << "[5] By book title\n\n";
+		cout << FOUR_TABS << "[6] By book ISBN\n\n";
+		cout << FOUR_TABS << "[7] Exit to menu\n\n\n";
+		cout << THREE_TABS << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			clearScreen();
+			library.sortByName();
+			genericDisplay(library.getPersons(), "Persons",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
+			break;
+		case '2':
+			clearScreen();
+			library.sortByAge();
+			genericDisplay(library.getPersons(), "Persons",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
+			break;
+		case '3':
+			clearScreen();
+			library.sortByType();
+			genericDisplay(library.getPersons(), "Persons",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
+			break;
+		case '4':
+			clearScreen();
+			library.sortByBorrow();
+			genericDisplay(library.getReaders(), "Readers",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard");
+			break;
+
+		case '5':
+			clearScreen();
+			library.sortByTitle();
+			genericDisplay(library.getBooks(), "Books",
+					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
+			break;
+		case '6':
+			clearScreen();
+			library.sortByISBN();
+			genericDisplay(library.getBooks(), "Books",
+					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
+			break;
+		case '7':
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+}
+
+void Interface::displayMenu() {
+	char input;
+	bool exit = false;
+	string header = "Display";
+	vector<Person*> persons;
+	do {
+		clearScreen();
+		displayHeader(header);
+		cout << endl << FOUR_TABS << "[1] Persons\n\n";
+		cout << FOUR_TABS << "[2] Readers\n\n";
+		cout << FOUR_TABS << "[3] Employees\n\n";
+		cout << FOUR_TABS << "[4] Supervisors\n\n";
+		cout << FOUR_TABS << "[5] Books\n\n";
+		cout << FOUR_TABS << "[6] Exit to menu\n\n\n";
+		cout << THREE_TABS << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			clearScreen();
+			genericDisplay(library.getPersons(), "Persons",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
+			break;
+		case '2':
+			clearScreen();
+			genericDisplay(library.getReaders(), "Readers",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard");
+			break;
+		case '3':
+			clearScreen();
+			genericDisplay(library.getEmployees(), "Employees",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
+			break;
+		case '4':
+			clearScreen();
+			genericDisplay(library.getSupervisors(), "Supervisors",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
+			break;
+		case '5':
+			clearScreen();
+			genericDisplay(library.getBooks(), "Books",
+					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
+			break;
+		case '6':
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			clearScreen();
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
 }
 
 void Interface::readerMenu(Person *reader) {
@@ -583,10 +713,9 @@ void Interface::createBorrow(Person* employee) {
 				if (reader->addBorrow(borrow)) {
 					library.addBorrow(borrow);
 					book->setBorrowed(true);
-				}else{
+				} else {
 					delete borrow;
 				}
-
 				createMessage = "Borrow created successfully";
 				reader = NULL;
 				book = NULL;
@@ -957,8 +1086,8 @@ void Interface::editBorrow(Person* reader) {
 		case '1':
 			if (borrows.size() > 0) {
 				if (confirmOperation(returnDialog)) {
-					library.removeBorrow(borrows[0]);
 					reader->removeBorrow(borrows[0]);
+					library.removeBorrow(borrows[0]);
 					returnMessage = "Book returned successfully";
 				}
 			}
@@ -1172,62 +1301,6 @@ Book* Interface::searchBook(vector<Book*> books) {
 		}
 	} while (!exit);
 	return NULL;
-}
-
-void Interface::displayMenu() {
-	char input;
-	bool exit = false;
-	string header = "Display";
-
-	do {
-		clearScreen();
-		displayHeader(header);
-		cout << endl << FOUR_TABS << "[1] Persons\n\n";
-		cout << FOUR_TABS << "[2] Readers\n\n";
-		cout << FOUR_TABS << "[3] Employees\n\n";
-		cout << FOUR_TABS << "[4] Supervisors\n\n";
-		cout << FOUR_TABS << "[5] Books\n\n";
-		cout << FOUR_TABS << "[6] Exit to menu\n\n\n";
-		cout << THREE_TABS << PROMPT_SYMBOL;
-
-		input = getKey();
-		switch (input) {
-		case '1':
-			clearScreen();
-			genericDisplay(library.getPersons(), "Persons",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
-			break;
-		case '2':
-			clearScreen();
-			genericDisplay(library.getReaders(), "Readers",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard");
-			break;
-		case '3':
-			clearScreen();
-			genericDisplay(library.getEmployees(), "Employees",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
-			break;
-		case '4':
-			clearScreen();
-			genericDisplay(library.getSupervisors(), "Supervisors",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
-			break;
-		case '5':
-			clearScreen();
-			genericDisplay(library.getBooks(), "Books",
-					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
-			break;
-		case '6':
-			exit = true;
-			break;
-		case ESCAPE_KEY:
-			clearScreen();
-			exit = true;
-			break;
-		default:
-			break;
-		}
-	} while (!exit);
 }
 
 void Interface::clearScreen() {
