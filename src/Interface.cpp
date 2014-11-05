@@ -214,10 +214,20 @@ void Interface::readerMenu(Person *reader) {
 		cout << THREE_TABS << "Card:" << TAB << reader->getCard() << endl;
 		cout << THREE_TABS << "Phone:" << TAB << reader->getPhone() << endl;
 		cout << THREE_TABS << "Email:" << TAB << reader->getEmail() << endl;
-		cout << endl << THREE_TABS << "[1] Display borrows\n";
-		cout << THREE_TABS << "[2] Borrow history\n";
-		cout << THREE_TABS << "[3] Logout\n\n" << TWO_TABS << TAB
-				<< PROMPT_SYMBOL;
+		cout << endl << THREE_TABS << "[1] Display borrows" << endl;
+		cout << THREE_TABS << "[2] Borrow history" << endl;
+		cout << THREE_TABS << "[3] Logout" << endl << endl;
+
+		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
+		for (size_t i = 0; i < borrowedBooks.size(); i++)
+			if (borrowedBooks[i]->calcFee() > 0)
+				message = "A book has the borrow date expired";
+
+		if (message.size() > 0) {
+			cout << THREE_TABS << warningParameter(message) << endl << endl;
+			message.clear();
+		}
+		cout << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -1451,7 +1461,7 @@ string Interface::optionalParameter(const T &p) {
 template<typename T>
 string Interface::warningParameter(const T &p) {
 	stringstream ss;
-	ss << "*** " << p << " ***";
+	ss << "*** " << p << " ***\a";
 	return ss.str();
 }
 
