@@ -10,6 +10,7 @@ Interface::~Interface() {
 void Interface::menu() {
 	char input;
 	string exitDialog = "Exit the program?";
+	string noSupervisors = "Create supervisor?";
 	string header = "Library";
 	bool exit = false;
 	vector<Person*> persons = library.getPersons();
@@ -25,7 +26,12 @@ void Interface::menu() {
 		switch (input) {
 		case '1':
 			library.sortByName();
-			dispatchPerson(searchPerson(library.getPersons()));
+			if (library.getSupervisors().size() != 0)
+				dispatchPerson(searchPerson(library.getPersons()));
+			else {
+				if (confirmOperation(noSupervisors))
+					createEmployee();
+			}
 			break;
 		case '2':
 			sortMenu();
@@ -360,11 +366,9 @@ void Interface::manageBooks() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			clearScreen();
 			createBook();
 			break;
 		case '2':
-			clearScreen();
 			book = searchBook(library.getBooks());
 			if (book != NULL) {
 				editBook(book);
@@ -542,8 +546,9 @@ void Interface::createBook() {
 		library.addBook(b);
 		cout << endl << THREE_TABS << newTitle << " successfully created.";
 	} else
-		cout << "Book creation cancelled\n";
+		cout << endl << THREE_TABS << "Book creation cancelled";
 	getKey();
+	cin.ignore();
 }
 
 void Interface::createReader() {
@@ -588,14 +593,15 @@ void Interface::createReader() {
 		library.addPerson(reader);
 		cout << endl << THREE_TABS << newName << " successfully created.";
 	} else
-		cout << "Reader creation cancelled\n";
+		cout << endl << THREE_TABS << "Reader creation cancelled";
 	getKey();
+	cin.ignore();
 }
 
 void Interface::createEmployee() {
 	string header = "Create Employee";
 	string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr;
-	string supervisorDialog = "\t\t\t\tSupervisor?";
+	string supervisorDialog = "\n\t\t\tSupervisor?";
 	stringstream ss;
 	unsigned int newAge, newPhone, newNif, newWage;
 	bool supervisor = false;
@@ -631,7 +637,9 @@ void Interface::createEmployee() {
 		getline(cin, newWageStr, '\n');
 	}
 
-	if (confirmOperation(supervisorDialog))
+	if (library.getPersons().size() == 0)
+		supervisor = true;
+	else if (confirmOperation(supervisorDialog))
 		supervisor = true;
 
 	cout << endl << THREE_TABS << "Press S to save" << PROMPT_SYMBOL;
@@ -656,8 +664,9 @@ void Interface::createEmployee() {
 		library.addPerson(s0);
 		cout << endl << THREE_TABS << newName << " successfully created.";
 	} else
-		cout << "Employee creation cancelled\n";
+		cout << endl << THREE_TABS << "Employee creation cancelled";
 	getKey();
+	cin.ignore();
 }
 
 void Interface::createBorrow(Person* employee) {
