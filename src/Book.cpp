@@ -94,7 +94,7 @@ string Book::printShort() const {
 		for (unsigned x = 1; x < authors.size(); x++)
 			authorsSs << ", " << authors.at(x);
 	}
-	ss << "\t\t"
+	ss << "\t\t    "
 			<< (authorsSs.str().size() > 42 ?
 					authorsSs.str().substr(0, 42) : authorsSs.str());
 

@@ -77,10 +77,7 @@ public:
 	void genericDisplay(vector<T> vec, string listName, string labels);
 
 	template<typename T>
-	string optionalParameter(const T &p);
-
-	template<typename T>
-	string warningParameter(const T &p);
+	string warningString(const T &p);
 
 	char getKey();
 	bool is_Number(const int & c);

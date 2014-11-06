@@ -226,7 +226,7 @@ void Interface::readerMenu(Person *reader) {
 				message = "A book has the borrow date expired";
 
 		if (message.size() > 0) {
-			cout << TWO_TABS << HALF_TAB << warningParameter(message) << endl
+			cout << TWO_TABS << HALF_TAB << warningString(message) << endl
 					<< endl;
 			message.clear();
 		}
@@ -371,7 +371,7 @@ void Interface::manageBooks() {
 		cout << FOUR_TABS << "[3] Remove book\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << warningParameter(message) << endl << endl;
+			cout << THREE_TABS << warningString(message) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -428,7 +428,7 @@ void Interface::manageReaders() {
 		cout << FOUR_TABS << "[3] Remove reader\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << warningParameter(message) << endl << endl;
+			cout << THREE_TABS << warningString(message) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -483,7 +483,7 @@ void Interface::manageEmployees(Person* supervisor) {
 		cout << FOUR_TABS << "[3] Remove employee\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << warningParameter(message) << endl << endl;
+			cout << THREE_TABS << warningString(message) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -711,8 +711,7 @@ void Interface::createBorrow(Person* employee) {
 		cout << FOUR_TABS << "[4] Exit" << endl << endl;
 
 		if (createMessage.size() > 0) {
-			cout << THREE_TABS << warningParameter(createMessage) << endl
-					<< endl;
+			cout << THREE_TABS << warningString(createMessage) << endl << endl;
 			createMessage.clear();
 		}
 
@@ -779,18 +778,14 @@ void Interface::editBook(Book* book) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << THREE_TABS << "[1] Author" << TAB
-				<< optionalParameter(book->getAuthors()[0]) << endl;
-		cout << THREE_TABS << "[2] Quota" << TAB
-				<< optionalParameter(book->getQuota()) << endl;
-		cout << THREE_TABS << "[3] Page number" << TAB <<
-		optionalParameter(book->getPageNumber()) << endl;
-		cout << THREE_TABS << "[4] ISBN" << TAB
-				<< optionalParameter(book->getISBN()) << endl;
-		cout << THREE_TABS << "[5] Title" << TAB
-				<< (book->getTitle().size() > 16 ?
-						optionalParameter(book->getTitle().substr(0, 16)) :
-						optionalParameter(book->getTitle())) << endl; //
+		cout << endl << THREE_TABS << "[1] Author: " << book->getAuthors()[0]
+				<< endl;
+		cout << THREE_TABS << "[2] Quota: " << book->getQuota() << endl;
+		cout << THREE_TABS << "[3] Page number: " << book->getPageNumber()
+				<< endl;
+		cout << THREE_TABS << "[4] ISBN: " << book->getISBN() << endl;
+		cout << THREE_TABS << "[5] Title: " << book->getTitle().substr(0, 20)
+				<< endl << endl;
 		cout << THREE_TABS << "[6] Discard changes" << endl;
 		cout << THREE_TABS << "[7] Save" << endl;
 
@@ -889,12 +884,13 @@ void Interface::editReader(Person* reader) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << THREE_TABS << "[1] Name" << TAB
-				<< reader->getName().substr(0, 15) << endl;
-		cout << THREE_TABS << "[2] Age:" << TAB << reader->getAge() << " years"
+		cout << endl << THREE_TABS << "[1] Name: "
+				<< reader->getName().substr(0, 20) << endl;
+		cout << THREE_TABS << "[2] Age: " << reader->getAge() << " years"
 				<< endl;
-		cout << THREE_TABS << "[3] Phone:" << TAB << reader->getPhone() << endl;
-		cout << THREE_TABS << "[4] Email:" << TAB << reader->getEmail() << endl;
+		cout << THREE_TABS << "[3] Phone: " << reader->getPhone() << endl;
+		cout << THREE_TABS << "[4] Email: " << reader->getEmail().substr(0, 20)
+				<< endl << endl;
 		cout << THREE_TABS << "[5] Discard changes" << endl;
 		cout << THREE_TABS << "[6] Save" << endl;
 
@@ -994,17 +990,16 @@ void Interface::editEmployee(Person* employee) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << THREE_TABS << "[1] Name:" << TAB << employee->getName()
+		cout << endl << THREE_TABS << "[1] Name: "
+				<< employee->getName().substr(0, 20) << endl;
+		cout << THREE_TABS << "[2] Age: " << employee->getAge() << " years"
 				<< endl;
-		cout << THREE_TABS << "[2] Age:" << TAB << employee->getAge()
-				<< " years" << endl;
-		cout << THREE_TABS << "[3] Phone:" << TAB << employee->getPhone()
-				<< endl;
-		cout << THREE_TABS << "[4] Email:" << TAB << employee->getEmail()
-				<< endl;
-		cout << THREE_TABS << "[5] NIF:" << TAB << employee->getNif() << endl;
-		cout << THREE_TABS << "[6] Wage:" << TAB << employee->getWage() << endl;
-		cout << THREE_TABS << "[7] Hierarchy:" << TAB << employee->printType()
+		cout << THREE_TABS << "[3] Phone: " << employee->getPhone() << endl;
+		cout << THREE_TABS << "[4] Email: "
+				<< employee->getEmail().substr(0, 20) << endl;
+		cout << THREE_TABS << "[5] NIF: " << employee->getNif() << endl;
+		cout << THREE_TABS << "[6] Wage: " << employee->getWage() << endl;
+		cout << THREE_TABS << "[7] Hierarchy: " << employee->printType() << endl
 				<< endl;
 		cout << THREE_TABS << "[8] Discard changes" << endl;
 		cout << THREE_TABS << "[9] Save" << endl;
@@ -1143,8 +1138,7 @@ void Interface::editBorrow(Person* reader) {
 					<< endl;
 		}
 		if (returnMessage.size() > 0) {
-			cout << THREE_TABS << warningParameter(returnMessage) << endl
-					<< endl;
+			cout << THREE_TABS << warningString(returnMessage) << endl << endl;
 			returnMessage.clear();
 		}
 
@@ -1314,7 +1308,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 					matchAuthor |= partialMatchQuery(query, authors[y]);
 
 				if (partialMatchQuery(query, title) || matchAuthor) {
-					cout << TWO_TABS << "[" << z++ << "] "
+					cout << TWO_TABS << HALF_TAB << "[" << z++ << "] "
 							<< books[i]->printShort() << endl << endl;
 					matches.push_back(books[i]);
 				}
@@ -1507,16 +1501,9 @@ vector<string> Interface::editAuthors() {
 }
 
 template<typename T>
-string Interface::optionalParameter(const T &p) {
+string Interface::warningString(const T &p) {
 	stringstream ss;
-	ss << "[" << p << "]";
-	return ss.str();
-}
-
-template<typename T>
-string Interface::warningParameter(const T &p) {
-	stringstream ss;
-	ss << "*** " << p << " ***\a";
+	ss << "-> " << p << " <-";
 	return ss.str();
 }
 
