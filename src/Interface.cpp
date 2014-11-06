@@ -210,13 +210,13 @@ void Interface::readerMenu(Person *reader) {
 		clearScreen();
 		displayHeader(header);
 
-		cout << THREE_TABS << "Age:" << TAB << reader->getAge() << endl;
-		cout << THREE_TABS << "Card:" << TAB << reader->getCard() << endl;
-		cout << THREE_TABS << "Phone:" << TAB << reader->getPhone() << endl;
-		cout << THREE_TABS << "Email:" << TAB << reader->getEmail() << endl;
-		cout << endl << THREE_TABS << "[1] Display borrows" << endl;
-		cout << THREE_TABS << "[2] Borrow history" << endl;
-		cout << THREE_TABS << "[3] Logout" << endl << endl;
+		cout << THREE_TABS << HALF_TAB << "Age: " << reader->getAge() << endl;
+		cout << THREE_TABS << HALF_TAB << "Card: " << reader->getCard() << endl;
+		cout << THREE_TABS << HALF_TAB << "Phone: " << reader->getPhone() << endl;
+		cout << THREE_TABS << HALF_TAB << "Email: " << reader->getEmail() << endl;
+		cout << endl << THREE_TABS << HALF_TAB << "[1] Display borrows" << endl;
+		cout << THREE_TABS << HALF_TAB << "[2] Borrow history" << endl;
+		cout << THREE_TABS << HALF_TAB << "[3] Logout" << endl << endl;
 
 		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
 		for (size_t i = 0; i < borrowedBooks.size(); i++)
@@ -224,10 +224,10 @@ void Interface::readerMenu(Person *reader) {
 				message = "A book has the borrow date expired";
 
 		if (message.size() > 0) {
-			cout << THREE_TABS << warningParameter(message) << endl << endl;
+			cout << TWO_TABS << HALF_TAB << warningParameter(message) << endl << endl;
 			message.clear();
 		}
-		cout << THREE_TABS << PROMPT_SYMBOL;
+		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -388,9 +388,10 @@ void Interface::manageBooks() {
 		case '3':
 			book = searchBook(library.getBooks());
 			if (book != NULL && confirmOperation(confirmRemove)) {
-				if (library.removeBook(book))
+				if (library.removeBook(book)) {
 					message = "Book removed successfully";
-				else
+					library.saveBooks();
+				} else
 					message = "Error removing a book";
 			} else
 				message = "Error removing a book";
@@ -444,9 +445,10 @@ void Interface::manageReaders() {
 			break;
 		case '3':
 			clearScreen();
-			if (library.removeReader(searchPerson(library.getReaders())))
+			if (library.removeReader(searchPerson(library.getReaders()))) {
+				library.savePersons();
 				message = "Reader removed successfully";
-			else
+			} else
 				message = "Error removing a reader";
 			break;
 		case '4':
@@ -499,9 +501,10 @@ void Interface::manageEmployees(Person* supervisor) {
 		case '3':
 			clearScreen();
 			if (library.removeEmployee((searchPerson(library.getEmployees())),
-					supervisor))
+					supervisor)) {
+				library.savePersons();
 				message = "Employee removed successfully";
-			else
+			} else
 				message = "Error removing an employee";
 			break;
 		case '4':
@@ -554,6 +557,7 @@ void Interface::createBook() {
 		Book *b = new Book(authors, false, newQuota, newPageNumber, newISBN,
 				newTitle);
 		library.addBook(b);
+		library.saveBooks();
 		cout << endl << THREE_TABS << newTitle << " successfully created.";
 	} else
 		cout << endl << THREE_TABS << "Book creation cancelled";
@@ -601,6 +605,7 @@ void Interface::createReader() {
 
 		Person *reader = new Reader(newName, newAge, newPhone, newEmail);
 		library.addPerson(reader);
+		library.savePersons();
 		cout << endl << THREE_TABS << newName << " successfully created.";
 	} else
 		cout << endl << THREE_TABS << "Reader creation cancelled";
@@ -672,6 +677,7 @@ void Interface::createEmployee() {
 		Employee *s0 = new Employee(newName, newAge, newPhone, newEmail, newNif,
 				newWage, supervisor);
 		library.addPerson(s0);
+		library.savePersons();
 		cout << endl << THREE_TABS << newName << " successfully created.";
 	} else
 		cout << endl << THREE_TABS << "Employee creation cancelled";
@@ -736,6 +742,7 @@ void Interface::createBorrow(Person* employee) {
 					delete borrow;
 				}
 				createMessage = "Borrow created successfully";
+				library.saveBorrows();
 				reader = NULL;
 				book = NULL;
 			} else
@@ -758,6 +765,7 @@ void Interface::createBorrow(Person* employee) {
 void Interface::editBook(Book* book) {
 	char input;
 	bool exit = false;
+	bool edited = false;
 	string header = "Edit book";
 	do {
 		string newQuota, newTitle, newISBN, newPageNumberStr, changesMessage;
@@ -779,7 +787,8 @@ void Interface::editBook(Book* book) {
 				<< (book->getTitle().size() > 16 ?
 						optionalParameter(book->getTitle().substr(0, 16)) :
 						optionalParameter(book->getTitle())) << endl; //
-		cout << THREE_TABS << "[6] Exit" << endl;
+		cout << THREE_TABS << "[6] Discard changes" << endl;
+		cout << THREE_TABS << "[7] Save" << endl;
 
 		if (changesMessage.size() > 0) {
 			cout << endl << THREE_TABS << changesMessage << endl;
@@ -793,7 +802,7 @@ void Interface::editBook(Book* book) {
 		case '1':
 			cout << endl;
 			book->setAuthors(editAuthors());
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '2':
@@ -803,7 +812,7 @@ void Interface::editBook(Book* book) {
 				getline(cin, newQuota, '\n');
 			}
 			book->setQuota(newQuota);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '3':
@@ -816,7 +825,7 @@ void Interface::editBook(Book* book) {
 			ss << newPageNumberStr;
 			ss >> newPageNumber;
 			book->setPageNumber(newPageNumber);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '4':
@@ -827,7 +836,7 @@ void Interface::editBook(Book* book) {
 				getline(cin, newISBN, '\n');
 			}
 			book->setISBN(newISBN);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '5':
@@ -837,14 +846,22 @@ void Interface::editBook(Book* book) {
 				getline(cin, newTitle, '\n');
 			}
 			book->setTitle(newTitle);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 		case '6':
 			clearScreen();
+			library.loadBooks();
+			exit = true;
+			break;
+		case '7':
+			clearScreen();
+			if (edited)
+				library.saveBooks();
 			exit = true;
 			break;
 		case ESCAPE_KEY:
 			clearScreen();
+			library.loadBooks();
 			exit = true;
 			break;
 		default:
@@ -856,6 +873,7 @@ void Interface::editBook(Book* book) {
 void Interface::editReader(Person* reader) {
 	char input;
 	bool exit = false;
+	bool edited = false;
 	string header = "Edit Reader";
 	do {
 		string newName, newAgeStr, newPhoneStr, newEmail, changesMessage;
@@ -870,7 +888,8 @@ void Interface::editReader(Person* reader) {
 				<< endl;
 		cout << THREE_TABS << "[3] Phone:" << TAB << reader->getPhone() << endl;
 		cout << THREE_TABS << "[4] Email:" << TAB << reader->getEmail() << endl;
-		cout << THREE_TABS << "[5] Exit" << endl;
+		cout << THREE_TABS << "[5] Discard changes" << endl;
+		cout << THREE_TABS << "[6] Save" << endl;
 
 		if (changesMessage != "") {
 			cout << endl << THREE_TABS << changesMessage << endl;
@@ -888,7 +907,7 @@ void Interface::editReader(Person* reader) {
 				getline(cin, newName, '\n');
 			}
 			reader->setName(newName);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '2':
@@ -901,7 +920,7 @@ void Interface::editReader(Person* reader) {
 			ss << newAgeStr;
 			ss >> newAge;
 			reader->setAge(newAge);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '3':
@@ -914,7 +933,7 @@ void Interface::editReader(Person* reader) {
 			ss << newPhoneStr;
 			ss >> newPhone;
 			reader->setPhone(newPhone);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '4':
@@ -924,14 +943,24 @@ void Interface::editReader(Person* reader) {
 				getline(cin, newEmail, '\n');
 			}
 			reader->setEmail(newEmail);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 		case '5':
 			clearScreen();
+			if (edited)
+				library.loadPersons();
+			exit = true;
+			break;
+		case '6':
+			clearScreen();
+			if (edited)
+				library.savePersons();
 			exit = true;
 			break;
 		case ESCAPE_KEY:
 			clearScreen();
+			if (edited)
+				library.loadPersons();
 			exit = true;
 			break;
 		default:
@@ -943,6 +972,7 @@ void Interface::editReader(Person* reader) {
 void Interface::editEmployee(Person* employee) {
 	char input;
 	bool exit = false;
+	bool edited = false;
 	string header = "Edit Employee";
 	do {
 		string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr,
@@ -966,7 +996,8 @@ void Interface::editEmployee(Person* employee) {
 		cout << THREE_TABS << "[6] Wage:" << TAB << employee->getWage() << endl;
 		cout << THREE_TABS << "[7] Hierarchy:" << TAB << employee->printType()
 				<< endl;
-		cout << THREE_TABS << "[8] Exit" << endl;
+		cout << THREE_TABS << "[8] Discard changes" << endl;
+		cout << THREE_TABS << "[9] Save" << endl;
 
 		if (changesMessage != "") {
 			cout << endl << THREE_TABS << changesMessage << endl;
@@ -984,7 +1015,7 @@ void Interface::editEmployee(Person* employee) {
 				getline(cin, newName, '\n');
 			}
 			employee->setName(newName);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '2':
@@ -997,7 +1028,7 @@ void Interface::editEmployee(Person* employee) {
 			ss << newAgeStr;
 			ss >> newAge;
 			employee->setAge(newAge);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '3':
@@ -1010,7 +1041,7 @@ void Interface::editEmployee(Person* employee) {
 			ss << newPhoneStr;
 			ss >> newPhone;
 			employee->setPhone(newPhone);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '4':
@@ -1020,7 +1051,7 @@ void Interface::editEmployee(Person* employee) {
 				getline(cin, newEmail, '\n');
 			}
 			employee->setEmail(newEmail);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 
 		case '5':
@@ -1033,7 +1064,7 @@ void Interface::editEmployee(Person* employee) {
 			ss << newNifStr;
 			ss >> newNif;
 			employee->setNif(newNif);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 		case '6':
 			cout << endl;
@@ -1044,7 +1075,7 @@ void Interface::editEmployee(Person* employee) {
 			ss << newWageStr;
 			ss >> newWage;
 			employee->setWage(newWage);
-			changesMessage = "Changes saved successfully";
+			edited = true;
 			break;
 		case '7':
 			cout << endl << THREE_TABS
@@ -1053,19 +1084,29 @@ void Interface::editEmployee(Person* employee) {
 			ch = cin.get();
 			if (tolower(ch) == 's') {
 				employee->setSupervisor(1);
-				changesMessage = "Changes saved successfully";
+				edited = true;
 			} else if (tolower(ch) == 'e') {
 				employee->setSupervisor(0);
-				changesMessage = "Changes saved successfully";
+				edited = true;
 			}
 			cin.ignore();
 			break;
 		case '8':
 			clearScreen();
+			if (edited)
+				library.loadPersons();
+			exit = true;
+			break;
+		case '9':
+			clearScreen();
+			if (edited)
+				library.savePersons();
 			exit = true;
 			break;
 		case ESCAPE_KEY:
 			clearScreen();
+			if (edited)
+				library.loadPersons();
 			exit = true;
 			break;
 		default:
@@ -1107,6 +1148,7 @@ void Interface::editBorrow(Person* reader) {
 				if (confirmOperation(returnDialog)) {
 					reader->removeBorrow(borrows[0]);
 					library.removeBorrow(borrows[0]);
+					library.saveBorrows();
 					returnMessage = "Book returned successfully";
 				}
 			}
@@ -1116,6 +1158,7 @@ void Interface::editBorrow(Person* reader) {
 				if (confirmOperation(returnDialog)) {
 					library.removeBorrow(borrows[1]);
 					reader->removeBorrow(borrows[1]);
+					library.saveBorrows();
 					returnMessage = "Book returned successfully";
 				}
 			}
@@ -1125,6 +1168,7 @@ void Interface::editBorrow(Person* reader) {
 				if (confirmOperation(returnDialog)) {
 					library.removeBorrow(borrows[2]);
 					reader->removeBorrow(borrows[2]);
+					library.saveBorrows();
 					returnMessage = "Book returned successfully";
 				}
 			}
@@ -1134,6 +1178,7 @@ void Interface::editBorrow(Person* reader) {
 				if (confirmOperation(returnDialog)) {
 					library.removeBorrow(borrows[0]);
 					reader->removeBorrow(borrows[0]);
+					library.saveBorrows();
 					returnMessage = "Book returned successfully";
 				}
 			}

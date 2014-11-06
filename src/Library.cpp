@@ -62,7 +62,7 @@ vector<Person*> Library::getEmployees() const {
 			employees.push_back(persons[i]);
 	return employees;
 }
-vector<Person*> Library::getEmployeesNoSupervisores() const {
+vector<Person*> Library::getEmployeesNoSupervisors() const {
 	vector<Person*> employees;
 	for (size_t i = 0; i < persons.size(); i++)
 		if (persons[i]->getType() == 2)
@@ -146,8 +146,7 @@ bool Library::removeEmployee(Person* person, Person* employee) {
 }
 
 void Library::loadPersons() {
-	cout << "load persons" << endl;
-
+	persons.clear();
 // read employees
 	ifstream file;
 	file.open(EMPLOYEES_FILE);
@@ -204,6 +203,7 @@ void Library::loadPersons() {
 }
 
 void Library::loadBooks() {
+	books.clear();
 	fstream file;
 	file.open(BOOKS_FILE);
 	if (file.is_open()) {
@@ -442,7 +442,7 @@ void Library::saveBorrows() {
 
 void Library::SupervisorEmployeeRandom() {
 	vector<Person*> sup = getSupervisors();
-	vector<Person*> emp = getEmployeesNoSupervisores();
+	vector<Person*> emp = getEmployeesNoSupervisors();
 
 	for (unsigned int x = 0; x < sup.size(); x++) {
 		Employee* e = dynamic_cast<Employee*>(sup[x]);

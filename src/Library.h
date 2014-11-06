@@ -29,37 +29,6 @@ private:
 	vector<Borrow*> borrows;
 	/// vector to Person pointer type objects
 	vector<Person*> persons;
-
-	/** Loads stored books
-	 * Loads books.csv file to the books vector
-	 */
-	void loadBooks();
-
-	/** Loads stored persons
-	 * Loads readers.csv, employees.csv and supervisors.csv files to the persons vector
-	 */
-	void loadPersons();
-
-	/** Loads stored borrows
-	 * Loads borrows.csv file to the borrows vector
-	 */
-	void loadBorrowBooks();
-
-	/**
-	 * Saves books in books.csv file
-	 */
-	void saveBooks();
-
-	/**
-	 * Saves persons in corresponding readers.csv, employees.csv and supervisors.csv files
-	 */
-	void savePersons();
-
-	/**
-	 * Saves borrows in borrows.csv file
-	 */
-	void saveBorrows();
-
 public:
 	/** Library constructor reads *.csv files and stores
 	 * pointers to each object in their dedicated container */
@@ -86,7 +55,8 @@ public:
 	///@return employees
 	vector<Person*> getEmployees() const;
 
-	vector<Person*> getEmployeesNoSupervisores() const;
+	///@return non supervisor employees
+	vector<Person*> getEmployeesNoSupervisors() const;
 
 	///@return readers
 	vector<Person*> getSupervisors() const;
@@ -140,9 +110,40 @@ public:
 	/** removes a reader from the library
 	 *@param reader Person pointer
 	 */
+	bool removeReader(Person* reader);
+
+	/** Loads stored books
+	 * Loads books.csv file to the books vector
+	 */
+	void loadBooks();
+
+	/** Loads stored persons
+	 * Loads readers.csv, employees.csv and supervisors.csv files to the persons vector
+	 */
+	void loadPersons();
+
+	/** Loads stored borrows
+	 * Loads borrows.csv file to the borrows vector
+	 */
+	void loadBorrowBooks();
+
+	/**
+	 * Saves books in books.csv file
+	 */
+	void saveBooks();
+
+	/**
+	 * Saves persons in corresponding readers.csv, employees.csv and supervisors.csv files
+	 */
+	void savePersons();
+
+	/**
+	 * Saves borrows in borrows.csv file
+	 */
+	void saveBorrows();
+
 	void SupervisorEmployeeRandom();
 
-	bool removeReader(Person* reader);
 	void sortByType();
 	void sortByName();
 	void sortByAge();
