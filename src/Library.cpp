@@ -62,6 +62,13 @@ vector<Person*> Library::getEmployees() const {
 			employees.push_back(persons[i]);
 	return employees;
 }
+vector<Person*> Library::getEmployeesNoSupervisores() const {
+	vector<Person*> employees;
+	for (size_t i = 0; i < persons.size(); i++)
+		if (persons[i]->getType() == 2)
+			employees.push_back(persons[i]);
+	return employees;
+}
 
 vector<Person*> Library::getSupervisors() const {
 	vector<Person*> supervisors;
@@ -431,6 +438,25 @@ void Library::saveBorrows() {
 			pFile << endl;
 	}
 	pFile.close();
+}
+
+void Library::SupervisorEmployeeRandom() {
+	vector<Person*> sup = getSupervisors();
+	vector<Person*> emp = getEmployeesNoSupervisores();
+
+	for (unsigned int x = 0; x < sup.size(); x++) {
+		Employee* e = dynamic_cast<Employee*>(sup[x]);
+		if (e != NULL)
+			e->removeAllEmplyee();
+	}
+	for (unsigned int x = 0; x < emp.size(); x++) {
+		Employee* e = dynamic_cast<Employee*>(sup.at(x % sup.size()));
+		if (e != NULL) {
+			Employee* e2 = dynamic_cast<Employee*>(emp[x]);
+			if (e2 != NULL)
+				e->addEmplyee(e2);
+		}
+	}
 }
 
 bool compareName(const Person* p1, const Person* p2) {

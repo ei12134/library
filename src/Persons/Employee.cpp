@@ -53,6 +53,18 @@ void Employee::addEmplyee(Employee * e) {
 	if (supervisor)
 		this->team.push_back(e);
 }
+bool Employee::removeEmplyee(Employee * e) {
+	for (unsigned int x = 0; x < team.size(); x++) {
+		if (team[x] == e) {
+			team.erase(team.begin() + x);
+			return true;
+		}
+	}
+	return false;
+}
+void Employee::removeAllEmplyee() {
+	team.clear();
+}
 
 vector<Borrow*> Employee::getBorrowedBooks() const {
 	vector<Borrow*> empty;

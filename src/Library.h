@@ -86,6 +86,8 @@ public:
 	///@return employees
 	vector<Person*> getEmployees() const;
 
+	vector<Person*> getEmployeesNoSupervisores() const;
+
 	///@return readers
 	vector<Person*> getSupervisors() const;
 
@@ -138,6 +140,8 @@ public:
 	/** removes a reader from the library
 	 *@param reader Person pointer
 	 */
+	void SupervisorEmployeeRandom();
+
 	bool removeReader(Person* reader);
 	void sortByType();
 	void sortByName();
@@ -145,6 +149,7 @@ public:
 	void sortByBorrow();
 	void sortByTitle();
 	void sortByISBN();
+
 };
 
 #endif /* LIBRARY_H_ */

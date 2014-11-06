@@ -30,6 +30,9 @@ public:
 	void setSupervisor(bool super);
 	bool isSupervisor() const;
 	void addEmplyee(Employee * e);
+	bool removeEmplyee(Employee * e);
+	void removeAllEmplyee();
+
 	void setNif(unsigned int nif);
 	void setWage(unsigned int wage);
 	void createBorrow(Book *, Reader *, Employee *);
