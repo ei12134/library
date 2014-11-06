@@ -45,7 +45,6 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="class_library-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Library Class Reference</div>  </div>
@@ -62,6 +61,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a62120f28a9b50cc5b151d868e42ab936"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c68dd0db0e426e601d56026dcab0c3a"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="class_book.html">Book</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a5c68dd0db0e426e601d56026dcab0c3a">getBooks</a> () const </td></tr>
 <tr class="separator:a5c68dd0db0e426e601d56026dcab0c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acad9c7833fcec960205efc042cda1876"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="class_book.html">Book</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#acad9c7833fcec960205efc042cda1876">getAvailableBooks</a> () const </td></tr>
+<tr class="separator:acad9c7833fcec960205efc042cda1876"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a426200a81b0a586d77d06f950d9f90c5"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="class_borrow.html">Borrow</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a426200a81b0a586d77d06f950d9f90c5">getBorrows</a> () const </td></tr>
 <tr class="separator:a426200a81b0a586d77d06f950d9f90c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc03e416a30d319118794634f4be2e53"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="class_person.html">Person</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#afc03e416a30d319118794634f4be2e53">getPersons</a> () const </td></tr>
@@ -70,6 +71,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aac0ab09937ecf6e4eb991d1d1b0395ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5e013b0d52e5c9f41a014d7873c2649"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="class_person.html">Person</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#ac5e013b0d52e5c9f41a014d7873c2649">getEmployees</a> () const </td></tr>
 <tr class="separator:ac5e013b0d52e5c9f41a014d7873c2649"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a399a271183baa463805ce713cf72ac"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="class_person.html">Person</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a7a399a271183baa463805ce713cf72ac">getEmployeesNoSupervisors</a> () const </td></tr>
+<tr class="separator:a7a399a271183baa463805ce713cf72ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4155a5b0a11c422efa6f0087ac419f1c"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="class_person.html">Person</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a4155a5b0a11c422efa6f0087ac419f1c">getSupervisors</a> () const </td></tr>
 <tr class="separator:a4155a5b0a11c422efa6f0087ac419f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e0ca35d3bdeff3f8d173b4e721d37a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a4e0ca35d3bdeff3f8d173b4e721d37a8">setBooks</a> (vector&lt; <a class="el" href="class_book.html">Book</a> * &gt; books)</td></tr>
@@ -88,15 +91,37 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a08fabb07a9d488eaa3e54367a0017964"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ac8ef36ea84e447e8a1c9a6531f37eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a6ac8ef36ea84e447e8a1c9a6531f37eb">removeBorrow</a> (<a class="el" href="class_borrow.html">Borrow</a> *borrow)</td></tr>
 <tr class="separator:a6ac8ef36ea84e447e8a1c9a6531f37eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e3a5413a32e234655db1529bb5066be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a5e3a5413a32e234655db1529bb5066be">removePerson</a> (<a class="el" href="class_person.html">Person</a> *person, <a class="el" href="class_person.html">Person</a> *employee)</td></tr>
-<tr class="separator:a5e3a5413a32e234655db1529bb5066be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a84854fabc0212c10c181d778c31889f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84854fabc0212c10c181d778c31889f2"></a>
-static unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a84854fabc0212c10c181d778c31889f2">borrowID</a></td></tr>
-<tr class="memdesc:a84854fabc0212c10c181d778c31889f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">unique borrow Id <br /></td></tr>
-<tr class="separator:a84854fabc0212c10c181d778c31889f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9d797d1bdd6bd7bd1f88bbff776aa5d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#ab9d797d1bdd6bd7bd1f88bbff776aa5d">removeEmployee</a> (<a class="el" href="class_person.html">Person</a> *person, <a class="el" href="class_person.html">Person</a> *employee)</td></tr>
+<tr class="separator:ab9d797d1bdd6bd7bd1f88bbff776aa5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d5d37b21806deda97ed62f907afb5ad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a0d5d37b21806deda97ed62f907afb5ad">removeReader</a> (<a class="el" href="class_person.html">Person</a> *reader)</td></tr>
+<tr class="separator:a0d5d37b21806deda97ed62f907afb5ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c4777f9ad747d67dfe411cbe8866ac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a3c4777f9ad747d67dfe411cbe8866ac7">loadBooks</a> ()</td></tr>
+<tr class="separator:a3c4777f9ad747d67dfe411cbe8866ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ca605167db690faccd1eb613c0c2dbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a6ca605167db690faccd1eb613c0c2dbe">loadPersons</a> ()</td></tr>
+<tr class="separator:a6ca605167db690faccd1eb613c0c2dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11ec006bf85866447d629eff95d933d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a11ec006bf85866447d629eff95d933d0">loadBorrowBooks</a> ()</td></tr>
+<tr class="separator:a11ec006bf85866447d629eff95d933d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76ac93b0a572ff35b3d978605b61c1a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a76ac93b0a572ff35b3d978605b61c1a9">saveBooks</a> ()</td></tr>
+<tr class="separator:a76ac93b0a572ff35b3d978605b61c1a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a773fdf2fe0bb5f781662aa97bbafeed0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a773fdf2fe0bb5f781662aa97bbafeed0">savePersons</a> ()</td></tr>
+<tr class="separator:a773fdf2fe0bb5f781662aa97bbafeed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04f418766d0ab2e5b2610b0bb51aee0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a04f418766d0ab2e5b2610b0bb51aee0d">saveBorrows</a> ()</td></tr>
+<tr class="separator:a04f418766d0ab2e5b2610b0bb51aee0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a460b2e07be8e2f44e3be31592588a40b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a460b2e07be8e2f44e3be31592588a40b">sortByType</a> ()</td></tr>
+<tr class="separator:a460b2e07be8e2f44e3be31592588a40b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7eae50c8c9c0f82e0deeeec6e758edd8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a7eae50c8c9c0f82e0deeeec6e758edd8">sortByName</a> ()</td></tr>
+<tr class="separator:a7eae50c8c9c0f82e0deeeec6e758edd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d75ad8a019ebbcd90728e3ada09bf4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a9d75ad8a019ebbcd90728e3ada09bf4c">sortByAge</a> ()</td></tr>
+<tr class="separator:a9d75ad8a019ebbcd90728e3ada09bf4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4f6061050c12b4f5d778ec4ad310e2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#ac4f6061050c12b4f5d778ec4ad310e2b">sortByBorrow</a> ()</td></tr>
+<tr class="separator:ac4f6061050c12b4f5d778ec4ad310e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04ba1728d22fe559669b776537b80098"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a04ba1728d22fe559669b776537b80098">sortByTitle</a> ()</td></tr>
+<tr class="separator:a04ba1728d22fe559669b776537b80098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2fdb7e40e0a7d2140d6ff075ef0609c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#ae2fdb7e40e0a7d2140d6ff075ef0609c">sortByISBN</a> ()</td></tr>
+<tr class="separator:ae2fdb7e40e0a7d2140d6ff075ef0609c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a822073cebdec96ebda7e72c5714a20c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a822073cebdec96ebda7e72c5714a20c0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SupervisorEmployeeRandom</b> ()</td></tr>
+<tr class="separator:a822073cebdec96ebda7e72c5714a20c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_library.html">Library</a> Class stores containers used in the library management </p>
@@ -200,6 +225,22 @@ static unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a c
 
 </div>
 </div>
+<a class="anchor" id="acad9c7833fcec960205efc042cda1876"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt; <a class="el" href="class_book.html">Book</a> * &gt; Library::getAvailableBooks </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>available books </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a5c68dd0db0e426e601d56026dcab0c3a"></a>
 <div class="memitem">
 <div class="memproto">
@@ -212,7 +253,7 @@ static unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a c
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>books </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>all books </dd></dl>
 
 </div>
 </div>
@@ -245,6 +286,22 @@ static unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a c
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>employees </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a7a399a271183baa463805ce713cf72ac"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt; <a class="el" href="class_person.html">Person</a> * &gt; Library::getEmployeesNoSupervisors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>non supervisor employees </dd></dl>
 
 </div>
 </div>
@@ -296,6 +353,54 @@ static unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a c
 
 </div>
 </div>
+<a class="anchor" id="a3c4777f9ad747d67dfe411cbe8866ac7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::loadBooks </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Loads stored books Loads books.csv file to the books vector </p>
+
+</div>
+</div>
+<a class="anchor" id="a11ec006bf85866447d629eff95d933d0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::loadBorrowBooks </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Loads stored borrows Loads borrows.csv file to the borrows vector </p>
+
+</div>
+</div>
+<a class="anchor" id="a6ca605167db690faccd1eb613c0c2dbe"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::loadPersons </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Loads stored persons Loads readers.csv, employees.csv and supervisors.csv files to the persons vector </p>
+
+</div>
+</div>
 <a class="anchor" id="a08fabb07a9d488eaa3e54367a0017964"></a>
 <div class="memitem">
 <div class="memproto">
@@ -331,7 +436,7 @@ static unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a c
         </tr>
       </table>
 </div><div class="memdoc">
-<p>removes a borrow from the library </p><dl class="params"><dt>Parameters</dt><dd>
+<p>returns a borrow to the library </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">borrow</td><td><a class="el" href="class_borrow.html">Borrow</a> pointer </td></tr>
   </table>
@@ -340,12 +445,12 @@ static unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a c
 
 </div>
 </div>
-<a class="anchor" id="a5e3a5413a32e234655db1529bb5066be"></a>
+<a class="anchor" id="ab9d797d1bdd6bd7bd1f88bbff776aa5d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Library::removePerson </td>
+          <td class="memname">bool Library::removeEmployee </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_person.html">Person</a> *&#160;</td>
           <td class="paramname"><em>person</em>, </td>
@@ -363,12 +468,83 @@ static unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a c
         </tr>
       </table>
 </div><div class="memdoc">
-<p>removes a person from the library </p><dl class="params"><dt>Parameters</dt><dd>
+<p>removes an employee from the library </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">person</td><td><a class="el" href="class_person.html">Person</a> pointer </td></tr>
+    <tr><td class="paramname">supervisor</td><td><a class="el" href="class_person.html">Person</a> pointer </td></tr>
+    <tr><td class="paramname">employee</td><td><a class="el" href="class_person.html">Person</a> pointer </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a0d5d37b21806deda97ed62f907afb5ad"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Library::removeReader </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_person.html">Person</a> *&#160;</td>
+          <td class="paramname"><em>reader</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>removes a reader from the library </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reader</td><td><a class="el" href="class_person.html">Person</a> pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a76ac93b0a572ff35b3d978605b61c1a9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::saveBooks </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Saves books in books.csv file </p>
+
+</div>
+</div>
+<a class="anchor" id="a04f418766d0ab2e5b2610b0bb51aee0d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::saveBorrows </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Saves borrows in borrows.csv file </p>
+
+</div>
+</div>
+<a class="anchor" id="a773fdf2fe0bb5f781662aa97bbafeed0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::savePersons </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Saves persons in corresponding readers.csv, employees.csv and supervisors.csv files </p>
 
 </div>
 </div>
@@ -438,6 +614,102 @@ static unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a c
 
 </div>
 </div>
+<a class="anchor" id="a9d75ad8a019ebbcd90728e3ada09bf4c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::sortByAge </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sorts persons by age </p>
+
+</div>
+</div>
+<a class="anchor" id="ac4f6061050c12b4f5d778ec4ad310e2b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::sortByBorrow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sorts readers by borrow count </p>
+
+</div>
+</div>
+<a class="anchor" id="ae2fdb7e40e0a7d2140d6ff075ef0609c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::sortByISBN </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sorts books by ISBN </p>
+
+</div>
+</div>
+<a class="anchor" id="a7eae50c8c9c0f82e0deeeec6e758edd8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::sortByName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sorts persons by name </p>
+
+</div>
+</div>
+<a class="anchor" id="a04ba1728d22fe559669b776537b80098"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::sortByTitle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sorts books by title </p>
+
+</div>
+</div>
+<a class="anchor" id="a460b2e07be8e2f44e3be31592588a40b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Library::sortByType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sorts persons by type </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>C:/Users/User/Documents/Source/git/library/src/<a class="el" href="_library_8h_source.html">Library.h</a></li>
 <li>C:/Users/User/Documents/Source/git/library/src/Library.cpp</li>
@@ -445,7 +717,7 @@ static unsigned long int&#160;</td><td class="memItemRight" valign="bottom"><a c
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Nov 4 2014 14:03:55 for Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 6 2014 15:18:30 for Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

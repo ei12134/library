@@ -5,9 +5,6 @@ Library::Library() {
 	loadBooks();
 	loadPersons();
 	loadBorrowBooks();
-	/* ...
-	 * associations?
-	 */
 }
 
 Library::~Library() {

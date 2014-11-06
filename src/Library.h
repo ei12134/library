@@ -142,14 +142,38 @@ public:
 	 */
 	void saveBorrows();
 
-	void SupervisorEmployeeRandom();
+	/**
+	 * Sorts persons by type
+	 */
 
 	void sortByType();
+	/**
+	 * Sorts persons by name
+	 */
+
 	void sortByName();
+
+	/**
+	 * Sorts persons by age
+	 */
 	void sortByAge();
+
+	/**
+	 * Sorts readers by borrow count
+	 */
 	void sortByBorrow();
+
+	/**
+	 * Sorts books by title
+	 */
 	void sortByTitle();
+
+	/**
+	 * Sorts books by ISBN
+	 */
 	void sortByISBN();
+
+	void SupervisorEmployeeRandom();
 
 };
 
