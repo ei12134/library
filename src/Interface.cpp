@@ -212,8 +212,10 @@ void Interface::readerMenu(Person *reader) {
 
 		cout << THREE_TABS << HALF_TAB << "Age: " << reader->getAge() << endl;
 		cout << THREE_TABS << HALF_TAB << "Card: " << reader->getCard() << endl;
-		cout << THREE_TABS << HALF_TAB << "Phone: " << reader->getPhone() << endl;
-		cout << THREE_TABS << HALF_TAB << "Email: " << reader->getEmail() << endl;
+		cout << THREE_TABS << HALF_TAB << "Phone: " << reader->getPhone()
+				<< endl;
+		cout << THREE_TABS << HALF_TAB << "Email: " << reader->getEmail()
+				<< endl;
 		cout << endl << THREE_TABS << HALF_TAB << "[1] Display borrows" << endl;
 		cout << THREE_TABS << HALF_TAB << "[2] Borrow history" << endl;
 		cout << THREE_TABS << HALF_TAB << "[3] Logout" << endl << endl;
@@ -224,7 +226,8 @@ void Interface::readerMenu(Person *reader) {
 				message = "A book has the borrow date expired";
 
 		if (message.size() > 0) {
-			cout << TWO_TABS << HALF_TAB << warningParameter(message) << endl << endl;
+			cout << TWO_TABS << HALF_TAB << warningParameter(message) << endl
+					<< endl;
 			message.clear();
 		}
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
@@ -767,6 +770,7 @@ void Interface::editBook(Book* book) {
 	bool exit = false;
 	bool edited = false;
 	string header = "Edit book";
+	Book backup = *book;
 	do {
 		string newQuota, newTitle, newISBN, newPageNumberStr, changesMessage;
 		unsigned int newPageNumber;
@@ -849,8 +853,8 @@ void Interface::editBook(Book* book) {
 			edited = true;
 			break;
 		case '6':
-			clearScreen();
-			library.loadBooks();
+			if (edited)
+				*book = backup;
 			exit = true;
 			break;
 		case '7':
@@ -860,8 +864,8 @@ void Interface::editBook(Book* book) {
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
-			library.loadBooks();
+			if (edited)
+				*book = backup;
 			exit = true;
 			break;
 		default:
@@ -875,6 +879,9 @@ void Interface::editReader(Person* reader) {
 	bool exit = false;
 	bool edited = false;
 	string header = "Edit Reader";
+	Reader* dReader = dynamic_cast<Reader*>(reader);
+	Reader backup = *dReader;
+
 	do {
 		string newName, newAgeStr, newPhoneStr, newEmail, changesMessage;
 		unsigned int newAge, newPhone;
@@ -948,7 +955,7 @@ void Interface::editReader(Person* reader) {
 		case '5':
 			clearScreen();
 			if (edited)
-				library.loadPersons();
+				*reader = backup;
 			exit = true;
 			break;
 		case '6':
@@ -960,7 +967,7 @@ void Interface::editReader(Person* reader) {
 		case ESCAPE_KEY:
 			clearScreen();
 			if (edited)
-				library.loadPersons();
+				*reader = backup;
 			exit = true;
 			break;
 		default:
@@ -974,6 +981,9 @@ void Interface::editEmployee(Person* employee) {
 	bool exit = false;
 	bool edited = false;
 	string header = "Edit Employee";
+	Employee* dEmployee = dynamic_cast<Employee*>(employee);
+	Employee backup = *dEmployee;
+
 	do {
 		string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr,
 				changesMessage;
@@ -1094,7 +1104,7 @@ void Interface::editEmployee(Person* employee) {
 		case '8':
 			clearScreen();
 			if (edited)
-				library.loadPersons();
+				*employee = backup;
 			exit = true;
 			break;
 		case '9':
@@ -1106,7 +1116,7 @@ void Interface::editEmployee(Person* employee) {
 		case ESCAPE_KEY:
 			clearScreen();
 			if (edited)
-				library.loadPersons();
+				*employee = backup;
 			exit = true;
 			break;
 		default:
