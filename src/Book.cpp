@@ -76,7 +76,7 @@ string Book::print() const {
 			<< (authorsSs.str().size() > 22 ?
 					authorsSs.str().substr(0, 22) : authorsSs.str());
 	ss << (authorsSs.str().size() >= 22 ? "\t" : "");
-	for (int i = 22 - authorsSs.str().size(); i > 0; i -= 8)
+	for (int i = 24 - authorsSs.str().size(); i > 0; i -= 8)
 		ss << "\t";
 
 	ss << ISBN << "\t" << (borrowed == 1 ? "Borrowed" : "Available");

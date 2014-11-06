@@ -1,13 +1,19 @@
 Cay Horstmann,Timothy A. Budd;0;004.43 C++ /HORc/BIG 2;1056;9780470383285;Big C++;1
 Cay Horstmann,Timothy A. Budd;1;004.43 C++ /HORc/BIG 2;1056;9780470383285;Big C++;2
-Cay Horstmann,Timothy A. Budd;0;004.43 C++ /HORc/BIG 2;1056;9780470383285;Big C++;3
-John E. Hopcroft,Rajeev Motwani,Jeffrey Ullman;0;519.6 /HOPj/INT 2;521;0201441241;Introduction to automata theory, languages, and computation;4
-John E. Hopcroft,Rajeev Motwani,Jeffrey Ullman;0;519.6 /HOPj/INT 2;521;0201441241;Introduction to automata theory, languages, and computation;5
-Stuart Russell,Peter Norvig,Prentice-Hall;0;004.8 /RUSs/ART;932;0133601242;Artificial intelligence : a modern approach;6
-Stuart Russell,Peter Norvig,Prentice-Hall;0;004.8 /RUSs/ART;932;0133601242;Artificial intelligence : a modern approach;7
-E. L. James;0;003.8 /James;552;9789892319957;As Cinquenta Sombras de Grey;8
-E. L. James;0;003.8 /James;552;9789892319957;As Cinquenta Sombras de Grey;9
-Jose Rodrigues dos Santos;0;002.9 /Jose;624;9789896166021;A Chave de Salomao;10
-Jose Rodrigues dos Santos;0;002.9 /Jose;624;9789896166021;A Chave de Salomao;11
-Jose Rodrigues dos Santos;0;002.9 /Jose;504;9789896165499;O Homem de Constantinopla;12
-Jose Rodrigues dos Santos;0;002.9 /Jose;504;9789896165499;O Homem de Constantinopla;13
+E. L. James;1;003.8 /James;552;9789892319957;As Cinquenta Sombras de Grey;3
+E. L. James;0;003.8 /James;552;9789892319957;As Cinquenta Sombras de Grey;4
+Jose Rodrigues dos Santos;1;002.9 /Jose;624;9789896166021;A Chave de Salomao;5
+Jose Rodrigues dos Santos;0;002.9 /Jose;504;9789896165499;O Homem de Constantinopla;6
+Homero;0;002.9 /Homer;400;9789727950607;Odisseia;7
+Homero;0;002.9 /Homer;400;9789727950607;Odisseia;8
+Bjarne Stroustrup;0;004.9 /Stroustrup;1368;9780321563842;C++ Programming Language;9
+Bjarne Stroustrup;1;004.9 /Stroustrup;1368;9780321563842;C++ Programming Language;10
+Dan Brown;1;005.9 /Brown;192;9782709643955;Da Vinci Code;11
+Dan Brown;0;005.9 /Brown;192;9782709643955;Da Vinci Code;12
+Dan Brown;0;005.9 /Brown;496;9780593075005;Inferno;13
+Dan Brown;0;005.9 /Brown;496;9780593075005;Inferno;14
+Grant Blackwood,James Rollins;0;001.9 /James;400;9781409154433;The Kill Switch;15
+Fernando Pessoa;0;007.9 /Pessoa;480;9789723717747;Livro do Desassossego;16
+Fernando Pessoa;0;007.9 /Pessoa;112;9789720049759;Mensagem;17
+Gil Vicente;0;008.9 /Vicente;64;9789720726995;Auto da Barca do Inferno;18
+Jared Cohen,Eric Schmidt;0;008.7 /Schmidt;376;9789722053297;A Nova Era Digital;19
