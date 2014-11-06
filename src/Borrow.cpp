@@ -37,10 +37,10 @@ unsigned long int Borrow::getID() const {
 }
 
 float Borrow::calcFee() const {
-	Date d;
+	Date date;
 	if (returned)
-		d = returnDate;
-	int days = d - limitReturnDate;
+		date = returnDate;
+	int days = date - limitReturnDate;
 	if (days <= 0)
 		return 0;
 	if (days <= 7)

@@ -17,10 +17,11 @@ void Interface::menu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << FOUR_TABS << "[1] Login\n\n";
-		cout << FOUR_TABS << "[2] Sort\n\n";
-		cout << FOUR_TABS << "[3] Display\n\n";
-		cout << FOUR_TABS << "[4] Quit\n\n" << THREE_TABS << PROMPT_SYMBOL;
+		cout << endl << FOUR_TABS << "[1] Login" << endl;
+		cout << FOUR_TABS << "[2] Sort" << endl;
+		cout << FOUR_TABS << "[3] Display" << endl << endl;
+		cout << FOUR_TABS << "[4] Quit" << endl << endl << THREE_TABS
+				<< PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -83,13 +84,13 @@ void Interface::sortMenu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << FOUR_TABS << "[1] By person name\n\n";
-		cout << FOUR_TABS << "[2] By person age\n\n";
-		cout << FOUR_TABS << "[3] By person type\n\n";
-		cout << FOUR_TABS << "[4] By reader borrows\n\n";
-		cout << FOUR_TABS << "[5] By book title\n\n";
-		cout << FOUR_TABS << "[6] By book ISBN\n\n";
-		cout << FOUR_TABS << "[7] Exit to menu\n\n\n";
+		cout << endl << FOUR_TABS << "[1] By person name" << endl;
+		cout << FOUR_TABS << "[2] By person age" << endl;
+		cout << FOUR_TABS << "[3] By person type" << endl;
+		cout << FOUR_TABS << "[4] By reader borrows" << endl;
+		cout << FOUR_TABS << "[5] By book title" << endl;
+		cout << FOUR_TABS << "[6] By book ISBN" << endl << endl;
+		cout << FOUR_TABS << "[7] Exit to menu" << endl << endl;
 		cout << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
@@ -152,12 +153,12 @@ void Interface::displayMenu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << FOUR_TABS << "[1] Persons\n\n";
-		cout << FOUR_TABS << "[2] Readers\n\n";
-		cout << FOUR_TABS << "[3] Employees\n\n";
-		cout << FOUR_TABS << "[4] Supervisors\n\n";
-		cout << FOUR_TABS << "[5] Books\n\n";
-		cout << FOUR_TABS << "[6] Exit to menu\n\n\n";
+		cout << endl << FOUR_TABS << "[1] Persons" << endl;
+		cout << FOUR_TABS << "[2] Readers" << endl;
+		cout << FOUR_TABS << "[3] Employees" << endl;
+		cout << FOUR_TABS << "[4] Supervisors" << endl;
+		cout << FOUR_TABS << "[5] Books" << endl << endl;
+		cout << FOUR_TABS << "[6] Exit to menu" << endl << endl;
 		cout << THREE_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
@@ -216,9 +217,10 @@ void Interface::readerMenu(Person *reader) {
 				<< endl;
 		cout << THREE_TABS << HALF_TAB << "Email: " << reader->getEmail()
 				<< endl;
-		cout << endl << THREE_TABS << HALF_TAB << "[1] Display borrows" << endl;
-		cout << THREE_TABS << HALF_TAB << "[2] Borrow history" << endl;
-		cout << THREE_TABS << HALF_TAB << "[3] Logout" << endl << endl;
+		cout << endl << THREE_TABS << HALF_TAB << "[1] Display borrows" << endl
+				<< endl;
+//		cout << THREE_TABS << HALF_TAB << "[2] Borrow history" << endl;
+		cout << THREE_TABS << HALF_TAB << "[2] Logout" << endl << endl;
 
 		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
 		for (size_t i = 0; i < borrowedBooks.size(); i++)
@@ -226,8 +228,7 @@ void Interface::readerMenu(Person *reader) {
 				message = "A book has the borrow date expired";
 
 		if (message.size() > 0) {
-			cout << TWO_TABS << HALF_TAB << warningString(message) << endl
-					<< endl;
+			cout << centerString(warningString(message)) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
@@ -239,8 +240,6 @@ void Interface::readerMenu(Person *reader) {
 			editBorrow(reader);
 			break;
 		case '2':
-			break;
-		case '3':
 			clearScreen();
 			exit = true;
 			break;
@@ -270,11 +269,11 @@ void Interface::employeeMenu(Person* employee) {
 				<< endl;
 		cout << THREE_TABS << HALF_TAB << "Wage: " << employee->getWage()
 				<< " euros" << endl;
-		cout << endl << THREE_TABS << HALF_TAB << "[1] Borrow a book\n";
-		cout << THREE_TABS << HALF_TAB << "[2] Manage readers\n";
-		cout << THREE_TABS << HALF_TAB << "[3] Manage books\n";
-		cout << THREE_TABS << HALF_TAB << "[4] Logout\n\n" << TWO_TABS << TAB
-				<< PROMPT_SYMBOL;
+		cout << endl << THREE_TABS << HALF_TAB << "[1] Borrow a book" << endl;
+		cout << THREE_TABS << HALF_TAB << "[2] Manage readers" << endl;
+		cout << THREE_TABS << HALF_TAB << "[3] Manage books" << endl << endl;
+		cout << THREE_TABS << HALF_TAB << "[4] Logout" << endl << endl
+				<< TWO_TABS << TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -319,13 +318,13 @@ void Interface::supervisorMenu(Person* supervisor) {
 				<< endl;
 		cout << THREE_TABS << HALF_TAB << "Wage: " << supervisor->getWage()
 				<< " euros" << endl;
-		cout << endl << THREE_TABS + HALF_TAB << "[1] Borrow a book\n";
-		cout << THREE_TABS << HALF_TAB << "[2] Manage books\n";
-		cout << THREE_TABS << HALF_TAB << "[3] Manage readers\n";
-		cout << THREE_TABS << HALF_TAB << "[4] Manage employees\n";
-		cout << THREE_TABS << HALF_TAB << "[5] Employees team\n";
-		cout << THREE_TABS << HALF_TAB << "[6] Logout\n\n" << TWO_TABS << TAB
-				<< PROMPT_SYMBOL;
+		cout << endl << THREE_TABS + HALF_TAB << "[1] Borrow a book" << endl;
+		cout << THREE_TABS << HALF_TAB << "[2] Manage books" << endl;
+		cout << THREE_TABS << HALF_TAB << "[3] Manage readers" << endl;
+		cout << THREE_TABS << HALF_TAB << "[4] Manage employees" << endl;
+		cout << THREE_TABS << HALF_TAB << "[5] Employees team" << endl << endl;
+		cout << THREE_TABS << HALF_TAB << "[6] Logout" << endl << endl
+				<< TWO_TABS << TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -371,7 +370,7 @@ void Interface::manageBooks() {
 		cout << FOUR_TABS << "[3] Remove book\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << warningString(message) << endl << endl;
+			cout << centerString(warningString(message)) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -428,7 +427,7 @@ void Interface::manageReaders() {
 		cout << FOUR_TABS << "[3] Remove reader\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << warningString(message) << endl << endl;
+			cout << centerString(warningString(message)) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -483,7 +482,7 @@ void Interface::manageEmployees(Person* supervisor) {
 		cout << FOUR_TABS << "[3] Remove employee\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
 		if (message.size() > 0) {
-			cout << THREE_TABS << warningString(message) << endl << endl;
+			cout << centerString(warningString(message)) << endl << endl;
 			message.clear();
 		}
 		cout << THREE_TABS << PROMPT_SYMBOL;
@@ -711,7 +710,7 @@ void Interface::createBorrow(Person* employee) {
 		cout << FOUR_TABS << "[4] Exit" << endl << endl;
 
 		if (createMessage.size() > 0) {
-			cout << THREE_TABS << warningString(createMessage) << endl << endl;
+			cout << centerString(warningString(createMessage)) << endl << endl;
 			createMessage.clear();
 		}
 
@@ -1138,7 +1137,7 @@ void Interface::editBorrow(Person* reader) {
 					<< endl;
 		}
 		if (returnMessage.size() > 0) {
-			cout << THREE_TABS << warningString(returnMessage) << endl << endl;
+			cout << centerString(warningString(returnMessage)) << endl << endl;
 			returnMessage.clear();
 		}
 
@@ -1498,6 +1497,11 @@ vector<string> Interface::editAuthors() {
 		cout << endl;
 	}
 	return authors;
+}
+
+inline string Interface::centerString(const string &s) {
+	int spacing = (int) ((80 - s.size()) / 2);
+	return string(spacing, ' ') + s;
 }
 
 template<typename T>

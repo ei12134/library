@@ -76,6 +76,8 @@ public:
 	template<typename T>
 	void genericDisplay(vector<T> vec, string listName, string labels);
 
+	inline string centerString(const string &s);
+
 	template<typename T>
 	string warningString(const T &p);
 
