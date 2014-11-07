@@ -10,6 +10,7 @@ class Borrow;
 #include <sstream>
 #include <fstream>
 #include <stdlib.h>
+#include "../Exception.h"
 using namespace std;
 
 class Person {
@@ -20,7 +21,7 @@ protected:
 	string name;
 public:
 	Person(string name, unsigned int age, unsigned int phone, string email);
-	Person(ifstream& s);
+	Person(stringstream& s);
 	virtual ~Person();
 
 	virtual void saveData(ofstream &of) = 0;

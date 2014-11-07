@@ -13,42 +13,54 @@ Book::Book(vector<string> authors, bool borrowed, string quota,
 Book::~Book() {
 }
 
-Book::Book(fstream& s) {
+Book::Book(stringstream& s) {
 	stringstream ss;
+	string book;
 	string newAuthors, newBorrowed, newQuota, newPageNumber, newISBN, newTitle,
 			newAuthor, newIdStr;
 	bool borrowed;
 	unsigned int pageNumber, newId;
 
-	getline(s, newAuthors, ';');
+	if (!getline(s, newAuthors, ';'))
+		throw Exception<string>("Error reading authors", "Book");
+
 	ss << newAuthors;
 	while (getline(ss, newAuthor, ',')) {
 		this->authors.push_back(newAuthor);
 	}
 	ss.clear();
 
-	getline(s, newBorrowed, ';');
+	if (!getline(s, newBorrowed, ';'))
+		throw Exception<string>("Error reading borrowed", "Book");
+
 	ss << newBorrowed;
 	ss >> borrowed;
 	ss.clear();
 	this->borrowed = borrowed;
 
-	getline(s, newQuota, ';');
+	if (!getline(s, newQuota, ';'))
+		throw Exception<string>("Error reading quota", "Book");
 	this->quota = newQuota;
 
-	getline(s, newPageNumber, ';');
+	if (!getline(s, newPageNumber, ';'))
+		throw Exception<string>("Error reading page number", "Book");
+
 	ss << newPageNumber;
 	ss >> pageNumber;
 	ss.clear();
 	this->pageNumber = pageNumber;
 
-	getline(s, newISBN, ';');
+	if (!getline(s, newISBN, ';'))
+		throw Exception<string>("Error reading ISBN", "Book");
 	this->ISBN = newISBN;
 
-	getline(s, newTitle, ';');
+	if (!getline(s, newTitle, ';'))
+		throw Exception<string>("Error reading title", "Book");
+
 	this->title = newTitle;
 
-	getline(s, newIdStr);
+	if (!getline(s, newIdStr))
+		throw Exception<string>("Error reading title", "Book");
 	ss << newIdStr;
 	ss >> newId;
 	this->ID = newId;

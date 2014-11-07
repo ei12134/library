@@ -8,27 +8,32 @@ Person::Person(string name, unsigned int age, unsigned int phone,
 	this->email = email;
 }
 
-Person::Person(ifstream& s) {
+Person::Person(stringstream& s) {
 	stringstream ss;
 	string name, email, sAge, sPhone;
 	unsigned int age, phone;
 
-	getline(s, name, ';');
+	if (!getline(s, name, ';'))
+		throw Exception<string>("Error reading name", "Person");
+
 	this->name = name;
 
-	getline(s, sAge, ';');
+	if (!getline(s, sAge, ';'))
+		throw Exception<string>("Error reading age", "Person");
 	ss << sAge;
 	ss >> age;
 	ss.clear();
 	this->age = age;
 
-	getline(s, sPhone, ';');
+	if (!getline(s, sPhone, ';'))
+		throw Exception<string>("Error reading phone", "Person");
 	ss << sPhone;
 	ss >> phone;
 	ss.clear();
 	this->phone = phone;
 
-	getline(s, email, ';');
+	if (!getline(s, email, ';'))
+		throw Exception<string>("Error reading email", "Person");
 	this->email = email;
 }
 

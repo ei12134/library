@@ -8,14 +8,15 @@ Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,
 	borrowedBooks.reserve(MAX_BORROWS); // limit to 3 borrowed books
 }
 
-Reader::Reader(ifstream& s) :
+Reader::Reader(stringstream& s) :
 		Person(s) {
 	borrowedBooks.reserve(MAX_BORROWS);
 	stringstream ss;
 	string sCard;
 	unsigned int card;
 
-	getline(s, sCard); // read last input until newline
+	if(!getline(s, sCard)) // read last input until newline
+		throw Exception<string>("Error reading card", "Reader");
 	ss << sCard;
 	ss >> card;
 	ss.clear();

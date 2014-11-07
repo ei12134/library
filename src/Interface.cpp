@@ -342,7 +342,6 @@ void Interface::supervisorMenu(Person* supervisor) {
 		cout << THREE_TABS << HALF_TAB << "[6] Employees team" << endl << endl;
 		cout << THREE_TABS << HALF_TAB << "[7] Logout" << endl << endl
 				<< TWO_TABS << TAB << PROMPT_SYMBOL;
-
 		input = getKey();
 		switch (input) {
 		case '1':
@@ -359,8 +358,8 @@ void Interface::supervisorMenu(Person* supervisor) {
 		case '5':
 			library.SupervisorEmployeeRandom();
 			library.savePersons();
-
-			// put user message xD
+			cout << "Employees were evenly assigned";
+			getKey();
 			break;
 		case '6':
 			clearScreen();

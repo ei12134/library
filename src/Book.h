@@ -9,6 +9,7 @@
 #include <sstream>
 #include <fstream>
 #include <stdlib.h>
+#include "Exception.h"
 using namespace std;
 
 class Book {
@@ -25,7 +26,7 @@ public:
 	Book(vector<string> authors, bool borrowed, string quota,
 			unsigned int pageNumber, string ISBN, string title);
 	virtual ~Book();
-	Book(fstream& s);
+	Book(stringstream& s);
 	string print() const;
 	string printShort() const;
 	vector<string> getAuthors() const;

@@ -164,6 +164,8 @@ bool Library::removeEmployeeFromSupervisors(Employee* employee) {
 }
 
 void Library::loadPersons() {
+	string line;
+	stringstream fs;
 	persons.clear();
 // read employees
 	ifstream file;
@@ -171,36 +173,42 @@ void Library::loadPersons() {
 	vector<Employee*> temp;
 	if (file.is_open()) {
 		while (file.good()) {
-			Employee* employee = new Employee(file, false);
+			try {
+				getline(file, line, '\n');
+				fs << line;
+				Employee* employee = new Employee(fs, false);
+				temp.push_back(employee);
 
-			//cout << employee->print() << endl;
-
-			temp.push_back(employee);
+			} catch (Exception<string> &e) {
+			}
+			fs.clear();
 		}
 	}
 	file.close();
 
 // read supervisors
-	stringstream ss;
 	string employs;
 	string e;
 	file.open(SUPERVISORS_FILE);
 	if (file.is_open()) {
 		while (file.good()) {
-			Employee* employee = new Employee(file, true);
+			try {
+				getline(file, line, '\n');
+				fs << line;
+				Employee* employee = new Employee(fs, true);
 
-			getline(file, employs);	// read last input until newline
-			ss << employs;
-			while (getline(ss, e, ',')) {
-				for (unsigned x = 0; x < temp.size(); x++) {
-					if (temp[x]->getName() == e) { // check if employee exists in memory
-						employee->addEmplyee(temp[x]);
-						break;
+				while (getline(fs, e, ',')) {
+					for (unsigned x = 0; x < temp.size(); x++) {
+						if (temp[x]->getName() == e) { // check if employee exists in memory
+							employee->addEmplyee(temp[x]);
+							break;
+						}
 					}
 				}
+				persons.push_back(employee);
+			} catch (Exception<string> &e) {
 			}
-			ss.clear();
-			persons.push_back(employee);
+			fs.clear();
 		}
 	}
 	file.close();
@@ -212,8 +220,15 @@ void Library::loadPersons() {
 	file.open(READERS_FILE);
 	if (file.is_open()) {
 		while (file.good()) {
-			Reader* reader = new Reader(file);
-			persons.push_back(reader);
+			try {
+				getline(file, line, '\n');
+				fs << line;
+				Reader* reader = new Reader(fs);
+				persons.push_back(reader);
+				fs.clear();
+			} catch (Exception<string> &e) {
+			}
+
 		}
 	}
 	file.close();
@@ -223,11 +238,19 @@ void Library::loadPersons() {
 void Library::loadBooks() {
 	books.clear();
 	fstream file;
+	string line;
+	stringstream ss;
 	file.open(BOOKS_FILE);
 	if (file.is_open()) {
 		while (file.good()) {
-			Book* bk = new Book(file);
-			books.push_back(bk);
+			try {
+				ss.clear();
+				getline(file, line, '\n');
+				ss << line;
+				Book* bk = new Book(ss);
+				books.push_back(bk);
+			} catch (Exception<string> &e) {
+			}
 		}
 	}
 	file.close();

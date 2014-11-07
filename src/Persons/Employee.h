@@ -17,7 +17,7 @@ class Employee: public Person {
 	bool supervisor;
 	vector<Employee *> team;
 public:
-	Employee(ifstream& s, bool superv);
+	Employee(stringstream& s, bool superv);
 	Employee(string name, unsigned int age, unsigned int phone, string email,
 			unsigned int nif, unsigned int wage, bool supervisor);
 	virtual ~Employee();

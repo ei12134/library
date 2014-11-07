@@ -29,7 +29,7 @@ public:
 	/** Reader manual constructor*/
 	Reader(string name, unsigned int age, unsigned int phone, string email);
 	/** Reader automatic constructor with member data read from readers.csv file*/
-	Reader(ifstream& s);
+	Reader(stringstream& s);
 	virtual ~Reader();
 
 	///@return borrows pointer vector

@@ -8,22 +8,27 @@ Employee::Employee(string name, unsigned int age, unsigned int phoneNumber,
 	this->supervisor = supervisor;
 }
 
-Employee::Employee(ifstream& s, bool superv) :
+Employee::Employee(stringstream& s, bool superv) :
 		Person(s) {
 	stringstream ss;
 	string sNif, sWage, sSupervisor;
 	unsigned int nif, wage;
 
-	getline(s, sNif, ';');
+	if (!getline(s, sNif, ';'))
+		throw Exception<string>("Error reading Nif", "Employee");
 	ss << sNif;
 	ss >> nif;
 	ss.clear();
 	this->nif = nif;
 
-	if (!superv) // read last input until newline
-		getline(s, sWage);
-	else
-		getline(s, sWage, ';');
+	if (!superv) { // read last input until newline
+		if (!getline(s, sWage))
+			throw Exception<string>("Error reading Wage", "Employee");
+
+	} else {
+		if (!getline(s, sWage, ';'))
+			throw Exception<string>("Error reading Nif", "Employee");
+	}
 	ss << sWage;
 	ss >> wage;
 	ss.clear();
