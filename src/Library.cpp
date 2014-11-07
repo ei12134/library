@@ -154,6 +154,15 @@ bool Library::removeEmployee(Person* person, Person* employee) {
 	return false;
 }
 
+bool Library::removeEmployeeFromSupervisors(Employee* employee) {
+	if (employee == NULL)
+		return false;
+	for (size_t i = 0; i < persons.size(); i++)
+		if (persons[i]->getType() == 3)
+			persons[i]->removeEmplyee(employee);
+	return true;
+}
+
 void Library::loadPersons() {
 	persons.clear();
 // read employees
@@ -374,7 +383,7 @@ void Library::loadBorrowBooks() {
 }
 
 void Library::saveBooks() {
-	//cout << "save books" << endl;
+//cout << "save books" << endl;
 
 	ofstream pFile(BOOKS_FILE);
 	for (unsigned int i = 0; i < books.size(); i++) {

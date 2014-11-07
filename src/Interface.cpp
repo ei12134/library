@@ -1,6 +1,9 @@
 #include "Interface.h"
 
 Interface::Interface() {
+	// set system color
+	setColor();
+
 	menu();
 }
 
@@ -313,6 +316,11 @@ void Interface::supervisorMenu(Person* supervisor) {
 	string header;
 
 	do {
+		if (supervisor->getType() != 3) {
+			employeeMenu(supervisor);
+			break;
+		}
+
 		header = "Supervisor   " + supervisor->getName();
 		clearScreen();
 		displayHeader(header);
@@ -1105,11 +1113,17 @@ void Interface::editEmployee(Person* employee) {
 					<< PROMPT_SYMBOL;
 			ch = cin.get();
 			if (tolower(ch) == 's') {
-				employee->setSupervisor(1);
-				edited = true;
+				Employee* e = static_cast<Employee*>(employee);
+				if (e != NULL) {
+					library.removeEmployeeFromSupervisors(e);
+					employee->setSupervisor(1);
+					edited = true;
+				}
+				library.SupervisorEmployeeRandom();
 			} else if (tolower(ch) == 'e') {
-				employee->setSupervisor(0);
+				employee->setSupervisor(0); // setSupervisor automatically cleans the supervisor team
 				edited = true;
+				library.SupervisorEmployeeRandom();
 			}
 			cin.ignore();
 			break;
@@ -1509,6 +1523,16 @@ char Interface::getKey() {
 	/*restore the old settings*/
 	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
 	return key;
+#endif
+}
+
+void Interface::setColor() {
+#ifdef _WIN32
+	system("color 0A");
+#elif _WIN64
+	system("color 0A");
+#else
+
 #endif
 }
 

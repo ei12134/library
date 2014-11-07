@@ -108,15 +108,6 @@ string Employee::print() const {
 			<< ("*"
 					+ (nifS.size() > 3 ?
 							nifS.substr(nifS.size() - 3, nifS.size()) : nifS));
-
-//	if (supervisor) {
-//		ss << "   ";
-//		if (team.size() > 0)
-//			ss << team[0]->getName();
-//		for (unsigned x = 1; x < team.size(); x++) {
-//			ss << "   " << team[x]->getName();
-//		}
-//	}
 	return ss.str();
 }
 
@@ -129,6 +120,8 @@ unsigned int Employee::getType() const {
 
 void Employee::setSupervisor(bool super) {
 	this->supervisor = super;
+	if (!supervisor)
+		team.clear();
 }
 
 bool Employee::isSupervisor() const {
@@ -145,11 +138,6 @@ string Employee::printType() const {
 	else
 		return "[Supervisor]";
 }
-
-bool Employee::removeBorrow(Borrow* borrow) {
-	return false;
-}
-
 bool Employee::addBorrow(Borrow* borrow) {
 	return false;
 }
