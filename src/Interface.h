@@ -28,7 +28,7 @@ using namespace std;
 #define TWO_TABS TAB TAB
 #define THREE_TABS TWO_TABS TAB
 #define FOUR_TABS TWO_TABS TWO_TABS
-#define MAX_LINES 9
+#define MAX_LINES 11
 #define BACSKPACE_KEY 8
 #define RETURN_KEY 13
 #define ESCAPE_KEY 27

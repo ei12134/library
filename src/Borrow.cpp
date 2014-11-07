@@ -80,13 +80,19 @@ Date Borrow::getLimitReturnDate() {
 
 string Borrow::print() const {
 	stringstream ss;
-	ss << "Book: " << book->getTitle() << endl << endl;
-	ss << "\t\t\t" << "Employee: " << employee->getName() << endl;
-	ss << "\t\t\t" << "Reader: " << reader->getName() << endl;
-	ss << "\t\t\t" << "Borrow date: " << borrowDate.print() << endl;
-	ss << "\t\t\t" << "Limit return date: " << limitReturnDate.print() << endl;
+	string title = book->getTitle();
+
+	ss << title.substr(0,30);
+	if (title.size() >= 30)
+		ss << "\t";
+	else
+		for (int i = 40 - title.size(); i > 0; i -= 8)
+			ss << "\t";
+
+	ss << borrowDate.print() << "\t";
 	if (returned)
-		ss << "Return date: " << returnDate.print() << endl;
+		ss << returnDate.print() << "\t";
+	ss << ID;
 	return ss.str();
 }
 

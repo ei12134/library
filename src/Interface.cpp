@@ -243,8 +243,7 @@ void Interface::readerMenu(Person *reader) {
 		case '2':
 			clearScreen();
 			genericDisplay(library.getBorrowedBooksFromReader(reader),
-					"Borrow history",
-					"\tTitle\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
+					"Borrow history", "\tTitle\t\t\t\tBorrowed\tReturned\tID");
 			break;
 		case '3':
 			clearScreen();
@@ -1422,12 +1421,17 @@ bool Interface::confirmOperation(string& query) {
 template<typename T>
 void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
-	float pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
+	float pLimit;
 	bool done = false;
 	string vLimitMsg = " [ESC] to interrupt or any other key to continue...";
 	char ch;
 
-	while (i < vecSize && !done) {
+	if (vecSize == 0)
+		pLimit = 1;
+	else
+		pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
+
+	do {
 		vLimit = 0;
 		progress = ceil((19.0 / pLimit) * pCount);
 		clearScreen();
@@ -1438,6 +1442,13 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		cout << " " << string(77, hSeparator) << " " << endl;
 		cout << " " << labels << endl;
 		cout << " " << string(77, hSeparator) << " " << endl;
+
+		if (vecSize == 0) {
+			string nothing = "Nothing to show here :(";
+			cout << string(5, '\n');
+			cout << centerString(nothing);
+			cout << string(6, '\n');
+		}
 
 		while (vLimit < MAX_LINES && i < vecSize && !done) {
 			cout << " " << vec[i]->print();
@@ -1453,9 +1464,11 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 					done = true;
 			}
 		}
-	}
+		if (vecSize != 0)
+			cout << string((MAX_LINES - vLimit), '\n');
+	} while (i < vecSize && !done);
 	if (i == vecSize) {
-		cout << " " << string(77, '-') << endl;
+		cout << " " << string(77, hSeparator) << endl;
 		cout << " Press any key to continue...";
 		getchar();
 	}
