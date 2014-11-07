@@ -1123,7 +1123,9 @@ void Interface::editEmployee(Person* employee) {
 			} else if (tolower(ch) == 'e') {
 				employee->setSupervisor(0); // setSupervisor automatically cleans the supervisor team
 				edited = true;
-				library.SupervisorEmployeeRandom();
+				if (library.getEmployees().size() > 1) {
+					library.SupervisorEmployeeRandom();
+				}
 			}
 			cin.ignore();
 			break;
