@@ -219,8 +219,8 @@ void Interface::readerMenu(Person *reader) {
 				<< endl;
 		cout << endl << THREE_TABS << HALF_TAB << "[1] Display borrows" << endl
 				<< endl;
-//		cout << THREE_TABS << HALF_TAB << "[2] Borrow history" << endl;
-		cout << THREE_TABS << HALF_TAB << "[2] Logout" << endl << endl;
+		cout << THREE_TABS << HALF_TAB << "[2] Borrow history" << endl;
+		cout << THREE_TABS << HALF_TAB << "[3] Logout" << endl << endl;
 
 		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
 		for (size_t i = 0; i < borrowedBooks.size(); i++)
@@ -240,6 +240,12 @@ void Interface::readerMenu(Person *reader) {
 			editBorrow(reader);
 			break;
 		case '2':
+			clearScreen();
+			genericDisplay(library.getBorrowedBooksFromReader(reader),
+					"Borrow history",
+					"\tTitle\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
+			break;
+		case '3':
 			clearScreen();
 			exit = true;
 			break;
@@ -340,6 +346,8 @@ void Interface::supervisorMenu(Person* supervisor) {
 			manageEmployees(supervisor);
 			break;
 		case '5':
+			genericDisplay(supervisor->getEmployeeTeam(), "Employees team",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
 			break;
 		case '6':
 			clearScreen();

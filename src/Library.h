@@ -43,6 +43,8 @@ public:
 	///@return available books
 	vector<Book*> getAvailableBooks() const;
 
+	vector<Borrow*> getBorrowedBooksFromReader(Person* p) const;
+
 	///@return borrows
 	vector<Borrow*> getBorrows() const;
 
@@ -60,6 +62,7 @@ public:
 
 	///@return readers
 	vector<Person*> getSupervisors() const;
+
 
 	/** replaces existing books pointer vector
 	 *@param books Book pointer vector

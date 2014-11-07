@@ -17,7 +17,7 @@ class Employee: public Person {
 	bool supervisor;
 	vector<Employee *> team;
 public:
-	Employee(ifstream& s,bool superv);
+	Employee(ifstream& s, bool superv);
 	Employee(string name, unsigned int age, unsigned int phone, string email,
 			unsigned int nif, unsigned int wage, bool supervisor);
 	virtual ~Employee();
@@ -27,6 +27,7 @@ public:
 	unsigned int getWage() const;
 	unsigned int getType() const;
 	unsigned int getCard() const;
+	vector<Employee *> getEmployeeTeam() const;
 	void setSupervisor(bool super);
 	bool isSupervisor() const;
 	void addEmplyee(Employee * e);
@@ -35,7 +36,6 @@ public:
 
 	void setNif(unsigned int nif);
 	void setWage(unsigned int wage);
-	void createBorrow(Book *, Reader *, Employee *);
 	bool removeBorrow(Borrow* borrow);
 	vector<Borrow*> getBorrowedBooks() const;
 	bool addBorrow(Borrow* borrow);
@@ -43,4 +43,3 @@ public:
 	string printType() const;
 };
 #endif /* EMPLOYEE_H_ */
-

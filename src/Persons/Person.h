@@ -1,6 +1,7 @@
 #ifndef PERSON_H_
 #define PERSON_H_
 
+class Employee;
 class Borrow;
 
 #include <string>
@@ -31,6 +32,8 @@ public:
 	virtual bool removeBorrow(Borrow* borrow) = 0;
 	virtual bool addBorrow(Borrow* borrow) = 0;
 	virtual vector<Borrow*> getBorrowedBooks() const = 0;
+	virtual vector<Employee *>getEmployeeTeam() const;
+
 	virtual string printType() const = 0;
 	void setName(string name);
 	void setAge(unsigned int age);

@@ -36,6 +36,18 @@ vector<Book*> Library::getAvailableBooks() const {
 	return available;
 }
 
+vector<Borrow*> Library::getBorrowedBooksFromReader(Person* p) const {
+	vector<Borrow*> b;
+	if (p->getType() != 1)
+		return b;
+	for (unsigned int x = 0; x < borrows.size(); x++) {
+		if (borrows[x]->getReader()->getCard() == p->getCard()
+				&& borrows[x]->isReturned())
+			b.push_back(borrows[x]);
+	}
+	return b;
+}
+
 vector<Borrow*> Library::getBorrows() const {
 	return borrows;
 }

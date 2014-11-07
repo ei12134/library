@@ -43,6 +43,11 @@ void Person::setName(string name) {
 	this->name = name;
 }
 
+vector<Employee *> Person::getEmployeeTeam() const {
+	vector<Employee *> v;
+	return v;
+}
+
 string Person::getName() const {
 	return name;
 }

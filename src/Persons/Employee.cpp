@@ -87,7 +87,8 @@ void Employee::setWage(unsigned int wage) {
 	this->wage = wage;
 }
 
-void createBorrow(Book *, Reader *, Employee *) {
+vector<Employee *> Employee::getEmployeeTeam() const {
+	return team;
 }
 
 string Employee::print() const {
