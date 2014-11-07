@@ -67,7 +67,7 @@
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">bool</span> supervisor;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    vector&lt;Employee *&gt; team;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="class_employee.html">Employee</a>(ifstream&amp; s,<span class="keywordtype">bool</span> superv);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="class_employee.html">Employee</a>(stringstream&amp; s, <span class="keywordtype">bool</span> superv);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="class_employee.html">Employee</a>(<span class="keywordtype">string</span> name, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> age, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> phone, <span class="keywordtype">string</span> email,</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nif, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> wage, <span class="keywordtype">bool</span> supervisor);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_employee.html">Employee</a>();</div>
@@ -77,33 +77,29 @@
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getWage() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getType() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getCard() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordtype">void</span> setSupervisor(<span class="keywordtype">bool</span> super);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">bool</span> isSupervisor() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">void</span> addEmplyee(<a class="code" href="class_employee.html">Employee</a> * e);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">bool</span> removeEmplyee(<a class="code" href="class_employee.html">Employee</a> * e);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">void</span> removeAllEmplyee();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">void</span> setNif(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nif);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">void</span> setWage(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> wage);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">void</span> createBorrow(<a class="code" href="class_book.html">Book</a> *, <a class="code" href="class_reader.html">Reader</a> *, <a class="code" href="class_employee.html">Employee</a> *);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">bool</span> removeBorrow(<a class="code" href="class_borrow.html">Borrow</a>* borrow);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    vector&lt;Borrow*&gt; getBorrowedBooks() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">bool</span> addBorrow(<a class="code" href="class_borrow.html">Borrow</a>* borrow);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">string</span> print() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">string</span> printType() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;};</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* EMPLOYEE_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="ttc" id="class_book_html"><div class="ttname"><a href="class_book.html">Book</a></div><div class="ttdef"><b>Definition:</b> Book.h:14</div></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    vector&lt;Employee *&gt; getEmployeeTeam() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">void</span> setSupervisor(<span class="keywordtype">bool</span> super);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">bool</span> isSupervisor() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> addEmplyee(<a class="code" href="class_employee.html">Employee</a> * e);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">bool</span> removeEmplyee(<a class="code" href="class_employee.html">Employee</a> * e);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">void</span> removeAllEmplyee();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">void</span> setNif(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nif);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">void</span> setWage(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> wage);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    vector&lt;Borrow*&gt; getBorrowedBooks() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">bool</span> addBorrow(<a class="code" href="class_borrow.html">Borrow</a>* borrow);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">string</span> print() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">string</span> printType() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* EMPLOYEE_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="class_borrow_html"><div class="ttname"><a href="class_borrow.html">Borrow</a></div><div class="ttdef"><b>Definition:</b> Borrow.h:13</div></div>
 <div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div></div>
 <div class="ttc" id="class_employee_html"><div class="ttname"><a href="class_employee.html">Employee</a></div><div class="ttdef"><b>Definition:</b> Employee.h:15</div></div>
-<div class="ttc" id="class_reader_html"><div class="ttname"><a href="class_reader.html">Reader</a></div><div class="ttdef"><b>Definition:</b> Reader.h:19</div></div>
-<div class="ttc" id="class_person_html"><div class="ttname"><a href="class_person.html">Person</a></div><div class="ttdef"><b>Definition:</b> Person.h:14</div></div>
+<div class="ttc" id="class_person_html"><div class="ttname"><a href="class_person.html">Person</a></div><div class="ttdef"><b>Definition:</b> Person.h:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 6 2014 15:18:29 for Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Nov 7 2014 19:15:08 for Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

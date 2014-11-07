@@ -67,9 +67,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a883c9d749b3ae65a1867d4f860dd0c87"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a883c9d749b3ae65a1867d4f860dd0c87"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Person</b> (string name, unsigned int age, unsigned int phone, string email)</td></tr>
 <tr class="separator:a883c9d749b3ae65a1867d4f860dd0c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacdb97fa9aede5061411395f7a4bd671"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacdb97fa9aede5061411395f7a4bd671"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Person</b> (ifstream &amp;s)</td></tr>
-<tr class="separator:aacdb97fa9aede5061411395f7a4bd671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fd125daaec0301c156a9d156de69dc5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3fd125daaec0301c156a9d156de69dc5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Person</b> (stringstream &amp;s)</td></tr>
+<tr class="separator:a3fd125daaec0301c156a9d156de69dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e21598eb50f203def9c5aaf1cc9a39c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e21598eb50f203def9c5aaf1cc9a39c"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>saveData</b> (ofstream &amp;of)=0</td></tr>
 <tr class="separator:a8e21598eb50f203def9c5aaf1cc9a39c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -88,15 +88,21 @@ virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getNi
 <tr class="memitem:a70c15704325b703f6a9700271cb211a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70c15704325b703f6a9700271cb211a1"></a>
 virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getWage</b> () const =0</td></tr>
 <tr class="separator:a70c15704325b703f6a9700271cb211a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa11ad51236ad5c371876cdeba4e79cbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa11ad51236ad5c371876cdeba4e79cbf"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>removeBorrow</b> (<a class="el" href="class_borrow.html">Borrow</a> *borrow)=0</td></tr>
-<tr class="separator:aa11ad51236ad5c371876cdeba4e79cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ac017a681c35d3ff0b5ad768a5808d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ac017a681c35d3ff0b5ad768a5808d2"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>removeBorrow</b> (<a class="el" href="class_borrow.html">Borrow</a> *borrow)</td></tr>
+<tr class="separator:a6ac017a681c35d3ff0b5ad768a5808d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a956d8ffc06fe75079f41efea5494cc80"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a956d8ffc06fe75079f41efea5494cc80"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>removeEmplyee</b> (<a class="el" href="class_employee.html">Employee</a> *e)</td></tr>
+<tr class="separator:a956d8ffc06fe75079f41efea5494cc80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd20d73cc8cf633fdfcf83f0e6e43a45"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd20d73cc8cf633fdfcf83f0e6e43a45"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>addBorrow</b> (<a class="el" href="class_borrow.html">Borrow</a> *borrow)=0</td></tr>
 <tr class="separator:afd20d73cc8cf633fdfcf83f0e6e43a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc01bb4ec1b3e1a13155be61e102f98e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afc01bb4ec1b3e1a13155be61e102f98e"></a>
 virtual vector&lt; <a class="el" href="class_borrow.html">Borrow</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getBorrowedBooks</b> () const =0</td></tr>
 <tr class="separator:afc01bb4ec1b3e1a13155be61e102f98e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8f66b29f36ba735026e85a959f9a2a6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8f66b29f36ba735026e85a959f9a2a6"></a>
+virtual vector&lt; <a class="el" href="class_employee.html">Employee</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getEmployeeTeam</b> () const </td></tr>
+<tr class="separator:ad8f66b29f36ba735026e85a959f9a2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75acc73b3b91cb47499aa311d6b1bb86"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75acc73b3b91cb47499aa311d6b1bb86"></a>
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>printType</b> () const =0</td></tr>
 <tr class="separator:a75acc73b3b91cb47499aa311d6b1bb86"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,7 +162,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 6 2014 15:18:30 for Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Nov 7 2014 19:15:12 for Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

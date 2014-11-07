@@ -94,4 +94,3 @@ string Person::print() const {
 	ss << age << "\t" << phone << "\t" << email.substr(0, 22);
 	return ss.str();
 }
-

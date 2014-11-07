@@ -1,9 +1,7 @@
 #include "Interface.h"
 
 Interface::Interface() {
-	// set system color
 	setColor();
-
 	menu();
 }
 

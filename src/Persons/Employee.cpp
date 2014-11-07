@@ -48,7 +48,6 @@ void Employee::saveData(ofstream &of) {
 			of << "," << team[x]->getName();
 		}
 	}
-	// nao poem endl
 }
 
 Employee::~Employee() {
@@ -58,6 +57,7 @@ void Employee::addEmplyee(Employee * e) {
 	if (supervisor)
 		this->team.push_back(e);
 }
+
 bool Employee::removeEmplyee(Employee * e) {
 	for (unsigned int x = 0; x < team.size(); x++) {
 		if (team[x] == e) {
@@ -143,6 +143,7 @@ string Employee::printType() const {
 	else
 		return "[Supervisor]";
 }
+
 bool Employee::addBorrow(Borrow* borrow) {
 	return false;
 }

@@ -365,8 +365,6 @@ void Library::loadBorrowBooks() {
 						Borrow* borrow = new Borrow(books[posBook], employee,
 								reader, dBorrow, dExpect);// false quando se faz DeliveredBook(dB) returned passa a true
 						if (delivered == 1) {
-							//cout << "delivered" << endl;
-
 							getline(ss, data, ',');
 							temps << data;
 							temps >> dia;
@@ -390,24 +388,20 @@ void Library::loadBorrowBooks() {
 							reader->addBorrow(borrow);// add the borrow book to the reader
 							books[posBook]->setBorrowed(true);// set the book as borrowed
 						}
-						//cout << borrow->print() << endl;
 
 						// ading borrow book to the vector
 						borrows.push_back(borrow);
 					}
 				}
 			} catch (Exception<int> &e) {
-				cout << e.getValue() << endl;	// handle exeption
 			}
 		}
 	}
 	file.close();
-// no final adicionar borrow books aos readers
+// at borrow to reader
 }
 
 void Library::saveBooks() {
-//cout << "save books" << endl;
-
 	ofstream pFile(BOOKS_FILE);
 	for (unsigned int i = 0; i < books.size(); i++) {
 		vector<string> authors = books[i]->getAuthors();

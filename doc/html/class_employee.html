@@ -62,9 +62,9 @@ Inheritance diagram for Employee:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab0314ac9760b54b1f4dc8960db25e57b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab0314ac9760b54b1f4dc8960db25e57b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Employee</b> (ifstream &amp;s, bool superv)</td></tr>
-<tr class="separator:ab0314ac9760b54b1f4dc8960db25e57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ec0e953dee42b0aec42dea4e8417ce6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ec0e953dee42b0aec42dea4e8417ce6"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Employee</b> (stringstream &amp;s, bool superv)</td></tr>
+<tr class="separator:a7ec0e953dee42b0aec42dea4e8417ce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea9c820935a620336de71df349c019fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea9c820935a620336de71df349c019fa"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Employee</b> (string name, unsigned int age, unsigned int phone, string email, unsigned int nif, unsigned int wage, bool supervisor)</td></tr>
 <tr class="separator:aea9c820935a620336de71df349c019fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -83,6 +83,9 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> (
 <tr class="memitem:a8dbbbfdbe276f436c75ddbcbd9e3cf78"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dbbbfdbe276f436c75ddbcbd9e3cf78"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getCard</b> () const </td></tr>
 <tr class="separator:a8dbbbfdbe276f436c75ddbcbd9e3cf78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dae14237154716819061dad4de34adf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3dae14237154716819061dad4de34adf"></a>
+vector&lt; <a class="el" href="class_employee.html">Employee</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getEmployeeTeam</b> () const </td></tr>
+<tr class="separator:a3dae14237154716819061dad4de34adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5076f2aab4c2131acc25c6a324ed0c56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5076f2aab4c2131acc25c6a324ed0c56"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setSupervisor</b> (bool super)</td></tr>
 <tr class="separator:a5076f2aab4c2131acc25c6a324ed0c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -104,12 +107,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setNif</b> (unsigned 
 <tr class="memitem:a088ebb928db8a204413f8477f991d430"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a088ebb928db8a204413f8477f991d430"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setWage</b> (unsigned int wage)</td></tr>
 <tr class="separator:a088ebb928db8a204413f8477f991d430"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1353375e2033e57e747790590d19e408"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1353375e2033e57e747790590d19e408"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>createBorrow</b> (<a class="el" href="class_book.html">Book</a> *, <a class="el" href="class_reader.html">Reader</a> *, <a class="el" href="class_employee.html">Employee</a> *)</td></tr>
-<tr class="separator:a1353375e2033e57e747790590d19e408"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a733fd2ca71e7f8427a3b2a2297b3e305"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a733fd2ca71e7f8427a3b2a2297b3e305"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>removeBorrow</b> (<a class="el" href="class_borrow.html">Borrow</a> *borrow)</td></tr>
-<tr class="separator:a733fd2ca71e7f8427a3b2a2297b3e305"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2f915130f3eab239668f2e23b1cffab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2f915130f3eab239668f2e23b1cffab"></a>
 vector&lt; <a class="el" href="class_borrow.html">Borrow</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getBorrowedBooks</b> () const </td></tr>
 <tr class="separator:ae2f915130f3eab239668f2e23b1cffab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,9 +123,12 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>printType</b> () co
 <tr class="memitem:a883c9d749b3ae65a1867d4f860dd0c87 inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a883c9d749b3ae65a1867d4f860dd0c87"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Person</b> (string name, unsigned int age, unsigned int phone, string email)</td></tr>
 <tr class="separator:a883c9d749b3ae65a1867d4f860dd0c87 inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacdb97fa9aede5061411395f7a4bd671 inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacdb97fa9aede5061411395f7a4bd671"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Person</b> (ifstream &amp;s)</td></tr>
-<tr class="separator:aacdb97fa9aede5061411395f7a4bd671 inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fd125daaec0301c156a9d156de69dc5 inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3fd125daaec0301c156a9d156de69dc5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Person</b> (stringstream &amp;s)</td></tr>
+<tr class="separator:a3fd125daaec0301c156a9d156de69dc5 inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ac017a681c35d3ff0b5ad768a5808d2 inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ac017a681c35d3ff0b5ad768a5808d2"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>removeBorrow</b> (<a class="el" href="class_borrow.html">Borrow</a> *borrow)</td></tr>
+<tr class="separator:a6ac017a681c35d3ff0b5ad768a5808d2 inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fa68f82727e6de0137b3c1b1537a0bf inherit pub_methods_class_person"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fa68f82727e6de0137b3c1b1537a0bf"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (string name)</td></tr>
 <tr class="separator:a9fa68f82727e6de0137b3c1b1537a0bf inherit pub_methods_class_person"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,7 +177,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 6 2014 15:18:30 for Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Nov 7 2014 19:15:10 for Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

@@ -29,7 +29,6 @@ Reader::Reader(stringstream& s) :
 void Reader::saveData(ofstream &of) {
 	Person::saveData(of);
 	of << card;
-	//nao poem endl
 }
 
 Reader::~Reader() {
