@@ -1261,7 +1261,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 		key = getKey();
 
 		switch (key) {
-		case BACSKPACE_KEY:
+		case BACKSPACE_KEY:
 			if (query.length() > 0)
 				query.erase(query.end() - 1);
 			break;
@@ -1351,7 +1351,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 		key = getKey();
 
 		switch (key) {
-		case BACSKPACE_KEY:
+		case BACKSPACE_KEY:
 			if (query.length() > 0)
 				query.erase(query.end() - 1);
 			break;

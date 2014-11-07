@@ -13,6 +13,7 @@
 using namespace std;
 
 #ifdef _WIN32
+#define BACKSPACE_KEY 8
 #define CLEAR "cls"
 #include <conio.h>
 #define PROMPT_SYMBOL "> "
@@ -21,6 +22,7 @@ using namespace std;
 #include <unistd.h>     //STDIN_FILENO
 #define PROMPT_SYMBOL "$ "
 #define CLEAR "clear"
+#define BACKSPACE_KEY 127
 #endif
 
 #define HALF_TAB string(4,' ')
@@ -29,7 +31,6 @@ using namespace std;
 #define THREE_TABS TWO_TABS TAB
 #define FOUR_TABS TWO_TABS TWO_TABS
 #define MAX_LINES 11
-#define BACSKPACE_KEY 8
 #define RETURN_KEY 13
 #define ESCAPE_KEY 27
 #define DELETE_KEY 83
