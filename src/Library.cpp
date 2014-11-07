@@ -258,9 +258,14 @@ void Library::loadBooks() {
 
 void Library::loadBorrowBooks() {
 	ifstream file;
+	string line;
+	stringstream bf;
 	file.open(BORROWS_FILE);
 	if (file.is_open()) {
 		while (file.good()) {
+			bf.clear();
+			getline(file, line, '\n');
+			bf << line;
 			stringstream ss;
 			stringstream temps;
 			string data;
@@ -272,7 +277,8 @@ void Library::loadBorrowBooks() {
 			int posBook, posEmplo, posRead = -1;
 
 			try {
-				getline(file, data, ';');
+				if (!getline(bf, data, ';'))
+					throw Exception<string>("Error reading bookID", "Borrow");
 				ss << data;
 				ss >> bookID;
 				ss.clear();
@@ -285,13 +291,17 @@ void Library::loadBorrowBooks() {
 						break;
 					}
 
-				getline(file, data, ';');
+				if (!getline(bf, data, ';'))
+					throw Exception<string>("Error reading employee Nif",
+							"Borrow");
 				ss << data;
 				ss >> EmpoyeeNIF;
 				ss.clear();
 				data.clear();
 
-				getline(file, data, ';');
+				if (!getline(bf, data, ';'))
+					throw Exception<string>("Error reading reader card",
+							"Borrow");
 				ss << data;
 				ss >> ReaderCard;
 				ss.clear();
@@ -308,45 +318,48 @@ void Library::loadBorrowBooks() {
 					}
 				}
 
-				getline(file, data, ',');
+				if (!getline(bf, data, ','))
+					throw Exception<string>("Error reading day", "Borrow");
 				ss << data;
 				ss >> dia;
 				ss.clear();
 				data.clear();
-				getline(file, data, ',');
+				if (!getline(bf, data, ','))
+					throw Exception<string>("Error reading month", "Borrow");
 				ss << data;
 				ss >> mes;
 				ss.clear();
 				data.clear();
-				getline(file, data, ';');
+				if (!getline(bf, data, ';'))
+					throw Exception<string>("Error reading year", "Borrow");
 				ss << data;
 				ss >> ano;
 				ss.clear();
 				data.clear();
 				Date dBorrow(dia, mes, ano);
 
-				getline(file, data, ',');
+				if (!getline(bf, data, ','))
+					throw Exception<string>("Error reading day", "Borrow");
 				ss << data;
 				ss >> dia;
 				ss.clear();
 				data.clear();
-				getline(file, data, ',');
+				if (!getline(bf, data, ','))
+					throw Exception<string>("Error reading month", "Borrow");
 				ss << data;
 				ss >> mes;
 				ss.clear();
 				data.clear();
-				getline(file, data, ';');
+				if (!getline(bf, data, ';'))
+					throw Exception<string>("Error reading year", "Borrow");
 				ss << data;
 				ss >> ano;
 				ss.clear();
 				data.clear();
 				Date dExpect(dia, mes, ano);
 
-				getline(file, data);
-				ss << data;
-				data.clear();
+				getline(bf, data, ';');
 
-				getline(ss, data, ';');	// caso nao acabe em ; tira que le estiver
 				temps << data;
 				temps >> delivered;
 				temps.clear();
@@ -365,22 +378,27 @@ void Library::loadBorrowBooks() {
 						Borrow* borrow = new Borrow(books[posBook], employee,
 								reader, dBorrow, dExpect);// false quando se faz DeliveredBook(dB) returned passa a true
 						if (delivered == 1) {
-							getline(ss, data, ',');
+							if (!getline(bf, data, ','))
+								throw Exception<string>("Error reading day",
+										"Borrow");
 							temps << data;
 							temps >> dia;
 							temps.clear();
 							data.clear();
-							getline(ss, data, ',');
+							if (!getline(bf, data, ','))
+								throw Exception<string>("Error reading month",
+										"Borrow");
 							temps << data;
 							temps >> mes;
 							temps.clear();
 							data.clear();
-							getline(ss, data);
+							if (!getline(bf, data))
+								throw Exception<string>("Error reading year",
+										"Borrow");
 							temps << data;
 							temps >> ano;
 							temps.clear();
 							data.clear();
-							ss.clear();
 							Date dD(dia, mes, ano);
 
 							borrow->deliveredBook(dD);
@@ -393,6 +411,8 @@ void Library::loadBorrowBooks() {
 						borrows.push_back(borrow);
 					}
 				}
+			} catch (Exception<string> &e) {
+//				cout << e.getMessage();
 			} catch (Exception<int> &e) {
 			}
 		}

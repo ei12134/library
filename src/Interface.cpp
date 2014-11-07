@@ -3,6 +3,7 @@
 Interface::Interface() {
 	setColor();
 	menu();
+//	cin.get();
 }
 
 Interface::~Interface() {
@@ -744,7 +745,7 @@ void Interface::createBorrow(Person* employee) {
 		switch (input) {
 		case '1':
 			reader = searchPerson(library.getReaders());
-			if (reader == NULL || reader->getBorrowedBooks().size() > 2) {
+			if (reader == NULL) {
 				reader = NULL;
 				createMessage = "Select another reader";
 			}
@@ -762,12 +763,12 @@ void Interface::createBorrow(Person* employee) {
 				if (reader->addBorrow(borrow)) {
 					library.addBorrow(borrow);
 					book->setBorrowed(true);
+					createMessage = "Borrow created successfully";
+					library.saveBorrows();
 				} else {
+					createMessage = "Select another reader";
 					delete borrow;
 				}
-				createMessage = "Borrow created successfully";
-				library.saveBorrows();
-				reader = NULL;
 				book = NULL;
 			} else
 				createMessage = "Select a reader and a book";

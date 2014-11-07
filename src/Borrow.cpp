@@ -86,7 +86,7 @@ string Borrow::print() const {
 	if (title.size() >= 30)
 		ss << "\t";
 	else
-		for (int i = 40 - title.size(); i > 0; i -= 8)
+		for (int i = 39 - title.size(); i > 0; i -= 8)
 			ss << "\t";
 
 	ss << borrowDate.print() << "\t";
