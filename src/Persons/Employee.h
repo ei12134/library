@@ -36,7 +36,6 @@ public:
 
 	void setNif(unsigned int nif);
 	void setWage(unsigned int wage);
-	bool removeBorrow(Borrow* borrow);
 	vector<Borrow*> getBorrowedBooks() const;
 	bool addBorrow(Borrow* borrow);
 	string print() const;

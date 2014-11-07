@@ -63,7 +63,6 @@ public:
 	///@return readers
 	vector<Person*> getSupervisors() const;
 
-
 	/** replaces existing books pointer vector
 	 *@param books Book pointer vector
 	 */
@@ -94,26 +93,15 @@ public:
 	 */
 	void addPerson(Person* person);
 
-	/** removes a book from the library
-	 *@param book Book pointer
-	 */
 	bool removeBook(Book* book);
 
-	/** returns a borrow to the library
-	 *@param borrow Borrow pointer
-	 */
 	bool removeBorrow(Borrow* borrow);
 
-	/** removes an employee from the library
-	 *@param supervisor Person pointer
-	 *@param employee Person pointer
-	 */
 	bool removeEmployee(Person* person, Person* employee);
 
-	/** removes a reader from the library
-	 *@param reader Person pointer
-	 */
 	bool removeReader(Person* reader);
+
+	bool removeEmployeeFromSupervisors(Employee* employee);
 
 	/** Loads stored books
 	 * Loads books.csv file to the books vector

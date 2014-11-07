@@ -88,6 +88,7 @@ public:
 	string warningString(const T &p);
 
 	char getKey();
+	void setColor();
 	bool is_Number(const int & c);
 	bool seekNIF(const string &s);
 };

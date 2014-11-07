@@ -29,10 +29,15 @@ public:
 	virtual unsigned int getCard() const = 0;
 	virtual unsigned int getNif() const = 0;
 	virtual unsigned int getWage() const = 0;
-	virtual bool removeBorrow(Borrow* borrow) = 0;
+	virtual bool removeBorrow(Borrow* borrow) {
+		return false;
+	}
+	virtual bool removeEmplyee(Employee * e) {
+		return false;
+	}
 	virtual bool addBorrow(Borrow* borrow) = 0;
 	virtual vector<Borrow*> getBorrowedBooks() const = 0;
-	virtual vector<Employee *>getEmployeeTeam() const;
+	virtual vector<Employee *> getEmployeeTeam() const;
 
 	virtual string printType() const = 0;
 	void setName(string name);
