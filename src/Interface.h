@@ -34,6 +34,12 @@ using namespace std;
 #define ESCAPE_KEY 27
 #define DELETE_KEY 83
 
+static const char topBorder = 220;
+static const char bottomBorder = 223;
+static const char verticalBorder = 219;
+static const char hSeparator = 196;
+static const char progressBar = 254;
+
 class Interface {
 private:
 	Library library;

@@ -1401,12 +1401,12 @@ void Interface::displayHeader(string& header) {
 	if (dynSizeLeft + dynSizeRight + size < 31)
 		dynSizeRight++;
 
-	cout << THREE_TABS << string(33, '#') << endl;
-	cout << THREE_TABS << "#" << FOUR_TABS << "#" << endl;
-	cout << THREE_TABS << "#" << string(dynSizeLeft, ' ') << header
-			<< string(dynSizeRight, ' ') << "#" << endl;
-	cout << THREE_TABS << "#" << FOUR_TABS << "#" << endl;
-	cout << THREE_TABS << string(33, '#') << endl << endl;
+	cout << THREE_TABS << string(33, topBorder) << endl;
+	cout << THREE_TABS << verticalBorder << FOUR_TABS << verticalBorder << endl;
+	cout << THREE_TABS << verticalBorder << string(dynSizeLeft, ' ') << header
+			<< string(dynSizeRight, ' ') << verticalBorder << endl;
+	cout << THREE_TABS << verticalBorder << FOUR_TABS << verticalBorder << endl;
+	cout << THREE_TABS << string(33, bottomBorder) << endl << endl;
 }
 
 bool Interface::confirmOperation(string& query) {
@@ -1433,11 +1433,11 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		clearScreen();
 		displayHeader(listName);
 		cout << THREE_TABS << "Page " << pCount << " of " << pLimit << " ["
-				<< string(progress, '#') << string((19 - progress), ' ') << "]"
-				<< endl;
-		cout << " " << string(77, '-') << " " << endl;
+				<< string(progress, progressBar) << string((19 - progress), ' ')
+				<< "]" << endl;
+		cout << " " << string(77, hSeparator) << " " << endl;
 		cout << " " << labels << endl;
-		cout << " " << string(77, '-') << " " << endl;
+		cout << " " << string(77, hSeparator) << " " << endl;
 
 		while (vLimit < MAX_LINES && i < vecSize && !done) {
 			cout << " " << vec[i]->print();
@@ -1447,7 +1447,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 
 			if (vLimit == MAX_LINES && i < vecSize) {
 				pCount++;
-				cout << " " << string(77, '-') << endl << vLimitMsg;
+				cout << " " << string(77, hSeparator) << endl << vLimitMsg;
 				ch = getKey();
 				if (ch == ESCAPE_KEY)
 					done = true;
