@@ -9,7 +9,7 @@ inline bool is_Not_Number(const int & c) {
 }
 
 inline bool is_NON_ASCII_Letter(const int & c) {
-	return ((c < 65) || (c > 122) || (c > 90 && c < 97));
+	return (((c < 65) && c != 32) || (c > 122) || (c > 90 && c < 97));
 }
 
 bool is_All_ASCII_Letter(const string& s) {

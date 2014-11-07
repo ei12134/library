@@ -204,10 +204,11 @@ void Interface::displayMenu() {
 void Interface::readerMenu(Person *reader) {
 	char input;
 	bool exit = false;
-	string header = "Reader   " + reader->getName();
+	string header;
 	string message;
 
 	do {
+		header = "Reader   " + reader->getName();
 		clearScreen();
 		displayHeader(header);
 
@@ -262,9 +263,10 @@ void Interface::readerMenu(Person *reader) {
 void Interface::employeeMenu(Person* employee) {
 	char input;
 	bool exit = false;
-	string header = "Employee   " + employee->getName();
+	string header;
 
 	do {
+		header = "Employee   " + employee->getName();
 		clearScreen();
 		displayHeader(header);
 		cout << THREE_TABS << HALF_TAB << "Age: " << employee->getAge() << endl;
@@ -309,9 +311,10 @@ void Interface::employeeMenu(Person* employee) {
 void Interface::supervisorMenu(Person* supervisor) {
 	char input;
 	bool exit = false;
-	string header = "Supervisor   " + supervisor->getName();
+	string header;
 
 	do {
+		header = "Supervisor   " + supervisor->getName();
 		clearScreen();
 		displayHeader(header);
 		cout << THREE_TABS << HALF_TAB << "Age: " << supervisor->getAge()
@@ -328,8 +331,9 @@ void Interface::supervisorMenu(Person* supervisor) {
 		cout << THREE_TABS << HALF_TAB << "[2] Manage books" << endl;
 		cout << THREE_TABS << HALF_TAB << "[3] Manage readers" << endl;
 		cout << THREE_TABS << HALF_TAB << "[4] Manage employees" << endl;
-		cout << THREE_TABS << HALF_TAB << "[5] Employees team" << endl << endl;
-		cout << THREE_TABS << HALF_TAB << "[6] Logout" << endl << endl
+		cout << THREE_TABS << HALF_TAB << "[5] Auto-assign teams" << endl;
+		cout << THREE_TABS << HALF_TAB << "[6] Employees team" << endl << endl;
+		cout << THREE_TABS << HALF_TAB << "[7] Logout" << endl << endl
 				<< TWO_TABS << TAB << PROMPT_SYMBOL;
 
 		input = getKey();
@@ -346,10 +350,17 @@ void Interface::supervisorMenu(Person* supervisor) {
 			manageEmployees(supervisor);
 			break;
 		case '5':
+			library.SupervisorEmployeeRandom();
+			library.savePersons();
+
+			// put user message xD
+			break;
+		case '6':
+			clearScreen();
 			genericDisplay(supervisor->getEmployeeTeam(), "Employees team",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
 			break;
-		case '6':
+		case '7':
 			clearScreen();
 			exit = true;
 			break;
