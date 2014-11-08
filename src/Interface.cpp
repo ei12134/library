@@ -10,19 +10,20 @@ Interface::~Interface() {
 
 void Interface::menu() {
 	char input;
-	string exitDialog = "Exit the program?";
+	string exitDialog = "Quit?";
 	string noSupervisors = "Create supervisor?";
 	string header = "Library";
 	bool exit = false;
 	vector<Person*> persons = library.getPersons();
+
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << FOUR_TABS << "[1] Login" << endl;
+		cout << endl << endl << FOUR_TABS << "[1] Login" << endl;
 		cout << FOUR_TABS << "[2] Sort" << endl;
 		cout << FOUR_TABS << "[3] Display" << endl << endl;
-		cout << FOUR_TABS << "[4] Quit" << endl << endl << THREE_TABS
-				<< PROMPT_SYMBOL;
+		cout << FOUR_TABS << "[4] Quit" << endl << endl << endl << THREE_TABS
+				<< HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -92,7 +93,7 @@ void Interface::sortMenu() {
 		cout << FOUR_TABS << "[5] By book title" << endl;
 		cout << FOUR_TABS << "[6] By book ISBN" << endl << endl;
 		cout << FOUR_TABS << "[7] Exit to menu" << endl << endl;
-		cout << THREE_TABS << PROMPT_SYMBOL;
+		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -160,7 +161,7 @@ void Interface::displayMenu() {
 		cout << FOUR_TABS << "[4] Supervisors" << endl;
 		cout << FOUR_TABS << "[5] Books" << endl << endl;
 		cout << FOUR_TABS << "[6] Exit to menu" << endl << endl;
-		cout << THREE_TABS << PROMPT_SYMBOL;
+		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -280,7 +281,7 @@ void Interface::employeeMenu(Person* employee) {
 		cout << THREE_TABS << HALF_TAB << "[2] Manage readers" << endl;
 		cout << THREE_TABS << HALF_TAB << "[3] Manage books" << endl << endl;
 		cout << THREE_TABS << HALF_TAB << "[4] Logout" << endl << endl
-				<< TWO_TABS << TAB << PROMPT_SYMBOL;
+				<< THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -338,7 +339,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 		cout << THREE_TABS << HALF_TAB << "[5] Auto-assign teams" << endl;
 		cout << THREE_TABS << HALF_TAB << "[6] Employees team" << endl << endl;
 		cout << THREE_TABS << HALF_TAB << "[7] Logout" << endl << endl
-				<< TWO_TABS << TAB << PROMPT_SYMBOL;
+				<< THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 		input = getKey();
 		switch (input) {
 		case '1':
@@ -396,7 +397,7 @@ void Interface::manageBooks() {
 			cout << centerString(warningString(message)) << endl << endl;
 			message.clear();
 		}
-		cout << THREE_TABS << PROMPT_SYMBOL;
+		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -453,7 +454,7 @@ void Interface::manageReaders() {
 			cout << centerString(warningString(message)) << endl << endl;
 			message.clear();
 		}
-		cout << THREE_TABS << PROMPT_SYMBOL;
+		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -508,7 +509,7 @@ void Interface::manageEmployees(Person* supervisor) {
 			cout << centerString(warningString(message)) << endl << endl;
 			message.clear();
 		}
-		cout << THREE_TABS << PROMPT_SYMBOL;
+		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -738,7 +739,7 @@ void Interface::createBorrow(Person* employee) {
 		}
 
 		cout << THREE_TABS << "Select book to return [ESC exits]" << endl
-				<< endl << THREE_TABS << PROMPT_SYMBOL;
+				<< endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -1262,7 +1263,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 
 		switch (key) {
 		case 0:
-		  break;
+			break;
 		case BACKSPACE_KEY:
 			if (query.length() > 0)
 				query.erase(query.end() - 1);
@@ -1354,7 +1355,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 
 		switch (key) {
 		case 0:
-		  break;
+			break;
 		case BACKSPACE_KEY:
 			if (query.length() > 0)
 				query.erase(query.end() - 1);
@@ -1522,10 +1523,10 @@ char Interface::getKey() {
 	read(STDIN_FILENO,keys,4096);
 
 	if(keys[0] == 27 && keys[1] == 91 && keys[2] == 51 && keys[3] == 126)
-	  keys[0] = 83;
+	keys[0] = 83;
 	else if (keys[0] == 27 && keys[1] != 0)
-	  keys[0] = 0;
-	   
+	keys[0] = 0;
+
 	/*restore the old settings*/
 	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
 	return keys[0];
