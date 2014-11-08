@@ -220,9 +220,8 @@ void Interface::readerMenu(Person *reader) {
 				<< endl;
 		cout << THREE_TABS << HALF_TAB << "Email: " << reader->getEmail()
 				<< endl;
-		cout << endl << THREE_TABS << HALF_TAB << "[1] Display borrows" << endl
-				<< endl;
-		cout << THREE_TABS << HALF_TAB << "[2] Borrow history" << endl;
+		cout << endl << THREE_TABS << HALF_TAB << "[1] Display borrows" << endl;
+		cout << THREE_TABS << HALF_TAB << "[2] Borrow history" << endl << endl;
 		cout << THREE_TABS << HALF_TAB << "[3] Logout" << endl << endl;
 
 		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
@@ -348,6 +347,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 			break;
 		case '2':
 			manageBooks();
+			break;
 		case '3':
 			manageReaders();
 			break;
@@ -1494,10 +1494,6 @@ char Interface::getKey() {
 #elif _WIN64
 	return getch();
 #else
-//char buf[32] = { 0 };
-//fgets(buf, sizeof(buf), stdin);
-//return buf[0];
-
 	static struct termios oldt, newt;
 
 	/*tcgetattr gets the parameters of the current terminal
