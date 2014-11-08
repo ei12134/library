@@ -1538,13 +1538,13 @@ char Interface::getKey() {
 	/*This is your part:
 	 I choose 'e' to end input. Notice that EOF is also turned off
 	 in the non-canonical mode*/
-	char keys[32] = {0};
-	 fflush(stdout);  
+	char keys[4];
+	fflush(stdout);
 	read(STDIN_FILENO,keys,4096);
 
 	if(keys[0] == 27 && keys[1] == 91 && keys[2] == 51 && keys[3] == 126)
 	keys[0] = 83;
-	else if (keys[0] == 27 && keys[2] != 0)
+	else if (keys[0] == 27 && keys[1] != 0)
 	keys[0] = 0;
 
 	/*restore the old settings*/
