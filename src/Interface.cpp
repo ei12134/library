@@ -11,7 +11,7 @@ Interface::~Interface() {
 void Interface::menu() {
 	char input;
 	string exitDialog = "Quit?";
-	string noSupervisors = "Create supervisor?";
+	string noSupervisors = "Create supervisor?\n\t\t\t      ";
 	string header = "Library";
 	bool exit = false;
 	vector<Person*> persons = library.getPersons();
@@ -1239,9 +1239,9 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 		displayHeader(header);
 		cout << endl;
 		matches.clear();
-		matches.reserve(6);
+		matches.reserve(9);
 		if (query.size() > 0) {
-			for (size_t i = 0, z = 1; i < persons.size() && z < 6; i++) {
+			for (size_t i = 0, z = 1; i < persons.size() && z < 10; i++) {
 				string name = persons[i]->getName();
 				if (partialMatchQuery(query, name)) {
 					cout << THREE_TABS << "[" << z++ << "] "
@@ -1250,7 +1250,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 					if (persons[i]->getName().size() < 12)
 						cout << TAB;
 
-					cout << persons[i]->printType() << endl << endl;
+					cout << persons[i]->printType() << endl;
 					matches.push_back(persons[i]);
 				}
 			}
@@ -1298,6 +1298,30 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 			if (matches.size() > 4) {
 				exit = true;
 				return matches[4];
+			}
+			break;
+		case '6':
+			if (matches.size() > 5) {
+				exit = true;
+				return matches[5];
+			}
+			break;
+		case '7':
+			if (matches.size() > 6) {
+				exit = true;
+				return matches[6];
+			}
+			break;
+		case '8':
+			if (matches.size() > 7) {
+				exit = true;
+				return matches[7];
+			}
+			break;
+		case '9':
+			if (matches.size() > 8) {
+				exit = true;
+				return matches[8];
 			}
 			break;
 		case RETURN_KEY:
@@ -1378,13 +1402,11 @@ Book* Interface::searchBook(vector<Book*> books) {
 				return matches[2];
 			}
 			break;
-
 		case '4':
 			if (matches.size() > 3) {
 				exit = true;
 				return matches[3];
 			}
-			break;
 			break;
 		case RETURN_KEY:
 			if (matches.size() > 0) {
