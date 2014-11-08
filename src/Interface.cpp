@@ -3,7 +3,6 @@
 Interface::Interface() {
 	setColor();
 	menu();
-//	cin.get();
 }
 
 Interface::~Interface() {
@@ -1262,6 +1261,8 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 		key = getKey();
 
 		switch (key) {
+		case 0:
+		  break;
 		case BACKSPACE_KEY:
 			if (query.length() > 0)
 				query.erase(query.end() - 1);
@@ -1352,6 +1353,8 @@ Book* Interface::searchBook(vector<Book*> books) {
 		key = getKey();
 
 		switch (key) {
+		case 0:
+		  break;
 		case BACKSPACE_KEY:
 			if (query.length() > 0)
 				query.erase(query.end() - 1);
@@ -1484,7 +1487,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 	if (i == vecSize) {
 		cout << " " << string(77, hSeparator) << endl;
 		cout << " Press any key to continue...";
-		getchar();
+		getKey();
 	}
 }
 
@@ -1505,7 +1508,7 @@ char Interface::getKey() {
 
 	/*ICANON normally takes care that one line at a time will be processed
 	 that means it will return if it sees a "\n" or an EOF or an EOL*/
-	newt.c_lflag &= ~(ICANON); //| ECHO);
+	newt.c_lflag &= ~(ICANON | ECHO);
 
 	/*Those new settings will be set to STDIN
 	 TCSANOW tells tcsetattr to change attributes immediately. */
@@ -1514,11 +1517,18 @@ char Interface::getKey() {
 	/*This is your part:
 	 I choose 'e' to end input. Notice that EOF is also turned off
 	 in the non-canonical mode*/
-	char key = getchar();
+	char keys[4];
+	fflush(stdout);
+	read(STDIN_FILENO,keys,4096);
 
+	if(keys[0] == 27 && keys[1] == 91 && keys[2] == 51 && keys[3] == 126)
+	  keys[0] = 83;
+	else if (keys[0] == 27 && keys[1] != 0)
+	  keys[0] = 0;
+	   
 	/*restore the old settings*/
 	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
-	return key;
+	return keys[0];
 #endif
 }
 
