@@ -6,6 +6,10 @@ Interface::Interface() {
 }
 
 Interface::~Interface() {
+  #if defined(_WIN32) || defined(_WIN64)
+#else
+  cout << "\033[0m";
+#endif
 }
 
 void Interface::menu() {
@@ -257,7 +261,7 @@ void Interface::employeeMenu(Person* employee) {
 		cout << THREE_TABS << HALF_TAB << "Email: " << employee->getEmail()
 				<< endl;
 		cout << THREE_TABS << HALF_TAB << "Wage: " << employee->getWage()
-				<< " euros" << endl;
+				<< " EUR" << endl;
 		cout << endl << THREE_TABS << HALF_TAB << "[1] Borrow a book" << endl;
 		cout << THREE_TABS << HALF_TAB << "[2] Manage readers" << endl;
 		cout << THREE_TABS << HALF_TAB << "[3] Manage books" << endl << endl;
@@ -310,7 +314,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 		cout << THREE_TABS << HALF_TAB << "Email: " << supervisor->getEmail()
 				<< endl;
 		cout << THREE_TABS << HALF_TAB << "Wage: " << supervisor->getWage()
-				<< " euros" << endl;
+				<< " EUR" << endl;
 		cout << endl << THREE_TABS + HALF_TAB << "[1] Borrow a book" << endl;
 		cout << THREE_TABS << HALF_TAB << "[2] Manage books" << endl;
 		cout << THREE_TABS << HALF_TAB << "[3] Manage readers" << endl;
@@ -1559,7 +1563,7 @@ void Interface::setColor() {
 #if defined(_WIN32) || defined(_WIN64)
 	system("color 0A");
 #else
-
+	cout << "\033[0;32m";
 #endif
 }
 
@@ -1590,7 +1594,14 @@ inline string Interface::centerString(const string &s) {
 template<typename T>
 string Interface::warningString(const T &p) {
 	stringstream ss;
-	ss << "-> " << p << " <-";
+	
+	
+	#if defined(_WIN32) || defined(_WIN64)
+	 << "-> " << p << " <-";
+
+	#else
+	ss << "\033[1;31m" << "-> " << p << " <-" << "\033[0;32m";
+#endif
 	return ss.str();
 }
 
