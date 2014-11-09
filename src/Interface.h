@@ -15,14 +15,15 @@ using namespace std;
 #ifdef _WIN32
 #define BACKSPACE_KEY 8
 #define RETURN_KEY 13
-#define CLEAR "cls"
+#define CLEARSCREEN "cls"
+#include <windows.h>
 #include <conio.h>
 #define PROMPT_SYMBOL "> "
 #else // Other OS's
 #include <termios.h>    //termios, TCSANOW, ECHO, ICANON
 #include <unistd.h>     //STDIN_FILENO
 #define PROMPT_SYMBOL "$ "
-#define CLEAR "clear"
+#define CLEARSCREEN "clear"
 #define BACKSPACE_KEY 127
 #define RETURN_KEY 10
 #endif

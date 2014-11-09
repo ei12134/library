@@ -44,13 +44,11 @@ void Interface::menu() {
 			break;
 		case '4':
 			if (confirmOperation(exitDialog)) {
-				clearScreen();
 				exit = true;
 			}
 			break;
 		case ESCAPE_KEY:
 			if (confirmOperation(exitDialog)) {
-				clearScreen();
 				exit = true;
 			}
 			break;
@@ -98,38 +96,32 @@ void Interface::sortMenu() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			clearScreen();
 			library.sortByName();
 			genericDisplay(library.getPersons(), "Persons",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
 			break;
 		case '2':
-			clearScreen();
 			library.sortByAge();
 			genericDisplay(library.getPersons(), "Persons",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
 			break;
 		case '3':
-			clearScreen();
 			library.sortByType();
 			genericDisplay(library.getPersons(), "Persons",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
 			break;
 		case '4':
-			clearScreen();
 			library.sortByBorrow();
 			genericDisplay(library.getReaders(), "Readers",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard");
 			break;
 
 		case '5':
-			clearScreen();
 			library.sortByTitle();
 			genericDisplay(library.getBooks(), "Books",
 					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
 			break;
 		case '6':
-			clearScreen();
 			library.sortByISBN();
 			genericDisplay(library.getBooks(), "Books",
 					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
@@ -138,7 +130,6 @@ void Interface::sortMenu() {
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
 			exit = true;
 			break;
 		default:
@@ -166,27 +157,22 @@ void Interface::displayMenu() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			clearScreen();
 			genericDisplay(library.getPersons(), "Persons",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
 			break;
 		case '2':
-			clearScreen();
 			genericDisplay(library.getReaders(), "Readers",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard");
 			break;
 		case '3':
-			clearScreen();
 			genericDisplay(library.getEmployees(), "Employees",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
 			break;
 		case '4':
-			clearScreen();
 			genericDisplay(library.getSupervisors(), "Supervisors",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
 			break;
 		case '5':
-			clearScreen();
 			genericDisplay(library.getBooks(), "Books",
 					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
 			break;
@@ -194,7 +180,6 @@ void Interface::displayMenu() {
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
 			exit = true;
 			break;
 		default:
@@ -241,7 +226,6 @@ void Interface::readerMenu(Person *reader) {
 			editBorrow(reader);
 			break;
 		case '2':
-			clearScreen();
 			genericDisplay(library.getBorrowedBooksFromReader(reader),
 					"Borrow history", "\tTitle\t\t\t\tBorrowed\tReturned\tID");
 			break;
@@ -249,7 +233,6 @@ void Interface::readerMenu(Person *reader) {
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
 			exit = true;
 			break;
 		default:
@@ -293,11 +276,9 @@ void Interface::employeeMenu(Person* employee) {
 			manageBooks();
 			break;
 		case '4':
-			clearScreen();
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
 			exit = true;
 			break;
 		default:
@@ -359,16 +340,14 @@ void Interface::supervisorMenu(Person* supervisor) {
 			getKey();
 			break;
 		case '6':
-			clearScreen();
 			genericDisplay(supervisor->getEmployeeTeam(), "Employees team",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
 			break;
 		case '7':
-			clearScreen();
+
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
 			exit = true;
 			break;
 		default:
@@ -421,11 +400,9 @@ void Interface::manageBooks() {
 				message = "Error removing a book";
 			break;
 		case '4':
-			clearScreen();
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
 			exit = true;
 			break;
 		default:
@@ -457,7 +434,7 @@ void Interface::manageReaders() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			clearScreen();
+
 			createReader();
 			break;
 		case '2':
@@ -468,7 +445,7 @@ void Interface::manageReaders() {
 				message = "Error editing a reader";
 			break;
 		case '3':
-			clearScreen();
+
 			if (library.removeReader(searchPerson(library.getReaders()))) {
 				library.savePersons();
 				message = "Reader removed successfully";
@@ -476,11 +453,9 @@ void Interface::manageReaders() {
 				message = "Error removing a reader";
 			break;
 		case '4':
-			clearScreen();
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
 			exit = true;
 			break;
 		default:
@@ -512,7 +487,7 @@ void Interface::manageEmployees(Person* supervisor) {
 		input = getKey();
 		switch (input) {
 		case '1':
-			clearScreen();
+
 			createEmployee();
 			break;
 		case '2':
@@ -523,7 +498,7 @@ void Interface::manageEmployees(Person* supervisor) {
 				message = "Error editing an employee";
 			break;
 		case '3':
-			clearScreen();
+
 			if (library.removeEmployee((searchPerson(library.getEmployees())),
 					supervisor)) {
 				library.savePersons();
@@ -532,11 +507,9 @@ void Interface::manageEmployees(Person* supervisor) {
 				message = "Error removing an employee";
 			break;
 		case '4':
-			clearScreen();
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
 			exit = true;
 			break;
 		default:
@@ -772,11 +745,11 @@ void Interface::createBorrow(Person* employee) {
 				createMessage = "Select a reader and a book";
 			break;
 		case '4':
-			clearScreen();
+
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
+
 			exit = true;
 			break;
 		default:
@@ -874,7 +847,7 @@ void Interface::editBook(Book* book) {
 			exit = true;
 			break;
 		case '7':
-			clearScreen();
+
 			if (edited)
 				library.saveBooks();
 			exit = true;
@@ -970,19 +943,19 @@ void Interface::editReader(Person* reader) {
 			edited = true;
 			break;
 		case '5':
-			clearScreen();
+
 			if (edited)
 				*reader = backup;
 			exit = true;
 			break;
 		case '6':
-			clearScreen();
+
 			if (edited)
 				library.savePersons();
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
+
 			if (edited)
 				*reader = backup;
 			exit = true;
@@ -1126,19 +1099,19 @@ void Interface::editEmployee(Person* employee) {
 			cin.ignore();
 			break;
 		case '8':
-			clearScreen();
+
 			if (edited)
 				*employee = backup;
 			exit = true;
 			break;
 		case '9':
-			clearScreen();
+
 			if (edited)
 				library.savePersons();
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-			clearScreen();
+
 			if (edited)
 				*employee = backup;
 			exit = true;
@@ -1161,10 +1134,10 @@ void Interface::editBorrow(Person* reader) {
 		clearScreen();
 		displayHeader(header);
 		borrows = reader->getBorrowedBooks();
-		
+
 		for (size_t i = 0, z = 1; i < borrows.size(); i++) {
-		  cout << THREE_TABS << "[" << z++ << "] " << borrows[i]->printShort()
-		       << endl;
+			cout << THREE_TABS << "[" << z++ << "] " << borrows[i]->printShort()
+					<< endl;
 		}
 		if (returnMessage.size() > 0) {
 			cout << centerString(warningString(returnMessage)) << endl << endl;
@@ -1427,7 +1400,36 @@ Book* Interface::searchBook(vector<Book*> books) {
 }
 
 void Interface::clearScreen() {
-	system(CLEAR);
+#if defined(_WIN32) || defined(_WIN64)
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	DWORD count;
+	DWORD cellCount;
+	COORD homeCoords = { 0, 0 };
+
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	if ((HANDLE) hStdOut == INVALID_HANDLE_VALUE)
+		return;
+
+	/* Get the number of cells in the current buffer */
+	if (!GetConsoleScreenBufferInfo(hStdOut, &csbi))
+		return;
+	cellCount = csbi.dwSize.X * csbi.dwSize.Y;
+
+	/* Fill the entire buffer with spaces */
+	if (!FillConsoleOutputCharacter(hStdOut, (TCHAR) ' ', cellCount, homeCoords,
+			&count))
+		return;
+
+	/* Fill the entire buffer with the current colors and attributes */
+	if (!FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, cellCount,
+			homeCoords, &count))
+		return;
+
+	/* Move the cursor home */
+	SetConsoleCursorPosition(hStdOut, homeCoords);
+#else
+	system(CLEARSCREEN);
+#endif
 }
 
 void Interface::displayHeader(string& header) {
@@ -1539,7 +1541,7 @@ char Interface::getKey() {
 	 I choose 'e' to end input. Notice that EOF is also turned off
 	 in the non-canonical mode*/
 	char keys[32] = {0};
-	 fflush(stdout);  
+	fflush(stdout);
 	read(STDIN_FILENO,keys,4096);
 
 	if(keys[0] == 27 && keys[1] == 91 && keys[2] == 51 && keys[3] == 126)
@@ -1554,9 +1556,7 @@ char Interface::getKey() {
 }
 
 void Interface::setColor() {
-#ifdef _WIN32
-	system("color 0A");
-#elif _WIN64
+#if defined(_WIN32) || defined(_WIN64)
 	system("color 0A");
 #else
 
