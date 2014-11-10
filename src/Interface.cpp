@@ -410,7 +410,7 @@ void Interface::manageBooks() {
 			break;
 		case '3':
 			book = searchBook(library.getBooks());
-			if (book != NULL && confirmOperation(confirmRemove)) {
+			if (book != NULL && !book->getBorrowed() && confirmOperation(confirmRemove)) {
 				if (library.removeBook(book)) {
 					infMsg = "Book removed successfully";
 					library.saveBooks();
