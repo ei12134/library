@@ -28,6 +28,10 @@ using namespace std;
 #define RETURN_KEY 10
 #endif
 
+#define WHITE 0
+#define RED 1
+#define GREEN 2
+#define BLUE 3
 #define HALF_TAB string(4,' ')
 #define TAB "\t"
 #define TWO_TABS TAB TAB
@@ -87,11 +91,12 @@ public:
 
 	inline string centerString(const string &s);
 
-	template<typename T>
-	string warningString(const T &p);
+	void infoMsg(const string& m);
+	void errorMsg(const string& m);
 
 	char getKey();
-	void setColor();
+	void setColor(int color);
+	void resetColor();
 	bool is_Number(const int & c);
 	bool seekNIF(const string &s);
 };

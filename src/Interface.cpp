@@ -1,14 +1,15 @@
 #include "Interface.h"
 
 Interface::Interface() {
-	setColor();
+	setColor(GREEN);
 	menu();
 }
 
 Interface::~Interface() {
-  #if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64)
+	setColor(WHITE);
 #else
-  cout << "\033[0m";
+	cout << "\033[0m";
 #endif
 }
 
@@ -196,19 +197,20 @@ void Interface::readerMenu(Person *reader) {
 	char input;
 	bool exit = false;
 	string header;
-	string message;
+	string infMsg;
 
 	do {
 		header = "Reader   " + reader->getName();
 		clearScreen();
 		displayHeader(header);
-
+		setColor(WHITE);
 		cout << THREE_TABS << HALF_TAB << "Age: " << reader->getAge() << endl;
 		cout << THREE_TABS << HALF_TAB << "Card: " << reader->getCard() << endl;
 		cout << THREE_TABS << HALF_TAB << "Phone: " << reader->getPhone()
 				<< endl;
 		cout << THREE_TABS << HALF_TAB << "Email: " << reader->getEmail()
 				<< endl;
+		resetColor();
 		cout << endl << THREE_TABS << HALF_TAB << "[1] Display borrows" << endl;
 		cout << THREE_TABS << HALF_TAB << "[2] Borrow history" << endl << endl;
 		cout << THREE_TABS << HALF_TAB << "[3] Logout" << endl << endl;
@@ -216,11 +218,11 @@ void Interface::readerMenu(Person *reader) {
 		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
 		for (size_t i = 0; i < borrowedBooks.size(); i++)
 			if (borrowedBooks[i]->calcFee() > 0)
-				message = "A book has the borrow date expired";
-
-		if (message.size() > 0) {
-			cout << centerString(warningString(message)) << endl << endl;
-			message.clear();
+				infMsg = "A book has the borrow date expired";
+		if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
 		}
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
@@ -254,6 +256,7 @@ void Interface::employeeMenu(Person* employee) {
 		header = "Employee   " + employee->getName();
 		clearScreen();
 		displayHeader(header);
+		setColor(WHITE);
 		cout << THREE_TABS << HALF_TAB << "Age: " << employee->getAge() << endl;
 		cout << THREE_TABS << HALF_TAB << "Nif: " << employee->getNif() << endl;
 		cout << THREE_TABS << HALF_TAB << "Phone: " << employee->getPhone()
@@ -262,6 +265,7 @@ void Interface::employeeMenu(Person* employee) {
 				<< endl;
 		cout << THREE_TABS << HALF_TAB << "Wage: " << employee->getWage()
 				<< " EUR" << endl;
+		resetColor();
 		cout << endl << THREE_TABS << HALF_TAB << "[1] Borrow a book" << endl;
 		cout << THREE_TABS << HALF_TAB << "[2] Manage readers" << endl;
 		cout << THREE_TABS << HALF_TAB << "[3] Manage books" << endl << endl;
@@ -305,6 +309,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 		header = "Supervisor   " + supervisor->getName();
 		clearScreen();
 		displayHeader(header);
+		setColor(WHITE);
 		cout << THREE_TABS << HALF_TAB << "Age: " << supervisor->getAge()
 				<< " years" << endl;
 		cout << THREE_TABS << HALF_TAB << "Nif: " << supervisor->getNif()
@@ -315,6 +320,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 				<< endl;
 		cout << THREE_TABS << HALF_TAB << "Wage: " << supervisor->getWage()
 				<< " EUR" << endl;
+		resetColor();
 		cout << endl << THREE_TABS + HALF_TAB << "[1] Borrow a book" << endl;
 		cout << THREE_TABS << HALF_TAB << "[2] Manage books" << endl;
 		cout << THREE_TABS << HALF_TAB << "[3] Manage readers" << endl;
@@ -363,7 +369,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 void Interface::manageBooks() {
 	char input;
 	bool exit = false;
-	string header = "Manage books", message;
+	string header = "Manage books", errMsg, infMsg;
 	string confirmRemove = "Remove book?";
 	Book* book;
 
@@ -374,9 +380,15 @@ void Interface::manageBooks() {
 		cout << FOUR_TABS << "[2] Edit book\n";
 		cout << FOUR_TABS << "[3] Remove book\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
-		if (message.size() > 0) {
-			cout << centerString(warningString(message)) << endl << endl;
-			message.clear();
+
+		if (errMsg.size() > 0) {
+			errorMsg(errMsg);
+			cout << endl << endl;
+			errMsg.clear();
+		} else if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
 		}
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
@@ -390,18 +402,18 @@ void Interface::manageBooks() {
 			if (book != NULL) {
 				editBook(book);
 			} else
-				message = "Error editing a book";
+				errMsg = "Error editing a book";
 			break;
 		case '3':
 			book = searchBook(library.getBooks());
 			if (book != NULL && confirmOperation(confirmRemove)) {
 				if (library.removeBook(book)) {
-					message = "Book removed successfully";
+					infMsg = "Book removed successfully";
 					library.saveBooks();
 				} else
-					message = "Error removing a book";
+					errMsg = "Error removing a book";
 			} else
-				message = "Error removing a book";
+				errMsg = "Error removing a book";
 			break;
 		case '4':
 			exit = true;
@@ -419,7 +431,7 @@ void Interface::manageReaders() {
 	char input;
 	bool exit = false;
 	string header = "Manage readers";
-	string message;
+	string errMsg, infMsg;
 	Person* reader;
 
 	do {
@@ -429,9 +441,14 @@ void Interface::manageReaders() {
 		cout << FOUR_TABS << "[2] Edit reader\n";
 		cout << FOUR_TABS << "[3] Remove reader\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
-		if (message.size() > 0) {
-			cout << centerString(warningString(message)) << endl << endl;
-			message.clear();
+		if (errMsg.size() > 0) {
+			errorMsg(errMsg);
+			cout << endl << endl;
+			errMsg.clear();
+		} else if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
 		}
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
@@ -446,15 +463,15 @@ void Interface::manageReaders() {
 			if (reader != NULL)
 				editReader(reader);
 			else
-				message = "Error editing a reader";
+				errMsg = "Error editing a reader";
 			break;
 		case '3':
 
 			if (library.removeReader(searchPerson(library.getReaders()))) {
 				library.savePersons();
-				message = "Reader removed successfully";
+				infMsg = "Reader removed successfully";
 			} else
-				message = "Error removing a reader";
+				errMsg = "Error removing a reader";
 			break;
 		case '4':
 			exit = true;
@@ -472,7 +489,7 @@ void Interface::manageEmployees(Person* supervisor) {
 	char input;
 	bool exit = false;
 	string header = "Manage employees";
-	string message;
+	string errMsg, infMsg;
 	Person* employee;
 
 	do {
@@ -482,9 +499,14 @@ void Interface::manageEmployees(Person* supervisor) {
 		cout << FOUR_TABS << "[2] Edit employee\n";
 		cout << FOUR_TABS << "[3] Remove employee\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
-		if (message.size() > 0) {
-			cout << centerString(warningString(message)) << endl << endl;
-			message.clear();
+		if (errMsg.size() > 0) {
+			errorMsg(errMsg);
+			cout << endl << endl;
+			errMsg.clear();
+		} else if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
 		}
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
@@ -499,16 +521,16 @@ void Interface::manageEmployees(Person* supervisor) {
 			if (employee != NULL)
 				editEmployee(employee);
 			else
-				message = "Error editing an employee";
+				errMsg = "Error editing an employee";
 			break;
 		case '3':
 
 			if (library.removeEmployee((searchPerson(library.getEmployees())),
 					supervisor)) {
 				library.savePersons();
-				message = "Employee removed successfully";
+				infMsg = "Employee removed successfully";
 			} else
-				message = "Error removing an employee";
+				errMsg = "Error removing an employee";
 			break;
 		case '4':
 			exit = true;
@@ -690,7 +712,7 @@ void Interface::createBorrow(Person* employee) {
 	char input;
 	bool exit = false;
 	string header = "Create borrow";
-	string createMessage;
+	string errMsg, infMsg;
 	Person* reader = NULL;
 	Book* book = NULL;
 
@@ -708,9 +730,14 @@ void Interface::createBorrow(Person* employee) {
 		cout << FOUR_TABS << "[3] Create borrow" << endl;
 		cout << FOUR_TABS << "[4] Exit" << endl << endl;
 
-		if (createMessage.size() > 0) {
-			cout << centerString(warningString(createMessage)) << endl << endl;
-			createMessage.clear();
+		if (errMsg.size() > 0) {
+			errorMsg(errMsg);
+			cout << endl << endl;
+			errMsg.clear();
+		} else if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
 		}
 
 		cout << THREE_TABS << "Select book to return [ESC exits]" << endl
@@ -722,14 +749,14 @@ void Interface::createBorrow(Person* employee) {
 			reader = searchPerson(library.getReaders());
 			if (reader == NULL) {
 				reader = NULL;
-				createMessage = "Select another reader";
+				errMsg = "Select another reader";
 			}
 			break;
 		case '2':
 			book = searchBook(library.getAvailableBooks());
 			if (book == NULL || book->getBorrowed()) {
 				book = NULL;
-				createMessage = "Select another book";
+				errMsg = "Select another book";
 			}
 			break;
 		case '3':
@@ -738,15 +765,15 @@ void Interface::createBorrow(Person* employee) {
 				if (reader->addBorrow(borrow)) {
 					library.addBorrow(borrow);
 					book->setBorrowed(true);
-					createMessage = "Borrow created successfully";
+					infMsg = "Borrow created successfully";
 					library.saveBorrows();
 				} else {
-					createMessage = "Select another reader";
+					errMsg = "Select another reader";
 					delete borrow;
 				}
 				book = NULL;
 			} else
-				createMessage = "Select a reader and a book";
+				errMsg = "Select a reader and a book";
 			break;
 		case '4':
 
@@ -1132,7 +1159,7 @@ void Interface::editBorrow(Person* reader) {
 	vector<Borrow*> borrows;
 	string header = "Display borrows";
 	string returnDialog = "Return book?";
-	string returnMessage;
+	string infMsg;
 
 	do {
 		clearScreen();
@@ -1143,9 +1170,10 @@ void Interface::editBorrow(Person* reader) {
 			cout << THREE_TABS << "[" << z++ << "] " << borrows[i]->printShort()
 					<< endl;
 		}
-		if (returnMessage.size() > 0) {
-			cout << centerString(warningString(returnMessage)) << endl << endl;
-			returnMessage.clear();
+		if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
 		}
 
 		cout << THREE_TABS << "Select book to return [ESC exits]" << endl
@@ -1159,7 +1187,7 @@ void Interface::editBorrow(Person* reader) {
 					reader->removeBorrow(borrows[0]);
 					library.removeBorrow(borrows[0]);
 					library.saveBorrows();
-					returnMessage = "Book returned successfully";
+					infMsg = "Book returned successfully";
 				}
 			}
 			break;
@@ -1169,7 +1197,7 @@ void Interface::editBorrow(Person* reader) {
 					library.removeBorrow(borrows[1]);
 					reader->removeBorrow(borrows[1]);
 					library.saveBorrows();
-					returnMessage = "Book returned successfully";
+					infMsg = "Book returned successfully";
 				}
 			}
 			break;
@@ -1179,7 +1207,7 @@ void Interface::editBorrow(Person* reader) {
 					library.removeBorrow(borrows[2]);
 					reader->removeBorrow(borrows[2]);
 					library.saveBorrows();
-					returnMessage = "Book returned successfully";
+					infMsg = "Book returned successfully";
 				}
 			}
 			break;
@@ -1189,7 +1217,7 @@ void Interface::editBorrow(Person* reader) {
 					library.removeBorrow(borrows[0]);
 					reader->removeBorrow(borrows[0]);
 					library.saveBorrows();
-					returnMessage = "Book returned successfully";
+					infMsg = "Book returned successfully";
 				}
 			}
 			break;
@@ -1224,8 +1252,9 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 
 					if (persons[i]->getName().size() < 12)
 						cout << TAB;
-
+					setColor(WHITE);
 					cout << persons[i]->printType() << endl;
+					resetColor();
 					matches.push_back(persons[i]);
 				}
 			}
@@ -1340,8 +1369,15 @@ Book* Interface::searchBook(vector<Book*> books) {
 					matchAuthor |= partialMatchQuery(query, authors[y]);
 
 				if (partialMatchQuery(query, title) || matchAuthor) {
-					cout << TWO_TABS << HALF_TAB << "[" << z++ << "] "
-							<< books[i]->printShort() << endl << endl;
+					cout << THREE_TABS << "[" << z++ << "] "
+							<< books[i]->getTitle().substr(0, 34) << " ";
+					setColor(WHITE);
+					cout
+							<< (books[i]->getBorrowed() == 1 ?
+									"[Borrowed]" : "[Available]") << endl;
+					resetColor();
+					cout << THREE_TABS << books[i]->printAuthors() << endl
+							<< endl;
 					matches.push_back(books[i]);
 				}
 			}
@@ -1453,8 +1489,10 @@ void Interface::displayHeader(string& header) {
 }
 
 bool Interface::confirmOperation(string& query) {
+	setColor(WHITE);
 	cout << query << " [y] to confirm";
 	char answer = getKey();
+	resetColor();
 
 	if (answer == 'y' || answer == 'Y')
 		return true;
@@ -1490,12 +1528,14 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		if (vecSize == 0) {
 			string nothing = "Nothing to show here :(";
 			cout << string(5, '\n');
-			cout << centerString(nothing);
+			errorMsg(nothing);
 			cout << string(6, '\n');
 		}
 
 		while (vLimit < MAX_LINES && i < vecSize && !done) {
+			setColor(WHITE);
 			cout << " " << vec[i]->print();
+			resetColor();
 			cout << endl;
 			i++;
 			vLimit++;
@@ -1559,14 +1599,62 @@ char Interface::getKey() {
 #endif
 }
 
-void Interface::setColor() {
+void Interface::setColor(int color) {
 #if defined(_WIN32) || defined(_WIN64)
-	system("color 0A");
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	switch (color) {
+	case 0:
+		SetConsoleTextAttribute(hConsole,
+				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+						| FOREGROUND_INTENSITY);
+		break;
+	case 1:
+		SetConsoleTextAttribute(hConsole,
+		FOREGROUND_RED | FOREGROUND_INTENSITY);
+		break;
+	case 2:
+		SetConsoleTextAttribute(hConsole,
+		FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		break;
+	case 3:
+		SetConsoleTextAttribute(hConsole,
+		FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+		break;
+	default:
+		break;
+	}
+#else
+
+	switch (color) {
+		case 0:
+		cout << "\033[0;37m";
+		break;
+		case 1:
+		cout << "\033[0;31m";
+		break;
+		case 2:
+		cout << "\033[0;32m";
+		break;
+		case 3:
+		cout << "\033[0;34m";
+		break;
+		default:
+		break;
+	}
+
+#endif
+}
+
+void Interface::resetColor() {
+#if defined(_WIN32) || defined(_WIN64)
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole,
+	FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 #else
 	cout << "\033[0;32m";
 #endif
 }
-
 vector<string> Interface::editAuthors() {
 	vector<string> authors;
 	string newAuthor, authorsDialog = "\t\t\tAdd another author?";
@@ -1591,18 +1679,16 @@ inline string Interface::centerString(const string &s) {
 	return string(spacing, ' ') + s;
 }
 
-template<typename T>
-string Interface::warningString(const T &p) {
-	stringstream ss;
-	
-	
-	#if defined(_WIN32) || defined(_WIN64)
-	 << "-> " << p << " <-";
+void Interface::infoMsg(const string& m) {
+	setColor(WHITE);
+	cout << centerString("* " + m + " *");
+	resetColor();
+}
 
-	#else
-	ss << "\033[1;31m" << "-> " << p << " <-" << "\033[0;32m";
-#endif
-	return ss.str();
+void Interface::errorMsg(const string& m) {
+	setColor(RED);
+	cout << centerString(m + " !");
+	resetColor();
 }
 
 bool Interface::seekNIF(const string &s) {

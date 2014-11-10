@@ -28,7 +28,7 @@ public:
 	virtual ~Book();
 	Book(stringstream& s);
 	string print() const;
-	string printShort() const;
+	string printAuthors() const;
 	vector<string> getAuthors() const;
 	string getQuota() const;
 	string getISBN() const;

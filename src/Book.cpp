@@ -95,20 +95,15 @@ string Book::print() const {
 	return ss.str();
 }
 
-string Book::printShort() const {
+string Book::printAuthors() const {
 	stringstream ss, authorsSs;
-
-	ss << (title.size() > 42 ? title.substr(0, 42) : title) << " ";
-	ss << (borrowed == 1 ? "[Borrowed]" : "[Available]") << "\n";
 
 	if (authors.size() > 0) {
 		authorsSs << authors.at(0);
 		for (unsigned x = 1; x < authors.size(); x++)
 			authorsSs << ", " << authors.at(x);
 	}
-	ss << "\t\t    "
-			<< (authorsSs.str().size() > 42 ?
-					authorsSs.str().substr(0, 42) : authorsSs.str());
+	ss << authorsSs.str().substr(0, 34);
 
 	return ss.str();
 }
