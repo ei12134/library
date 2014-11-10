@@ -28,6 +28,7 @@ using namespace std;
 #define RETURN_KEY 10
 #endif
 
+#define GRAY -1
 #define WHITE 0
 #define RED 1
 #define GREEN 2
@@ -50,6 +51,9 @@ static const char progressBar = 254;
 class Interface {
 private:
 	Library library;
+#if defined(_WIN32) || defined (_WIN64)
+	HANDLE hConsole;
+#endif
 
 public:
 	Interface();

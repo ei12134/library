@@ -1,16 +1,20 @@
 #include "Interface.h"
 
 Interface::Interface() {
+#if defined(_WIN32) || defined (_WIN64)
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+#endif
 	setColor(GREEN);
 	menu();
 }
 
 Interface::~Interface() {
 #if defined(_WIN32) || defined(_WIN64)
-	setColor(WHITE);
+	setColor(GRAY);
 #else
 	cout << "\033[0m";
 #endif
+	clearScreen();
 }
 
 void Interface::menu() {
@@ -1446,27 +1450,26 @@ void Interface::clearScreen() {
 	DWORD cellCount;
 	COORD homeCoords = { 0, 0 };
 
-	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	if ((HANDLE) hStdOut == INVALID_HANDLE_VALUE)
+	if ((HANDLE) hConsole == INVALID_HANDLE_VALUE)
 		return;
 
 	/* Get the number of cells in the current buffer */
-	if (!GetConsoleScreenBufferInfo(hStdOut, &csbi))
+	if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
 		return;
 	cellCount = csbi.dwSize.X * csbi.dwSize.Y;
 
 	/* Fill the entire buffer with spaces */
-	if (!FillConsoleOutputCharacter(hStdOut, (TCHAR) ' ', cellCount, homeCoords,
-			&count))
+	if (!FillConsoleOutputCharacter(hConsole, (TCHAR) ' ', cellCount,
+			homeCoords, &count))
 		return;
 
 	/* Fill the entire buffer with the current colors and attributes */
-	if (!FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, cellCount,
+	if (!FillConsoleOutputAttribute(hConsole, csbi.wAttributes, cellCount,
 			homeCoords, &count))
 		return;
 
 	/* Move the cursor home */
-	SetConsoleCursorPosition(hStdOut, homeCoords);
+	SetConsoleCursorPosition(hConsole, homeCoords);
 #else
 	system(CLEARSCREEN);
 #endif
@@ -1601,9 +1604,11 @@ char Interface::getKey() {
 
 void Interface::setColor(int color) {
 #if defined(_WIN32) || defined(_WIN64)
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
 	switch (color) {
+	case -1:
+		SetConsoleTextAttribute(hConsole,
+		FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+		break;
 	case 0:
 		SetConsoleTextAttribute(hConsole,
 				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
@@ -1648,7 +1653,6 @@ void Interface::setColor(int color) {
 
 void Interface::resetColor() {
 #if defined(_WIN32) || defined(_WIN64)
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole,
 	FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 #else
