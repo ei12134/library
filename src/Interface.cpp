@@ -40,9 +40,10 @@ void Interface::menu() {
 		if (query.size() > 0)
 			for (size_t i = 0; i < menuStr.size(); i++)
 				if (matchQuery(query, menuStr[i])) {
-					if (tab)
+					if (tab) {
 						query = menuStr[i];
-					selected = i;
+						selected = i;
+					}
 				}
 		tab = false;
 
@@ -1258,7 +1259,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 	bool exit = false;
 	bool clear = false;
 	int key;
-	int selected = 0;
+	size_t selected = 0;
 	vector<Person*> matches;
 
 	do {
@@ -1276,25 +1277,25 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 					matches.push_back(persons[i]);
 		}
 
-		int z = 0;
 		for (size_t i = 0; i < matches.size(); i++) {
 			colorMsg(THREE_TABS, matches[i]->getName(),
-					(selected == z ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 0);
+					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 0);
 			cout << TAB;
 			if (matches[i]->getName().size() < 16)
 				cout << TAB;
 			colorMsg("", matches[i]->printType(), FGWHITE_BGBLACK, 1);
-			z++;
 		}
 		cout << endl << TWO_TABS << TAB << "Enter person name [ESC exits]\n\n"
 				<< TWO_TABS << TAB << PROMPT_SYMBOL << query;
 
 		key = getKey();
 
-		if (key == SPACE_BAR || key == RETURN_KEY)
-			return matches[selected];
-		else
-
+		if (key == SPACE_BAR || key == RETURN_KEY) {
+			if (matches.size() > selected)
+				return matches[selected];
+			else
+				key = 0;
+		} else
 			switch (key) {
 			case 0:
 				break;
@@ -1323,9 +1324,10 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 				if (matches.size() == 0)
 					selected = 0;
 				else {
-					selected--;
-					if (selected < 0)
+					if (selected < 1)
 						selected = matches.size() - 1;
+					else
+						selected--;
 				}
 				break;
 			default:
@@ -1466,15 +1468,15 @@ void Interface::displayHeader(string& header) {
 
 	if (dynSizeLeft + dynSizeRight + size < 31)
 		dynSizeRight++;
-	colorMsg(THREE_TABS, string(35,' '), FGBLACK_BGGREEN, 1);
+	colorMsg(THREE_TABS, string(35, ' '), FGBLACK_BGGREEN, 1);
 	colorMsg(THREE_TABS, "  ", FGBLACK_BGGREEN, 0);
-	colorMsg(string(31,' '), "  ", FGBLACK_BGGREEN, 1);
+	colorMsg(string(31, ' '), "  ", FGBLACK_BGGREEN, 1);
 	colorMsg(THREE_TABS, "  ", FGBLACK_BGGREEN, 0);
-       cout << string(dynSizeLeft, ' ') << header <<  string(dynSizeRight, ' ');
-       colorMsg("", "  ", FGBLACK_BGGREEN, 1);
-       colorMsg(THREE_TABS, "  ", FGBLACK_BGGREEN, 0);
-       colorMsg(string(31,' '), "  ", FGBLACK_BGGREEN, 1);
-       colorMsg(THREE_TABS, string(35,' '), FGBLACK_BGGREEN, 2);
+	cout << string(dynSizeLeft, ' ') << header << string(dynSizeRight, ' ');
+	colorMsg("", "  ", FGBLACK_BGGREEN, 1);
+	colorMsg(THREE_TABS, "  ", FGBLACK_BGGREEN, 0);
+	colorMsg(string(31, ' '), "  ", FGBLACK_BGGREEN, 1);
+	colorMsg(THREE_TABS, string(35, ' '), FGBLACK_BGGREEN, 2);
 }
 
 bool Interface::confirmOperation(string& query) {
@@ -1487,6 +1489,14 @@ bool Interface::confirmOperation(string& query) {
 		return true;
 	else
 		return false;
+}
+
+template<class T>
+string Interface::repeatStr(const T& s, const size_t n) {
+	stringstream ss;
+	for (size_t i = 0; i < n; i++)
+		ss << s;
+	return ss.str();
 }
 
 void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,
@@ -1516,11 +1526,11 @@ void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,
 			cout << TWO_TABS << ("Sorted by " + readerStr[sortFunc])
 					<< (readerStr[sortFunc].size() > 5 ? TAB : TWO_TABS)
 					<< "Page " << pCount << " of " << pLimit << " ["
-					<< string(progress, progressBar)
+					<< repeatStr(progressBar, progress)
 					<< string((13 - progress), ' ') << "]" << endl;
-			cout << " " << string(77, hSeparator) << " " << endl;
+			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
 			cout << " " << labels << endl;
-			cout << " " << string(77, hSeparator) << " " << endl;
+			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
 
 			if (vecSize == 0) {
 				string nothing = "Nothing to show here :(";
@@ -1539,7 +1549,8 @@ void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,
 
 				if (vLimit == MAX_LINES && i <= vecSize) {
 					pCount++;
-					cout << " " << string(77, hSeparator) << endl << vLimitMsg;
+					cout << " " << repeatStr(hSeparator, 77) << endl
+							<< vLimitMsg;
 					ch = getKey();
 					if (ch == ESCAPE_KEY)
 						done = true;
@@ -1559,7 +1570,7 @@ void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,
 		if (done)
 			break;
 		else if (i == vecSize) {
-			cout << " " << string(77, hSeparator) << endl << vLimitMsg;
+			cout << " " << repeatStr(hSeparator, 77) << endl << vLimitMsg;
 			ch = getKey();
 			if (ch == 's') {
 				sortFunc++;
@@ -1601,11 +1612,11 @@ void Interface::booksDisplayPtr(LibraryGetBkFn getFunc, string listName,
 			cout << TWO_TABS << ("Sorted by " + readerStr[sortFunc])
 					<< (readerStr[sortFunc].size() > 5 ? TAB : TWO_TABS)
 					<< "Page " << pCount << " of " << pLimit << " ["
-					<< string(progress, progressBar)
+					<< repeatStr(progressBar, progress)
 					<< string((13 - progress), ' ') << "]" << endl;
-			cout << " " << string(77, hSeparator) << " " << endl;
+			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
 			cout << " " << labels << endl;
-			cout << " " << string(77, hSeparator) << " " << endl;
+			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
 
 			if (vecSize == 0) {
 				string nothing = "Nothing to show here :(";
@@ -1624,7 +1635,8 @@ void Interface::booksDisplayPtr(LibraryGetBkFn getFunc, string listName,
 
 				if (vLimit == MAX_LINES && i <= vecSize) {
 					pCount++;
-					cout << " " << string(77, hSeparator) << endl << vLimitMsg;
+					cout << " " << repeatStr(hSeparator, 77) << endl
+							<< vLimitMsg;
 					ch = getKey();
 					if (ch == ESCAPE_KEY)
 						done = true;
@@ -1644,7 +1656,7 @@ void Interface::booksDisplayPtr(LibraryGetBkFn getFunc, string listName,
 		if (done)
 			break;
 		else if (i == vecSize) {
-			cout << " " << string(77, hSeparator) << endl << vLimitMsg;
+			cout << " " << repeatStr(hSeparator, 77) << endl << vLimitMsg;
 			ch = getKey();
 			if (ch == 's') {
 				sortFunc++;
@@ -1678,11 +1690,11 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		clearScreen();
 		displayHeader(listName);
 		cout << THREE_TABS << "Page " << pCount << " of " << pLimit << " ["
-				<< string(progress, progressBar) << string((19 - progress), ' ')
-				<< "]" << endl;
-		cout << " " << string(77, hSeparator) << " " << endl;
+				<< repeatStr(progressBar, progress)
+				<< string((19 - progress), ' ') << "]" << endl;
+		cout << " " << repeatStr(hSeparator, 77) << " " << endl;
 		cout << " " << labels << endl;
-		cout << " " << string(77, hSeparator) << " " << endl;
+		cout << " " << repeatStr(hSeparator, 77) << " " << endl;
 
 		if (vecSize == 0) {
 			string nothing = "Nothing to show here :(";
@@ -1701,7 +1713,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 
 			if (vLimit == MAX_LINES && i < vecSize) {
 				pCount++;
-				cout << " " << string(77, hSeparator) << endl << vLimitMsg;
+				cout << " " << repeatStr(hSeparator, 77) << endl << vLimitMsg;
 				ch = getKey();
 				if (ch == ESCAPE_KEY)
 					done = true;
@@ -1711,7 +1723,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 			cout << string((MAX_LINES - vLimit), '\n');
 	} while (i < vecSize && !done);
 	if (i == vecSize) {
-		cout << " " << string(77, hSeparator) << endl;
+		cout << " " << repeatStr(hSeparator, 77) << endl;
 		cout << " Press any key to continue...";
 		getKey();
 	}

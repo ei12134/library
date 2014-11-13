@@ -20,9 +20,6 @@ using namespace std;
 #include <conio.h>
 #define PROMPT_SYMBOL "> "
 
-static const char topBorder = 220;
-static const char bottomBorder = 223;
-static const char verticalBorder = 219;
 static const char hSeparator = 196;
 static const char progressBar = 254;
 
@@ -33,12 +30,8 @@ static const char progressBar = 254;
 #define CLEARSCREEN "clear"
 #define BACKSPACE_KEY 127
 #define RETURN_KEY 10
-
-static const char topBorder = '#';
-static const char bottomBorder = '#';
-static const char verticalBorder = '#';
-static const char hSeparator = '#';
-static const char progressBar = ':';
+static const string hSeparator = "\u2501";
+static const string progressBar = "\u2578";
 
 #endif
 
@@ -127,6 +120,9 @@ public:
 			const int &newLines);
 	void infoMsg(const string& m);
 	void errorMsg(const string& m);
+
+	template <class T>
+	string repeatStr(const T& s, const size_t n);
 
 	char getKey();
 	void setColor(int color);
