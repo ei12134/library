@@ -20,31 +20,53 @@ Interface::~Interface() {
 
 void Interface::menu() {
 	char input;
-	string exitDialog = "Quit?";
-	string noSupervisors = "Create supervisor?\n\t\t\t      ";
-	string header = "Library";
 	bool exit = false;
-	size_t selected = 0;
+	bool tab = false;
 	vector<string> menuStr;
 	menuStr.push_back("Login");
 	menuStr.push_back("Sort");
 	menuStr.push_back("Display");
 	menuStr.push_back("Quit");
 	string spacing = string((80 - menuStr[2].size()) / 2, ' ');
+	string exitDialog = "Quit?";
+	string noSupervisors = "Create supervisor?\n\t\t\t      ";
+	string header = "Library";
+	string query;
+	size_t selected = 0;
 
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << endl;
-		for (size_t i = 0; i < menuStr.size(); i++)
-			colorMsg(spacing, menuStr[i], (selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 1);
-		cout << endl << endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
-		input = getKey();
+		if (query.size() > 0)
+			for (size_t i = 0; i < menuStr.size(); i++)
+				if (matchQuery(query, menuStr[i])) {
+					if (tab)
+						query = menuStr[i];
+					selected = i;
+				}
+		tab = false;
+
+		for (size_t i = 0; i < menuStr.size(); i++)
+			colorMsg(spacing, menuStr[i],
+					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 1);
+		cout << endl << endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
+		if (exit)
+			if (confirmOperation(exitDialog))
+				break;
+			else{
+				input = 0;
+				exit = false;
+			}
+		else {
+			cout << query;
+			input = getKey();
+		}
 
 		if (input == SPACE_BAR || input == RETURN_KEY) {
 			switch (selected) {
 			case 0:
+				query.clear();
 				library.sortByName();
 				if (library.getSupervisors().size() != 0)
 					dispatchPerson(searchPerson(library.getPersons()));
@@ -52,20 +74,33 @@ void Interface::menu() {
 					createEmployee();
 				break;
 			case 1:
+				query.clear();
 				sortMenu();
 				break;
 			case 2:
+				query.clear();
 				displayMenu();
 				break;
 			case 3:
-				if (confirmOperation(exitDialog))
-					exit = true;
+				exit = true;
 				break;
 			default:
 				break;
 			}
 		} else {
 			switch (input) {
+			case 0:
+				break;
+			case TAB_KEY:
+				tab = true;
+				break;
+			case BACKSPACE_KEY:
+				if (query.length() > 0)
+					query.erase(query.end() - 1);
+				break;
+			case DELETE_KEY:
+				query.clear();
+				break;
 			case ARROW_DOWN:
 				selected++;
 				selected %= 4;
@@ -73,18 +108,18 @@ void Interface::menu() {
 			case ARROW_UP:
 				if (selected == 0)
 					selected = 3;
-				else selected--;
+				else
+					selected--;
 				break;
 			case ESCAPE_KEY:
-				if (confirmOperation(exitDialog)) {
-					exit = true;
-				}
+				exit = true;
 				break;
 			default:
+				query += (char) input;
 				break;
 			}
 		}
-	} while (!exit);
+	} while (1);
 }
 
 void Interface::dispatchPerson(Person* person) {
@@ -113,7 +148,7 @@ void Interface::sortMenu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << FOUR_TABS << "[1] By person name" << endl;
+		cout << FOUR_TABS << "[1] By person name" << endl;
 		cout << FOUR_TABS << "[2] By person age" << endl;
 		cout << FOUR_TABS << "[3] By person type" << endl;
 		cout << FOUR_TABS << "[4] By reader borrows" << endl;
@@ -175,7 +210,7 @@ void Interface::displayMenu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << FOUR_TABS << "[1] Persons" << endl;
+		cout << FOUR_TABS << "[1] Persons" << endl;
 		cout << FOUR_TABS << "[2] Readers" << endl;
 		cout << FOUR_TABS << "[3] Employees" << endl;
 		cout << FOUR_TABS << "[4] Supervisors" << endl;
@@ -400,7 +435,7 @@ void Interface::manageBooks() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << FOUR_TABS << "[1] Create book\n";
+		cout << FOUR_TABS << "[1] Create book\n";
 		cout << FOUR_TABS << "[2] Edit book\n";
 		cout << FOUR_TABS << "[3] Remove book\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
@@ -462,7 +497,7 @@ void Interface::manageReaders() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << FOUR_TABS << "[1] Create reader\n";
+		cout << FOUR_TABS << "[1] Create reader\n";
 		cout << FOUR_TABS << "[2] Edit reader\n";
 		cout << FOUR_TABS << "[3] Remove reader\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
@@ -520,7 +555,7 @@ void Interface::manageEmployees(Person* supervisor) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << FOUR_TABS << "[1] Create employee\n";
+		cout << FOUR_TABS << "[1] Create employee\n";
 		cout << FOUR_TABS << "[2] Edit employee\n";
 		cout << FOUR_TABS << "[3] Remove employee\n";
 		cout << FOUR_TABS << "[4] Exit\n\n";
@@ -934,8 +969,8 @@ void Interface::editReader(Person* reader) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << THREE_TABS << "[1] Name: "
-				<< reader->getName().substr(0, 20) << endl;
+		cout << THREE_TABS << "[1] Name: " << reader->getName().substr(0, 20)
+				<< endl;
 		cout << THREE_TABS << "[2] Age: " << reader->getAge() << " years"
 				<< endl;
 		cout << THREE_TABS << "[3] Phone: " << reader->getPhone() << endl;
@@ -1040,8 +1075,8 @@ void Interface::editEmployee(Person* employee) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << THREE_TABS << "[1] Name: "
-				<< employee->getName().substr(0, 20) << endl;
+		cout << THREE_TABS << "[1] Name: " << employee->getName().substr(0, 20)
+				<< endl;
 		cout << THREE_TABS << "[2] Age: " << employee->getAge() << " years"
 				<< endl;
 		cout << THREE_TABS << "[3] Phone: " << employee->getPhone() << endl;
@@ -1270,9 +1305,9 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 		displayHeader(header);
 		cout << endl;
 		if (clear) {
-		  selected = 0;
-		  matches.clear();
-		  clear = false;
+			selected = 0;
+			matches.clear();
+			clear = false;
 		}
 		if (query.size() > 0 && matches.size() == 0) {
 			for (size_t i = 0; i < persons.size() && i < 10; i++)
@@ -1303,7 +1338,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 			case 0:
 				break;
 			case BACKSPACE_KEY:
-				if (query.length() > 0){
+				if (query.length() > 0) {
 					clear = true;
 					query.erase(query.end() - 1);
 				}
@@ -1350,7 +1385,6 @@ Book* Interface::searchBook(vector<Book*> books) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl;
 		matches.clear();
 		matches.reserve(4);
 		if (query.size() > 0) {
@@ -1476,7 +1510,7 @@ void Interface::displayHeader(string& header) {
 	cout << THREE_TABS << verticalBorder << string(dynSizeLeft, ' ') << header
 			<< string(dynSizeRight, ' ') << verticalBorder << endl;
 	cout << THREE_TABS << verticalBorder << FOUR_TABS << verticalBorder << endl;
-	cout << THREE_TABS << string(33, bottomBorder) << endl << endl;
+	cout << THREE_TABS << string(33, bottomBorder) << endl << endl << endl;
 }
 
 bool Interface::confirmOperation(string& query) {
@@ -1559,6 +1593,8 @@ char Interface::getKey() {
 			return ARROW_UP;
 		else if (key == 80)
 			return ARROW_DOWN;
+		else if (key == 83)
+			return DELETE_KEY;
 		else
 			return 0;
 	}
@@ -1591,17 +1627,17 @@ char Interface::getKey() {
 	fflush(stdout);
 	read(STDIN_FILENO,keys,4096);
 
-	if(keys[0] == 27 && keys[1] == 91){
-	  if(keys[2] == 51 && keys[3] == 126)
-	    keys[0] = 83;
-	  else if (keys[2] == 65)
-	    keys[0] = ARROW_UP;
-	  else if (keys[2] == 66)
-	    keys[0] = ARROW_DOWN;
-	  else keys[0] = 0;
+	if(keys[0] == 27 && keys[1] == 91) {
+		if(keys[2] == 51 && keys[3] == 126)
+		keys[0] = 83;
+		else if (keys[2] == 65)
+		keys[0] = ARROW_UP;
+		else if (keys[2] == 66)
+		keys[0] = ARROW_DOWN;
+		else keys[0] = 0;
 	}
-        else if (keys[0] == 27 && keys[2] != 0)
-	    keys[0] = 0;
+	else if (keys[0] == 27 && keys[2] != 0)
+	keys[0] = 0;
 
 	/*restore the old settings*/
 	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
@@ -1670,21 +1706,21 @@ void Interface::setColor(int color) {
 		case 2:
 		cout << "\033[0;32m";
 		break;
-	case 5:
-	  cout << "\033[1;41;1;37m";
-	  break;
-	case 3:
-	  cout << "\033[0;34m";
+		case 5:
+		cout << "\033[1;41;1;37m";
 		break;
-	case 6:
-	  cout << "\033[1;30;1;47m";
-	  break;
-	case 7:
-	  cout << "\033[1;30;1;47m";
-	  break;
-	case 8:
-	  cout <<"\033[42;30m";
-	  break;
+		case 3:
+		cout << "\033[0;34m";
+		break;
+		case 6:
+		cout << "\033[1;30;1;47m";
+		break;
+		case 7:
+		cout << "\033[1;30;1;47m";
+		break;
+		case 8:
+		cout <<"\033[42;30m";
+		break;
 		default:
 		break;
 	}

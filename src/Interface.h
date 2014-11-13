@@ -64,6 +64,7 @@ static const char progressBar = ':';
 #define ARROW_UP 29
 #define SPACE_BAR 32
 #define DELETE_KEY 83
+#define TAB_KEY 9
 
 class Interface {
 private:
