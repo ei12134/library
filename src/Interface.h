@@ -28,18 +28,27 @@ using namespace std;
 #define RETURN_KEY 10
 #endif
 
-#define GRAY -1
-#define WHITE 0
-#define RED 1
-#define GREEN 2
-#define BLUE 3
+#define FGGRAY_BGBLACK -1
+#define FGWHITE_BGBLACK 0
+#define FGRED_BGBLACK1
+#define FGGREEN_BGBLACK 2
+#define FGBLUE_BGBLACK 3
+#define FGGRAY_BGRED 4
+#define FGWHITE_BGRED 5
+#define FGBLACK_BGWHITE 6
+#define FGBLACK_BGGRAY 7
+#define FGBLACK_BGGREEN 8
 #define HALF_TAB string(4,' ')
 #define TAB "\t"
 #define TWO_TABS TAB TAB
 #define THREE_TABS TWO_TABS TAB
 #define FOUR_TABS TWO_TABS TWO_TABS
+#define FIVE_TABS FOUR_TABS TAB
 #define MAX_LINES 11
 #define ESCAPE_KEY 27
+#define ARROW_DOWN 28
+#define ARROW_UP 29
+#define SPACE_BAR 32
 #define DELETE_KEY 83
 
 static const char topBorder = 220;
@@ -93,8 +102,10 @@ public:
 	template<typename T>
 	void genericDisplay(vector<T> vec, string listName, string labels);
 
-	inline string centerString(const string &s);
+	inline void centerString(const size_t &size);
 
+	void colorMsg(const string &tabs, const string &s, const int &color,
+			const int &newLines);
 	void infoMsg(const string& m);
 	void errorMsg(const string& m);
 

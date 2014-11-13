@@ -3,14 +3,15 @@
 Interface::Interface() {
 #if defined(_WIN32) || defined (_WIN64)
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTitleA("AEDA Library");
 #endif
-	setColor(GREEN);
+	setColor(FGGREEN_BGBLACK);
 	menu();
 }
 
 Interface::~Interface() {
 #if defined(_WIN32) || defined(_WIN64)
-	setColor(GRAY);
+	setColor(FGGRAY_BGBLACK);
 #else
 	cout << "\033[0m";
 #endif
@@ -23,46 +24,69 @@ void Interface::menu() {
 	string noSupervisors = "Create supervisor?\n\t\t\t      ";
 	string header = "Library";
 	bool exit = false;
-	vector<Person*> persons = library.getPersons();
+	int selected = 0;
+	int colors[4] = { FGBLACK_BGGREEN, FGGREEN_BGBLACK, FGGREEN_BGBLACK,
+	FGGREEN_BGBLACK };
+	vector<string> menuStr;
+	menuStr.push_back("Login");
+	menuStr.push_back("Sort");
+	menuStr.push_back("Display");
+	menuStr.push_back("Quit");
+	string spacing = string((80 - menuStr[2].size()) / 2, ' ');
 
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl << endl << FOUR_TABS << "[1] Login" << endl;
-		cout << FOUR_TABS << "[2] Sort" << endl;
-		cout << FOUR_TABS << "[3] Display" << endl << endl;
-		cout << FOUR_TABS << "[4] Quit" << endl << endl << endl << THREE_TABS
-				<< HALF_TAB << PROMPT_SYMBOL;
+		cout << endl << endl;
+		for (size_t i = 0; i < menuStr.size(); i++)
+			colorMsg(spacing, menuStr[i], colors[i], 1);
+		cout << endl << endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
-		switch (input) {
-		case '1':
-			library.sortByName();
-			if (library.getSupervisors().size() != 0)
-				dispatchPerson(searchPerson(library.getPersons()));
-			else {
-				if (confirmOperation(noSupervisors))
+
+		if (input == SPACE_BAR || input == RETURN_KEY) {
+			switch (selected) {
+			case 0:
+				library.sortByName();
+				if (library.getSupervisors().size() != 0)
+					dispatchPerson(searchPerson(library.getPersons()));
+				else if (confirmOperation(noSupervisors))
 					createEmployee();
+				break;
+			case 1:
+				sortMenu();
+				break;
+			case 2:
+				displayMenu();
+				break;
+			case 3:
+				if (confirmOperation(exitDialog))
+					exit = true;
+				break;
+			default:
+				break;
 			}
-			break;
-		case '2':
-			sortMenu();
-			break;
-		case '3':
-			displayMenu();
-			break;
-		case '4':
-			if (confirmOperation(exitDialog)) {
-				exit = true;
+		} else {
+			switch (input) {
+			case ARROW_DOWN:
+				colors[selected++] = FGGREEN_BGBLACK;
+				selected %= 4;
+				colors[selected] = FGBLACK_BGGREEN;
+				break;
+			case ARROW_UP:
+				colors[selected--] = FGGREEN_BGBLACK;
+				if (selected < 0)
+					selected = 3;
+				colors[selected] = FGBLACK_BGGREEN;
+				break;
+			case ESCAPE_KEY:
+				if (confirmOperation(exitDialog)) {
+					exit = true;
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		case ESCAPE_KEY:
-			if (confirmOperation(exitDialog)) {
-				exit = true;
-			}
-			break;
-		default:
-			break;
 		}
 	} while (!exit);
 }
@@ -207,7 +231,7 @@ void Interface::readerMenu(Person *reader) {
 		header = "Reader   " + reader->getName();
 		clearScreen();
 		displayHeader(header);
-		setColor(WHITE);
+		setColor(FGWHITE_BGBLACK);
 		cout << THREE_TABS << HALF_TAB << "Age: " << reader->getAge() << endl;
 		cout << THREE_TABS << HALF_TAB << "Card: " << reader->getCard() << endl;
 		cout << THREE_TABS << HALF_TAB << "Phone: " << reader->getPhone()
@@ -260,7 +284,7 @@ void Interface::employeeMenu(Person* employee) {
 		header = "Employee   " + employee->getName();
 		clearScreen();
 		displayHeader(header);
-		setColor(WHITE);
+		setColor(FGWHITE_BGBLACK);
 		cout << THREE_TABS << HALF_TAB << "Age: " << employee->getAge() << endl;
 		cout << THREE_TABS << HALF_TAB << "Nif: " << employee->getNif() << endl;
 		cout << THREE_TABS << HALF_TAB << "Phone: " << employee->getPhone()
@@ -313,7 +337,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 		header = "Supervisor   " + supervisor->getName();
 		clearScreen();
 		displayHeader(header);
-		setColor(WHITE);
+		setColor(FGWHITE_BGBLACK);
 		cout << THREE_TABS << HALF_TAB << "Age: " << supervisor->getAge()
 				<< " years" << endl;
 		cout << THREE_TABS << HALF_TAB << "Nif: " << supervisor->getNif()
@@ -410,7 +434,8 @@ void Interface::manageBooks() {
 			break;
 		case '3':
 			book = searchBook(library.getBooks());
-			if (book != NULL && !book->getBorrowed() && confirmOperation(confirmRemove)) {
+			if (book != NULL && !book->getBorrowed()
+					&& confirmOperation(confirmRemove)) {
 				if (library.removeBook(book)) {
 					infMsg = "Book removed successfully";
 					library.saveBooks();
@@ -1239,115 +1264,82 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 	string query;
 	string header = "Login";
 	bool exit = false;
+	bool clear = false;
 	int key;
+	int selected = 0;
 	vector<Person*> matches;
+
 	do {
 		clearScreen();
 		displayHeader(header);
 		cout << endl;
-		matches.clear();
-		matches.reserve(9);
-		if (query.size() > 0) {
-			for (size_t i = 0, z = 1; i < persons.size() && z < 10; i++) {
-				string name = persons[i]->getName();
-				if (partialMatchQuery(query, name)) {
-					cout << THREE_TABS << "[" << z++ << "] "
-							<< persons[i]->getName() << TAB;
-
-					if (persons[i]->getName().size() < 12)
-						cout << TAB;
-					setColor(WHITE);
-					cout << persons[i]->printType() << endl;
-					resetColor();
+		if (clear) {
+			matches.clear();
+			clear = false;
+		}
+		if (query.size() > 0 && matches.size() == 0) {
+			for (size_t i = 0; i < persons.size() && i < 10; i++)
+				if (partialMatchQuery(query, persons[i]->getName()))
 					matches.push_back(persons[i]);
-				}
-			}
 		}
 
+		int z = 0;
+		for (size_t i = 0; i < matches.size(); i++) {
+			colorMsg(THREE_TABS, matches[i]->getName(),
+					(selected == z ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 0);
+			cout << TAB;
+			if (matches[i]->getName().size() < 16)
+				cout << TAB;
+			colorMsg("", matches[i]->printType(), FGWHITE_BGBLACK, 1);
+			z++;
+		}
 		cout << endl << TWO_TABS << TAB << "Enter person name [ESC exits]\n\n"
 				<< TWO_TABS << TAB << PROMPT_SYMBOL << query;
 
 		key = getKey();
 
-		switch (key) {
-		case 0:
-			break;
-		case BACKSPACE_KEY:
-			if (query.length() > 0)
-				query.erase(query.end() - 1);
-			break;
-		case '1':
-			if (matches.size() > 0) {
-				exit = true;
-				return matches[0];
-			}
-			break;
-		case '2':
-			if (matches.size() > 1) {
-				exit = true;
-				return matches[1];
-			}
-			break;
-		case '3':
-			if (matches.size() > 2) {
-				exit = true;
-				return matches[2];
-			}
-			break;
+		if (key == SPACE_BAR || key == RETURN_KEY)
+			return persons[selected];
+		else
 
-		case '4':
-			if (matches.size() > 3) {
+			switch (key) {
+			case 0:
+				break;
+			case BACKSPACE_KEY:
+				if (query.length() > 0){
+					clear = true;
+					query.erase(query.end() - 1);
+				}
+				break;
+			case ESCAPE_KEY:
 				exit = true;
-				return matches[3];
+				break;
+			case DELETE_KEY:
+				clear = true;
+				query.clear();
+				break;
+			case ARROW_DOWN:
+				if (matches.size() == 0)
+					selected = 0;
+				else {
+					selected++;
+					selected %= matches.size();
+				}
+				break;
+			case ARROW_UP:
+				if (matches.size() == 0)
+					selected = 0;
+				else {
+					selected--;
+					if (selected < 0)
+						selected = matches.size() - 1;
+				}
+				break;
+			default:
+				clear = true;
+				query += char(key);
+				break;
 			}
-			break;
-
-		case '5':
-			if (matches.size() > 4) {
-				exit = true;
-				return matches[4];
-			}
-			break;
-		case '6':
-			if (matches.size() > 5) {
-				exit = true;
-				return matches[5];
-			}
-			break;
-		case '7':
-			if (matches.size() > 6) {
-				exit = true;
-				return matches[6];
-			}
-			break;
-		case '8':
-			if (matches.size() > 7) {
-				exit = true;
-				return matches[7];
-			}
-			break;
-		case '9':
-			if (matches.size() > 8) {
-				exit = true;
-				return matches[8];
-			}
-			break;
-		case RETURN_KEY:
-			if (matches.size() > 0) {
-				exit = true;
-				return matches[0];
-			}
-			break;
-		case ESCAPE_KEY:
-			exit = true;
-			break;
-		case DELETE_KEY:
-			query.clear();
-			break;
-		default:
-			query += char(key);
-			break;
-		}
 	} while (!exit);
 	return NULL;
 }
@@ -1375,7 +1367,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 				if (partialMatchQuery(query, title) || matchAuthor) {
 					cout << THREE_TABS << "[" << z++ << "] "
 							<< books[i]->getTitle().substr(0, 34) << " ";
-					setColor(WHITE);
+					setColor(FGWHITE_BGBLACK);
 					cout
 							<< (books[i]->getBorrowed() == 1 ?
 									"[Borrowed]" : "[Available]") << endl;
@@ -1492,7 +1484,7 @@ void Interface::displayHeader(string& header) {
 }
 
 bool Interface::confirmOperation(string& query) {
-	setColor(WHITE);
+	setColor(FGWHITE_BGBLACK);
 	cout << query << " [y] to confirm";
 	char answer = getKey();
 	resetColor();
@@ -1536,7 +1528,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		}
 
 		while (vLimit < MAX_LINES && i < vecSize && !done) {
-			setColor(WHITE);
+			setColor(FGWHITE_BGBLACK);
 			cout << " " << vec[i]->print();
 			resetColor();
 			cout << endl;
@@ -1563,7 +1555,19 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 
 char Interface::getKey() {
 #ifdef _WIN32
-	return getch();
+	unsigned int key;
+	key = getch();
+	if (key == 224) {
+		key = getch();
+		if (key == 72)
+			return ARROW_UP;
+		else if (key == 80)
+			return ARROW_DOWN;
+		else
+			return 0;
+	}
+	return key;
+
 #elif _WIN64
 	return getch();
 #else
@@ -1626,6 +1630,28 @@ void Interface::setColor(int color) {
 		SetConsoleTextAttribute(hConsole,
 		FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 		break;
+	case 4:
+		SetConsoleTextAttribute(hConsole,
+		FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | BACKGROUND_RED);
+		break;
+	case 5:
+		SetConsoleTextAttribute(hConsole,
+				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+						| FOREGROUND_INTENSITY | BACKGROUND_RED);
+		break;
+	case 6:
+		SetConsoleTextAttribute(hConsole,
+				BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE
+						| BACKGROUND_INTENSITY);
+		break;
+	case 7:
+		SetConsoleTextAttribute(hConsole,
+		BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
+		break;
+	case 8:
+		SetConsoleTextAttribute(hConsole,
+		BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+		break;
 	default:
 		break;
 	}
@@ -1654,7 +1680,7 @@ void Interface::setColor(int color) {
 void Interface::resetColor() {
 #if defined(_WIN32) || defined(_WIN64)
 	SetConsoleTextAttribute(hConsole,
-	FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	FOREGROUND_GREEN | FOREGROUND_INTENSITY | 0 | 0 | 0);
 #else
 	cout << "\033[0;32m";
 #endif
@@ -1678,20 +1704,31 @@ vector<string> Interface::editAuthors() {
 	return authors;
 }
 
-inline string Interface::centerString(const string &s) {
-	int spacing = (int) ((80 - s.size()) / 2);
-	return string(spacing, ' ') + s;
+inline void Interface::centerString(const size_t &size) {
+	int spacing = (int) ((80 - size) / 2);
+	cout << string(spacing, ' ');
+}
+
+void Interface::colorMsg(const string &tabs, const string &s, const int &color,
+		const int &newLines) {
+	cout << tabs;
+	setColor(color);
+	cout << s;
+	resetColor();
+	cout << string("\n", newLines);
 }
 
 void Interface::infoMsg(const string& m) {
-	setColor(WHITE);
-	cout << centerString("* " + m + " *");
+	centerString(m.size() + 2);
+	setColor(FGBLACK_BGGRAY);
+	cout << " " + m + " ";
 	resetColor();
 }
 
 void Interface::errorMsg(const string& m) {
-	setColor(RED);
-	cout << centerString(m + " !");
+	centerString(m.size() + 2);
+	setColor(FGWHITE_BGRED);
+	cout << " " + m + " ";
 	resetColor();
 }
 
