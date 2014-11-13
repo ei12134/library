@@ -24,10 +24,9 @@ void Interface::menu() {
 	bool tab = false;
 	vector<string> menuStr;
 	menuStr.push_back("Login");
-	menuStr.push_back("Sort");
 	menuStr.push_back("Display");
 	menuStr.push_back("Quit");
-	string spacing = string((80 - menuStr[2].size()) / 2, ' ');
+	string spacing = string((80 - menuStr[1].size()) / 2, ' ');
 	string exitDialog = "Quit?";
 	string noSupervisors = "Create supervisor?\n\t\t\t      ";
 	string header = "Library";
@@ -49,12 +48,12 @@ void Interface::menu() {
 
 		for (size_t i = 0; i < menuStr.size(); i++)
 			colorMsg(spacing, menuStr[i],
-					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 1);
-		cout << endl << endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
+					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 2);
+		cout << endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 		if (exit)
 			if (confirmOperation(exitDialog))
 				break;
-			else{
+			else {
 				input = 0;
 				exit = false;
 			}
@@ -75,13 +74,9 @@ void Interface::menu() {
 				break;
 			case 1:
 				query.clear();
-				sortMenu();
-				break;
-			case 2:
-				query.clear();
 				displayMenu();
 				break;
-			case 3:
+			case 2:
 				exit = true;
 				break;
 			default:
@@ -140,73 +135,34 @@ void Interface::dispatchPerson(Person* person) {
 	}
 }
 
-void Interface::sortMenu() {
-	char input;
-	bool exit = false;
-	string header = "Sort";
-	vector<Person*> persons;
-	do {
-		clearScreen();
-		displayHeader(header);
-		cout << FOUR_TABS << "[1] By person name" << endl;
-		cout << FOUR_TABS << "[2] By person age" << endl;
-		cout << FOUR_TABS << "[3] By person type" << endl;
-		cout << FOUR_TABS << "[4] By reader borrows" << endl;
-		cout << FOUR_TABS << "[5] By book title" << endl;
-		cout << FOUR_TABS << "[6] By book ISBN" << endl << endl;
-		cout << FOUR_TABS << "[7] Exit to menu" << endl << endl;
-		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
-
-		input = getKey();
-		switch (input) {
-		case '1':
-			library.sortByName();
-			genericDisplay(library.getPersons(), "Persons",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
-			break;
-		case '2':
-			library.sortByAge();
-			genericDisplay(library.getPersons(), "Persons",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
-			break;
-		case '3':
-			library.sortByType();
-			genericDisplay(library.getPersons(), "Persons",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
-			break;
-		case '4':
-			library.sortByBorrow();
-			genericDisplay(library.getReaders(), "Readers",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard");
-			break;
-
-		case '5':
-			library.sortByTitle();
-			genericDisplay(library.getBooks(), "Books",
-					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
-			break;
-		case '6':
-			library.sortByISBN();
-			genericDisplay(library.getBooks(), "Books",
-					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
-			break;
-		case '7':
-			exit = true;
-			break;
-		case ESCAPE_KEY:
-			exit = true;
-			break;
-		default:
-			break;
-		}
-	} while (!exit);
-}
-
 void Interface::displayMenu() {
 	char input;
 	bool exit = false;
 	string header = "Display";
 	vector<Person*> persons;
+
+	string persStr[] = { "type", "name", "age" };
+	LibraryGetFn persGetFunc = &Library::getPersons;
+	LibraryMemFn persFuncs[] = { &Library::sortByType, &Library::sortByName,
+			&Library::sortByAge };
+
+	string readerStr[] = { "name", "age", "borrows" };
+	LibraryGetFn rdrGetFunc = &Library::getReaders;
+	LibraryMemFn readerFuncs[] = { &Library::sortByName, &Library::sortByAge,
+			&Library::sortByBorrow };
+
+	string emplStr[] = { "name", "age" };
+	LibraryGetFn emplGetFunc = &Library::getEmployees;
+	LibraryMemFn emplFuncs[] = { &Library::sortByName, &Library::sortByAge };
+
+	string supStr[] = { "name", "age" };
+	LibraryGetFn supGetFunc = &Library::getSupervisors;
+	LibraryMemFn supFuncs[] = { &Library::sortByName, &Library::sortByAge };
+
+	string booksStr[] = { "title", "ISBN" };
+	LibraryGetBkFn booksGetFunc = &Library::getBooks;
+	LibraryMemFn booksFuncs[] = { &Library::sortByTitle, &Library::sortByISBN };
+
 	do {
 		clearScreen();
 		displayHeader(header);
@@ -221,24 +177,29 @@ void Interface::displayMenu() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			genericDisplay(library.getPersons(), "Persons",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]");
+			personsDisplayPtr(persGetFunc, "Persons",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]", persStr,
+					persFuncs, 3);
 			break;
 		case '2':
-			genericDisplay(library.getReaders(), "Readers",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard");
+			personsDisplayPtr(rdrGetFunc, "Readers",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard", readerStr,
+					readerFuncs, 3);
 			break;
 		case '3':
-			genericDisplay(library.getEmployees(), "Employees",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
+			personsDisplayPtr(emplGetFunc, "Employees",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif", emplStr,
+					emplFuncs, 2);
 			break;
 		case '4':
-			genericDisplay(library.getSupervisors(), "Supervisors",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
+			personsDisplayPtr(supGetFunc, "Supervisors",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif", supStr, supFuncs,
+					2);
 			break;
 		case '5':
-			genericDisplay(library.getBooks(), "Books",
-					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus");
+			booksDisplayPtr(booksGetFunc, "Books",
+					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus", booksStr,
+					booksFuncs, 2);
 			break;
 		case '6':
 			exit = true;
@@ -1525,6 +1486,176 @@ bool Interface::confirmOperation(string& query) {
 		return false;
 }
 
+void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,
+		string labels, string readerStr[], LibraryMemFn funcs[],
+		size_t length) {
+
+	CALL_MEMBER_FN(library,funcs[0])();
+	vector<Person*> vec = CALL_MEMBER_FN(library,getFunc)();
+	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
+	float pLimit;
+	bool done = false;
+	size_t sortFunc = 0;
+	string vLimitMsg =
+			" [ESC] to interrupt [s] to sort or any other key to continue...";
+	char ch;
+
+	if (vecSize == 0)
+		pLimit = 1;
+	else
+		pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
+	while (1) {
+		do {
+			vLimit = 0;
+			progress = ceil((13.0 / pLimit) * pCount);
+			clearScreen();
+			displayHeader(listName);
+			cout << TWO_TABS << ("Sorted by " + readerStr[sortFunc])
+					<< (readerStr[sortFunc].size() > 5 ? TAB : TWO_TABS)
+					<< "Page " << pCount << " of " << pLimit << " ["
+					<< string(progress, progressBar)
+					<< string((13 - progress), ' ') << "]" << endl;
+			cout << " " << string(77, hSeparator) << " " << endl;
+			cout << " " << labels << endl;
+			cout << " " << string(77, hSeparator) << " " << endl;
+
+			if (vecSize == 0) {
+				string nothing = "Nothing to show here :(";
+				cout << string(5, '\n');
+				errorMsg(nothing);
+				cout << string(6, '\n');
+			}
+
+			while (vLimit < MAX_LINES && i < vecSize && !done) {
+				setColor(FGWHITE_BGBLACK);
+				cout << " " << vec[i]->print();
+				resetColor();
+				cout << endl;
+				i++;
+				vLimit++;
+
+				if (vLimit == MAX_LINES && i <= vecSize) {
+					pCount++;
+					cout << " " << string(77, hSeparator) << endl << vLimitMsg;
+					ch = getKey();
+					if (ch == ESCAPE_KEY)
+						done = true;
+					else if (ch == 's') {
+						sortFunc++;
+						sortFunc %= length;
+						CALL_MEMBER_FN(library,funcs[sortFunc])();
+						clearScreen();
+						pCount = 1, i = 0, progress = 0;
+						vec = CALL_MEMBER_FN(library,getFunc)();
+					}
+				}
+			}
+			if (vecSize != 0)
+				cout << string((MAX_LINES - vLimit), '\n');
+		} while (i < vecSize && !done);
+		if (done)
+			break;
+		else if (i == vecSize) {
+			cout << " " << string(77, hSeparator) << endl << vLimitMsg;
+			ch = getKey();
+			if (ch == 's') {
+				sortFunc++;
+				sortFunc %= length;
+				clearScreen();
+				CALL_MEMBER_FN(library,funcs[sortFunc])();
+				pCount = 1, i = 0, progress = 0;
+				vec = CALL_MEMBER_FN(library,getFunc)();
+			} else
+				break;
+		}
+	}
+}
+
+void Interface::booksDisplayPtr(LibraryGetBkFn getFunc, string listName,
+		string labels, string readerStr[], LibraryMemFn funcs[],
+		size_t length) {
+
+	CALL_MEMBER_FN(library,funcs[0])();
+	vector<Book*> vec = CALL_MEMBER_FN(library,getFunc)();
+	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
+	float pLimit;
+	bool done = false;
+	size_t sortFunc = 0;
+	string vLimitMsg =
+			" [ESC] to interrupt [s] to sort or any other key to continue...";
+	char ch;
+
+	if (vecSize == 0)
+		pLimit = 1;
+	else
+		pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
+	while (1) {
+		do {
+			vLimit = 0;
+			progress = ceil((13.0 / pLimit) * pCount);
+			clearScreen();
+			displayHeader(listName);
+			cout << TWO_TABS << ("Sorted by " + readerStr[sortFunc])
+					<< (readerStr[sortFunc].size() > 5 ? TAB : TWO_TABS)
+					<< "Page " << pCount << " of " << pLimit << " ["
+					<< string(progress, progressBar)
+					<< string((13 - progress), ' ') << "]" << endl;
+			cout << " " << string(77, hSeparator) << " " << endl;
+			cout << " " << labels << endl;
+			cout << " " << string(77, hSeparator) << " " << endl;
+
+			if (vecSize == 0) {
+				string nothing = "Nothing to show here :(";
+				cout << string(5, '\n');
+				errorMsg(nothing);
+				cout << string(6, '\n');
+			}
+
+			while (vLimit < MAX_LINES && i < vecSize && !done) {
+				setColor(FGWHITE_BGBLACK);
+				cout << " " << vec[i]->print();
+				resetColor();
+				cout << endl;
+				i++;
+				vLimit++;
+
+				if (vLimit == MAX_LINES && i <= vecSize) {
+					pCount++;
+					cout << " " << string(77, hSeparator) << endl << vLimitMsg;
+					ch = getKey();
+					if (ch == ESCAPE_KEY)
+						done = true;
+					else if (ch == 's') {
+						sortFunc++;
+						sortFunc %= length;
+						CALL_MEMBER_FN(library,funcs[sortFunc])();
+						clearScreen();
+						pCount = 1, i = 0, progress = 0;
+						vec = CALL_MEMBER_FN(library,getFunc)();
+					}
+				}
+			}
+			if (vecSize != 0)
+				cout << string((MAX_LINES - vLimit), '\n');
+		} while (i < vecSize && !done);
+		if (done)
+			break;
+		else if (i == vecSize) {
+			cout << " " << string(77, hSeparator) << endl << vLimitMsg;
+			ch = getKey();
+			if (ch == 's') {
+				sortFunc++;
+				sortFunc %= length;
+				clearScreen();
+				CALL_MEMBER_FN(library,funcs[sortFunc])();
+				pCount = 1, i = 0, progress = 0;
+				vec = CALL_MEMBER_FN(library,getFunc)();
+			} else
+				break;
+		}
+	}
+}
+
 template<typename T>
 void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
@@ -1766,7 +1897,7 @@ void Interface::colorMsg(const string &tabs, const string &s, const int &color,
 	setColor(color);
 	cout << s;
 	resetColor();
-	cout << string("\n", newLines);
+	cout << string(newLines, '\n');
 }
 
 void Interface::infoMsg(const string& m) {

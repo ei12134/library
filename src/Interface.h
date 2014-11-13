@@ -66,6 +66,11 @@ static const char progressBar = ':';
 #define DELETE_KEY 83
 #define TAB_KEY 9
 
+typedef vector<Person*> (Library::*LibraryGetFn)() const;
+typedef vector<Book*> (Library::*LibraryGetBkFn)() const;
+typedef void (Library::*LibraryMemFn)();
+#define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))
+
 class Interface {
 private:
 	Library library;
@@ -78,7 +83,6 @@ public:
 	~Interface();
 
 	void menu();
-	void sortMenu();
 	void displayMenu();
 
 	void clearScreen();
@@ -107,6 +111,12 @@ public:
 
 	void displayHeader(string& header);
 	bool confirmOperation(string& query);
+
+	void personsDisplayPtr(LibraryGetFn getFunc, string listName, string labels,
+			string readerStr[], LibraryMemFn funcs[], size_t length);
+	void booksDisplayPtr(LibraryGetBkFn getFunc, string listName,
+			string labels, string readerStr[], LibraryMemFn funcs[],
+			size_t length);
 
 	template<typename T>
 	void genericDisplay(vector<T> vec, string listName, string labels);
