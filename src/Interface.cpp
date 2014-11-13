@@ -49,7 +49,7 @@ void Interface::menu() {
 		for (size_t i = 0; i < menuStr.size(); i++)
 			colorMsg(spacing, menuStr[i],
 					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 2);
-		cout << endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
+		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 		if (exit)
 			if (confirmOperation(exitDialog))
 				break;
@@ -1466,12 +1466,15 @@ void Interface::displayHeader(string& header) {
 
 	if (dynSizeLeft + dynSizeRight + size < 31)
 		dynSizeRight++;
-	cout << THREE_TABS << string(33, topBorder) << endl;
-	cout << THREE_TABS << verticalBorder << FOUR_TABS << verticalBorder << endl;
-	cout << THREE_TABS << verticalBorder << string(dynSizeLeft, ' ') << header
-			<< string(dynSizeRight, ' ') << verticalBorder << endl;
-	cout << THREE_TABS << verticalBorder << FOUR_TABS << verticalBorder << endl;
-	cout << THREE_TABS << string(33, bottomBorder) << endl << endl << endl;
+	colorMsg(THREE_TABS, string(35,' '), FGBLACK_BGGREEN, 1);
+	colorMsg(THREE_TABS, "  ", FGBLACK_BGGREEN, 0);
+	colorMsg(string(31,' '), "  ", FGBLACK_BGGREEN, 1);
+	colorMsg(THREE_TABS, "  ", FGBLACK_BGGREEN, 0);
+       cout << string(dynSizeLeft, ' ') << header <<  string(dynSizeRight, ' ');
+       colorMsg("", "  ", FGBLACK_BGGREEN, 1);
+       colorMsg(THREE_TABS, "  ", FGBLACK_BGGREEN, 0);
+       colorMsg(string(31,' '), "  ", FGBLACK_BGGREEN, 1);
+       colorMsg(THREE_TABS, string(35,' '), FGBLACK_BGGREEN, 2);
 }
 
 bool Interface::confirmOperation(string& query) {
