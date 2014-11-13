@@ -24,9 +24,7 @@ void Interface::menu() {
 	string noSupervisors = "Create supervisor?\n\t\t\t      ";
 	string header = "Library";
 	bool exit = false;
-	int selected = 0;
-	int colors[4] = { FGBLACK_BGGREEN, FGGREEN_BGBLACK, FGGREEN_BGBLACK,
-	FGGREEN_BGBLACK };
+	size_t selected = 0;
 	vector<string> menuStr;
 	menuStr.push_back("Login");
 	menuStr.push_back("Sort");
@@ -39,7 +37,7 @@ void Interface::menu() {
 		displayHeader(header);
 		cout << endl << endl;
 		for (size_t i = 0; i < menuStr.size(); i++)
-			colorMsg(spacing, menuStr[i], colors[i], 1);
+			colorMsg(spacing, menuStr[i], (selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 1);
 		cout << endl << endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
@@ -69,15 +67,13 @@ void Interface::menu() {
 		} else {
 			switch (input) {
 			case ARROW_DOWN:
-				colors[selected++] = FGGREEN_BGBLACK;
+				selected++;
 				selected %= 4;
-				colors[selected] = FGBLACK_BGGREEN;
 				break;
 			case ARROW_UP:
-				colors[selected--] = FGGREEN_BGBLACK;
-				if (selected < 0)
+				if (selected == 0)
 					selected = 3;
-				colors[selected] = FGBLACK_BGGREEN;
+				else selected--;
 				break;
 			case ESCAPE_KEY:
 				if (confirmOperation(exitDialog)) {
@@ -1274,8 +1270,9 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 		displayHeader(header);
 		cout << endl;
 		if (clear) {
-			matches.clear();
-			clear = false;
+		  selected = 0;
+		  matches.clear();
+		  clear = false;
 		}
 		if (query.size() > 0 && matches.size() == 0) {
 			for (size_t i = 0; i < persons.size() && i < 10; i++)
@@ -1299,7 +1296,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 		key = getKey();
 
 		if (key == SPACE_BAR || key == RETURN_KEY)
-			return persons[selected];
+			return matches[selected];
 		else
 
 			switch (key) {
@@ -1474,7 +1471,6 @@ void Interface::displayHeader(string& header) {
 
 	if (dynSizeLeft + dynSizeRight + size < 31)
 		dynSizeRight++;
-
 	cout << THREE_TABS << string(33, topBorder) << endl;
 	cout << THREE_TABS << verticalBorder << FOUR_TABS << verticalBorder << endl;
 	cout << THREE_TABS << verticalBorder << string(dynSizeLeft, ' ') << header
@@ -1595,10 +1591,17 @@ char Interface::getKey() {
 	fflush(stdout);
 	read(STDIN_FILENO,keys,4096);
 
-	if(keys[0] == 27 && keys[1] == 91 && keys[2] == 51 && keys[3] == 126)
-	keys[0] = 83;
-	else if (keys[0] == 27 && keys[2] != 0)
-	keys[0] = 0;
+	if(keys[0] == 27 && keys[1] == 91){
+	  if(keys[2] == 51 && keys[3] == 126)
+	    keys[0] = 83;
+	  else if (keys[2] == 65)
+	    keys[0] = ARROW_UP;
+	  else if (keys[2] == 66)
+	    keys[0] = ARROW_DOWN;
+	  else keys[0] = 0;
+	}
+        else if (keys[0] == 27 && keys[2] != 0)
+	    keys[0] = 0;
 
 	/*restore the old settings*/
 	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
@@ -1667,9 +1670,21 @@ void Interface::setColor(int color) {
 		case 2:
 		cout << "\033[0;32m";
 		break;
-		case 3:
-		cout << "\033[0;34m";
+	case 5:
+	  cout << "\033[1;41;1;37m";
+	  break;
+	case 3:
+	  cout << "\033[0;34m";
 		break;
+	case 6:
+	  cout << "\033[1;30;1;47m";
+	  break;
+	case 7:
+	  cout << "\033[1;30;1;47m";
+	  break;
+	case 8:
+	  cout <<"\033[42;30m";
+	  break;
 		default:
 		break;
 	}

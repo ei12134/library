@@ -19,6 +19,13 @@ using namespace std;
 #include <windows.h>
 #include <conio.h>
 #define PROMPT_SYMBOL "> "
+
+static const char topBorder = 220;
+static const char bottomBorder = 223;
+static const char verticalBorder = 219;
+static const char hSeparator = 196;
+static const char progressBar = 254;
+
 #else // Other OS's
 #include <termios.h>    //termios, TCSANOW, ECHO, ICANON
 #include <unistd.h>     //STDIN_FILENO
@@ -26,6 +33,13 @@ using namespace std;
 #define CLEARSCREEN "clear"
 #define BACKSPACE_KEY 127
 #define RETURN_KEY 10
+
+static const char topBorder = '#';
+static const char bottomBorder = '#';
+static const char verticalBorder = '#';
+static const char hSeparator = '#';
+static const char progressBar = ':';
+
 #endif
 
 #define FGGRAY_BGBLACK -1
@@ -50,12 +64,6 @@ using namespace std;
 #define ARROW_UP 29
 #define SPACE_BAR 32
 #define DELETE_KEY 83
-
-static const char topBorder = 220;
-static const char bottomBorder = 223;
-static const char verticalBorder = 219;
-static const char hSeparator = 196;
-static const char progressBar = 254;
 
 class Interface {
 private:
