@@ -1272,12 +1272,12 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 			clear = false;
 		}
 		if (query.size() > 0 && matches.size() == 0) {
-			for (size_t i = 0; i < persons.size() && i < 10; i++)
+			for (size_t i = 0; i < persons.size(); i++)
 				if (partialMatchQuery(query, persons[i]->getName()))
 					matches.push_back(persons[i]);
 		}
 
-		for (size_t i = 0; i < matches.size(); i++) {
+		for (size_t i = 0; i < matches.size() && i < 10; i++) {
 			colorMsg(THREE_TABS, matches[i]->getName(),
 					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 0);
 			cout << TAB;

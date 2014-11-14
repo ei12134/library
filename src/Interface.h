@@ -31,7 +31,7 @@ static const char progressBar = 254;
 #define BACKSPACE_KEY 127
 #define RETURN_KEY 10
 static const string hSeparator = "\u2501";
-static const string progressBar = "\u2578";
+static const string progressBar = "\u25A0";
 
 #endif
 
