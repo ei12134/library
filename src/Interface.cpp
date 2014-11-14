@@ -3,7 +3,8 @@
 Interface::Interface() {
 #if defined(_WIN32) || defined (_WIN64)
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTitleA("AEDA Library");
+	hConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
+	SetConsoleTitleA("Library");
 #endif
 	setColor(FGGREEN_BGBLACK);
 	menu();
@@ -63,7 +64,11 @@ void Interface::menu() {
 			input = getKey();
 		}
 
-		if (input == SPACE_BAR || input == RETURN_KEY) {
+		switch (input) {
+		case 0:
+			break;
+
+		case RETURN_KEY:
 			switch (selected) {
 			case 0:
 				query.clear();
@@ -83,37 +88,34 @@ void Interface::menu() {
 			default:
 				break;
 			}
-		} else {
-			switch (input) {
-			case 0:
-				break;
-			case TAB_KEY:
-				tab = true;
-				break;
-			case BACKSPACE_KEY:
-				if (query.length() > 0)
-					query.erase(query.end() - 1);
-				break;
-			case DELETE_KEY:
-				query.clear();
-				break;
-			case ARROW_DOWN:
-				selected++;
-				selected %= 4;
-				break;
-			case ARROW_UP:
-				if (selected == 0)
-					selected = 3;
-				else
-					selected--;
-				break;
-			case ESCAPE_KEY:
-				exit = true;
-				break;
-			default:
-				query += (char) input;
-				break;
-			}
+			break;
+
+		case TAB_KEY:
+			tab = true;
+			break;
+		case BACKSPACE_KEY:
+			if (query.length() > 0)
+				query.erase(query.end() - 1);
+			break;
+		case DELETE_KEY:
+			query.clear();
+			break;
+		case ARROW_DOWN:
+			selected++;
+			selected %= menuStr.size();
+			break;
+		case ARROW_UP:
+			if (selected == 0)
+				selected = menuStr.size() - 1;
+			else
+				selected--;
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		default:
+			query += (char) input;
+			break;
 		}
 	} while (1);
 }
@@ -1259,7 +1261,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 	bool exit = false;
 	bool clear = false;
 	int key;
-	size_t selected = 0;
+	size_t selected = 0, vLimit = 10;
 	vector<Person*> matches;
 
 	do {
@@ -1277,7 +1279,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 					matches.push_back(persons[i]);
 		}
 
-		for (size_t i = 0; i < matches.size() && i < 10; i++) {
+		for (size_t i = 0; i < matches.size() && i < vLimit; i++) {
 			colorMsg(THREE_TABS, matches[i]->getName(),
 					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 0);
 			cout << TAB;
@@ -1290,51 +1292,42 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 
 		key = getKey();
 
-		if (key == SPACE_BAR || key == RETURN_KEY) {
+		switch (key) {
+		case 0:
+			break;
+		case RETURN_KEY:
 			if (matches.size() > selected)
 				return matches[selected];
-			else
-				key = 0;
-		} else
-			switch (key) {
-			case 0:
-				break;
-			case BACKSPACE_KEY:
-				if (query.length() > 0) {
-					clear = true;
-					query.erase(query.end() - 1);
-				}
-				break;
-			case ESCAPE_KEY:
-				exit = true;
-				break;
-			case DELETE_KEY:
+			break;
+		case BACKSPACE_KEY:
+			if (query.length() > 0) {
 				clear = true;
-				query.clear();
-				break;
-			case ARROW_DOWN:
-				if (matches.size() == 0)
-					selected = 0;
-				else {
-					selected++;
-					selected %= matches.size();
-				}
-				break;
-			case ARROW_UP:
-				if (matches.size() == 0)
-					selected = 0;
-				else {
-					if (selected < 1)
-						selected = matches.size() - 1;
-					else
-						selected--;
-				}
-				break;
-			default:
-				clear = true;
-				query += char(key);
-				break;
+				query.erase(query.end() - 1);
 			}
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		case DELETE_KEY:
+			clear = true;
+			query.clear();
+			break;
+		case ARROW_DOWN:
+			selected++;
+			selected %= (matches.size() > vLimit ? vLimit : matches.size());
+			break;
+		case ARROW_UP:
+			if (selected < 1)
+				selected = (matches.size() > vLimit ? vLimit : matches.size())
+						- 1;
+			else
+				selected--;
+			break;
+		default:
+			clear = true;
+			query += char(key);
+			break;
+		}
 	} while (!exit);
 	return NULL;
 }
@@ -1462,21 +1455,17 @@ void Interface::clearScreen() {
 }
 
 void Interface::displayHeader(string& header) {
+	unsigned int width = 78;
 	unsigned int size = header.size();
-	unsigned int dynSizeLeft = ceil((31 - size) / 2);
+	unsigned int dynSizeLeft = ceil((width - size) / 2);
 	unsigned int dynSizeRight = dynSizeLeft;
 
-	if (dynSizeLeft + dynSizeRight + size < 31)
+	if (dynSizeLeft + dynSizeRight + size < width)
 		dynSizeRight++;
-	colorMsg(THREE_TABS, string(35, ' '), FGBLACK_BGGREEN, 1);
-	colorMsg(THREE_TABS, "  ", FGBLACK_BGGREEN, 0);
-	colorMsg(string(31, ' '), "  ", FGBLACK_BGGREEN, 1);
-	colorMsg(THREE_TABS, "  ", FGBLACK_BGGREEN, 0);
-	cout << string(dynSizeLeft, ' ') << header << string(dynSizeRight, ' ');
-	colorMsg("", "  ", FGBLACK_BGGREEN, 1);
-	colorMsg(THREE_TABS, "  ", FGBLACK_BGGREEN, 0);
-	colorMsg(string(31, ' '), "  ", FGBLACK_BGGREEN, 1);
-	colorMsg(THREE_TABS, string(35, ' '), FGBLACK_BGGREEN, 2);
+	colorMsg(" ", string(width, ' '), FGBLACK_BGGREEN, 1);
+	colorMsg(" ", string(dynSizeLeft, ' ') + header + string(dynSizeRight, ' '),
+	FGBLACK_BGGREEN, 1);
+	colorMsg(" ", string(width, ' '), FGBLACK_BGGREEN, 3);
 }
 
 bool Interface::confirmOperation(string& query) {
@@ -1527,7 +1516,7 @@ void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,
 					<< (readerStr[sortFunc].size() > 5 ? TAB : TWO_TABS)
 					<< "Page " << pCount << " of " << pLimit << " ["
 					<< repeatStr(progressBar, progress)
-					<< string((13 - progress), ' ') << "]" << endl;
+					<< string((13 - progress), ' ') << "]" << endl << endl;
 			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
 			cout << " " << labels << endl;
 			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
@@ -1731,20 +1720,34 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 
 char Interface::getKey() {
 #ifdef _WIN32
-	unsigned int key;
-	key = getch();
-	if (key == 224) {
-		key = getch();
-		if (key == 72)
-			return ARROW_UP;
-		else if (key == 80)
-			return ARROW_DOWN;
-		else if (key == 83)
-			return DELETE_KEY;
-		else
-			return 0;
-	}
-	return key;
+
+	HANDLE hConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
+
+	// no need to read the return character nor mouse events
+	DWORD mode = !ENABLE_ECHO_INPUT | !ENABLE_LINE_INPUT
+			| ENABLE_PROCESSED_INPUT | !ENABLE_MOUSE_INPUT;
+
+	SetConsoleMode(hConsoleInput, mode);
+
+	INPUT_RECORD lpBuffer;
+	DWORD lpNumberOfEventsRead;
+	DWORD specialKey;
+
+	do {
+		ReadConsoleInput(hConsoleInput, &lpBuffer, 128, &lpNumberOfEventsRead);
+	} while (!lpBuffer.Event.KeyEvent.bKeyDown);
+
+	specialKey = lpBuffer.Event.KeyEvent.wVirtualScanCode;
+	if (specialKey == 72)
+		return ARROW_UP;
+	else if (specialKey == 80)
+		return ARROW_DOWN;
+	else if (specialKey == 83)
+		return DELETE_KEY;
+	else if (specialKey == 1)
+		return ESCAPE_KEY;
+	else
+		return lpBuffer.Event.KeyEvent.uChar.AsciiChar;
 
 #elif _WIN64
 	return getch();

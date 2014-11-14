@@ -17,7 +17,6 @@ using namespace std;
 #define RETURN_KEY 13
 #define CLEARSCREEN "cls"
 #include <windows.h>
-#include <conio.h>
 #define PROMPT_SYMBOL "> "
 
 static const char hSeparator = 196;
@@ -69,6 +68,7 @@ private:
 	Library library;
 #if defined(_WIN32) || defined (_WIN64)
 	HANDLE hConsole;
+	HANDLE hConsoleInput;
 #endif
 
 public:
