@@ -2,7 +2,7 @@
 
 Interface::Interface() {
 #if defined(_WIN32) || defined (_WIN64)
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	hConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
 	SetConsoleTitleA("Library");
 #endif
@@ -1267,7 +1267,6 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << endl;
 		if (clear) {
 			selected = 0;
 			matches.clear();
@@ -1336,34 +1335,42 @@ Book* Interface::searchBook(vector<Book*> books) {
 	string query;
 	string header = "Search books";
 	bool exit = false;
+	bool clear = false;
 	int key;
+	size_t selected = 0, vLimit = 4;
 	vector<Book*> matches;
 	do {
 		clearScreen();
 		displayHeader(header);
-		matches.clear();
-		matches.reserve(4);
-		if (query.size() > 0) {
-			for (size_t i = 0, z = 1; i < books.size() && z < 5; i++) {
+
+		if (clear) {
+			selected = 0;
+			matches.clear();
+			clear = false;
+		}
+		// Search books for given query
+		if (query.size() > 0 && matches.size() == 0) {
+			for (size_t i = 0; i < books.size(); i++) {
 				string title = books[i]->getTitle();
 				vector<string> authors = books[i]->getAuthors();
+
 				bool matchAuthor = false;
 				for (size_t y = 0; y < authors.size(); y++)
 					matchAuthor |= partialMatchQuery(query, authors[y]);
 
-				if (partialMatchQuery(query, title) || matchAuthor) {
-					cout << THREE_TABS << "[" << z++ << "] "
-							<< books[i]->getTitle().substr(0, 34) << " ";
-					setColor(FGWHITE_BGBLACK);
-					cout
-							<< (books[i]->getBorrowed() == 1 ?
-									"[Borrowed]" : "[Available]") << endl;
-					resetColor();
-					cout << THREE_TABS << books[i]->printAuthors() << endl
-							<< endl;
+				if (partialMatchQuery(query, title) || matchAuthor)
 					matches.push_back(books[i]);
-				}
 			}
+		}
+		// Display books that match
+		for (size_t i = 0; i < matches.size() && i < vLimit; i++) {
+			colorMsg(THREE_TABS, matches[i]->getTitle().substr(0, 34) + " ",
+					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 0);
+			colorMsg("",
+					(books[i]->getBorrowed() == 1 ? "[Borrowed]" : "[Available]"),
+					FGWHITE_BGBLACK, 1);
+			colorMsg(THREE_TABS, matches[i]->printAuthors() + " ",
+					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 2);
 		}
 		cout << endl << THREE_TABS << "Enter title or author [ESC exits]"
 				<< endl << endl;
@@ -1374,47 +1381,36 @@ Book* Interface::searchBook(vector<Book*> books) {
 		switch (key) {
 		case 0:
 			break;
-		case BACKSPACE_KEY:
-			if (query.length() > 0)
-				query.erase(query.end() - 1);
-			break;
-		case '1':
-			if (matches.size() > 0) {
-				exit = true;
-				return matches[0];
-			}
-			break;
-		case '2':
-			if (matches.size() > 1) {
-				exit = true;
-				return matches[1];
-			}
-			break;
-		case '3':
-			if (matches.size() > 2) {
-				exit = true;
-				return matches[2];
-			}
-			break;
-		case '4':
-			if (matches.size() > 3) {
-				exit = true;
-				return matches[3];
-			}
-			break;
 		case RETURN_KEY:
-			if (matches.size() > 0) {
-				exit = true;
-				return matches[0];
+			if (matches.size() > selected)
+				return matches[selected];
+			break;
+		case BACKSPACE_KEY:
+			if (query.length() > 0) {
+				clear = true;
+				query.erase(query.end() - 1);
 			}
 			break;
 		case ESCAPE_KEY:
 			exit = true;
 			break;
 		case DELETE_KEY:
+			clear = true;
 			query.clear();
 			break;
+		case ARROW_DOWN:
+			selected++;
+			selected %= (matches.size() > vLimit ? vLimit : matches.size());
+			break;
+		case ARROW_UP:
+			if (selected < 1)
+				selected = (matches.size() > vLimit ? vLimit : matches.size())
+						- 1;
+			else
+				selected--;
+			break;
 		default:
+			clear = true;
 			query += char(key);
 			break;
 		}
@@ -1429,33 +1425,33 @@ void Interface::clearScreen() {
 	DWORD cellCount;
 	COORD homeCoords = { 0, 0 };
 
-	if ((HANDLE) hConsole == INVALID_HANDLE_VALUE)
+	if ((HANDLE) hConsoleOutput == INVALID_HANDLE_VALUE)
 		return;
 
 	/* Get the number of cells in the current buffer */
-	if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
+	if (!GetConsoleScreenBufferInfo(hConsoleOutput, &csbi))
 		return;
 	cellCount = csbi.dwSize.X * csbi.dwSize.Y;
 
 	/* Fill the entire buffer with spaces */
-	if (!FillConsoleOutputCharacter(hConsole, (TCHAR) ' ', cellCount,
+	if (!FillConsoleOutputCharacter(hConsoleOutput, (TCHAR) ' ', cellCount,
 			homeCoords, &count))
 		return;
 
 	/* Fill the entire buffer with the current colors and attributes */
-	if (!FillConsoleOutputAttribute(hConsole, csbi.wAttributes, cellCount,
+	if (!FillConsoleOutputAttribute(hConsoleOutput, csbi.wAttributes, cellCount,
 			homeCoords, &count))
 		return;
 
 	/* Move the cursor home */
-	SetConsoleCursorPosition(hConsole, homeCoords);
+	SetConsoleCursorPosition(hConsoleOutput, homeCoords);
 #else
 	system(CLEARSCREEN);
 #endif
 }
 
 void Interface::displayHeader(string& header) {
-	unsigned int width = 78;
+	unsigned int width = 77;
 	unsigned int size = header.size();
 	unsigned int dynSizeLeft = ceil((width - size) / 2);
 	unsigned int dynSizeRight = dynSizeLeft;
@@ -1721,9 +1717,11 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 char Interface::getKey() {
 #ifdef _WIN32
 
-	HANDLE hConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
+	DWORD fdwSaveOldMode;
 
-	// no need to read the return character nor mouse events
+	GetConsoleMode(hConsoleInput, &fdwSaveOldMode);
+
+// no need to read the return character nor mouse events
 	DWORD mode = !ENABLE_ECHO_INPUT | !ENABLE_LINE_INPUT
 			| ENABLE_PROCESSED_INPUT | !ENABLE_MOUSE_INPUT;
 
@@ -1738,16 +1736,23 @@ char Interface::getKey() {
 	} while (!lpBuffer.Event.KeyEvent.bKeyDown);
 
 	specialKey = lpBuffer.Event.KeyEvent.wVirtualScanCode;
+	char key = 0;
+
 	if (specialKey == 72)
-		return ARROW_UP;
+		key = ARROW_UP;
 	else if (specialKey == 80)
-		return ARROW_DOWN;
+		key = ARROW_DOWN;
 	else if (specialKey == 83)
-		return DELETE_KEY;
+		key = DELETE_KEY;
 	else if (specialKey == 1)
-		return ESCAPE_KEY;
+		key = ESCAPE_KEY;
 	else
-		return lpBuffer.Event.KeyEvent.uChar.AsciiChar;
+		key = lpBuffer.Event.KeyEvent.uChar.AsciiChar;
+
+// Restore input mode on exit.
+	SetConsoleMode(hConsoleInput, fdwSaveOldMode);
+
+	return key;
 
 #elif _WIN64
 	return getch();
@@ -1778,12 +1783,13 @@ char Interface::getKey() {
 
 	if(keys[0] == 27 && keys[1] == 91) {
 		if(keys[2] == 51 && keys[3] == 126)
-		keys[0] = 83;
+		keys[0] = DELETE_KEY;
 		else if (keys[2] == 65)
 		keys[0] = ARROW_UP;
 		else if (keys[2] == 66)
 		keys[0] = ARROW_DOWN;
-		else keys[0] = 0;
+		else
+		keys[0] = 0;
 	}
 	else if (keys[0] == 27 && keys[2] != 0)
 	keys[0] = 0;
@@ -1797,47 +1803,47 @@ char Interface::getKey() {
 void Interface::setColor(int color) {
 #if defined(_WIN32) || defined(_WIN64)
 	switch (color) {
-	case -1:
-		SetConsoleTextAttribute(hConsole,
+	case FGGRAY_BGBLACK:
+		SetConsoleTextAttribute(hConsoleOutput,
 		FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 		break;
-	case 0:
-		SetConsoleTextAttribute(hConsole,
+	case FGWHITE_BGBLACK:
+		SetConsoleTextAttribute(hConsoleOutput,
 				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
 						| FOREGROUND_INTENSITY);
 		break;
-	case 1:
-		SetConsoleTextAttribute(hConsole,
+	case FGRED_BGBLACK:
+		SetConsoleTextAttribute(hConsoleOutput,
 		FOREGROUND_RED | FOREGROUND_INTENSITY);
 		break;
-	case 2:
-		SetConsoleTextAttribute(hConsole,
+	case FGGREEN_BGBLACK:
+		SetConsoleTextAttribute(hConsoleOutput,
 		FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 		break;
-	case 3:
-		SetConsoleTextAttribute(hConsole,
+	case FGBLUE_BGBLACK:
+		SetConsoleTextAttribute(hConsoleOutput,
 		FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 		break;
-	case 4:
-		SetConsoleTextAttribute(hConsole,
+	case FGGRAY_BGRED:
+		SetConsoleTextAttribute(hConsoleOutput,
 		FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | BACKGROUND_RED);
 		break;
-	case 5:
-		SetConsoleTextAttribute(hConsole,
+	case FGWHITE_BGRED:
+		SetConsoleTextAttribute(hConsoleOutput,
 				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
 						| FOREGROUND_INTENSITY | BACKGROUND_RED);
 		break;
-	case 6:
-		SetConsoleTextAttribute(hConsole,
+	case FGBLACK_BGWHITE:
+		SetConsoleTextAttribute(hConsoleOutput,
 				BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE
 						| BACKGROUND_INTENSITY);
 		break;
-	case 7:
-		SetConsoleTextAttribute(hConsole,
+	case FGBLACK_BGGRAY:
+		SetConsoleTextAttribute(hConsoleOutput,
 		BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
 		break;
-	case 8:
-		SetConsoleTextAttribute(hConsole,
+	case FGBLACK_BGGREEN:
+		SetConsoleTextAttribute(hConsoleOutput,
 		BACKGROUND_GREEN | BACKGROUND_INTENSITY);
 		break;
 	default:
@@ -1879,7 +1885,7 @@ void Interface::setColor(int color) {
 
 void Interface::resetColor() {
 #if defined(_WIN32) || defined(_WIN64)
-	SetConsoleTextAttribute(hConsole,
+	SetConsoleTextAttribute(hConsoleOutput,
 	FOREGROUND_GREEN | FOREGROUND_INTENSITY | 0 | 0 | 0);
 #else
 	cout << "\033[0;32m";

@@ -17,6 +17,7 @@ using namespace std;
 #define RETURN_KEY 13
 #define CLEARSCREEN "cls"
 #include <windows.h>
+#include <wincon.h>
 #define PROMPT_SYMBOL "> "
 
 static const char hSeparator = 196;
@@ -36,7 +37,7 @@ static const string progressBar = "\u25A0";
 
 #define FGGRAY_BGBLACK -1
 #define FGWHITE_BGBLACK 0
-#define FGRED_BGBLACK1
+#define FGRED_BGBLACK 1
 #define FGGREEN_BGBLACK 2
 #define FGBLUE_BGBLACK 3
 #define FGGRAY_BGRED 4
@@ -67,7 +68,7 @@ class Interface {
 private:
 	Library library;
 #if defined(_WIN32) || defined (_WIN64)
-	HANDLE hConsole;
+	HANDLE hConsoleOutput;
 	HANDLE hConsoleInput;
 #endif
 
