@@ -223,7 +223,7 @@ void Interface::readerMenu(Person *reader) {
 	string infMsg;
 
 	do {
-		header = "Reader   " + reader->getName();
+		header = "Reader" + string(5, ' ') + reader->getName();
 		clearScreen();
 		displayHeader(header);
 		setColor(FGWHITE_BGBLACK);
@@ -276,7 +276,7 @@ void Interface::employeeMenu(Person* employee) {
 	string header;
 
 	do {
-		header = "Employee   " + employee->getName();
+		header = "Employee" + string(5, ' ') + employee->getName();
 		clearScreen();
 		displayHeader(header);
 		setColor(FGWHITE_BGBLACK);
@@ -329,7 +329,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 			break;
 		}
 
-		header = "Supervisor   " + supervisor->getName();
+		header = "Supervisor" + string(5, ' ') + supervisor->getName();
 		clearScreen();
 		displayHeader(header);
 		setColor(FGWHITE_BGBLACK);
@@ -1261,7 +1261,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 	bool exit = false;
 	bool clear = false;
 	int key;
-	size_t selected = 0, vLimit = 10;
+	size_t selected = 0, vLimit = 12;
 	vector<Person*> matches;
 
 	do {
@@ -1451,17 +1451,19 @@ void Interface::clearScreen() {
 }
 
 void Interface::displayHeader(string& header) {
-	unsigned int width = 77;
+	unsigned int width = 80;
 	unsigned int size = header.size();
 	unsigned int dynSizeLeft = ceil((width - size) / 2);
 	unsigned int dynSizeRight = dynSizeLeft;
 
+	setColor(FGBLACK_BGGREEN);
 	if (dynSizeLeft + dynSizeRight + size < width)
 		dynSizeRight++;
-	colorMsg(" ", string(width, ' '), FGBLACK_BGGREEN, 1);
-	colorMsg(" ", string(dynSizeLeft, ' ') + header + string(dynSizeRight, ' '),
-	FGBLACK_BGGREEN, 1);
-	colorMsg(" ", string(width, ' '), FGBLACK_BGGREEN, 3);
+	cout << string(width, ' ') << '\r';
+	cout << string(dynSizeLeft, ' ') << header << string(dynSizeRight, ' ')
+			<< '\r';
+	cout << string(width, ' ') << '\r' << endl << endl;
+	resetColor();
 }
 
 bool Interface::confirmOperation(string& query) {
@@ -1676,7 +1678,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 		displayHeader(listName);
 		cout << THREE_TABS << "Page " << pCount << " of " << pLimit << " ["
 				<< repeatStr(progressBar, progress)
-				<< string((19 - progress), ' ') << "]" << endl;
+				<< string((19 - progress), ' ') << "]" << endl << endl;
 		cout << " " << repeatStr(hSeparator, 77) << " " << endl;
 		cout << " " << labels << endl;
 		cout << " " << repeatStr(hSeparator, 77) << " " << endl;
@@ -1920,8 +1922,8 @@ void Interface::colorMsg(const string &tabs, const string &s, const int &color,
 	cout << tabs;
 	setColor(color);
 	cout << s;
-	resetColor();
 	cout << string(newLines, '\n');
+	resetColor();
 }
 
 void Interface::infoMsg(const string& m) {
