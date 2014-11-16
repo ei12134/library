@@ -51,13 +51,15 @@ static const string progressBar = "\u25A0";
 #define THREE_TABS TWO_TABS TAB
 #define FOUR_TABS TWO_TABS TWO_TABS
 #define FIVE_TABS FOUR_TABS TAB
-#define MAX_LINES 11
+#define MAX_LINES 12
 #define ESCAPE_KEY 27
 #define ARROW_DOWN 28
 #define ARROW_UP 29
 #define SPACE_BAR 32
 #define DELETE_KEY 83
 #define TAB_KEY 9
+#define WIDTH 80
+#define HEIGHT 25
 
 typedef vector<Person*> (Library::*LibraryGetFn)() const;
 typedef vector<Book*> (Library::*LibraryGetBkFn)() const;
@@ -70,6 +72,8 @@ private:
 #if defined(_WIN32) || defined (_WIN64)
 	HANDLE hConsoleOutput;
 	HANDLE hConsoleInput;
+	DWORD fdwOldMode;
+	DWORD wOldColorAttrs;
 #endif
 
 public:

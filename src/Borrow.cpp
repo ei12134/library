@@ -82,7 +82,7 @@ string Borrow::print() const {
 	stringstream ss;
 	string title = book->getTitle();
 
-	ss << title.substr(0,30);
+	ss << title.substr(0, 30);
 	if (title.size() >= 30)
 		ss << "\t";
 	else
@@ -102,7 +102,7 @@ string Borrow::printShort() const {
 	ss << "\t\t\t" << "    Borrow date: " << borrowDate.print() << endl;
 	ss << "\t\t\t" << "    Limit return date: " << limitReturnDate.print()
 			<< endl;
-	ss << "\t\t\t" << "    Fee: " << calcFee() << " euros" << endl;
+	ss << "\t\t\t" << "    Fee: " << calcFee() << " EUR" << endl;
 	if (returned)
 		ss << "Return date: " << returnDate.print() << endl;
 	return ss.str();
