@@ -1800,7 +1800,7 @@ char Interface::getKey() {
 
 // no need to read the return character nor mouse events
 	DWORD mode = !ENABLE_ECHO_INPUT | !ENABLE_LINE_INPUT
-			| ENABLE_PROCESSED_INPUT | !ENABLE_MOUSE_INPUT;
+			| !ENABLE_PROCESSED_INPUT | !ENABLE_MOUSE_INPUT;
 
 	SetConsoleMode(hConsoleInput, mode);
 
@@ -1809,7 +1809,7 @@ char Interface::getKey() {
 	DWORD specialKey;
 
 	do {
-		ReadConsoleInput(hConsoleInput, &lpBuffer, 128, &lpNumberOfEventsRead);
+		ReadConsoleInput(hConsoleInput, &lpBuffer, 1, &lpNumberOfEventsRead);
 	} while (!lpBuffer.Event.KeyEvent.bKeyDown);
 
 	specialKey = lpBuffer.Event.KeyEvent.wVirtualScanCode;
@@ -1826,7 +1826,7 @@ char Interface::getKey() {
 	else
 		key = lpBuffer.Event.KeyEvent.uChar.AsciiChar;
 
-	FlushConsoleInputBuffer(hConsoleInput); // getline & special keys
+	//FlushConsoleInputBuffer(hConsoleInput); // getline & special keys
 // Restore input mode on exit.
 	SetConsoleMode(hConsoleInput, fdwSaveOldMode);
 
