@@ -7,7 +7,7 @@ Interface::Interface() {
 	hConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
 
 	// backup current console configuration
-	GetConsoleMode(hConsoleInput, &fdwOldMode);
+	GetConsoleMode(hConsoleOutput, &fdwOldMode);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hConsoleOutput, &csbiInfo);
 	wOldColorAttrs = csbiInfo.wAttributes;
@@ -43,7 +43,7 @@ void Interface::menu() {
 	char input;
 	bool exit = false;
 	const size_t menuCmdsSize = 3;
-	string menuCmds[menuCmdsSize] = { "Login", "Display", "Quit" };
+	string menuCmds[menuCmdsSize] = { "Login", "Display\n", "Quit" };
 	string spacing = string((80 - menuCmds[1].size() - 4) / 2, ' ');
 	string exitDialog = "Quit?";
 	string noSupervisors = "Create supervisor?\n\t\t\t      ";
@@ -53,13 +53,10 @@ void Interface::menu() {
 		clearScreen();
 		displayHeader(header);
 
-		for (size_t i = 0; i < menuCmdsSize; i++) {
-			stringstream ss;
-			ss << "[" << i + 1 << "] ";
-			colorMsg(spacing, ss.str(), FGWHITE_BGBLACK, 0);
-			cout << menuCmds[i] << endl << endl;
-		}
-		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
+		for (size_t i = 0; i < menuCmdsSize; i++)
+			cmdMsg(spacing, (i + 1), menuCmds[i], FGGREEN_BGBLACK, 1);
+
+		cout << endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -139,12 +136,9 @@ void Interface::displayMenu() {
 	do {
 		clearScreen();
 		displayHeader(header);
-		for (size_t i = 0; i < displayMenuSize; i++) {
-			stringstream ss;
-			ss << "[" << i + 1 << "] ";
-			colorMsg(FOUR_TABS, ss.str(), FGWHITE_BGBLACK, 0);
-			cout << displayMenu[i] << endl;
-		}
+		for (size_t i = 0; i < displayMenuSize; i++)
+			cmdMsg(FOUR_TABS, (i + 1), displayMenu[i], FGGREEN_BGBLACK, 1);
+
 		cout << endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
@@ -189,9 +183,9 @@ void Interface::displayMenu() {
 void Interface::readerMenu(Person *reader) {
 	char input;
 	bool exit = false;
-	const size_t rdrCmdsSize = 3;
-	string rdrCmds[rdrCmdsSize] = { "Display borrows", "Borrow history\n",
-			"Logout\n" };
+	const size_t cmdsSize = 3;
+	string cmds[cmdsSize] =
+			{ "Display borrows", "Borrow history\n", "Logout\n" };
 	string header;
 	string infMsg;
 
@@ -212,12 +206,8 @@ void Interface::readerMenu(Person *reader) {
 		colorMsg(THREE_TABS + HALF_TAB, "Email: ", FGWHITE_BGBLACK, 0);
 		cout << reader->getEmail() << endl << endl;
 
-		for (size_t i = 0; i < rdrCmdsSize; i++) {
-			stringstream ss;
-			ss << "[" << i + 1 << "] ";
-			colorMsg(THREE_TABS + HALF_TAB, ss.str(), FGWHITE_BGBLACK, 0);
-			cout << rdrCmds[i] << endl;
-		}
+		for (size_t i = 0; i < cmdsSize; i++)
+			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
 		for (size_t i = 0; i < borrowedBooks.size(); i++)
@@ -254,8 +244,8 @@ void Interface::readerMenu(Person *reader) {
 void Interface::employeeMenu(Person* employee) {
 	char input;
 	bool exit = false;
-	const size_t emplCmdsSize = 4;
-	string emplCmds[emplCmdsSize] = { "Borrow a book", "Manage books",
+	const size_t cmdsSize = 4;
+	string cmds[cmdsSize] = { "Borrow a book", "Manage books",
 			"Manage readers\n", "Logout\n" };
 	string header;
 
@@ -279,12 +269,8 @@ void Interface::employeeMenu(Person* employee) {
 		colorMsg(THREE_TABS + HALF_TAB, "Wage: ", FGWHITE_BGBLACK, 0);
 		cout << employee->getWage() << " EUR" << endl << endl;
 
-		for (size_t i = 0; i < emplCmdsSize; i++) {
-			stringstream ss;
-			ss << "[" << i + 1 << "] ";
-			colorMsg(THREE_TABS + HALF_TAB, ss.str(), FGWHITE_BGBLACK, 0);
-			cout << emplCmds[i] << endl;
-		}
+		for (size_t i = 0; i < cmdsSize; i++)
+			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
@@ -314,8 +300,8 @@ void Interface::employeeMenu(Person* employee) {
 void Interface::supervisorMenu(Person* supervisor) {
 	char input;
 	bool exit = false;
-	const size_t supCmdsSize = 7;
-	string supCmds[7] = { "Borrow a book", "Manage books", "Manage readers",
+	const size_t cmdsSize = 7;
+	string cmds[cmdsSize] = { "Borrow a book", "Manage books", "Manage readers",
 			"Manage employees", "Auto-assign teams", "Employees team\n",
 			"Logout\n" };
 	string header;
@@ -345,12 +331,9 @@ void Interface::supervisorMenu(Person* supervisor) {
 		colorMsg(THREE_TABS + HALF_TAB, "Wage: ", FGWHITE_BGBLACK, 0);
 		cout << supervisor->getWage() << " EUR" << endl << endl;
 
-		for (size_t i = 0; i < supCmdsSize; i++) {
-			stringstream ss;
-			ss << "[" << i + 1 << "] ";
-			colorMsg(THREE_TABS + HALF_TAB, ss.str(), FGWHITE_BGBLACK, 0);
-			cout << supCmds[i] << endl;
-		}
+		for (size_t i = 0; i < cmdsSize; i++)
+			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
+
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
@@ -394,15 +377,17 @@ void Interface::manageBooks() {
 	bool exit = false;
 	string header = "Manage books", errMsg, infMsg;
 	string confirmRemove = "Remove book?";
+	const size_t cmdsSize = 4;
+	string cmds[cmdsSize] = { "Create book", "Edit book", "Remove book\n",
+			"Exit\n" };
 	Book* book;
 
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << FOUR_TABS << "[1] Create book\n";
-		cout << FOUR_TABS << "[2] Edit book\n";
-		cout << FOUR_TABS << "[3] Remove book\n";
-		cout << FOUR_TABS << "[4] Exit\n\n";
+		for (size_t i = 0; i < cmdsSize; i++)
+			cmdMsg(FOUR_TABS, (i + 1), cmds[i],
+			FGGREEN_BGBLACK, 1);
 
 		if (errMsg.size() > 0) {
 			errorMsg(errMsg);
@@ -456,15 +441,18 @@ void Interface::manageReaders() {
 	bool exit = false;
 	string header = "Manage readers";
 	string errMsg, infMsg;
+	const size_t cmdsSize = 4;
+	string cmds[cmdsSize] = { "Create reader", "Edit reader", "Remove reader\n",
+			"Exit\n" };
 	Person* reader;
 
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << FOUR_TABS << "[1] Create reader\n";
-		cout << FOUR_TABS << "[2] Edit reader\n";
-		cout << FOUR_TABS << "[3] Remove reader\n";
-		cout << FOUR_TABS << "[4] Exit\n\n";
+		for (size_t i = 0; i < cmdsSize; i++)
+			cmdMsg(FOUR_TABS, (i + 1), cmds[i],
+			FGGREEN_BGBLACK, 1);
+
 		if (errMsg.size() > 0) {
 			errorMsg(errMsg);
 			cout << endl << endl;
@@ -479,7 +467,6 @@ void Interface::manageReaders() {
 		input = getKey();
 		switch (input) {
 		case '1':
-
 			createReader();
 			break;
 		case '2':
@@ -490,7 +477,6 @@ void Interface::manageReaders() {
 				errMsg = "Error editing a reader";
 			break;
 		case '3':
-
 			if (library.removeReader(searchPerson(library.getReaders()))) {
 				library.savePersons();
 				infMsg = "Reader removed successfully";
@@ -514,15 +500,18 @@ void Interface::manageEmployees(Person* supervisor) {
 	bool exit = false;
 	string header = "Manage employees";
 	string errMsg, infMsg;
+	const size_t cmdsSize = 4;
+	string cmds[cmdsSize] = { "Create employee", "Edit employee",
+			"Remove employee\n", "Exit\n" };
 	Person* employee;
 
 	do {
 		clearScreen();
 		displayHeader(header);
-		cout << FOUR_TABS << "[1] Create employee\n";
-		cout << FOUR_TABS << "[2] Edit employee\n";
-		cout << FOUR_TABS << "[3] Remove employee\n";
-		cout << FOUR_TABS << "[4] Exit\n\n";
+		for (size_t i = 0; i < cmdsSize; i++)
+			cmdMsg(FOUR_TABS, (i + 1), cmds[i],
+			FGGREEN_BGBLACK, 1);
+
 		if (errMsg.size() > 0) {
 			errorMsg(errMsg);
 			cout << endl << endl;
@@ -593,7 +582,6 @@ void Interface::createBook() {
 	while (newTitle.size() == 0) {
 		cout << THREE_TABS << "Title: ";
 		getline(cin, newTitle, '\n');
-
 	}
 	cout << endl << THREE_TABS << "Press S to save" << PROMPT_SYMBOL;
 	char ch = cin.get();
@@ -609,7 +597,7 @@ void Interface::createBook() {
 	} else
 		cout << endl << THREE_TABS << "Book creation cancelled";
 	getKey();
-	cin.ignore();
+
 }
 
 void Interface::createReader() {
@@ -657,7 +645,6 @@ void Interface::createReader() {
 	} else
 		cout << endl << THREE_TABS << "Reader creation cancelled";
 	getKey();
-	cin.ignore();
 }
 
 void Interface::createEmployee() {
@@ -729,7 +716,6 @@ void Interface::createEmployee() {
 	} else
 		cout << endl << THREE_TABS << "Employee creation cancelled";
 	getKey();
-	cin.ignore();
 }
 
 void Interface::createBorrow(Person* employee) {
@@ -737,6 +723,9 @@ void Interface::createBorrow(Person* employee) {
 	bool exit = false;
 	string header = "Create borrow";
 	string errMsg, infMsg;
+	const size_t cmdsSize = 4;
+	string cmds[cmdsSize] = { "Select reader", "Select book", "Create borrow\n",
+			"Exit\n" };
 	Person* reader = NULL;
 	Book* book = NULL;
 
@@ -744,15 +733,25 @@ void Interface::createBorrow(Person* employee) {
 		clearScreen();
 		displayHeader(header);
 
-		if (reader != NULL)
-			cout << THREE_TABS << "Reader name: " << reader->getName() << endl;
-		if (book != NULL)
-			cout << THREE_TABS << "Book title: " << book->getTitle() << endl;
+		if (reader != NULL) {
+			colorMsg(THREE_TABS, "[Reader name] ", FGWHITE_BGBLACK, 0);
+			cout << reader->getName() << endl;
+		}
+		if (book != NULL) {
+			colorMsg(THREE_TABS, "[Book title] ", FGWHITE_BGBLACK, 0);
+			cout << book->getTitle() << endl;
+		}
+		if (reader != NULL || book != NULL)
+			cout << endl;
 
-		cout << endl << FOUR_TABS << "[1] Select reader" << endl;
-		cout << FOUR_TABS << "[2] Select book" << endl;
-		cout << FOUR_TABS << "[3] Create borrow" << endl;
-		cout << FOUR_TABS << "[4] Exit" << endl << endl;
+		for (size_t i = 0; i < cmdsSize; i++) {
+			if (i == 2 && (reader == NULL || book == NULL))
+				cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGRAY_BGBLACK,
+						1);
+			else
+				cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK,
+						1);
+		}
 
 		if (errMsg.size() > 0) {
 			errorMsg(errMsg);
@@ -764,8 +763,9 @@ void Interface::createBorrow(Person* employee) {
 			infMsg.clear();
 		}
 
-		cout << THREE_TABS << "Select book to return [ESC exits]" << endl
-				<< endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
+		cout << endl << THREE_TABS << "Select book to return ";
+		colorMsg("", "[ESC exits]", FGWHITE_BGBLACK, 2);
+		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -818,25 +818,32 @@ void Interface::editBook(Book* book) {
 	bool exit = false;
 	bool edited = false;
 	string header = "Edit book";
+	const size_t cmdsSize = 7;
+	string cmds[cmdsSize] = { "[1] Author: ", "[2] Quota: ",
+			"[3] Page number: ", "[4] ISBN: ", "[5] Title: ", "Discard changes",
+			"Save" };
 	Book backup = *book;
 	do {
 		string newQuota, newTitle, newISBN, newPageNumberStr, changesMessage;
 		unsigned int newPageNumber;
 		stringstream ss;
-		istringstream s;
 
 		clearScreen();
 		displayHeader(header);
-		cout << endl << THREE_TABS << "[1] Author: " << book->getAuthors()[0]
-				<< endl;
-		cout << THREE_TABS << "[2] Quota: " << book->getQuota() << endl;
-		cout << THREE_TABS << "[3] Page number: " << book->getPageNumber()
-				<< endl;
-		cout << THREE_TABS << "[4] ISBN: " << book->getISBN() << endl;
-		cout << THREE_TABS << "[5] Title: " << book->getTitle().substr(0, 20)
-				<< endl << endl;
-		cout << THREE_TABS << "[6] Discard changes" << endl;
-		cout << THREE_TABS << "[7] Save" << endl;
+
+		colorMsg(THREE_TABS, cmds[0], FGWHITE_BGBLACK, 0);
+		cout << book->getAuthors()[0] << endl;
+		colorMsg(THREE_TABS, cmds[1], FGWHITE_BGBLACK, 0);
+		cout << book->getQuota() << endl;
+		colorMsg(THREE_TABS, cmds[2], FGWHITE_BGBLACK, 0);
+		cout << book->getPageNumber() << endl;
+		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
+		cout << book->getISBN() << endl;
+		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
+		cout << book->getTitle().substr(0, 20) << endl << endl;
+
+		for (size_t i = 5; i < cmdsSize; i++)
+			cmdMsg(THREE_TABS, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		if (changesMessage.size() > 0) {
 			cout << endl << THREE_TABS << changesMessage << endl;
@@ -848,13 +855,13 @@ void Interface::editBook(Book* book) {
 		switch (input) {
 
 		case '1':
-			cout << endl;
+			cout << endl << endl;
 			book->setAuthors(editAuthors());
 			edited = true;
 			break;
 
 		case '2':
-			cout << endl;
+			cout << endl << endl;
 			while (newQuota.size() == 0) {
 				cout << THREE_TABS << "Quota: ";
 				getline(cin, newQuota, '\n');
@@ -864,7 +871,7 @@ void Interface::editBook(Book* book) {
 			break;
 
 		case '3':
-			cout << endl;
+			cout << endl << endl;
 			while (newPageNumberStr.size() == 0
 					|| !is_All_Number(newPageNumberStr)) {
 				cout << THREE_TABS << "Page number: ";
@@ -877,7 +884,7 @@ void Interface::editBook(Book* book) {
 			break;
 
 		case '4':
-			cout << endl;
+			cout << endl << endl;
 			while (newISBN.size() == 0
 					|| (newISBN.size() != 13 && newISBN.size() != 10)) {
 				cout << THREE_TABS << "ISBN: ";
@@ -888,7 +895,7 @@ void Interface::editBook(Book* book) {
 			break;
 
 		case '5':
-			cout << endl;
+			cout << endl << endl;
 			while (newTitle.size() == 0) {
 				cout << THREE_TABS << "Title: ";
 				getline(cin, newTitle, '\n');
@@ -923,6 +930,9 @@ void Interface::editReader(Person* reader) {
 	bool exit = false;
 	bool edited = false;
 	string header = "Edit Reader";
+	const size_t cmdsSize = 6;
+	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
+			"[4] Email: ", "Discard changes", "Save" };
 	Reader* dReader = dynamic_cast<Reader*>(reader);
 	Reader backup = *dReader;
 
@@ -933,15 +943,18 @@ void Interface::editReader(Person* reader) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << THREE_TABS << "[1] Name: " << reader->getName().substr(0, 20)
-				<< endl;
-		cout << THREE_TABS << "[2] Age: " << reader->getAge() << " years"
-				<< endl;
-		cout << THREE_TABS << "[3] Phone: " << reader->getPhone() << endl;
-		cout << THREE_TABS << "[4] Email: " << reader->getEmail().substr(0, 20)
-				<< endl << endl;
-		cout << THREE_TABS << "[5] Discard changes" << endl;
-		cout << THREE_TABS << "[6] Save" << endl;
+
+		colorMsg(THREE_TABS, cmds[0], FGWHITE_BGBLACK, 0);
+		cout << reader->getName().substr(0, 20) << endl;
+		colorMsg(THREE_TABS, cmds[1], FGWHITE_BGBLACK, 0);
+		cout << reader->getAge() << endl;
+		colorMsg(THREE_TABS, cmds[2], FGWHITE_BGBLACK, 0);
+		cout << reader->getPhone() << endl;
+		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
+		cout << reader->getEmail().substr(0, 20) << endl << endl;
+
+		for (size_t i = 4; i < cmdsSize; i++)
+			cmdMsg(THREE_TABS, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		if (changesMessage != "") {
 			cout << endl << THREE_TABS << changesMessage << endl;
@@ -1026,6 +1039,10 @@ void Interface::editEmployee(Person* employee) {
 	bool exit = false;
 	bool edited = false;
 	string header = "Edit Employee";
+	const size_t cmdsSize = 9;
+	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
+			"[4] Email: ", "[5] Nif: ", "[6] Wage: ", "[7] Hierarchy: ",
+			"Discard changes", "Save" };
 	Employee* dEmployee = dynamic_cast<Employee*>(employee);
 	Employee backup = *dEmployee;
 
@@ -1039,19 +1056,24 @@ void Interface::editEmployee(Person* employee) {
 
 		clearScreen();
 		displayHeader(header);
-		cout << THREE_TABS << "[1] Name: " << employee->getName().substr(0, 20)
-				<< endl;
-		cout << THREE_TABS << "[2] Age: " << employee->getAge() << " years"
-				<< endl;
-		cout << THREE_TABS << "[3] Phone: " << employee->getPhone() << endl;
-		cout << THREE_TABS << "[4] Email: "
-				<< employee->getEmail().substr(0, 20) << endl;
-		cout << THREE_TABS << "[5] NIF: " << employee->getNif() << endl;
-		cout << THREE_TABS << "[6] Wage: " << employee->getWage() << endl;
-		cout << THREE_TABS << "[7] Hierarchy: " << employee->printType() << endl
-				<< endl;
-		cout << THREE_TABS << "[8] Discard changes" << endl;
-		cout << THREE_TABS << "[9] Save" << endl;
+
+		colorMsg(THREE_TABS, cmds[0], FGWHITE_BGBLACK, 0);
+		cout << employee->getName().substr(0, 20) << endl;
+		colorMsg(THREE_TABS, cmds[1], FGWHITE_BGBLACK, 0);
+		cout << employee->getAge() << endl;
+		colorMsg(THREE_TABS, cmds[2], FGWHITE_BGBLACK, 0);
+		cout << employee->getPhone() << endl;
+		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
+		cout << employee->getEmail().substr(0, 20) << endl;
+		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
+		cout << employee->getNif() << endl;
+		colorMsg(THREE_TABS, cmds[5], FGWHITE_BGBLACK, 0);
+		cout << employee->getWage() << endl;
+		colorMsg(THREE_TABS, cmds[6], FGWHITE_BGBLACK, 0);
+		cout << employee->printType() << endl << endl;
+
+		for (size_t i = 7; i < cmdsSize; i++)
+			cmdMsg(THREE_TABS, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		if (changesMessage != "") {
 			cout << endl << THREE_TABS << changesMessage << endl;
@@ -1135,7 +1157,7 @@ void Interface::editEmployee(Person* employee) {
 			cout << endl << THREE_TABS
 					<< "[S] to set as supervisor [E] as employee"
 					<< PROMPT_SYMBOL;
-			ch = cin.get();
+			ch = getKey();
 			if (tolower(ch) == 's') {
 				Employee* e = static_cast<Employee*>(employee);
 				if (e != NULL) {
@@ -1151,7 +1173,6 @@ void Interface::editEmployee(Person* employee) {
 					library.SupervisorEmployeeRandom();
 				}
 			}
-			cin.ignore();
 			break;
 		case '8':
 
@@ -1190,12 +1211,10 @@ void Interface::editBorrow(Person* reader) {
 		displayHeader(header);
 		borrows = reader->getBorrowedBooks();
 
-		for (size_t i = 0; i < borrows.size(); i++) {
-			stringstream ss;
-			ss << "[" << i + 1 << "] ";
-			colorMsg(THREE_TABS, ss.str(), FGWHITE_BGBLACK, 0);
-			cout << borrows[i]->printShort() << endl;
-		}
+		for (size_t i = 0; i < borrows.size(); i++)
+			cmdMsg(THREE_TABS, (i + 1), borrows[i]->printShort(),
+			FGGREEN_BGBLACK, 1);
+
 		if (infMsg.size() > 0) {
 			infoMsg(infMsg);
 			cout << endl << endl;
@@ -1807,6 +1826,7 @@ char Interface::getKey() {
 	else
 		key = lpBuffer.Event.KeyEvent.uChar.AsciiChar;
 
+	FlushConsoleInputBuffer(hConsoleInput); // getline & special keys
 // Restore input mode on exit.
 	SetConsoleMode(hConsoleInput, fdwSaveOldMode);
 
@@ -1971,6 +1991,22 @@ vector<string> Interface::editAuthors() {
 inline void Interface::centerString(const size_t &size) {
 	int spacing = (int) ((80 - size) / 2);
 	cout << string(spacing, ' ');
+}
+
+void Interface::cmdMsg(const string &tabs, const size_t index, const string &s,
+		const int &color, const int &newLines) {
+	cout << tabs;
+	stringstream ss;
+	setColor(FGWHITE_BGBLACK);
+	ss << "[";
+	ss << index;
+	ss << "] ";
+	cout << ss.str();
+
+	setColor(color);
+	cout << s;
+	cout << string(newLines, '\n');
+	resetColor();
 }
 
 void Interface::colorMsg(const string &tabs, const string &s, const int &color,

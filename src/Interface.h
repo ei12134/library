@@ -49,6 +49,7 @@ static const string progressBar = "\u25A0";
 #define TAB "\t"
 #define TWO_TABS TAB TAB
 #define THREE_TABS TWO_TABS TAB
+#define THREE_HALF_TABS TWO_TABS TAB + HALF_TAB
 #define FOUR_TABS TWO_TABS TWO_TABS
 #define FIVE_TABS FOUR_TABS TAB
 #define MAX_LINES 12
@@ -112,21 +113,23 @@ public:
 
 	void personsDisplayPtr(LibraryGetFn getFunc, string listName, string labels,
 			string readerStr[], LibraryMemFn funcs[], size_t length);
-	void booksDisplayPtr(LibraryGetBkFn getFunc, string listName,
-			string labels, string readerStr[], LibraryMemFn funcs[],
-			size_t length);
+	void booksDisplayPtr(LibraryGetBkFn getFunc, string listName, string labels,
+			string readerStr[], LibraryMemFn funcs[], size_t length);
 
 	template<typename T>
 	void genericDisplay(vector<T> vec, string listName, string labels);
 
 	inline void centerString(const size_t &size);
 
+	void cmdMsg(const string &tabs, const size_t index, const string &s,
+			const int &color, const int &newLines);
+
 	void colorMsg(const string &tabs, const string &s, const int &color,
 			const int &newLines);
 	void infoMsg(const string& m);
 	void errorMsg(const string& m);
 
-	template <class T>
+	template<class T>
 	string repeatStr(const T& s, const size_t n);
 
 	char getKey();
