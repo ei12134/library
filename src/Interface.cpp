@@ -1,6 +1,15 @@
 #include "Interface.h"
 
 Interface::Interface() {
+	setConsole();
+	menu();
+}
+
+Interface::~Interface() {
+	restoreConsole();
+}
+
+void Interface::setConsole() {
 #if defined(_WIN32) || defined (_WIN64)
 	// get handles
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -26,10 +35,9 @@ Interface::Interface() {
 	SetConsoleTitleA("Library");
 #endif
 	setColor(FGGREEN_BGBLACK);
-	menu();
 }
 
-Interface::~Interface() {
+void Interface::restoreConsole() {
 #if defined(_WIN32) || defined(_WIN64)
 	SetConsoleMode(hConsoleInput, fdwOldMode);
 	SetConsoleTextAttribute(hConsoleOutput, wOldColorAttrs);
@@ -817,14 +825,15 @@ void Interface::editBook(Book* book) {
 	char input;
 	bool exit = false;
 	bool edited = false;
+	string changesMessage;
 	string header = "Edit book";
-	const size_t cmdsSize = 7;
+	const size_t cmdsSize = 8;
 	string cmds[cmdsSize] = { "[1] Author: ", "[2] Quota: ",
 			"[3] Page number: ", "[4] ISBN: ", "[5] Title: ", "Discard changes",
-			"Save" };
+			"Save changes", "Exit" };
 	Book backup = *book;
 	do {
-		string newQuota, newTitle, newISBN, newPageNumberStr, changesMessage;
+		string newQuota, newTitle, newISBN, newPageNumberStr;
 		unsigned int newPageNumber;
 		stringstream ss;
 
@@ -842,12 +851,20 @@ void Interface::editBook(Book* book) {
 		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
 		cout << book->getTitle().substr(0, 20) << endl << endl;
 
-		for (size_t i = 5; i < cmdsSize; i++)
-			cmdMsg(THREE_TABS, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
+		for (size_t i = 5; i < cmdsSize - 1; i++) {
+			if (!edited)
+				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGRAY_BGBLACK, 1);
+			else
+				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 1);
+		}
+		cout << endl;
+		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1], FGGREEN_BGBLACK, 1);
 
 		if (changesMessage.size() > 0) {
-			cout << endl << THREE_TABS << changesMessage << endl;
+			cout << endl;
+			infoMsg(changesMessage);
 			changesMessage.clear();
+			cout << endl;
 		}
 		cout << endl << THREE_TABS << PROMPT_SYMBOL;
 
@@ -904,19 +921,29 @@ void Interface::editBook(Book* book) {
 			edited = true;
 			break;
 		case '6':
-			if (edited)
+			if (edited) {
 				*book = backup;
-			exit = true;
+				edited = false;
+				changesMessage = "Changes discarded";
+			}
 			break;
 		case '7':
-
-			if (edited)
+			if (edited) {
 				library.saveBooks();
+				edited = false;
+				changesMessage = "Changes saved successfully";
+			}
+			break;
+		case '8':
+			if (edited)
+				*book = backup;
+			edited = false;
 			exit = true;
 			break;
 		case ESCAPE_KEY:
 			if (edited)
 				*book = backup;
+			edited = false;
 			exit = true;
 			break;
 		default:
@@ -929,15 +956,16 @@ void Interface::editReader(Person* reader) {
 	char input;
 	bool exit = false;
 	bool edited = false;
+	string changesMessage;
 	string header = "Edit Reader";
-	const size_t cmdsSize = 6;
+	const size_t cmdsSize = 7;
 	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
-			"[4] Email: ", "Discard changes", "Save" };
+			"[4] Email: ", "Discard changes", "Save changes", "Exit" };
 	Reader* dReader = dynamic_cast<Reader*>(reader);
 	Reader backup = *dReader;
 
 	do {
-		string newName, newAgeStr, newPhoneStr, newEmail, changesMessage;
+		string newName, newAgeStr, newPhoneStr, newEmail;
 		unsigned int newAge, newPhone;
 		stringstream ss;
 
@@ -953,12 +981,20 @@ void Interface::editReader(Person* reader) {
 		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
 		cout << reader->getEmail().substr(0, 20) << endl << endl;
 
-		for (size_t i = 4; i < cmdsSize; i++)
-			cmdMsg(THREE_TABS, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
+		for (size_t i = 4; i < cmdsSize - 1; i++) {
+			if (!edited)
+				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGRAY_BGBLACK, 1);
+			else
+				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 1);
+		}
+		cout << endl;
+		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1], FGGREEN_BGBLACK, 1);
 
-		if (changesMessage != "") {
-			cout << endl << THREE_TABS << changesMessage << endl;
+		if (changesMessage.size() > 0) {
+			cout << endl;
+			infoMsg(changesMessage);
 			changesMessage.clear();
+			cout << endl;
 		}
 		cout << endl << THREE_TABS << PROMPT_SYMBOL;
 
@@ -966,7 +1002,7 @@ void Interface::editReader(Person* reader) {
 		switch (input) {
 
 		case '1':
-			cout << endl;
+			cout << endl << endl;
 			while (newName.size() == 0 || !is_All_ASCII_Letter(newName)) {
 				cout << THREE_TABS << "Name: ";
 				getline(cin, newName, '\n');
@@ -976,7 +1012,7 @@ void Interface::editReader(Person* reader) {
 			break;
 
 		case '2':
-			cout << endl;
+			cout << endl << endl;
 			while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
 					|| newAgeStr.size() > 3) {
 				cout << THREE_TABS << "Age: ";
@@ -989,7 +1025,7 @@ void Interface::editReader(Person* reader) {
 			break;
 
 		case '3':
-			cout << endl;
+			cout << endl << endl;
 			while (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
 					|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
 				cout << THREE_TABS << "Phone: ";
@@ -1002,7 +1038,7 @@ void Interface::editReader(Person* reader) {
 			break;
 
 		case '4':
-			cout << endl;
+			cout << endl << endl;
 			while (newEmail.size() == 0 || newEmail.size() < 7) {
 				cout << THREE_TABS << "Mail: ";
 				getline(cin, newEmail, '\n');
@@ -1011,21 +1047,29 @@ void Interface::editReader(Person* reader) {
 			edited = true;
 			break;
 		case '5':
-
-			if (edited)
+			if (edited) {
 				*reader = backup;
-			exit = true;
+				edited = false;
+				changesMessage = "Changes discarded";
+			}
 			break;
 		case '6':
-
-			if (edited)
+			if (edited) {
 				library.savePersons();
+				edited = false;
+				changesMessage = "Changes saved successfully";
+			}
+			break;
+		case '7':
+			if (edited)
+				*reader = backup;
+			edited = false;
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-
 			if (edited)
 				*reader = backup;
+			edited = false;
 			exit = true;
 			break;
 		default:
@@ -1038,17 +1082,17 @@ void Interface::editEmployee(Person* employee) {
 	char input;
 	bool exit = false;
 	bool edited = false;
+	string changesMessage;
 	string header = "Edit Employee";
-	const size_t cmdsSize = 9;
+	const size_t cmdsSize = 10;
 	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
 			"[4] Email: ", "[5] Nif: ", "[6] Wage: ", "[7] Hierarchy: ",
-			"Discard changes", "Save" };
-	Employee* dEmployee = dynamic_cast<Employee*>(employee);
+			"Discard changes", "Save changes", "Exit" };
+	Employee* dEmployee = reinterpret_cast<Employee*>(employee);
 	Employee backup = *dEmployee;
 
 	do {
-		string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr,
-				changesMessage;
+		string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr;
 		unsigned int newAge, newPhone, newNif, newWage;
 		char ch;
 		stringstream ss;
@@ -1072,12 +1116,20 @@ void Interface::editEmployee(Person* employee) {
 		colorMsg(THREE_TABS, cmds[6], FGWHITE_BGBLACK, 0);
 		cout << employee->printType() << endl << endl;
 
-		for (size_t i = 7; i < cmdsSize; i++)
-			cmdMsg(THREE_TABS, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
+		for (size_t i = 7; i < cmdsSize - 1; i++) {
+			if (!edited)
+				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGRAY_BGBLACK, 1);
+			else
+				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 1);
+		}
+		cout << endl;
+		cmdMsg(THREE_TABS, 0, cmds[cmdsSize - 1], FGGREEN_BGBLACK, 1);
 
-		if (changesMessage != "") {
-			cout << endl << THREE_TABS << changesMessage << endl;
+		if (changesMessage.size() > 0) {
+			cout << endl;
+			infoMsg(changesMessage);
 			changesMessage.clear();
+			cout << endl;
 		}
 		cout << endl << THREE_TABS << PROMPT_SYMBOL;
 
@@ -1085,7 +1137,7 @@ void Interface::editEmployee(Person* employee) {
 		switch (input) {
 
 		case '1':
-			cout << endl;
+			cout << endl << endl;
 			while (newName.size() == 0 || !is_All_ASCII_Letter(newName)) {
 				cout << THREE_TABS << "Name: ";
 				getline(cin, newName, '\n');
@@ -1093,9 +1145,8 @@ void Interface::editEmployee(Person* employee) {
 			employee->setName(newName);
 			edited = true;
 			break;
-
 		case '2':
-			cout << endl;
+			cout << endl << endl;
 			while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
 					|| newAgeStr.size() > 3) {
 				cout << THREE_TABS << "Age: ";
@@ -1106,9 +1157,8 @@ void Interface::editEmployee(Person* employee) {
 			employee->setAge(newAge);
 			edited = true;
 			break;
-
 		case '3':
-			cout << endl;
+			cout << endl << endl;
 			while (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
 					|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
 				cout << THREE_TABS << "Phone: ";
@@ -1119,19 +1169,17 @@ void Interface::editEmployee(Person* employee) {
 			employee->setPhone(newPhone);
 			edited = true;
 			break;
-
 		case '4':
-			cout << endl;
+			cout << endl << endl;
 			while (newEmail.size() == 0 || newEmail.size() < 7) {
-				cout << THREE_TABS << "Mail: ";
+				cout << THREE_TABS << "Email: ";
 				getline(cin, newEmail, '\n');
 			}
 			employee->setEmail(newEmail);
 			edited = true;
 			break;
-
 		case '5':
-			cout << endl;
+			cout << endl << endl;
 			while (newNifStr.size() == 0 || !is_All_Number(newNifStr)
 					|| newNifStr.size() != 9 || seekNIF(newNifStr)) {
 				cout << THREE_TABS << "NIF: ";
@@ -1143,7 +1191,7 @@ void Interface::editEmployee(Person* employee) {
 			edited = true;
 			break;
 		case '6':
-			cout << endl;
+			cout << endl << endl;
 			while (newWageStr.size() == 0 || !is_All_Number(newWageStr)) {
 				cout << THREE_TABS << "Wage: ";
 				getline(cin, newWageStr, '\n');
@@ -1154,7 +1202,7 @@ void Interface::editEmployee(Person* employee) {
 			edited = true;
 			break;
 		case '7':
-			cout << endl << THREE_TABS
+			cout << endl << endl << TWO_TABS
 					<< "[S] to set as supervisor [E] as employee"
 					<< PROMPT_SYMBOL;
 			ch = getKey();
@@ -1175,21 +1223,29 @@ void Interface::editEmployee(Person* employee) {
 			}
 			break;
 		case '8':
-
-			if (edited)
+			if (edited) {
 				*employee = backup;
-			exit = true;
+				edited = false;
+				changesMessage = "Changes discarded";
+			}
 			break;
 		case '9':
-
-			if (edited)
+			if (edited) {
 				library.savePersons();
+				edited = false;
+				changesMessage = "Changes saved successfully";
+			}
+			break;
+		case '0':
+			if (edited)
+				*employee = backup;
+			edited = false;
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-
 			if (edited)
 				*employee = backup;
+			edited = false;
 			exit = true;
 			break;
 		default:

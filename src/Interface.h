@@ -81,6 +81,9 @@ public:
 	Interface();
 	~Interface();
 
+	void setConsole();
+	void restoreConsole();
+
 	void menu();
 	void displayMenu();
 
