@@ -511,7 +511,7 @@ void Interface::manageEmployees(Person* supervisor) {
 	const size_t cmdsSize = 4;
 	string cmds[cmdsSize] = { "Create employee", "Edit employee",
 			"Remove employee\n", "Exit\n" };
-	Person* employee;
+	Employee* employee;
 
 	do {
 		clearScreen();
@@ -534,18 +534,17 @@ void Interface::manageEmployees(Person* supervisor) {
 		input = getKey();
 		switch (input) {
 		case '1':
-
 			createEmployee();
 			break;
 		case '2':
-			employee = searchPerson(library.getEmployees());
+			employee = static_cast<Employee*>(searchPerson(
+					library.getEmployees()));
 			if (employee != NULL)
 				editEmployee(employee);
 			else
 				errMsg = "Error editing an employee";
 			break;
 		case '3':
-
 			if (library.removeEmployee((searchPerson(library.getEmployees())),
 					supervisor)) {
 				library.savePersons();
@@ -1078,7 +1077,7 @@ void Interface::editReader(Person* reader) {
 	} while (!exit);
 }
 
-void Interface::editEmployee(Person* employee) {
+void Interface::editEmployee(Employee* employee) {
 	char input;
 	bool exit = false;
 	bool edited = false;
@@ -1088,8 +1087,7 @@ void Interface::editEmployee(Person* employee) {
 	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
 			"[4] Email: ", "[5] Nif: ", "[6] Wage: ", "[7] Hierarchy: ",
 			"Discard changes", "Save changes", "Exit" };
-	Employee* dEmployee = reinterpret_cast<Employee*>(employee);
-	Employee backup = *dEmployee;
+	Employee backup = *employee;
 
 	do {
 		string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr;
@@ -1612,10 +1610,13 @@ bool Interface::confirmOperation(string& query) {
 
 template<class T>
 string Interface::repeatStr(const T& s, const size_t n) {
-	stringstream ss;
+#if defined(_WIN32) || defined (_WIN64)
+	return string(n, s);
+#else
 	for (size_t i = 0; i < n; i++)
-		ss << s;
-	return ss.str();
+	s += s;
+	return s;
+#endif
 }
 
 void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,

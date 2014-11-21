@@ -45,12 +45,6 @@ public:
 	void setAge(unsigned int age);
 	void setPhone(unsigned int phoneNumber);
 	void setEmail(string email);
-	virtual void setNif(unsigned int nif) {
-	}
-	virtual void setWage(unsigned int wage) {
-	}
-	virtual void setSupervisor(bool super) {
-	}
 	string getName() const;
 	string getEmail() const;
 	unsigned int getAge() const;

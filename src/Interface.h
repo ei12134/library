@@ -104,7 +104,7 @@ public:
 
 	void editBook(Book* book);
 	void editReader(Person* reader);
-	void editEmployee(Person* employee);
+	void editEmployee(Employee* employee);
 	void editBorrow(Person* reader);
 	vector<string> editAuthors();
 
