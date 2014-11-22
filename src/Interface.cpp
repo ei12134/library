@@ -35,6 +35,8 @@ void Interface::setConsole() {
 	SetConsoleTitleA("Library");
 #endif
 	setColor(FGGREEN_BGBLACK);
+	cout << string(50, '\n');
+	clearScreen();
 }
 
 void Interface::restoreConsole() {
@@ -42,7 +44,7 @@ void Interface::restoreConsole() {
 	SetConsoleMode(hConsoleInput, fdwOldMode);
 	SetConsoleTextAttribute(hConsoleOutput, wOldColorAttrs);
 #else
-	cout << "\033[0m";
+	cout << "\033[0;0;0m" + string(50, '\n');
 #endif
 	clearScreen();
 }
@@ -1613,9 +1615,10 @@ string Interface::repeatStr(const T& s, const size_t n) {
 #if defined(_WIN32) || defined (_WIN64)
 	return string(n, s);
 #else
+	string r = s;
 	for (size_t i = 0; i < n; i++)
-	s += s;
-	return s;
+	r += s;
+	return r;
 #endif
 }
 
@@ -1985,32 +1988,37 @@ void Interface::setColor(int color) {
 		break;
 	}
 #else
-
 	switch (color) {
-		case 0:
-		cout << "\033[0;37m";
+		case FGGRAY_BGBLACK:
+			cout << "\033[40;37m";
 		break;
-		case 1:
-		cout << "\033[0;31m";
+		case FGWHITE_BGBLACK:
+			cout << "\033[40;37m";
 		break;
-		case 2:
-		cout << "\033[0;32m";
+		case FGRED_BGBLACK:
+			cout << "\033[40;31m";
 		break;
-		case 5:
-		cout << "\033[1;41;1;37m";
+		case FGGREEN_BGBLACK:
+			cout << "\033[40;32m";
 		break;
-		case 3:
-		cout << "\033[0;34m";
+		case FGBLUE_BGBLACK:
+			cout << "\033[40;34m";
 		break;
-		case 6:
-		cout << "\033[1;30;1;47m";
+		case FGGRAY_BGRED:
+			cout << "\033[41;37m";
 		break;
-		case 7:
-		cout << "\033[1;30;1;47m";
+		case FGWHITE_BGRED:
+			cout << "\033[41;37m";
 		break;
-		case 8:
-		cout <<"\033[42;30m";
+		case FGBLACK_BGWHITE:
+			cout << "\033[47;30m";
 		break;
+		case FGBLACK_BGGRAY:
+			cout << "\033[47;30m";
+		break;
+		case FGBLACK_BGGREEN:
+			cout << "\033[7;1;32;40m";
+		break;	
 		default:
 		break;
 	}
@@ -2023,7 +2031,7 @@ void Interface::resetColor() {
 	SetConsoleTextAttribute(hConsoleOutput,
 	FOREGROUND_GREEN | FOREGROUND_INTENSITY | 0 | 0 | 0);
 #else
-	cout << "\033[0;32m";
+	cout << "\033[0;1;40;32m";
 #endif
 }
 vector<string> Interface::editAuthors() {
