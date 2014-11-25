@@ -4,9 +4,10 @@ using namespace std;
 unsigned long int Book::bookID = 0;
 
 Book::Book(vector<string> authors, bool borrowed, string quota,
-		unsigned int pageNumber, string ISBN, string title) :
+		unsigned int pageNumber, string ISBN, string title,
+		unsigned int editionYear) :
 		authors(authors), borrowed(borrowed), quota(quota), pageNumber(
-				pageNumber), ISBN(ISBN), title(title) {
+				pageNumber), ISBN(ISBN), title(title), editionYear(editionYear) {
 	ID = ++bookID;
 }
 
@@ -17,9 +18,9 @@ Book::Book(stringstream& s) {
 	stringstream ss;
 	string book;
 	string newAuthors, newBorrowed, newQuota, newPageNumber, newISBN, newTitle,
-			newAuthor, newIdStr;
+			newAuthor, newEditionYearStr, newIdStr;
 	bool borrowed;
-	unsigned int pageNumber, newId;
+	unsigned int pageNumber, newId, editionYear;
 
 	if (!getline(s, newAuthors, ';'))
 		throw Exception<string>("Error reading authors", "Book");
@@ -44,7 +45,6 @@ Book::Book(stringstream& s) {
 
 	if (!getline(s, newPageNumber, ';'))
 		throw Exception<string>("Error reading page number", "Book");
-
 	ss << newPageNumber;
 	ss >> pageNumber;
 	ss.clear();
@@ -56,8 +56,14 @@ Book::Book(stringstream& s) {
 
 	if (!getline(s, newTitle, ';'))
 		throw Exception<string>("Error reading title", "Book");
-
 	this->title = newTitle;
+
+	if (!getline(s, newEditionYearStr, ';'))
+		throw Exception<string>("Error reading editionYear", "Book");
+	ss << newEditionYearStr;
+	ss >> editionYear;
+	this->editionYear = editionYear;
+	ss.clear();
 
 	if (!getline(s, newIdStr))
 		throw Exception<string>("Error reading title", "Book");
@@ -140,7 +146,7 @@ void Book::setQuota(string quota) {
 	this->quota = quota;
 }
 
-int Book::getPageNumber() const {
+unsigned int Book::getPageNumber() const {
 	return pageNumber;
 }
 void Book::setPageNumber(int pageNumber) {
@@ -149,13 +155,23 @@ void Book::setPageNumber(int pageNumber) {
 string Book::getISBN() const {
 	return ISBN;
 }
+
+unsigned int Book::getEditionYear() const {
+	return editionYear;
+}
+
 void Book::setISBN(string ISBN) {
 	this->ISBN = ISBN;
 }
 string Book::getTitle() const {
 	return title;
 }
+
 void Book::setTitle(string title) {
 	this->title = title;
+}
+
+void Book::setEditionYear(unsigned int editionYear) {
+	this->editionYear = editionYear;
 }
 

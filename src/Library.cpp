@@ -433,7 +433,7 @@ void Library::saveBooks() {
 		pFile << ";" << books[i]->getBorrowed() << ";" << books[i]->getQuota()
 				<< ";" << books[i]->getPageNumber() << ";"
 				<< books[i]->getISBN() << ";" << books[i]->getTitle() << ";"
-				<< books[i]->getID();
+				<< books[i]->getEditionYear() << ";" << books[i]->getID();
 		if (i < (-1 + books.size()))
 			pFile << endl;
 	}

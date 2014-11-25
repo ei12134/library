@@ -33,9 +33,11 @@ void Interface::setConsole() {
 	SetConsoleWindowInfo(hConsoleOutput, TRUE, &Rect);
 	SetConsoleScreenBufferSize(hConsoleOutput, coord);
 	SetConsoleTitleA("Library");
-#endif
 	setColor(FGGREEN_BGBLACK);
-	cout << string(50, '\n');
+#else
+	setColor(FGGREEN_BGBLACK);
+	cout << string(30, '\n');
+#endif
 	clearScreen();
 }
 
@@ -568,9 +570,10 @@ void Interface::manageEmployees(Person* supervisor) {
 
 void Interface::createBook() {
 	string header = "Create Book";
-	string newAuthor, newPageNumberStr, newQuota, newISBN, newTitle;
+	string newAuthor, newPageNumberStr, newQuota, newISBN, newTitle,
+			newEditionYearStr;
 	stringstream ss;
-	unsigned int newPageNumber;
+	unsigned int newPageNumber, newEditionYear;
 
 	clearScreen();
 	displayHeader(header);
@@ -592,14 +595,21 @@ void Interface::createBook() {
 		cout << THREE_TABS << "Title: ";
 		getline(cin, newTitle, '\n');
 	}
+	while (newPageNumberStr.size() == 0 || !is_All_Number(newPageNumberStr)) {
+		cout << THREE_TABS << "Edition year: ";
+		getline(cin, newEditionYearStr, '\n');
+	}
 	cout << endl << THREE_TABS << "Press S to save" << PROMPT_SYMBOL;
 	char ch = cin.get();
 	if (ch == 's' || ch == 'S') {
 		ss << newPageNumberStr;
 		ss >> newPageNumber;
+		ss.clear();
+		ss << newEditionYearStr;
+		ss >> newEditionYear;
 		vector<Book*> books = library.getBooks();
 		Book *b = new Book(authors, false, newQuota, newPageNumber, newISBN,
-				newTitle);
+				newTitle, newEditionYear);
 		library.addBook(b);
 		library.saveBooks();
 		cout << endl << THREE_TABS << newTitle << " successfully created.";
@@ -828,14 +838,14 @@ void Interface::editBook(Book* book) {
 	bool edited = false;
 	string changesMessage;
 	string header = "Edit book";
-	const size_t cmdsSize = 8;
+	const size_t cmdsSize = 9;
 	string cmds[cmdsSize] = { "[1] Author: ", "[2] Quota: ",
-			"[3] Page number: ", "[4] ISBN: ", "[5] Title: ", "Discard changes",
-			"Save changes", "Exit" };
+			"[3] Page number: ", "[4] ISBN: ", "[5] Title: ",
+			"[6] Edition year: ", "Discard changes", "Save changes", "Exit" };
 	Book backup = *book;
 	do {
-		string newQuota, newTitle, newISBN, newPageNumberStr;
-		unsigned int newPageNumber;
+		string newQuota, newTitle, newISBN, newPageNumberStr, newEditionYearStr;
+		unsigned int newPageNumber, newEditionYear;
 		stringstream ss;
 
 		clearScreen();
@@ -850,9 +860,11 @@ void Interface::editBook(Book* book) {
 		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
 		cout << book->getISBN() << endl;
 		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
-		cout << book->getTitle().substr(0, 20) << endl << endl;
+		cout << book->getTitle().substr(0, 20) << endl;
+		colorMsg(THREE_TABS, cmds[5], FGWHITE_BGBLACK, 0);
+		cout << book->getEditionYear() << endl << endl;
 
-		for (size_t i = 5; i < cmdsSize - 1; i++) {
+		for (size_t i = 6; i < cmdsSize - 1; i++) {
 			if (!edited)
 				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGRAY_BGBLACK, 1);
 			else
@@ -922,20 +934,32 @@ void Interface::editBook(Book* book) {
 			edited = true;
 			break;
 		case '6':
+			cout << endl << endl;
+			while (newEditionYearStr.size() == 0
+					|| !is_All_Number(newEditionYearStr)) {
+				cout << THREE_TABS << "Edition year: ";
+				getline(cin, newEditionYearStr, '\n');
+			}
+			ss << newEditionYearStr;
+			ss >> newEditionYear;
+			book->setEditionYear(newEditionYear);
+			edited = true;
+			break;
+		case '7':
 			if (edited) {
 				*book = backup;
 				edited = false;
 				changesMessage = "Changes discarded";
 			}
 			break;
-		case '7':
+		case '8':
 			if (edited) {
 				library.saveBooks();
 				edited = false;
 				changesMessage = "Changes saved successfully";
 			}
 			break;
-		case '8':
+		case '9':
 			if (edited)
 				*book = backup;
 			edited = false;
@@ -1854,7 +1878,6 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 
 char Interface::getKey() {
 #ifdef _WIN32
-
 	DWORD fdwSaveOldMode;
 	GetConsoleMode(hConsoleInput, &fdwSaveOldMode);
 
@@ -1886,7 +1909,7 @@ char Interface::getKey() {
 	else
 		key = lpBuffer.Event.KeyEvent.uChar.AsciiChar;
 
-	//FlushConsoleInputBuffer(hConsoleInput); // getline & special keys
+//FlushConsoleInputBuffer(hConsoleInput); // getline & special keys
 // Restore input mode on exit.
 	SetConsoleMode(hConsoleInput, fdwSaveOldMode);
 
@@ -1990,35 +2013,35 @@ void Interface::setColor(int color) {
 #else
 	switch (color) {
 		case FGGRAY_BGBLACK:
-			cout << "\033[40;37m";
+		cout << "\033[40;37m";
 		break;
 		case FGWHITE_BGBLACK:
-			cout << "\033[40;37m";
+		cout << "\033[40;37m";
 		break;
 		case FGRED_BGBLACK:
-			cout << "\033[40;31m";
+		cout << "\033[40;31m";
 		break;
 		case FGGREEN_BGBLACK:
-			cout << "\033[40;32m";
+		cout << "\033[40;32m";
 		break;
 		case FGBLUE_BGBLACK:
-			cout << "\033[40;34m";
+		cout << "\033[40;34m";
 		break;
 		case FGGRAY_BGRED:
-			cout << "\033[41;37m";
+		cout << "\033[41;37m";
 		break;
 		case FGWHITE_BGRED:
-			cout << "\033[41;37m";
+		cout << "\033[41;37m";
 		break;
 		case FGBLACK_BGWHITE:
-			cout << "\033[47;30m";
+		cout << "\033[47;30m";
 		break;
 		case FGBLACK_BGGRAY:
-			cout << "\033[47;30m";
+		cout << "\033[47;30m";
 		break;
 		case FGBLACK_BGGREEN:
-			cout << "\033[7;1;32;40m";
-		break;	
+		cout << "\033[7;1;32;40m";
+		break;
 		default:
 		break;
 	}
