@@ -79,9 +79,9 @@ Book::Book(stringstream& s) {
 string Book::print() const {
 	stringstream ss, authorsSs;
 
-	ss << (title.size() > 22 ? title.substr(0, 22) : title);
-	ss << (title.size() >= 22 ? "\t" : "");
-	for (int i = 22 - title.size(); i > 0; i -= 8)
+	ss << (title.size() > 30 ? title.substr(0, 30) : title);
+	ss << (title.size() >= 30 ? "\t" : "");
+	for (int i = 30 - title.size(); i > 0; i -= 8)
 		ss << "\t";
 
 	if (authors.size() > 0) {
@@ -97,7 +97,7 @@ string Book::print() const {
 	for (int i = 24 - authorsSs.str().size(); i > 0; i -= 8)
 		ss << "\t";
 
-	ss << ISBN << "\t" << (borrowed == 1 ? "Borrowed" : "Available");
+	ss << editionYear << "\t" << (borrowed == 1 ? "Borrowed" : "Available");
 	return ss.str();
 }
 
@@ -175,3 +175,6 @@ void Book::setEditionYear(unsigned int editionYear) {
 	this->editionYear = editionYear;
 }
 
+bool Book::operator<(const Book& b2) const {
+	return editionYear < b2.editionYear;
+}

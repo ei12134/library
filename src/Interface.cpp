@@ -46,7 +46,7 @@ void Interface::restoreConsole() {
 	SetConsoleMode(hConsoleInput, fdwOldMode);
 	SetConsoleTextAttribute(hConsoleOutput, wOldColorAttrs);
 #else
-	cout << "\033[0;0;0m" + string(50, '\n');
+	cout << "\033[0;0;0m" + string(30, '\n');
 #endif
 	clearScreen();
 }
@@ -117,9 +117,9 @@ void Interface::dispatchPerson(Person* person) {
 void Interface::displayMenu() {
 	char input;
 	bool exit = false;
-	size_t displayMenuSize = 6;
-	string displayMenu[6] = { "Persons", "Readers", "Employees", "Supervisors",
-			"Books\n", "Exit" };
+	const size_t displayMenuSize = 7;
+	string displayMenu[displayMenuSize] = { "Persons", "Readers", "Employees",
+			"Supervisors", "Books", "Books tree\n", "Exit" };
 	string header = "Display";
 	vector<Person*> persons;
 
@@ -177,11 +177,12 @@ void Interface::displayMenu() {
 			break;
 		case '5':
 			booksDisplayPtr(booksGetFunc, "Books",
-					"\tTitle\t\t\tAuthors\t\tISBN\t\tStatus", booksStr,
+					"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", booksStr,
 					booksFuncs, 2);
 			break;
 		case '6':
-			exit = true;
+			displayTree(library.getBooksTree(), "Books tree",
+					"\tTitle\t\t\tAuthors\t\t\tYear\tStatus");
 			break;
 		case ESCAPE_KEY:
 			exit = true;

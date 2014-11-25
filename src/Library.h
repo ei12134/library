@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <fstream>
 #include <vector>
+#include <set>
 using namespace std;
 
 /**
@@ -25,10 +26,17 @@ class Library {
 private:
 	/// vector to Book pointer type objects
 	vector<Book*> books;
+	/// red-black tree to Book pointer type objects
+	set<Book*, bool (*)(const Book*, const Book*)> booksTree;
 	/// vector to Borrow pointer type objects
 	vector<Borrow*> borrows;
 	/// vector to Person pointer type objects
 	vector<Person*> persons;
+
+	static bool compareBooks(const Book* b1, const Book* b2) {
+		return *b1 < *b2;
+	}
+
 public:
 	/** Library constructor reads *.csv files and stores
 	 * pointers to each object in their dedicated container */
@@ -39,6 +47,9 @@ public:
 
 	///@return all books
 	vector<Book*> getBooks() const;
+
+	///@return books tree
+	set<Book*, bool (*)(const Book*, const Book*)> getBooksTree() const;
 
 	///@return available books
 	vector<Book*> getAvailableBooks() const;
@@ -165,7 +176,6 @@ public:
 	void sortByISBN();
 
 	void SupervisorEmployeeRandom();
-
 };
 
 #endif /* LIBRARY_H_ */

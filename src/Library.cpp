@@ -1,7 +1,7 @@
 #include "Library.h"
 using namespace std;
 
-Library::Library() {
+Library::Library() : booksTree(compareBooks){
 	loadBooks();
 	loadPersons();
 	loadBorrowBooks();
@@ -12,6 +12,7 @@ Library::~Library() {
 	savePersons();
 	saveBorrows();
 
+	booksTree.clear();
 	for (unsigned x = 0; x < books.size(); x++)
 		delete books[x];
 	books.clear();
@@ -25,6 +26,10 @@ Library::~Library() {
 
 vector<Book*> Library::getBooks() const {
 	return books;
+}
+
+set<Book*, bool (*)(const Book*, const Book*)> Library::getBooksTree() const {
+	return booksTree;
 }
 
 vector<Book*> Library::getAvailableBooks() const {
@@ -249,6 +254,7 @@ void Library::loadBooks() {
 				ss << line;
 				Book* bk = new Book(ss);
 				books.push_back(bk);
+				booksTree.insert(bk);
 			} catch (Exception<string> &e) {
 			}
 		}
@@ -479,7 +485,6 @@ void Library::savePersons() {
 			break;
 		}
 	}
-
 	pFileReaders.close();
 	pFileSuperviseres.close();
 	pFileEmplayees.close();

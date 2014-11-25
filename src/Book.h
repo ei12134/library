@@ -47,6 +47,7 @@ public:
 	void setISBN(string ISBN);
 	void setTitle(string title);
 	void setEditionYear(unsigned int editionYear);
+	bool operator<(const Book& b2) const;
 };
 
 #endif /* BOOK_H_ */
