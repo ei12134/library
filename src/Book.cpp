@@ -176,5 +176,10 @@ void Book::setEditionYear(unsigned int editionYear) {
 }
 
 bool Book::operator<(const Book& b2) const {
-	return editionYear < b2.editionYear;
+	if (editionYear < b2.editionYear)
+		return true;
+	else if (title < b2.title)
+		return true;
+	else
+		return (authors[0] < b2.authors[0]);
 }

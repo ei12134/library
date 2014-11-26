@@ -851,7 +851,7 @@ void Interface::editBook(Book* book) {
 	bool exit = false;
 	bool edited = false;
 	string changesMessage;
-	string header = "Edit book";
+
 	const size_t cmdsSize = 9;
 	string cmds[cmdsSize] = { "[1] Author: ", "[2] Quota: ",
 			"[3] Page number: ", "[4] ISBN: ", "[5] Title: ",
@@ -861,7 +861,7 @@ void Interface::editBook(Book* book) {
 		string newQuota, newTitle, newISBN, newPageNumberStr, newEditionYearStr;
 		unsigned int newPageNumber, newEditionYear;
 		stringstream ss;
-
+		string header = "Edit book" + string(5, ' ') + book->getTitle();
 		clearScreen();
 		displayHeader(header);
 
@@ -997,7 +997,6 @@ void Interface::editReader(Person* reader) {
 	bool exit = false;
 	bool edited = false;
 	string changesMessage;
-	string header = "Edit Reader";
 	const size_t cmdsSize = 7;
 	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
 			"[4] Email: ", "Discard changes", "Save changes", "Exit" };
@@ -1008,7 +1007,7 @@ void Interface::editReader(Person* reader) {
 		string newName, newAgeStr, newPhoneStr, newEmail;
 		unsigned int newAge, newPhone;
 		stringstream ss;
-
+		string header = "Edit Reader" + string(5, ' ') + reader->getName();
 		clearScreen();
 		displayHeader(header);
 
@@ -1124,7 +1123,6 @@ void Interface::editEmployee(Employee* employee) {
 	bool exit = false;
 	bool edited = false;
 	string changesMessage;
-	string header = "Edit Employee";
 	const size_t cmdsSize = 10;
 	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
 			"[4] Email: ", "[5] Nif: ", "[6] Wage: ", "[7] Hierarchy: ",
@@ -1137,7 +1135,7 @@ void Interface::editEmployee(Employee* employee) {
 		char ch;
 		stringstream ss;
 		istringstream s;
-
+		string header = "Edit Employee" + string(5, ' ') + employee->getName();
 		clearScreen();
 		displayHeader(header);
 
