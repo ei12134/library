@@ -175,7 +175,21 @@ public:
 	 */
 	void sortByISBN();
 
-	void SupervisorEmployeeRandom();
+	/**
+	 * Assigns employees to supervisors
+	 */
+	void assignEmployees();
+
+	/** gets all print output from T type objects
+	 *@return string vector containing print output
+	 */
+	template<typename T>
+	vector<string> getPrintOutputs(vector<T> container) {
+		vector<string> out;
+		for (size_t i = 0; i < container.size(); i++)
+			out.push_back(container[i]->print());
+		return out;
+	}
 };
 
 #endif /* LIBRARY_H_ */

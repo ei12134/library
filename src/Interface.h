@@ -119,8 +119,7 @@ public:
 	void booksDisplayPtr(LibraryGetBkFn getFunc, string listName, string labels,
 			string readerStr[], LibraryMemFn funcs[], size_t length);
 
-	template<typename T>
-	void genericDisplay(vector<T> vec, string listName, string labels);
+	void displayContainer(vector<string> vec, string listName, string labels);
 
 	inline void centerString(const size_t &size);
 
@@ -140,67 +139,6 @@ public:
 	void resetColor();
 	bool is_Number(const int & c);
 	bool seekNIF(const string &s);
-
-	void displayTree(set<Book*, bool (*)(const Book*, const Book*)> tree, string listName, string labels) {
-		unsigned int treeSize = tree.size(), pCount = 1, vLimit = 0,
-				progress;
-		float pLimit;
-		bool done = false;
-		string vLimitMsg = " [ESC] to interrupt or any other key to continue...";
-		char ch;
-		set<Book*, bool (*)(const Book*, const Book*)>::iterator it = tree.begin();
-
-		if (treeSize == 0)
-			pLimit = 1;
-		else
-			pLimit = ceil(static_cast<float>(treeSize) / MAX_LINES);
-
-		do {
-			vLimit = 0;
-			progress = ceil((19.0 / pLimit) * pCount);
-			clearScreen();
-			displayHeader(listName);
-			cout << THREE_TABS << "Page " << pCount << " of " << pLimit << " ["
-					<< repeatStr(progressBar, progress)
-					<< string((19 - progress), ' ') << "]" << endl << endl;
-			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
-			cout << " " << labels << endl;
-			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
-
-			if (treeSize == 0) {
-				string nothing = "Nothing to show here :(";
-				cout << string(5, '\n');
-				errorMsg(nothing);
-				cout << string(6, '\n');
-			}
-
-			while (vLimit < MAX_LINES && it != tree.end() && !done) {
-				setColor(FGWHITE_BGBLACK);
-				cout << " " << (*it)->print();
-				resetColor();
-				cout << endl;
-				it++;
-				vLimit++;
-
-				if (vLimit == MAX_LINES && it != tree.end()) {
-					pCount++;
-					cout << " " << repeatStr(hSeparator, 77) << endl
-							<< vLimitMsg;
-					ch = getKey();
-					if (ch == ESCAPE_KEY)
-						done = true;
-				}
-			}
-			if (treeSize != 0)
-				cout << string((MAX_LINES - vLimit), '\n');
-		} while (it != tree.end() && !done);
-		if (it == tree.end()) {
-			cout << " " << repeatStr(hSeparator, 77) << endl;
-			cout << " Press any key to continue...";
-			getKey();
-		}
-	}
-
 };
 
 #endif /* INTERFACE_H_ */

@@ -122,6 +122,9 @@ void Interface::displayMenu() {
 			"Supervisors", "Books", "Books tree\n", "Exit" };
 	string header = "Display";
 	vector<Person*> persons;
+	vector<string> print;
+	set<Book*, bool (*)(const Book*, const Book*)> tree;
+	set<Book*, bool (*)(const Book*, const Book*)>::iterator it;
 
 	string persStr[] = { "type", "name", "age" };
 	LibraryGetFn persGetFunc = &Library::getPersons;
@@ -181,7 +184,11 @@ void Interface::displayMenu() {
 					booksFuncs, 2);
 			break;
 		case '6':
-			displayTree(library.getBooksTree(), "Books tree",
+			tree = library.getBooksTree();
+			it = tree.begin();
+			for (size_t i = 0; it != tree.end(); i++, it++)
+				print.push_back((*it)->print());
+			displayContainer(print, "Books tree",
 					"\tTitle\t\t\tAuthors\t\t\tYear\tStatus");
 			break;
 		case ESCAPE_KEY:
@@ -220,7 +227,8 @@ void Interface::readerMenu(Person *reader) {
 		cout << reader->getEmail() << endl << endl;
 
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
+			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
+			FGGREEN_BGBLACK, 1);
 
 		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
 		for (size_t i = 0; i < borrowedBooks.size(); i++)
@@ -239,7 +247,8 @@ void Interface::readerMenu(Person *reader) {
 			editBorrow(reader);
 			break;
 		case '2':
-			genericDisplay(library.getBorrowedBooksFromReader(reader),
+			displayContainer(
+					library.getPrintOutputs(library.getBorrowedBooksFromReader(reader)),
 					"Borrow history", "\tTitle\t\t\t\tBorrowed\tReturned\tID");
 			break;
 		case '3':
@@ -283,7 +292,8 @@ void Interface::employeeMenu(Person* employee) {
 		cout << employee->getWage() << " EUR" << endl << endl;
 
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
+			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
+			FGGREEN_BGBLACK, 1);
 
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
@@ -318,6 +328,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 			"Manage employees", "Auto-assign teams", "Employees team\n",
 			"Logout\n" };
 	string header;
+	vector<string> display;
 
 	do {
 		if (supervisor->getType() != 3) {
@@ -345,7 +356,8 @@ void Interface::supervisorMenu(Person* supervisor) {
 		cout << supervisor->getWage() << " EUR" << endl << endl;
 
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
+			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
+			FGGREEN_BGBLACK, 1);
 
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
@@ -364,13 +376,14 @@ void Interface::supervisorMenu(Person* supervisor) {
 			manageEmployees(supervisor);
 			break;
 		case '5':
-			library.SupervisorEmployeeRandom();
+			library.assignEmployees();
 			library.savePersons();
 			cout << "Employees were evenly assigned";
 			getKey();
 			break;
 		case '6':
-			genericDisplay(supervisor->getEmployeeTeam(), "Employees team",
+			display = library.getPrintOutputs(supervisor->getEmployeeTeam());
+			displayContainer(display, "Employees team",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
 			break;
 		case '7':
@@ -766,11 +779,11 @@ void Interface::createBorrow(Person* employee) {
 
 		for (size_t i = 0; i < cmdsSize; i++) {
 			if (i == 2 && (reader == NULL || book == NULL))
-				cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGRAY_BGBLACK,
-						1);
+				cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
+				FGGRAY_BGBLACK, 1);
 			else
-				cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK,
-						1);
+				cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
+				FGGREEN_BGBLACK, 1);
 		}
 
 		if (errMsg.size() > 0) {
@@ -872,7 +885,8 @@ void Interface::editBook(Book* book) {
 				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 1);
 		}
 		cout << endl;
-		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1], FGGREEN_BGBLACK, 1);
+		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1],
+		FGGREEN_BGBLACK, 1);
 
 		if (changesMessage.size() > 0) {
 			cout << endl;
@@ -1014,7 +1028,8 @@ void Interface::editReader(Person* reader) {
 				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 1);
 		}
 		cout << endl;
-		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1], FGGREEN_BGBLACK, 1);
+		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1],
+		FGGREEN_BGBLACK, 1);
 
 		if (changesMessage.size() > 0) {
 			cout << endl;
@@ -1238,12 +1253,12 @@ void Interface::editEmployee(Employee* employee) {
 					employee->setSupervisor(1);
 					edited = true;
 				}
-				library.SupervisorEmployeeRandom();
+				library.assignEmployees();
 			} else if (tolower(ch) == 'e') {
 				employee->setSupervisor(0); // setSupervisor automatically cleans the supervisor team
 				edited = true;
 				if (library.getEmployees().size() > 1) {
-					library.SupervisorEmployeeRandom();
+					library.assignEmployees();
 				}
 			}
 			break;
@@ -1819,8 +1834,8 @@ void Interface::booksDisplayPtr(LibraryGetBkFn getFunc, string listName,
 	}
 }
 
-template<typename T>
-void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
+void Interface::displayContainer(vector<string> vec, string listName,
+		string labels) {
 	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
 	float pLimit;
 	bool done = false;
@@ -1853,7 +1868,7 @@ void Interface::genericDisplay(vector<T> vec, string listName, string labels) {
 
 		while (vLimit < MAX_LINES && i < vecSize && !done) {
 			setColor(FGWHITE_BGBLACK);
-			cout << " " << vec[i]->print();
+			cout << " " << vec[i];
 			resetColor();
 			cout << endl;
 			i++;

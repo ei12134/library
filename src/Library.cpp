@@ -1,7 +1,8 @@
 #include "Library.h"
 using namespace std;
 
-Library::Library() : booksTree(compareBooks){
+Library::Library() :
+		booksTree(compareBooks) {
 	loadBooks();
 	loadPersons();
 	loadBorrowBooks();
@@ -500,7 +501,7 @@ void Library::saveBorrows() {
 	pFile.close();
 }
 
-void Library::SupervisorEmployeeRandom() {
+void Library::assignEmployees() {
 	vector<Person*> sup = getSupervisors();
 	vector<Person*> emp = getEmployeesNoSupervisors();
 
