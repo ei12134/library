@@ -73,7 +73,6 @@ void Interface::menu() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			library.sortByName();
 			if (library.getSupervisors().size() != 0)
 				dispatchPerson(searchPerson(library.getPersons()));
 			else if (confirmOperation(noSupervisors))
@@ -121,36 +120,26 @@ void Interface::displayMenu() {
 	string displayMenu[displayMenuSize] = { "Persons", "Readers", "Employees",
 			"Supervisors", "Books", "Books tree\n", "Exit" };
 	string header = "Display";
-	vector<Person*> persons;
-	vector<string> print;
-	set<Book*, bool (*)(const Book*, const Book*)> tree;
-	set<Book*, bool (*)(const Book*, const Book*)>::iterator it;
-
-	string persStr[] = { "type", "name", "age" };
-	LibraryGetFn persGetFunc = &Library::getPersons;
-	LibraryMemFn persFuncs[] = { &Library::sortByType, &Library::sortByName,
-			&Library::sortByAge };
-
-	string readerStr[] = { "name", "age", "borrows" };
-	LibraryGetFn rdrGetFunc = &Library::getReaders;
-	LibraryMemFn readerFuncs[] = { &Library::sortByName, &Library::sortByAge,
-			&Library::sortByBorrow };
-
-	string emplStr[] = { "name", "age" };
-	LibraryGetFn emplGetFunc = &Library::getEmployees;
-	LibraryMemFn emplFuncs[] = { &Library::sortByName, &Library::sortByAge };
-
-	string supStr[] = { "name", "age" };
-	LibraryGetFn supGetFunc = &Library::getSupervisors;
-	LibraryMemFn supFuncs[] = { &Library::sortByName, &Library::sortByAge };
-
-	string booksStr[] = { "title", "ISBN" };
-	LibraryGetBkFn booksGetFunc = &Library::getBooks;
-	LibraryMemFn booksFuncs[] = { &Library::sortByTitle, &Library::sortByISBN };
+	vector<string> persStr;
+	persStr.push_back("name");
+	persStr.push_back("age");
+	persStr.push_back("phone");
+	persStr.push_back("email");
+	vector<string> readerStr = persStr;
+	readerStr.push_back("card");
+	vector<string> emplStr = persStr;
+	vector<string> supStr = persStr;
+	vector<string> booksStr;
+	booksStr.push_back("title");
+	booksStr.push_back("author");
+	booksStr.push_back("year");
+	booksStr.push_back("status");
 
 	do {
 		clearScreen();
 		displayHeader(header);
+		int sortFunc = 0;
+
 		for (size_t i = 0; i < displayMenuSize; i++)
 			cmdMsg(FOUR_TABS, (i + 1), displayMenu[i], FGGREEN_BGBLACK, 1);
 
@@ -159,37 +148,49 @@ void Interface::displayMenu() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			personsDisplayPtr(persGetFunc, "Persons",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]", persStr,
-					persFuncs, 3);
+			while (displayContainer(library.getSortedPrint(PERSONS, sortFunc),
+					"Persons", "\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]",
+					persStr[sortFunc]) == -1) {
+				sortFunc++;
+				sortFunc %= persStr.size();
+			}
 			break;
 		case '2':
-			personsDisplayPtr(rdrGetFunc, "Readers",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard", readerStr,
-					readerFuncs, 3);
+			while (displayContainer(library.getSortedPrint(READERS, sortFunc),
+					"Readers", "\tName\t\tAge\tPhone\t\tEmail\t\t\tCard",
+					readerStr[sortFunc]) == -1) {
+				sortFunc++;
+				sortFunc %= readerStr.size();
+			}
 			break;
 		case '3':
-			personsDisplayPtr(emplGetFunc, "Employees",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif", emplStr,
-					emplFuncs, 2);
+			while (displayContainer(library.getSortedPrint(EMPLOYEES, sortFunc),
+					"Employees", "\tName\t\tAge\tPhone\t\tEmail\t\t\tNif",
+					emplStr[sortFunc]) == -1) {
+				sortFunc++;
+				sortFunc %= emplStr.size();
+			}
 			break;
 		case '4':
-			personsDisplayPtr(supGetFunc, "Supervisors",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif", supStr, supFuncs,
-					2);
+			while (displayContainer(
+					library.getSortedPrint(SUPERVISORS, sortFunc),
+					"Supervisors", "\tName\t\tAge\tPhone\t\tEmail\t\t\tNif",
+					supStr[sortFunc]) == -1) {
+				sortFunc++;
+				sortFunc %= supStr.size();
+			}
 			break;
 		case '5':
-			booksDisplayPtr(booksGetFunc, "Books",
-					"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", booksStr,
-					booksFuncs, 2);
+			while (displayContainer(library.getSortedPrint(BOOKS, sortFunc),
+					"Books", "\tTitle\t\t\tAuthors\t\t\tYear\tStatus",
+					booksStr[sortFunc]) == -1) {
+				sortFunc++;
+				sortFunc %= booksStr.size();
+			}
 			break;
 		case '6':
-			tree = library.getBooksTree();
-			it = tree.begin();
-			for (size_t i = 0; it != tree.end(); i++, it++)
-				print.push_back((*it)->print());
-			displayContainer(print, "Books tree",
-					"\tTitle\t\t\tAuthors\t\t\tYear\tStatus");
+			displayContainer(library.getBooksTreePrint(), "Books tree",
+					"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", "");
 			break;
 		case ESCAPE_KEY:
 			exit = true;
@@ -208,6 +209,7 @@ void Interface::readerMenu(Person *reader) {
 			{ "Display borrows", "Borrow history\n", "Logout\n" };
 	string header;
 	string infMsg;
+	vector<Borrow*> readerBorrows;
 
 	do {
 		header = "Reader" + string(5, ' ') + reader->getName();
@@ -247,9 +249,10 @@ void Interface::readerMenu(Person *reader) {
 			editBorrow(reader);
 			break;
 		case '2':
-			displayContainer(
-					library.getPrintOutputs(library.getBorrowedBooksFromReader(reader)),
-					"Borrow history", "\tTitle\t\t\t\tBorrowed\tReturned\tID");
+			readerBorrows = library.getReaderBorrows(reader);
+			displayContainer(library.getContainerPrint(readerBorrows),
+					"Borrow history", "\tTitle\t\t\t\tBorrowed\tReturned\tID",
+					"");
 			break;
 		case '3':
 			exit = true;
@@ -329,6 +332,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 			"Logout\n" };
 	string header;
 	vector<string> display;
+	vector<Employee *> team;
 
 	do {
 		if (supervisor->getType() != 3) {
@@ -382,9 +386,10 @@ void Interface::supervisorMenu(Person* supervisor) {
 			getKey();
 			break;
 		case '6':
-			display = library.getPrintOutputs(supervisor->getEmployeeTeam());
+			team = supervisor->getEmployeeTeam();
+			display = library.getContainerPrint(team);
 			displayContainer(display, "Employees team",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif");
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif", "");
 			break;
 		case '7':
 			exit = true;
@@ -556,15 +561,15 @@ void Interface::manageEmployees(Person* supervisor) {
 			break;
 		case '2':
 			employee = static_cast<Employee*>(searchPerson(
-					library.getEmployees()));
+					library.getEmployees(true)));
 			if (employee != NULL)
 				editEmployee(employee);
 			else
 				errMsg = "Error editing an employee";
 			break;
 		case '3':
-			if (library.removeEmployee((searchPerson(library.getEmployees())),
-					supervisor)) {
+			if (library.removeEmployee(
+					(searchPerson(library.getEmployees(true))), supervisor)) {
 				library.savePersons();
 				infMsg = "Employee removed successfully";
 			} else
@@ -740,7 +745,7 @@ void Interface::createEmployee() {
 		ss >> newWage;
 		ss.clear();
 
-		vector<Person*> empl = library.getEmployees();
+		vector<Person*> empl = library.getEmployees(true);
 		Employee *s0 = new Employee(newName, newAge, newPhone, newEmail, newNif,
 				newWage, supervisor);
 		library.addPerson(s0);
@@ -1255,7 +1260,7 @@ void Interface::editEmployee(Employee* employee) {
 			} else if (tolower(ch) == 'e') {
 				employee->setSupervisor(0); // setSupervisor automatically cleans the supervisor team
 				edited = true;
-				if (library.getEmployees().size() > 1) {
+				if (library.getEmployees(true).size() > 1) {
 					library.assignEmployees();
 				}
 			}
@@ -1483,7 +1488,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 			matches.clear();
 			clear = false;
 		}
-		// Search books for given query
+// Search books for given query
 		if (query.size() > 0 && matches.size() == 0) {
 			for (size_t i = 0; i < books.size(); i++) {
 				string title = books[i]->getTitle();
@@ -1497,7 +1502,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 					matches.push_back(books[i]);
 			}
 		}
-		// Display books that match
+// Display books that match
 		for (size_t i = 0; i < matches.size() && i < vLimit; i++) {
 
 			colorMsg(TWO_TABS, "Title:     ",
@@ -1660,19 +1665,22 @@ string Interface::repeatStr(const T& s, const size_t n) {
 #endif
 }
 
-void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,
-		string labels, string readerStr[], LibraryMemFn funcs[],
-		size_t length) {
+int Interface::displayContainer(vector<string> vec, string listName,
+		string labels, string sortStr) {
 
-	CALL_MEMBER_FN(library,funcs[0])();
-	vector<Person*> vec = CALL_MEMBER_FN(library,getFunc)();
 	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
 	float pLimit;
 	bool done = false;
-	size_t sortFunc = 0;
-	string vLimitMsg =
-			" [ESC] to interrupt [s] to sort or any other key to continue...";
-	char ch;
+	char key;
+	string vLimitMsg;
+	string sortedMsg;
+	if (sortStr.size() > 0) {
+		sortedMsg = "Sorted by " + sortStr
+				+ (sortStr.size() > 5 ? + TAB : + TWO_TABS);
+		vLimitMsg =
+				" [ESC] to interrupt [s] to sort or any other key to continue...";
+	} else
+		vLimitMsg = " [ESC] to interrupt or any other key to continue...";
 
 	if (vecSize == 0)
 		pLimit = 1;
@@ -1684,11 +1692,17 @@ void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,
 			progress = ceil((13.0 / pLimit) * pCount);
 			clearScreen();
 			displayHeader(listName);
-			cout << TWO_TABS << ("Sorted by " + readerStr[sortFunc])
-					<< (readerStr[sortFunc].size() > 5 ? TAB : TWO_TABS)
-					<< "Page " << pCount << " of " << pLimit << " ["
-					<< repeatStr(progressBar, progress)
+
+			ostringstream progrStr;
+			progrStr << sortedMsg << "Page " << pCount << " of " << pLimit
+					<< " [" << repeatStr(progressBar, progress)
 					<< string((13 - progress), ' ') << "]" << endl << endl;
+			if (sortStr.size() == 0) {
+				centerString(progrStr.str().size());
+				cout << progrStr.str();
+			} else {
+				cout << TWO_TABS << progrStr.str();
+			}
 			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
 			cout << " " << labels << endl;
 			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
@@ -1702,26 +1716,21 @@ void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,
 
 			while (vLimit < MAX_LINES && i < vecSize && !done) {
 				setColor(FGWHITE_BGBLACK);
-				cout << " " << vec[i]->print();
+				cout << " " << vec[i];
 				resetColor();
 				cout << endl;
 				i++;
 				vLimit++;
 
-				if (vLimit == MAX_LINES && i <= vecSize) {
+				if (vLimit == MAX_LINES && i < vecSize) {
 					pCount++;
 					cout << " " << repeatStr(hSeparator, 77) << endl
 							<< vLimitMsg;
-					ch = getKey();
-					if (ch == ESCAPE_KEY)
+					key = getKey();
+					if (key == ESCAPE_KEY)
 						done = true;
-					else if (ch == 's') {
-						sortFunc++;
-						sortFunc %= length;
-						CALL_MEMBER_FN(library,funcs[sortFunc])();
-						clearScreen();
-						pCount = 1, i = 0, progress = 0;
-						vec = CALL_MEMBER_FN(library,getFunc)();
+					else if (key == 's' && sortStr.size() > 0) {
+						return -1;
 					}
 				}
 			}
@@ -1732,162 +1741,14 @@ void Interface::personsDisplayPtr(LibraryGetFn getFunc, string listName,
 			break;
 		else if (i == vecSize) {
 			cout << " " << repeatStr(hSeparator, 77) << endl << vLimitMsg;
-			ch = getKey();
-			if (ch == 's') {
-				sortFunc++;
-				sortFunc %= length;
-				clearScreen();
-				CALL_MEMBER_FN(library,funcs[sortFunc])();
-				pCount = 1, i = 0, progress = 0;
-				vec = CALL_MEMBER_FN(library,getFunc)();
+			key = getKey();
+			if (key == 's' && sortStr.size() > 0) {
+				return -1;
 			} else
 				break;
 		}
 	}
-}
-
-void Interface::booksDisplayPtr(LibraryGetBkFn getFunc, string listName,
-		string labels, string readerStr[], LibraryMemFn funcs[],
-		size_t length) {
-
-	CALL_MEMBER_FN(library,funcs[0])();
-	vector<Book*> vec = CALL_MEMBER_FN(library,getFunc)();
-	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
-	float pLimit;
-	bool done = false;
-	size_t sortFunc = 0;
-	string vLimitMsg =
-			" [ESC] to interrupt [s] to sort or any other key to continue...";
-	char ch;
-
-	if (vecSize == 0)
-		pLimit = 1;
-	else
-		pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
-	while (1) {
-		do {
-			vLimit = 0;
-			progress = ceil((13.0 / pLimit) * pCount);
-			clearScreen();
-			displayHeader(listName);
-			cout << TWO_TABS << ("Sorted by " + readerStr[sortFunc])
-					<< (readerStr[sortFunc].size() > 5 ? TAB : TWO_TABS)
-					<< "Page " << pCount << " of " << pLimit << " ["
-					<< repeatStr(progressBar, progress)
-					<< string((13 - progress), ' ') << "]" << endl << endl;
-			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
-			cout << " " << labels << endl;
-			cout << " " << repeatStr(hSeparator, 77) << " " << endl;
-
-			if (vecSize == 0) {
-				string nothing = "Nothing to show here :(";
-				cout << string(5, '\n');
-				errorMsg(nothing);
-				cout << string(6, '\n');
-			}
-
-			while (vLimit < MAX_LINES && i < vecSize && !done) {
-				setColor(FGWHITE_BGBLACK);
-				cout << " " << vec[i]->print();
-				resetColor();
-				cout << endl;
-				i++;
-				vLimit++;
-
-				if (vLimit == MAX_LINES && i <= vecSize) {
-					pCount++;
-					cout << " " << repeatStr(hSeparator, 77) << endl
-							<< vLimitMsg;
-					ch = getKey();
-					if (ch == ESCAPE_KEY)
-						done = true;
-					else if (ch == 's') {
-						sortFunc++;
-						sortFunc %= length;
-						CALL_MEMBER_FN(library,funcs[sortFunc])();
-						clearScreen();
-						pCount = 1, i = 0, progress = 0;
-						vec = CALL_MEMBER_FN(library,getFunc)();
-					}
-				}
-			}
-			if (vecSize != 0)
-				cout << string((MAX_LINES - vLimit), '\n');
-		} while (i < vecSize && !done);
-		if (done)
-			break;
-		else if (i == vecSize) {
-			cout << " " << repeatStr(hSeparator, 77) << endl << vLimitMsg;
-			ch = getKey();
-			if (ch == 's') {
-				sortFunc++;
-				sortFunc %= length;
-				clearScreen();
-				CALL_MEMBER_FN(library,funcs[sortFunc])();
-				pCount = 1, i = 0, progress = 0;
-				vec = CALL_MEMBER_FN(library,getFunc)();
-			} else
-				break;
-		}
-	}
-}
-
-void Interface::displayContainer(vector<string> vec, string listName,
-		string labels) {
-	unsigned int vecSize = vec.size(), pCount = 1, vLimit = 0, i = 0, progress;
-	float pLimit;
-	bool done = false;
-	string vLimitMsg = " [ESC] to interrupt or any other key to continue...";
-	char ch;
-
-	if (vecSize == 0)
-		pLimit = 1;
-	else
-		pLimit = ceil(static_cast<float>(vecSize) / MAX_LINES);
-
-	do {
-		vLimit = 0;
-		progress = ceil((19.0 / pLimit) * pCount);
-		clearScreen();
-		displayHeader(listName);
-		cout << THREE_TABS << "Page " << pCount << " of " << pLimit << " ["
-				<< repeatStr(progressBar, progress)
-				<< string((19 - progress), ' ') << "]" << endl << endl;
-		cout << " " << repeatStr(hSeparator, 77) << " " << endl;
-		cout << " " << labels << endl;
-		cout << " " << repeatStr(hSeparator, 77) << " " << endl;
-
-		if (vecSize == 0) {
-			string nothing = "Nothing to show here :(";
-			cout << string(5, '\n');
-			errorMsg(nothing);
-			cout << string(6, '\n');
-		}
-
-		while (vLimit < MAX_LINES && i < vecSize && !done) {
-			setColor(FGWHITE_BGBLACK);
-			cout << " " << vec[i];
-			resetColor();
-			cout << endl;
-			i++;
-			vLimit++;
-
-			if (vLimit == MAX_LINES && i < vecSize) {
-				pCount++;
-				cout << " " << repeatStr(hSeparator, 77) << endl << vLimitMsg;
-				ch = getKey();
-				if (ch == ESCAPE_KEY)
-					done = true;
-			}
-		}
-		if (vecSize != 0)
-			cout << string((MAX_LINES - vLimit), '\n');
-	} while (i < vecSize && !done);
-	if (i == vecSize) {
-		cout << " " << repeatStr(hSeparator, 77) << endl;
-		cout << " Press any key to continue...";
-		getKey();
-	}
+	return 0;
 }
 
 char Interface::getKey() {
@@ -2135,7 +1996,7 @@ void Interface::errorMsg(const string& m) {
 }
 
 bool Interface::seekNIF(const string &s) {
-	vector<Person*> employees = library.getEmployees();
+	vector<Person*> employees = library.getEmployees(true);
 	unsigned int nif;
 	stringstream ss;
 	ss << s;

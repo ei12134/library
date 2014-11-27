@@ -1,11 +1,55 @@
 #include "Library.h"
 using namespace std;
 
+bool compareName(const Person* p1, const Person* p2) {
+	return p1->getName() < p2->getName();
+}
+
+bool compareAge(const Person* p1, const Person* p2) {
+	return p1->getAge() < p2->getAge();
+}
+
+bool comparePhone(const Person* p1, const Person* p2) {
+	return p1->getPhone() < p2->getPhone();
+}
+
+bool compareEmail(const Person* p1, const Person* p2) {
+	return p1->getEmail() < p2->getEmail();
+}
+
+bool compareCard(const Person* p1, const Person* p2) {
+	if (p1->getType() == 1 && p1->getType() == 1)
+		return p1->getCard() < p2->getCard();
+	else
+		return false;
+}
+
+bool compareBorrow(const Person* p1, const Person* p2) {
+	return p1->getBorrowedBooks().size() > p2->getBorrowedBooks().size();
+}
+
+bool compareTitle(const Book* b1, const Book* b2) {
+	return b1->getTitle() < b2->getTitle();
+}
+
+bool compareAuthor(const Book* b1, const Book* b2) {
+	return b1->getAuthors()[0] < b2->getAuthors()[0];
+}
+
+bool compareYear(const Book* b1, const Book* b2) {
+	return b1->getEditionYear() < b2->getEditionYear();
+}
+
+bool compareStatus(const Book* b1, const Book* b2) {
+	return b1->getBorrowed() < b2->getBorrowed();
+}
+
 Library::Library() :
 		booksTree(compareBooks) {
 	loadBooks();
 	loadPersons();
-	loadBorrowBooks();
+	loadBorrows();
+	sort(persons.begin(), persons.end(), compareName);
 }
 
 Library::~Library() {
@@ -42,7 +86,7 @@ vector<Book*> Library::getAvailableBooks() const {
 	return available;
 }
 
-vector<Borrow*> Library::getBorrowedBooksFromReader(Person* p) const {
+vector<Borrow*> Library::getReaderBorrows(Person* p) const {
 	vector<Borrow*> b;
 	if (p->getType() != 1)
 		return b;
@@ -70,18 +114,13 @@ vector<Person*> Library::getReaders() const {
 	return readers;
 }
 
-vector<Person*> Library::getEmployees() const {
+vector<Person*> Library::getEmployees(bool supervisors) const {
 	vector<Person*> employees;
-	for (size_t i = 0; i < persons.size(); i++)
-		if (persons[i]->getType() == 2 || persons[i]->getType() == 3)
+	for (size_t i = 0; i < persons.size(); i++) {
+		if (persons[i]->getType() == 2
+				|| (persons[i]->getType() == 3 && supervisors))
 			employees.push_back(persons[i]);
-	return employees;
-}
-vector<Person*> Library::getEmployeesNoSupervisors() const {
-	vector<Person*> employees;
-	for (size_t i = 0; i < persons.size(); i++)
-		if (persons[i]->getType() == 2)
-			employees.push_back(persons[i]);
+	}
 	return employees;
 }
 
@@ -91,6 +130,39 @@ vector<Person*> Library::getSupervisors() const {
 		if (persons[i]->getType() == 3)
 			supervisors.push_back(persons[i]);
 	return supervisors;
+}
+
+vector<string> Library::getBooksTreePrint() {
+	vector<string> print;
+	set<Book*, bool (*)(const Book*, const Book*)>::iterator it =
+			booksTree.begin();
+	for (size_t i = 0; it != booksTree.end(); i++, it++)
+		print.push_back((*it)->print());
+	return print;
+}
+
+vector<string> Library::getSortedPrint(int type, int sortFunc) {
+	switch (type) {
+	case PERSONS:
+		return sortPersons(getPersons(), sortFunc);
+		break;
+	case READERS:
+		return sortPersons(getReaders(), sortFunc);
+		break;
+	case EMPLOYEES:
+		return sortPersons(getEmployees(false), sortFunc);
+		break;
+	case SUPERVISORS:
+		return sortPersons(getSupervisors(), sortFunc);
+		break;
+	case BOOKS:
+		return sortBooks(sortFunc);
+		break;
+	default:
+		break;
+	}
+	vector<string> print;
+	return print;
 }
 
 void Library::setBooks(vector<Book*> books) {
@@ -263,7 +335,7 @@ void Library::loadBooks() {
 	file.close();
 }
 
-void Library::loadBorrowBooks() {
+void Library::loadBorrows() {
 	ifstream file;
 	string line;
 	stringstream bf;
@@ -503,7 +575,7 @@ void Library::saveBorrows() {
 
 void Library::assignEmployees() {
 	vector<Person*> sup = getSupervisors();
-	vector<Person*> emp = getEmployeesNoSupervisors();
+	vector<Person*> emp = getEmployees(false);
 
 	for (unsigned int x = 0; x < sup.size(); x++) {
 		Employee* e = dynamic_cast<Employee*>(sup[x]);
@@ -520,57 +592,47 @@ void Library::assignEmployees() {
 	}
 }
 
-bool compareName(const Person* p1, const Person* p2) {
-	return p1->getName() < p2->getName();
+vector<string> Library::sortPersons(vector<Person*> vec, size_t compareType) {
+	vector<Person*> vecCpy = vec;
+	switch (compareType) {
+	case 0:
+		sort(vecCpy.begin(), vecCpy.end(), compareName);
+		break;
+	case 1:
+		sort(vecCpy.begin(), vecCpy.end(), compareAge);
+		break;
+	case 2:
+		sort(vecCpy.begin(), vecCpy.end(), comparePhone);
+		break;
+	case 3:
+		sort(vecCpy.begin(), vecCpy.end(), compareEmail);
+		break;
+	case 4:
+		sort(vecCpy.begin(), vecCpy.end(), compareCard);
+		break;
+	default:
+		break;
+	}
+	return getContainerPrint(vecCpy);
 }
 
-bool compareAge(const Person* p1, const Person* p2) {
-	return p1->getAge() < p2->getAge();
-}
-
-bool compareCard(const Person* p1, const Person* p2) {
-	if (p1->getType() == 1 && p1->getType() == 1)
-		return p1->getCard() < p2->getCard();
-	else
-		return false;
-}
-
-bool compareType(const Person* p1, const Person* p2) {
-	return p1->getType() < p2->getType();
-}
-
-bool compareBorrow(const Person* p1, const Person* p2) {
-	return p1->getBorrowedBooks().size() > p2->getBorrowedBooks().size();
-}
-
-bool compareTitle(const Book* b1, const Book* b2) {
-	return b1->getTitle() < b2->getTitle();
-}
-
-bool compareISBN(const Book* b1, const Book* b2) {
-	return b1->getISBN() < b2->getISBN();
-}
-
-void Library::sortByType() {
-	sort(persons.begin(), persons.end(), compareType);
-}
-
-void Library::sortByName() {
-	sort(persons.begin(), persons.end(), compareName);
-}
-
-void Library::sortByAge() {
-	sort(persons.begin(), persons.end(), compareAge);
-}
-
-void Library::sortByBorrow() {
-	sort(persons.begin(), persons.end(), compareBorrow);
-}
-
-void Library::sortByTitle() {
-	sort(books.begin(), books.end(), compareTitle);
-}
-
-void Library::sortByISBN() {
-	sort(books.begin(), books.end(), compareISBN);
+vector<string> Library::sortBooks(size_t compareType) {
+	vector<Book*> vec = books;
+	switch (compareType) {
+	case 0:
+		sort(vec.begin(), vec.end(), compareTitle);
+		break;
+	case 1:
+		sort(vec.begin(), vec.end(), compareAuthor);
+		break;
+	case 2:
+		sort(vec.begin(), vec.end(), compareYear);
+		break;
+	case 3:
+		sort(vec.begin(), vec.end(), compareStatus);
+		break;
+	default:
+		break;
+	}
+	return getContainerPrint(vec);
 }

@@ -1,6 +1,11 @@
 #ifndef LIBRARY_H_
 #define LIBRARY_H_
 
+#define PERSONS 0
+#define READERS 1
+#define EMPLOYEES 2
+#define SUPERVISORS 3
+#define BOOKS 4
 #define BOOKS_FILE "books.csv"
 #define BORROWS_FILE "borrows.csv"
 #define READERS_FILE "readers.csv"
@@ -54,7 +59,7 @@ public:
 	///@return available books
 	vector<Book*> getAvailableBooks() const;
 
-	vector<Borrow*> getBorrowedBooksFromReader(Person* p) const;
+	vector<Borrow*> getReaderBorrows(Person* p) const;
 
 	///@return borrows
 	vector<Borrow*> getBorrows() const;
@@ -65,53 +70,101 @@ public:
 	///@return readers
 	vector<Person*> getReaders() const;
 
-	///@return employees
-	vector<Person*> getEmployees() const;
-
-	///@return non supervisor employees
-	vector<Person*> getEmployeesNoSupervisors() const;
+	/* Gets employees of the library
+	 * @param true if should also include supervisors
+	 * @return employees
+	 */
+	vector<Person*> getEmployees(bool supervisors) const;
 
 	///@return readers
 	vector<Person*> getSupervisors() const;
 
-	/** replaces existing books pointer vector
+	/** Gets all print output from T type objects
+	 *@return string vector containing print output
+	 */
+	template<typename T>
+	vector<string> getContainerPrint(vector<T> &container) {
+		vector<string> prints;
+		for (size_t i = 0; i < container.size(); i++)
+			prints.push_back(container[i]->print());
+		return prints;
+	}
+
+	/** Gets all print output from tree containing Book type objects
+	 *@return string vector containing books print output
+	 */
+	vector<string> getBooksTreePrint();
+
+	vector<string> sortPersons(vector<Person*> vec, size_t compareType);
+
+	vector<string> sortBooks(size_t compareType);
+
+	/** Gets container print output after using selected sort function
+	 * @param type container
+	 * @param sortFunc sort function
+	 *@return string vector containing container print output already sorted
+	 */
+	vector<string> getSortedPrint(int type, int sortFunc);
+
+	/** Replaces existing books pointer vector
 	 *@param books Book pointer vector
 	 */
 	void setBooks(vector<Book*> books);
 
-	/** replaces existing Borrow pointer vector
+	/** Replaces existing Borrow pointer vector
 	 *@param borrows Borrow pointer vector
 	 */
 	void setBorrows(vector<Borrow*> borrows);
 
-	/** replaces existing Person pointer vector
+	/** Replaces existing Person pointer vector
 	 *@param persons Person pointer vector
 	 */
 	void setPersons(vector<Person*> persons);
 
-	/** adds new book to the library
+	/** Adds new book to the library
 	 *@param book Book pointer
 	 */
 	void addBook(Book* book);
 
-	/** adds new Borrow to the library
+	/** Adds new Borrow to the library
 	 *@param borrow Borrow pointer
 	 */
 	void addBorrow(Borrow* borrow);
 
-	/** adds new person to the library
+	/** Adds new person to the library
 	 *@param person Person pointer
 	 */
 	void addPerson(Person* person);
 
+	/** Attempts to remove existing book from the library
+	 *@param book Book pointer to remove
+	 *@return true if successful false otherwise
+	 */
 	bool removeBook(Book* book);
 
+	/** Attempts to remove existing borrow from the library
+	 *@param borrow Borrow pointer to remove
+	 *@return true if successful false otherwise
+	 */
 	bool removeBorrow(Borrow* borrow);
 
+	/** Attempts to remove existing employee from the library
+	 *@param person Person pointer referring to the supervisor authoring the action
+	 *@param employee Person pointer of the employee to remove
+	 *@return true if successful false otherwise
+	 */
 	bool removeEmployee(Person* person, Person* employee);
 
+	/** Attempts to remove existing reader from the library
+	 *@param reader Person pointer to remove
+	 *@return true if successful false otherwise
+	 */
 	bool removeReader(Person* reader);
 
+	/** Attempts to deallocate existing employee from a supervisor
+	 *@param employee Person pointer to remove
+	 *@return true if successful false otherwise
+	 */
 	bool removeEmployeeFromSupervisors(Employee* employee);
 
 	/** Loads stored books
@@ -127,7 +180,7 @@ public:
 	/** Loads stored borrows
 	 * Loads borrows.csv file to the borrows vector
 	 */
-	void loadBorrowBooks();
+	void loadBorrows();
 
 	/**
 	 * Saves books in books.csv file
@@ -145,51 +198,9 @@ public:
 	void saveBorrows();
 
 	/**
-	 * Sorts persons by type
-	 */
-
-	void sortByType();
-	/**
-	 * Sorts persons by name
-	 */
-
-	void sortByName();
-
-	/**
-	 * Sorts persons by age
-	 */
-	void sortByAge();
-
-	/**
-	 * Sorts readers by borrow count
-	 */
-	void sortByBorrow();
-
-	/**
-	 * Sorts books by title
-	 */
-	void sortByTitle();
-
-	/**
-	 * Sorts books by ISBN
-	 */
-	void sortByISBN();
-
-	/**
 	 * Assigns employees to supervisors
 	 */
 	void assignEmployees();
-
-	/** gets all print output from T type objects
-	 *@return string vector containing print output
-	 */
-	template<typename T>
-	vector<string> getPrintOutputs(vector<T> container) {
-		vector<string> out;
-		for (size_t i = 0; i < container.size(); i++)
-			out.push_back(container[i]->print());
-		return out;
-	}
 };
 
 #endif /* LIBRARY_H_ */

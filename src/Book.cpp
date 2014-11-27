@@ -149,9 +149,11 @@ void Book::setQuota(string quota) {
 unsigned int Book::getPageNumber() const {
 	return pageNumber;
 }
+
 void Book::setPageNumber(int pageNumber) {
 	this->pageNumber = pageNumber;
 }
+
 string Book::getISBN() const {
 	return ISBN;
 }
@@ -180,6 +182,8 @@ bool Book::operator<(const Book& b2) const {
 		return true;
 	else if (title < b2.title)
 		return true;
+	else if (authors[0] < b2.authors[0])
+		return true;
 	else
-		return (authors[0] < b2.authors[0]);
+		return ID < b2.ID;
 }
