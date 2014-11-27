@@ -29,14 +29,10 @@ using namespace std;
  */
 class Library {
 private:
-	/// vector to Book pointer type objects
-	vector<Book*> books;
-	/// red-black tree to Book pointer type objects
-	set<Book*, bool (*)(const Book*, const Book*)> booksTree;
-	/// vector to Borrow pointer type objects
-	vector<Borrow*> borrows;
-	/// vector to Person pointer type objects
-	vector<Person*> persons;
+	set<Book*, bool (*)(const Book*, const Book*)> booksTree; /// red-black tree to Book pointer type objects
+	vector<Book*> books; /// vector to Book pointer type objects
+	vector<Borrow*> borrows; /// vector to Borrow pointer type objects
+	vector<Person*> persons; /// vector to Borrow pointer type objects
 
 	static bool compareBooks(const Book* b1, const Book* b2) {
 		return *b1 < *b2;
@@ -59,6 +55,7 @@ public:
 	///@return available books
 	vector<Book*> getAvailableBooks() const;
 
+	///@return borrows from a given reader
 	vector<Borrow*> getReaderBorrows(Person* p) const;
 
 	///@return borrows
@@ -93,10 +90,22 @@ public:
 	/** Gets all print output from tree containing Book type objects
 	 *@return string vector containing books print output
 	 */
-	vector<string> getBooksTreePrint();
+	vector<string> getBooksTreePrint() const;
 
+	/** Gets all print output from tree containing Book type objects
+	 * @param year to search
+	 *@return string vector containing books print output of a given year
+	 */
+	vector<string> getBooksTreePrintByYear(unsigned int year) const;
+
+	/** Sorts given container and generates string used to display its contents
+	 *@return string vector containing persons print output
+	 */
 	vector<string> sortPersons(vector<Person*> vec, size_t compareType);
 
+	/** Sorts given container and generates string used to display its contents
+	 *@return string vector containing books print output
+	 */
 	vector<string> sortBooks(size_t compareType);
 
 	/** Gets container print output after using selected sort function

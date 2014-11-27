@@ -29,6 +29,7 @@ public:
 			unsigned int editionYear);
 	virtual ~Book();
 	Book(stringstream& s);
+	Book();
 	string print() const;
 	string printAuthors() const;
 	vector<string> getAuthors() const;

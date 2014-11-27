@@ -132,15 +132,6 @@ vector<Person*> Library::getSupervisors() const {
 	return supervisors;
 }
 
-vector<string> Library::getBooksTreePrint() {
-	vector<string> print;
-	set<Book*, bool (*)(const Book*, const Book*)>::iterator it =
-			booksTree.begin();
-	for (size_t i = 0; it != booksTree.end(); i++, it++)
-		print.push_back((*it)->print());
-	return print;
-}
-
 vector<string> Library::getSortedPrint(int type, int sortFunc) {
 	switch (type) {
 	case PERSONS:
@@ -162,6 +153,37 @@ vector<string> Library::getSortedPrint(int type, int sortFunc) {
 		break;
 	}
 	vector<string> print;
+	return print;
+}
+
+vector<string> Library::getBooksTreePrint() const {
+	vector<string> print;
+	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
+			booksTree.begin(); it != booksTree.end(); it++)
+		print.push_back((*it)->print());
+	return print;
+}
+
+vector<string> Library::getBooksTreePrintByYear(unsigned int year) const {
+	vector<string> print;
+	Book* b = new Book();
+	b->setEditionYear(year);
+
+	pair<set<Book*, bool (*)(const Book*, const Book*)>::const_iterator,
+			set<Book*, bool (*)(const Book*, const Book*)>::const_iterator> range =
+			equal_range(booksTree.begin(), booksTree.end(), b);
+
+	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
+			range.first; it != range.second; it++) {
+		print.push_back((*it)->print());
+	}
+
+//	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
+//			booksTree.begin(); it != booksTree.end(); it++) {
+//		if (it == range.first)
+//			print.push_back((*it)->print());
+//	}
+
 	return print;
 }
 
@@ -546,7 +568,7 @@ void Library::savePersons() {
 
 			persons[i]->saveData(pFileEmplayees);
 			break;
-		case 3: // supervisor
+		case 3:	// supervisor
 			if (notFistSup)
 				pFileSuperviseres << endl;
 			else

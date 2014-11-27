@@ -56,12 +56,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a369c7fceb7acfec2b8cf8452a832aab5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a369c7fceb7acfec2b8cf8452a832aab5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>menu</b> ()</td></tr>
 <tr class="separator:a369c7fceb7acfec2b8cf8452a832aab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fa44e98cc5265dcdb9b27549465df43"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7fa44e98cc5265dcdb9b27549465df43"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sortMenu</b> ()</td></tr>
-<tr class="separator:a7fa44e98cc5265dcdb9b27549465df43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06d6e9abe255b2452021041e37fa7bee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06d6e9abe255b2452021041e37fa7bee"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>displayMenu</b> ()</td></tr>
 <tr class="separator:a06d6e9abe255b2452021041e37fa7bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8dcfe004786ce329b4a03a953376597"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8dcfe004786ce329b4a03a953376597"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>searchMenu</b> ()</td></tr>
+<tr class="separator:af8dcfe004786ce329b4a03a953376597"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af92bb2aeecc6a19095af23fa78b49451"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af92bb2aeecc6a19095af23fa78b49451"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clearScreen</b> ()</td></tr>
 <tr class="separator:af92bb2aeecc6a19095af23fa78b49451"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -104,9 +104,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>editBook</b> (<a clas
 <tr class="memitem:a8918b8942c7e7288eddf1debbeaacf70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8918b8942c7e7288eddf1debbeaacf70"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>editReader</b> (<a class="el" href="class_person.html">Person</a> *reader)</td></tr>
 <tr class="separator:a8918b8942c7e7288eddf1debbeaacf70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a480a52f874fc3d65251a478e8a935ff0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a480a52f874fc3d65251a478e8a935ff0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>editEmployee</b> (<a class="el" href="class_person.html">Person</a> *employee)</td></tr>
-<tr class="separator:a480a52f874fc3d65251a478e8a935ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48d3f355e410279784d09d49ec8c5618"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a48d3f355e410279784d09d49ec8c5618"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>editEmployee</b> (<a class="el" href="class_employee.html">Employee</a> *employee)</td></tr>
+<tr class="separator:a48d3f355e410279784d09d49ec8c5618"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8132b0757f5941914d488a7104077de7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8132b0757f5941914d488a7104077de7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>editBorrow</b> (<a class="el" href="class_person.html">Person</a> *reader)</td></tr>
 <tr class="separator:a8132b0757f5941914d488a7104077de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,23 +125,43 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>displayHeader</b> (st
 <tr class="memitem:a7981f7480da86d2422ea8014aec2c760"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7981f7480da86d2422ea8014aec2c760"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>confirmOperation</b> (string &amp;query)</td></tr>
 <tr class="separator:a7981f7480da86d2422ea8014aec2c760"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace8cd602a7f42fcf001e10b30e35e145"><td class="memTemplParams" colspan="2"><a class="anchor" id="ace8cd602a7f42fcf001e10b30e35e145"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ace8cd602a7f42fcf001e10b30e35e145"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>genericDisplay</b> (vector&lt; T &gt; vec, string listName, string labels)</td></tr>
-<tr class="separator:ace8cd602a7f42fcf001e10b30e35e145"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a859db5fa6c1b3d2b0de28a7a76ea6e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a859db5fa6c1b3d2b0de28a7a76ea6e"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>centerString</b> (const string &amp;s)</td></tr>
-<tr class="separator:a3a859db5fa6c1b3d2b0de28a7a76ea6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24042d618d9ee7eeddf9dfd279313f4d"><td class="memTemplParams" colspan="2"><a class="anchor" id="a24042d618d9ee7eeddf9dfd279313f4d"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a24042d618d9ee7eeddf9dfd279313f4d"><td class="memTemplItemLeft" align="right" valign="top">string&#160;</td><td class="memTemplItemRight" valign="bottom"><b>warningString</b> (const T &amp;p)</td></tr>
-<tr class="separator:a24042d618d9ee7eeddf9dfd279313f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a596abe69c29bd2e6e4ffe87bb8309c95"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a596abe69c29bd2e6e4ffe87bb8309c95"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>displayContainer</b> (vector&lt; string &gt; vec, string listName, string labels, string sortStr)</td></tr>
+<tr class="separator:a596abe69c29bd2e6e4ffe87bb8309c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f5fdbfab43439da3881a23b7e7a614e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f5fdbfab43439da3881a23b7e7a614e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>centerString</b> (const size_t &amp;size)</td></tr>
+<tr class="separator:a3f5fdbfab43439da3881a23b7e7a614e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff579e84c5df4f52c9667c16bc219c67"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff579e84c5df4f52c9667c16bc219c67"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>cmdMsg</b> (const string &amp;tabs, const size_t index, const string &amp;s, const int &amp;color, const int &amp;newLines)</td></tr>
+<tr class="separator:aff579e84c5df4f52c9667c16bc219c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecf067f341fcbca301da341482946eb6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aecf067f341fcbca301da341482946eb6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>colorMsg</b> (const string &amp;tabs, const string &amp;s, const int &amp;color, const int &amp;newLines)</td></tr>
+<tr class="separator:aecf067f341fcbca301da341482946eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0f2026f204a2de9e460d8ffed22b443"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab0f2026f204a2de9e460d8ffed22b443"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>infoMsg</b> (const string &amp;m)</td></tr>
+<tr class="separator:ab0f2026f204a2de9e460d8ffed22b443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ac852ae4ee4cdf4a8f86a5115c6f195"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ac852ae4ee4cdf4a8f86a5115c6f195"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>errorMsg</b> (const string &amp;m)</td></tr>
+<tr class="separator:a1ac852ae4ee4cdf4a8f86a5115c6f195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a560d2c0ccdad7b9c5892bfa99cfd361b"><td class="memTemplParams" colspan="2"><a class="anchor" id="a560d2c0ccdad7b9c5892bfa99cfd361b"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a560d2c0ccdad7b9c5892bfa99cfd361b"><td class="memTemplItemLeft" align="right" valign="top">string&#160;</td><td class="memTemplItemRight" valign="bottom"><b>repeatStr</b> (const T &amp;s, const size_t n)</td></tr>
+<tr class="separator:a560d2c0ccdad7b9c5892bfa99cfd361b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1300f996b23023ba23681277293ef511"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1300f996b23023ba23681277293ef511"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setConsole</b> ()</td></tr>
+<tr class="separator:a1300f996b23023ba23681277293ef511"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1080bb244a0d1839c77eb251e86b08d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1080bb244a0d1839c77eb251e86b08d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>restoreConsole</b> ()</td></tr>
+<tr class="separator:af1080bb244a0d1839c77eb251e86b08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b0c4d47a2096e3048ac8c897f7d2dd4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b0c4d47a2096e3048ac8c897f7d2dd4"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>getKey</b> ()</td></tr>
 <tr class="separator:a2b0c4d47a2096e3048ac8c897f7d2dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af85438599e174d2605f1459c8a7075c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af85438599e174d2605f1459c8a7075c9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setColor</b> ()</td></tr>
-<tr class="separator:af85438599e174d2605f1459c8a7075c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa590b1c18eccb1d980d36f681ac9e7dd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa590b1c18eccb1d980d36f681ac9e7dd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setColor</b> (int color)</td></tr>
+<tr class="separator:aa590b1c18eccb1d980d36f681ac9e7dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66671246344d547f7043b64cb89a9470"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66671246344d547f7043b64cb89a9470"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>resetColor</b> ()</td></tr>
+<tr class="separator:a66671246344d547f7043b64cb89a9470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae312ced1b7a6937dc56d3064d66132d4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae312ced1b7a6937dc56d3064d66132d4"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_Number</b> (const int &amp;c)</td></tr>
 <tr class="separator:ae312ced1b7a6937dc56d3064d66132d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,13 +170,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>seekNIF</b> (const st
 <tr class="separator:a73a18c48525ea49669dbe2f1c5ce9e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>C:/Users/User/Documents/Source/git/library/src/<a class="el" href="_interface_8h_source.html">Interface.h</a></li>
-<li>C:/Users/User/Documents/Source/git/library/src/Interface.cpp</li>
+<li>C:/Users/User/Documents/Source/library/src/<a class="el" href="_interface_8h_source.html">Interface.h</a></li>
+<li>C:/Users/User/Documents/Source/library/src/Interface.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Nov 7 2014 19:15:11 for Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 27 2014 22:37:46 for Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

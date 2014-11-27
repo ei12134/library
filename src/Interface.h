@@ -76,11 +76,9 @@ public:
 	Interface();
 	~Interface();
 
-	void setConsole();
-	void restoreConsole();
-
 	void menu();
 	void displayMenu();
+	void searchMenu();
 
 	void clearScreen();
 	void dispatchPerson(Person* person);
@@ -125,6 +123,8 @@ public:
 	template<class T>
 	string repeatStr(const T& s, const size_t n);
 
+	void setConsole();
+	void restoreConsole();
 	char getKey();
 	void setColor(int color);
 	void resetColor();

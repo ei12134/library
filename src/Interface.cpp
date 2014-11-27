@@ -9,53 +9,11 @@ Interface::~Interface() {
 	restoreConsole();
 }
 
-void Interface::setConsole() {
-#if defined(_WIN32) || defined (_WIN64)
-	// get handles
-	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-	hConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
-
-	// backup current console configuration
-	GetConsoleMode(hConsoleOutput, &fdwOldMode);
-	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
-	GetConsoleScreenBufferInfo(hConsoleOutput, &csbiInfo);
-	wOldColorAttrs = csbiInfo.wAttributes;
-
-	// set window title & size
-	_COORD coord;
-	coord.X = WIDTH;
-	coord.Y = HEIGHT;
-	_SMALL_RECT Rect;
-	Rect.Top = 0;
-	Rect.Left = 0;
-	Rect.Bottom = HEIGHT - 1;
-	Rect.Right = WIDTH - 1;
-	SetConsoleWindowInfo(hConsoleOutput, TRUE, &Rect);
-	SetConsoleScreenBufferSize(hConsoleOutput, coord);
-	SetConsoleTitleA("Library");
-	setColor(FGGREEN_BGBLACK);
-#else
-	setColor(FGGREEN_BGBLACK);
-	cout << string(30, '\n');
-#endif
-	clearScreen();
-}
-
-void Interface::restoreConsole() {
-#if defined(_WIN32) || defined(_WIN64)
-	SetConsoleMode(hConsoleInput, fdwOldMode);
-	SetConsoleTextAttribute(hConsoleOutput, wOldColorAttrs);
-#else
-	cout << "\033[0;0;0m" + string(30, '\n');
-#endif
-	clearScreen();
-}
-
 void Interface::menu() {
 	char input;
 	bool exit = false;
-	const size_t menuCmdsSize = 3;
-	string menuCmds[menuCmdsSize] = { "Login", "Display\n", "Quit" };
+	const size_t menuCmdsSize = 4;
+	string menuCmds[menuCmdsSize] = { "Login", "Display", "Search\n", "Quit" };
 	string spacing = string((80 - menuCmds[1].size() - 4) / 2, ' ');
 	string exitDialog = "Quit?";
 	string noSupervisors = "Create supervisor?\n\t\t\t      ";
@@ -82,6 +40,9 @@ void Interface::menu() {
 			displayMenu();
 			break;
 		case '3':
+			searchMenu();
+			break;
+		case '4':
 			if (confirmOperation(exitDialog))
 				exit = true;
 			break;
@@ -196,6 +157,84 @@ void Interface::displayMenu() {
 			exit = true;
 			break;
 		default:
+			break;
+		}
+	} while (!exit);
+}
+
+void Interface::searchMenu() {
+	int input;
+	bool exit = false;
+	const size_t searchMenuSize = 4;
+	string searchMenu[searchMenuSize] = { "By edition year", "By title",
+			"By author\n", "Exit" };
+	string header = "Search books binary tree";
+	string query;
+	vector<string> booksStr;
+	booksStr.push_back("title");
+	booksStr.push_back("author");
+	booksStr.push_back("year");
+	booksStr.push_back("status");
+	size_t selected = 0;
+
+	do {
+		clearScreen();
+		displayHeader(header);
+
+		stringstream ss;
+		unsigned int year;
+
+		for (size_t i = 0; i < searchMenuSize; i++)
+			colorMsg(FOUR_TABS, searchMenu[i],
+					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 1);
+
+		cout << endl << endl << TWO_TABS
+				<< "Select search method and enter query ";
+		colorMsg("", "[ESC to exit]", FGWHITE_BGBLACK, 2);
+		cout << TWO_TABS << PROMPT_SYMBOL;
+		colorMsg("", query, FGWHITE_BGBLACK, 0);
+
+		input = getKey();
+
+		switch (input) {
+		case 0:
+			break;
+		case RETURN_KEY:
+			if (selected == searchMenuSize - 1)
+				exit = true;
+			else if (query.size() > 0){
+				if (is_All_Number(query)) {
+					ss << query;
+					ss >> year;
+					ss.clear();
+					displayContainer(library.getBooksTreePrintByYear(year),
+							"Books tree",
+							"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", "");
+				}
+			}
+			break;
+		case BACKSPACE_KEY:
+			if (query.length() > 0)
+				query.erase(query.end() - 1);
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		case DELETE_KEY:
+			query.clear();
+			break;
+		case ARROW_DOWN:
+			selected++;
+			selected %= searchMenuSize;
+			break;
+		case ARROW_UP:
+			if (selected < 1)
+				selected = searchMenuSize - 1;
+			else
+				selected--;
+			break;
+		default:
+			query += char(input);
 			break;
 		}
 	} while (!exit);
@@ -858,9 +897,9 @@ void Interface::editBook(Book* book) {
 	string changesMessage;
 
 	const size_t cmdsSize = 9;
-	string cmds[cmdsSize] = { "[1] Author: ", "[2] Quota: ",
-			"[3] Page number: ", "[4] ISBN: ", "[5] Title: ",
-			"[6] Edition year: ", "Discard changes", "Save changes", "Exit" };
+	string cmds[cmdsSize] = { "[1] Author: ", "[2] Quota: ", "[3] Pages: ",
+			"[4] ISBN: ", "[5] Title: ", "[6] Edition: ", "Discard changes",
+			"Save changes", "Exit" };
 	Book backup = *book;
 	do {
 		string newQuota, newTitle, newISBN, newPageNumberStr, newEditionYearStr;
@@ -1376,6 +1415,25 @@ void Interface::editBorrow(Person* reader) {
 	} while (!exit);
 }
 
+vector<string> Interface::editAuthors() {
+	vector<string> authors;
+	string newAuthor, authorsDialog = "\t\t\tAdd another author?";
+	for (int i = 1; authors.size() == 0 || authors.size() < 8; i++) {
+		while (newAuthor.size() == 0 || !is_All_ASCII_Letter(newAuthor)) {
+			cout << THREE_TABS << "Author " << i << ": ";
+			getline(cin, newAuthor, '\n');
+		}
+		authors.push_back(newAuthor);
+		newAuthor.clear();
+		if (!confirmOperation(authorsDialog)) {
+			cout << endl;
+			break;
+		}
+		cout << endl;
+	}
+	return authors;
+}
+
 Person* Interface::searchPerson(vector<Person*> persons) {
 	string query;
 	string header = "Login";
@@ -1643,7 +1701,7 @@ void Interface::displayHeader(string& header) {
 
 bool Interface::confirmOperation(string& query) {
 	setColor(FGWHITE_BGBLACK);
-	cout << query << " [y] to confirm";
+	cout << query << " [y/n]";
 	char answer = getKey();
 	resetColor();
 
@@ -1749,6 +1807,49 @@ int Interface::displayContainer(vector<string> vec, string listName,
 		}
 	}
 	return 0;
+}
+
+void Interface::setConsole() {
+#if defined(_WIN32) || defined (_WIN64)
+	// get handles
+	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	hConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
+
+	// backup current console configuration
+	GetConsoleMode(hConsoleOutput, &fdwOldMode);
+	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+	GetConsoleScreenBufferInfo(hConsoleOutput, &csbiInfo);
+	wOldColorAttrs = csbiInfo.wAttributes;
+
+	// set window title & size
+	_COORD coord;
+	coord.X = WIDTH;
+	coord.Y = HEIGHT;
+	_SMALL_RECT Rect;
+	Rect.Top = 0;
+	Rect.Left = 0;
+	Rect.Bottom = HEIGHT - 1;
+	Rect.Right = WIDTH - 1;
+	SetConsoleWindowInfo(hConsoleOutput, TRUE, &Rect);
+	SetConsoleScreenBufferSize(hConsoleOutput, coord);
+	SetConsoleTitleA("Library");
+	setColor(FGGREEN_BGBLACK);
+#else
+	setColor(FGGREEN_BGBLACK);
+	cout << string(30, '\n');
+#endif
+	clearScreen();
+}
+
+void Interface::restoreConsole() {
+#if defined(_WIN32) || defined(_WIN64)
+	// restore old console configuration
+	SetConsoleMode(hConsoleInput, fdwOldMode);
+	SetConsoleTextAttribute(hConsoleOutput, wOldColorAttrs);
+#else
+	cout << "\033[0;0;0m" + string(30, '\n');
+#endif
+	clearScreen();
 }
 
 char Interface::getKey() {
@@ -1932,25 +2033,6 @@ void Interface::resetColor() {
 	cout << "\033[0;1;40;32m";
 #endif
 }
-vector<string> Interface::editAuthors() {
-	vector<string> authors;
-	string newAuthor, authorsDialog = "\t\t\tAdd another author?";
-	for (int i = 1; authors.size() == 0 || authors.size() < 8; i++) {
-		while (newAuthor.size() == 0 || !is_All_ASCII_Letter(newAuthor)) {
-			cout << THREE_TABS << "Author " << i << ": ";
-			getline(cin, newAuthor, '\n');
-		}
-		authors.push_back(newAuthor);
-		newAuthor.clear();
-		if (!confirmOperation(authorsDialog)) {
-			cout << endl;
-			break;
-		}
-		cout << endl;
-	}
-	return authors;
-}
-
 inline void Interface::centerString(const size_t &size) {
 	int spacing = (int) ((80 - size) / 2);
 	cout << string(spacing, ' ');

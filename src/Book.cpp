@@ -11,9 +11,6 @@ Book::Book(vector<string> authors, bool borrowed, string quota,
 	ID = ++bookID;
 }
 
-Book::~Book() {
-}
-
 Book::Book(stringstream& s) {
 	stringstream ss;
 	string book;
@@ -74,6 +71,17 @@ Book::Book(stringstream& s) {
 
 	if (this->ID > bookID)
 		bookID = this->ID;
+}
+
+Book::Book() {
+	this->borrowed = false;
+	this->pageNumber = 0;
+	this->editionYear = 0;
+	this->ID = 0;
+	addAuthor("");
+}
+
+Book::~Book() {
 }
 
 string Book::print() const {
