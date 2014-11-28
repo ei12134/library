@@ -24,13 +24,14 @@
 #include <set>
 using namespace std;
 
+
 /**
  * Library Class
  * stores containers used in the library management
  */
 class Library {
 private:
-	set<Book*, bool (*)(Book*, Book*)> booksTree; /// red-black tree to Book pointer type objects
+	set<Book*, bool (*)(const Book*, const Book*)> booksTree; /// red-black tree to Book pointer type objects
 	vector<Book*> books; /// vector to Book pointer type objects
 	vector<Borrow*> borrows; /// vector to Borrow pointer type objects
 	vector<Person*> persons; /// vector to Borrow pointer type objects
@@ -44,14 +45,17 @@ public:
 	/** Library destructor saves in *.csv files and stores*/
 	~Library();
 
+
 	///@return true if b1 < than b2 false otherwise
-	static bool compareBooks(Book* b1, Book* b2);
+	static bool compareBooks(const Book* b1, const Book* b2) {
+		return *b1 < *b2;
+	}
 
 	///@return all books
 	vector<Book*> getBooks() const;
 
 	///@return books tree
-	set<Book*, bool (*)(Book*, Book*)> getBooksTree() const;
+	set<Book*, bool (*)(const Book*, const Book*)> getBooksTree() const;
 
 	///@return available books
 	vector<Book*> getAvailableBooks() const;

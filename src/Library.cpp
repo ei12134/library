@@ -69,15 +69,11 @@ Library::~Library() {
 	persons.clear();
 }
 
-bool Library::compareBooks(Book* b1, Book* b2) {
-	return *b1 < *b2;
-}
-
 vector<Book*> Library::getBooks() const {
 	return books;
 }
 
-set<Book*, bool (*)(Book*, Book*)> Library::getBooksTree() const {
+set<Book*, bool (*)(const Book*, const Book*)> Library::getBooksTree() const {
 	return booksTree;
 }
 
@@ -166,7 +162,7 @@ vector<string> Library::getSortedPrint(int type, int sortFunc) {
 
 vector<string> Library::getBooksTreePrint() const {
 	vector<string> print;
-	for (set<Book*, bool (*)(Book*, Book*)>::const_iterator it =
+	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
 			booksTree.begin(); it != booksTree.end(); it++)
 		print.push_back((*it)->print());
 	return print;
@@ -177,15 +173,15 @@ vector<string> Library::getBooksTreePrintByYear(unsigned int year) const {
 	Book* b = new Book();
 	b->setEditionYear(year);
 
-//	pair<set<Book*, bool (*)(Book*, Book*)>::const_iterator,
-//			set<Book*, bool (*)(Book*, Book*)>::const_iterator> range =
+//	pair<set<Book*, bool (*)(const Book*, const Book*)>::const_iterator,
+//			set<Book*, bool (*)(const Book*, const Book*)>::const_iterator> range =
 //			equal_range(booksTree.begin(), booksTree.end(), b);
 //
-//	for (set<Book*, bool (*)(Book*, Book*)>::const_iterator it =
+//	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
 //			range.first; it != range.second; it++) {
 //		print.push_back((*it)->print());
 //	}
-	set<Book*, bool (*)(Book*, Book*)>::const_iterator f = booksTree.find(b);
+	set<Book*, bool (*)(const Book*, const Book*)>::const_iterator f = booksTree.find(b);
 	if (f != booksTree.end())
 		print.push_back((*f)->print());
 
@@ -222,7 +218,7 @@ bool Library::removeBook(Book* book) {
 		return false;
 	for (size_t i = 0; i < books.size(); i++)
 		if (books[i] == book) {
-			set<Book*, bool (*)(Book*, Book*)>::const_iterator it =
+			set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
 					booksTree.find(book);
 			if (it != booksTree.end())
 				booksTree.erase(it);
