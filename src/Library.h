@@ -19,6 +19,7 @@
 #include "Borrow.h"
 #include <algorithm>
 #include <fstream>
+#include <queue>
 #include <vector>
 #include <set>
 using namespace std;
@@ -29,14 +30,11 @@ using namespace std;
  */
 class Library {
 private:
-	set<Book*, bool (*)(const Book*, const Book*)> booksTree; /// red-black tree to Book pointer type objects
+	set<Book*, bool (*)(Book*, Book*)> booksTree; /// red-black tree to Book pointer type objects
 	vector<Book*> books; /// vector to Book pointer type objects
 	vector<Borrow*> borrows; /// vector to Borrow pointer type objects
 	vector<Person*> persons; /// vector to Borrow pointer type objects
-
-	static bool compareBooks(const Book* b1, const Book* b2) {
-		return *b1 < *b2;
-	}
+	queue<Request> requests; /// queue with unavailable requested books
 
 public:
 	/** Library constructor reads *.csv files and stores
@@ -46,11 +44,14 @@ public:
 	/** Library destructor saves in *.csv files and stores*/
 	~Library();
 
+	///@return true if b1 < than b2 false otherwise
+	static bool compareBooks(Book* b1, Book* b2);
+
 	///@return all books
 	vector<Book*> getBooks() const;
 
 	///@return books tree
-	set<Book*, bool (*)(const Book*, const Book*)> getBooksTree() const;
+	set<Book*, bool (*)(Book*, Book*)> getBooksTree() const;
 
 	///@return available books
 	vector<Book*> getAvailableBooks() const;
@@ -76,6 +77,20 @@ public:
 	///@return readers
 	vector<Person*> getSupervisors() const;
 
+	///@return readers
+	queue<Request> getRequests() const;
+
+	/** Gets all print output from T type objects
+	 *@return string vector containing print output
+	 */
+	template<typename T>
+	vector<string> getContainerPtrPrint(vector<T> &container) {
+		vector<string> prints;
+		for (size_t i = 0; i < container.size(); i++)
+			prints.push_back(container[i]->print());
+		return prints;
+	}
+
 	/** Gets all print output from T type objects
 	 *@return string vector containing print output
 	 */
@@ -83,7 +98,7 @@ public:
 	vector<string> getContainerPrint(vector<T> &container) {
 		vector<string> prints;
 		for (size_t i = 0; i < container.size(); i++)
-			prints.push_back(container[i]->print());
+			prints.push_back(container[i].print());
 		return prints;
 	}
 
@@ -144,6 +159,11 @@ public:
 	 *@param person Person pointer
 	 */
 	void addPerson(Person* person);
+
+	/** Adds new request to the library queue
+	 *@param request
+	 */
+	void addRequest(Request request);
 
 	/** Attempts to remove existing book from the library
 	 *@param book Book pointer to remove

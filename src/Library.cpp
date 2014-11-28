@@ -28,19 +28,19 @@ bool compareBorrow(const Person* p1, const Person* p2) {
 	return p1->getBorrowedBooks().size() > p2->getBorrowedBooks().size();
 }
 
-bool compareTitle(const Book* b1, const Book* b2) {
+bool compareTitle(Book* b1, Book* b2) {
 	return b1->getTitle() < b2->getTitle();
 }
 
-bool compareAuthor(const Book* b1, const Book* b2) {
+bool compareAuthor(Book* b1, Book* b2) {
 	return b1->getAuthors()[0] < b2->getAuthors()[0];
 }
 
-bool compareYear(const Book* b1, const Book* b2) {
+bool compareYear(Book* b1, Book* b2) {
 	return b1->getEditionYear() < b2->getEditionYear();
 }
 
-bool compareStatus(const Book* b1, const Book* b2) {
+bool compareStatus(Book* b1, Book* b2) {
 	return b1->getBorrowed() < b2->getBorrowed();
 }
 
@@ -69,11 +69,15 @@ Library::~Library() {
 	persons.clear();
 }
 
+bool Library::compareBooks(Book* b1, Book* b2) {
+	return *b1 < *b2;
+}
+
 vector<Book*> Library::getBooks() const {
 	return books;
 }
 
-set<Book*, bool (*)(const Book*, const Book*)> Library::getBooksTree() const {
+set<Book*, bool (*)(Book*, Book*)> Library::getBooksTree() const {
 	return booksTree;
 }
 
@@ -132,6 +136,10 @@ vector<Person*> Library::getSupervisors() const {
 	return supervisors;
 }
 
+queue<Request> Library::getRequests() const {
+	return requests;
+}
+
 vector<string> Library::getSortedPrint(int type, int sortFunc) {
 	switch (type) {
 	case PERSONS:
@@ -158,7 +166,7 @@ vector<string> Library::getSortedPrint(int type, int sortFunc) {
 
 vector<string> Library::getBooksTreePrint() const {
 	vector<string> print;
-	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
+	for (set<Book*, bool (*)(Book*, Book*)>::const_iterator it =
 			booksTree.begin(); it != booksTree.end(); it++)
 		print.push_back((*it)->print());
 	return print;
@@ -169,20 +177,17 @@ vector<string> Library::getBooksTreePrintByYear(unsigned int year) const {
 	Book* b = new Book();
 	b->setEditionYear(year);
 
-	pair<set<Book*, bool (*)(const Book*, const Book*)>::const_iterator,
-			set<Book*, bool (*)(const Book*, const Book*)>::const_iterator> range =
-			equal_range(booksTree.begin(), booksTree.end(), b);
-
-	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
-			range.first; it != range.second; it++) {
-		print.push_back((*it)->print());
-	}
-
-//	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
-//			booksTree.begin(); it != booksTree.end(); it++) {
-//		if (it == range.first)
-//			print.push_back((*it)->print());
+//	pair<set<Book*, bool (*)(Book*, Book*)>::const_iterator,
+//			set<Book*, bool (*)(Book*, Book*)>::const_iterator> range =
+//			equal_range(booksTree.begin(), booksTree.end(), b);
+//
+//	for (set<Book*, bool (*)(Book*, Book*)>::const_iterator it =
+//			range.first; it != range.second; it++) {
+//		print.push_back((*it)->print());
 //	}
+	set<Book*, bool (*)(Book*, Book*)>::const_iterator f = booksTree.find(b);
+	if (f != booksTree.end())
+		print.push_back((*f)->print());
 
 	return print;
 }
@@ -201,6 +206,7 @@ void Library::setPersons(vector<Person*> persons) {
 
 void Library::addBook(Book* book) {
 	books.push_back(book);
+	booksTree.insert(book);
 }
 
 void Library::addBorrow(Borrow* borrow) {
@@ -216,6 +222,10 @@ bool Library::removeBook(Book* book) {
 		return false;
 	for (size_t i = 0; i < books.size(); i++)
 		if (books[i] == book) {
+			set<Book*, bool (*)(Book*, Book*)>::const_iterator it =
+					booksTree.find(book);
+			if (it != booksTree.end())
+				booksTree.erase(it);
 			books.erase(books.begin() + i);
 			return true;
 		}
@@ -635,7 +645,7 @@ vector<string> Library::sortPersons(vector<Person*> vec, size_t compareType) {
 	default:
 		break;
 	}
-	return getContainerPrint(vecCpy);
+	return getContainerPtrPrint(vecCpy);
 }
 
 vector<string> Library::sortBooks(size_t compareType) {
@@ -656,5 +666,5 @@ vector<string> Library::sortBooks(size_t compareType) {
 	default:
 		break;
 	}
-	return getContainerPrint(vec);
+	return getContainerPtrPrint(vec);
 }

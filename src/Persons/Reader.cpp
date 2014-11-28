@@ -15,7 +15,7 @@ Reader::Reader(stringstream& s) :
 	string sCard;
 	unsigned int card;
 
-	if(!getline(s, sCard)) // read last input until newline
+	if (!getline(s, sCard)) // read last input until newline
 		throw Exception<string>("Error reading card", "Reader");
 	ss << sCard;
 	ss >> card;
@@ -37,6 +37,10 @@ Reader::~Reader() {
 
 vector<Borrow*> Reader::getBorrowedBooks() const {
 	return borrowedBooks;
+}
+
+vector<Request> Reader::getRequestedBooks() const {
+	return requestedBooks;
 }
 
 unsigned int Reader::getCard() const {
@@ -66,6 +70,14 @@ bool Reader::addBorrow(Borrow* borrow) {
 	return true;
 }
 
+bool Reader::addRequest(Request request) {
+	if (sequentialSearch(requestedBooks, request) != -1)
+		return false;
+	else
+		requestedBooks.push_back(request);
+	return true;
+}
+
 bool Reader::removeBorrow(Borrow* borrow) {
 	for (size_t i = 0; i < borrowedBooks.size(); i++) {
 		if (borrowedBooks[i] == borrow) {
@@ -74,6 +86,15 @@ bool Reader::removeBorrow(Borrow* borrow) {
 		}
 	}
 	return false;
+}
+
+bool Reader::removeRequest(Request request) {
+	int index = sequentialSearch(requestedBooks, request);
+	if (index == -1)
+		return false;
+	else
+		requestedBooks.erase(requestedBooks.begin() + index);
+	return true;
 }
 
 bool Reader::borrowLimit() {

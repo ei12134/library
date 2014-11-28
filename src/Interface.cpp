@@ -57,10 +57,13 @@ void Interface::menu() {
 }
 
 void Interface::dispatchPerson(Person* person) {
+
+	Reader* reader = static_cast<Reader*>(person);
+
 	if (person != NULL) {
 		switch (person->getType()) {
 		case 1:
-			readerMenu(person);
+			readerMenu(reader);
 			break;
 		case 2:
 			employeeMenu(person);
@@ -202,7 +205,7 @@ void Interface::searchMenu() {
 		case RETURN_KEY:
 			if (selected == searchMenuSize - 1)
 				exit = true;
-			else if (query.size() > 0){
+			else if (query.size() > 0) {
 				if (is_All_Number(query)) {
 					ss << query;
 					ss >> year;
@@ -240,15 +243,15 @@ void Interface::searchMenu() {
 	} while (!exit);
 }
 
-void Interface::readerMenu(Person *reader) {
+void Interface::readerMenu(Reader *reader) {
 	char input;
 	bool exit = false;
-	const size_t cmdsSize = 3;
-	string cmds[cmdsSize] =
-			{ "Display borrows", "Borrow history\n", "Logout\n" };
+	const size_t cmdsSize = 4;
+	string cmds[cmdsSize] = { "Display borrows", "Display requests",
+			"Borrow history\n", "Logout\n" };
 	string header;
 	string infMsg;
-	vector<Borrow*> readerBorrows;
+	vector<Request> requestedBooks = reader->getRequestedBooks();
 
 	do {
 		header = "Reader" + string(5, ' ') + reader->getName();
@@ -274,7 +277,7 @@ void Interface::readerMenu(Person *reader) {
 		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
 		for (size_t i = 0; i < borrowedBooks.size(); i++)
 			if (borrowedBooks[i]->calcFee() > 0)
-				infMsg = "A book has the borrow date expired";
+				infMsg = "A book is overdue";
 		if (infMsg.size() > 0) {
 			infoMsg(infMsg);
 			cout << endl << endl;
@@ -288,12 +291,15 @@ void Interface::readerMenu(Person *reader) {
 			editBorrow(reader);
 			break;
 		case '2':
-			readerBorrows = library.getReaderBorrows(reader);
-			displayContainer(library.getContainerPrint(readerBorrows),
+			//displayContainer(library.getContainerPtrPrint(requestedBooks),
+				//	"Requests", "\tTitle\t\t\t\tBorrowed\tReturned\tID", "");
+			break;
+		case '3':
+			displayContainer(library.getContainerPtrPrint(borrowedBooks),
 					"Borrow history", "\tTitle\t\t\t\tBorrowed\tReturned\tID",
 					"");
 			break;
-		case '3':
+		case '4':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -426,7 +432,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 			break;
 		case '6':
 			team = supervisor->getEmployeeTeam();
-			display = library.getContainerPrint(team);
+			display = library.getContainerPtrPrint(team);
 			displayContainer(display, "Employees team",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif", "");
 			break;
@@ -642,7 +648,7 @@ void Interface::createBook() {
 		getline(cin, newQuota, '\n');
 	}
 	while (newPageNumberStr.size() == 0 || !is_All_Number(newPageNumberStr)) {
-		cout << THREE_TABS << "PageNumber: ";
+		cout << THREE_TABS << "Pages: ";
 		getline(cin, newPageNumberStr, '\n');
 	}
 	while (newISBN.size() == 0 || (newISBN.size() != 13 && newISBN.size() != 10)) {
@@ -653,8 +659,8 @@ void Interface::createBook() {
 		cout << THREE_TABS << "Title: ";
 		getline(cin, newTitle, '\n');
 	}
-	while (newPageNumberStr.size() == 0 || !is_All_Number(newPageNumberStr)) {
-		cout << THREE_TABS << "Edition year: ";
+	while (newEditionYearStr.size() == 0 || !is_All_Number(newEditionYearStr)) {
+		cout << THREE_TABS << "Year: ";
 		getline(cin, newEditionYearStr, '\n');
 	}
 	cout << endl << THREE_TABS << "Press S to save" << PROMPT_SYMBOL;
