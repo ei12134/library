@@ -82,7 +82,7 @@ public:
 
 	void clearScreen();
 	void dispatchPerson(Person* person);
-	void readerMenu(Reader* reader);
+	void readerMenu(Person* reader);
 	void employeeMenu(Person* employee);
 	void supervisorMenu(Person* supervisor);
 

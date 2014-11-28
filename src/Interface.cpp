@@ -57,13 +57,10 @@ void Interface::menu() {
 }
 
 void Interface::dispatchPerson(Person* person) {
-
-	Reader* reader = static_cast<Reader*>(person);
-
 	if (person != NULL) {
 		switch (person->getType()) {
 		case 1:
-			readerMenu(reader);
+			readerMenu(person);
 			break;
 		case 2:
 			employeeMenu(person);
@@ -243,7 +240,7 @@ void Interface::searchMenu() {
 	} while (!exit);
 }
 
-void Interface::readerMenu(Reader *reader) {
+void Interface::readerMenu(Person* reader) {
 	char input;
 	bool exit = false;
 	const size_t cmdsSize = 4;
@@ -251,33 +248,27 @@ void Interface::readerMenu(Reader *reader) {
 			"Borrow history\n", "Logout\n" };
 	string header;
 	string infMsg;
-	vector<Request> requestedBooks = reader->getRequestedBooks();
-
+	vector<Borrow*> previousBorrows;
 	do {
 		header = "Reader" + string(5, ' ') + reader->getName();
 		clearScreen();
 		displayHeader(header);
 		colorMsg(THREE_TABS + HALF_TAB, "Age: ", FGWHITE_BGBLACK, 0);
 		cout << reader->getAge() << " years" << endl;
-
 		colorMsg(THREE_TABS + HALF_TAB, "Card: ",
 		FGWHITE_BGBLACK, 0);
 		cout << +reader->getCard() << endl;
-
 		colorMsg(THREE_TABS + HALF_TAB, "Phone: ", FGWHITE_BGBLACK, 0);
 		cout << reader->getPhone() << endl;
-
 		colorMsg(THREE_TABS + HALF_TAB, "Email: ", FGWHITE_BGBLACK, 0);
 		cout << reader->getEmail() << endl << endl;
-
 		for (size_t i = 0; i < cmdsSize; i++)
 			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
 			FGGREEN_BGBLACK, 1);
-
 		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
 		for (size_t i = 0; i < borrowedBooks.size(); i++)
 			if (borrowedBooks[i]->calcFee() > 0)
-				infMsg = "A book is overdue";
+				infMsg = "A book has the borrow date expired";
 		if (infMsg.size() > 0) {
 			infoMsg(infMsg);
 			cout << endl << endl;
@@ -292,10 +283,11 @@ void Interface::readerMenu(Reader *reader) {
 			break;
 		case '2':
 			//displayContainer(library.getContainerPtrPrint(requestedBooks),
-				//	"Requests", "\tTitle\t\t\t\tBorrowed\tReturned\tID", "");
+			//	"Requests", "\tTitle\t\t\t\tBorrowed\tReturned\tID", "");
 			break;
 		case '3':
-			displayContainer(library.getContainerPtrPrint(borrowedBooks),
+			previousBorrows = library.getReaderBorrows(reader);
+			displayContainer(library.getContainerPtrPrint(previousBorrows),
 					"Borrow history", "\tTitle\t\t\t\tBorrowed\tReturned\tID",
 					"");
 			break;
