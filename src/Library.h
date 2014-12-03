@@ -1,11 +1,6 @@
 #ifndef LIBRARY_H_
 #define LIBRARY_H_
 
-#define PERSONS 0
-#define READERS 1
-#define EMPLOYEES 2
-#define SUPERVISORS 3
-#define BOOKS 4
 #define BOOKS_FILE "books.csv"
 #define BORROWS_FILE "borrows.csv"
 #define READERS_FILE "readers.csv"
@@ -23,7 +18,6 @@
 #include <vector>
 #include <set>
 using namespace std;
-
 
 /**
  * Library Class
@@ -44,7 +38,6 @@ public:
 
 	/** Library destructor saves in *.csv files and stores*/
 	~Library();
-
 
 	///@return true if b1 < than b2 false otherwise
 	static bool compareBooks(const Book* b1, const Book* b2) {
@@ -116,6 +109,18 @@ public:
 	 *@return string vector containing books print output of a given year
 	 */
 	vector<string> getBooksTreePrintByYear(unsigned int year) const;
+
+	/** Gets all print output from tree containing Book type objects
+	 * @param title to search
+	 *@return string vector containing books print output of a given title
+	 */
+	vector<string> getBooksTreePrintByTitle(string title) const;
+
+	/** Gets all print output from tree containing Book type objects
+	 * @param author to search
+	 *@return string vector containing books print output of a given author
+	 */
+	vector<string> getBooksTreePrintByAuthor(string author) const;
 
 	/** Sorts given container and generates string used to display its contents
 	 *@return string vector containing persons print output

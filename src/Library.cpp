@@ -138,19 +138,19 @@ queue<Request> Library::getRequests() const {
 
 vector<string> Library::getSortedPrint(int type, int sortFunc) {
 	switch (type) {
-	case PERSONS:
+	case PERSON:
 		return sortPersons(getPersons(), sortFunc);
 		break;
-	case READERS:
+	case READER:
 		return sortPersons(getReaders(), sortFunc);
 		break;
-	case EMPLOYEES:
+	case EMPLOYEE:
 		return sortPersons(getEmployees(false), sortFunc);
 		break;
-	case SUPERVISORS:
+	case SUPERVISOR:
 		return sortPersons(getSupervisors(), sortFunc);
 		break;
-	case BOOKS:
+	case BOOK:
 		return sortBooks(sortFunc);
 		break;
 	default:
@@ -170,20 +170,49 @@ vector<string> Library::getBooksTreePrint() const {
 
 vector<string> Library::getBooksTreePrintByYear(unsigned int year) const {
 	vector<string> print;
-	Book* b = new Book();
+	Book* b = new Book;
 	b->setEditionYear(year);
 
-//	pair<set<Book*, bool (*)(const Book*, const Book*)>::const_iterator,
-//			set<Book*, bool (*)(const Book*, const Book*)>::const_iterator> range =
-//			equal_range(booksTree.begin(), booksTree.end(), b);
-//
+	pair<set<Book*, bool (*)(const Book*, const Book*)>::const_iterator,
+			set<Book*, bool (*)(const Book*, const Book*)>::const_iterator> range =
+			booksTree.equal_range(b);
+
+	if (range.second == range.first)
+			print.push_back("yes");
+	else
+		print.push_back("no");
+
+//	if (range.second != booksTree.end())
+//		print.push_back((*range.second)->print());
+
 //	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
-//			range.first; it != range.second; it++) {
+//			range.first; it != range.second && it != booksTree.end(); it--) {
 //		print.push_back((*it)->print());
 //	}
-	set<Book*, bool (*)(const Book*, const Book*)>::const_iterator f = booksTree.find(b);
-	if (f != booksTree.end())
-		print.push_back((*f)->print());
+
+	return print;
+}
+
+vector<string> Library::getBooksTreePrintByTitle(string title) const {
+	vector<string> print;
+	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
+			booksTree.begin(); it != booksTree.end(); it++) {
+		if (partialMatchQueryPermissive(title, (*it)->getTitle()))
+			print.push_back((*it)->print());
+	}
+
+	return print;
+}
+
+vector<string> Library::getBooksTreePrintByAuthor(string author) const {
+	vector<string> print;
+	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
+			booksTree.begin(); it != booksTree.end(); it++) {
+		vector<string> authors = (*it)->getAuthors();
+		for (size_t i = 0; i < authors.size(); i++)
+			if (partialMatchQueryPermissive(author, authors[i]))
+				print.push_back((*it)->print());
+	}
 
 	return print;
 }

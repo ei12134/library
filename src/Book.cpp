@@ -75,6 +75,7 @@ Book::Book(stringstream& s) {
 
 Book::Book() {
 	this->borrowed = false;
+	this->title = "";
 	this->pageNumber = 0;
 	this->editionYear = 0;
 	this->ID = 0;
@@ -188,10 +189,12 @@ void Book::setEditionYear(unsigned int editionYear) {
 bool Book::operator<(const Book& b2) const {
 	if (editionYear < b2.editionYear)
 		return true;
-	else if (title < b2.title)
+	if (title < b2.title)
 		return true;
-	else if (authors[0] < b2.authors[0])
-		return true;
-	else
-		return ID < b2.ID;
+
+	for (size_t i = 0; i < authors.size() && i < b2.authors.size(); i++)
+		if (authors[i] < b2.authors[i])
+			return true;
+
+	return ID < b2.ID;
 }

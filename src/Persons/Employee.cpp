@@ -118,9 +118,9 @@ string Employee::print() const {
 
 unsigned int Employee::getType() const {
 	if (!supervisor)
-		return 2;
+		return EMPLOYEE;
 	else
-		return 3;
+		return SUPERVISOR;
 }
 
 void Employee::setSupervisor(bool super) {

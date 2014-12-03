@@ -109,7 +109,7 @@ void Interface::displayMenu() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			while (displayContainer(library.getSortedPrint(PERSONS, sortFunc),
+			while (displayContainer(library.getSortedPrint(PERSON, sortFunc),
 					"Persons", "\tName\t\tAge\tPhone\t\tEmail\t\t\t[Id]",
 					persStr[sortFunc]) == -1) {
 				sortFunc++;
@@ -117,7 +117,7 @@ void Interface::displayMenu() {
 			}
 			break;
 		case '2':
-			while (displayContainer(library.getSortedPrint(READERS, sortFunc),
+			while (displayContainer(library.getSortedPrint(READER, sortFunc),
 					"Readers", "\tName\t\tAge\tPhone\t\tEmail\t\t\tCard",
 					readerStr[sortFunc]) == -1) {
 				sortFunc++;
@@ -125,7 +125,7 @@ void Interface::displayMenu() {
 			}
 			break;
 		case '3':
-			while (displayContainer(library.getSortedPrint(EMPLOYEES, sortFunc),
+			while (displayContainer(library.getSortedPrint(EMPLOYEE, sortFunc),
 					"Employees", "\tName\t\tAge\tPhone\t\tEmail\t\t\tNif",
 					emplStr[sortFunc]) == -1) {
 				sortFunc++;
@@ -134,15 +134,15 @@ void Interface::displayMenu() {
 			break;
 		case '4':
 			while (displayContainer(
-					library.getSortedPrint(SUPERVISORS, sortFunc),
-					"Supervisors", "\tName\t\tAge\tPhone\t\tEmail\t\t\tNif",
-					supStr[sortFunc]) == -1) {
+					library.getSortedPrint(SUPERVISOR, sortFunc), "Supervisors",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif", supStr[sortFunc])
+					== -1) {
 				sortFunc++;
 				sortFunc %= supStr.size();
 			}
 			break;
 		case '5':
-			while (displayContainer(library.getSortedPrint(BOOKS, sortFunc),
+			while (displayContainer(library.getSortedPrint(BOOK, sortFunc),
 					"Books", "\tTitle\t\t\tAuthors\t\t\tYear\tStatus",
 					booksStr[sortFunc]) == -1) {
 				sortFunc++;
@@ -203,11 +203,19 @@ void Interface::searchMenu() {
 			if (selected == searchMenuSize - 1)
 				exit = true;
 			else if (query.size() > 0) {
-				if (is_All_Number(query)) {
+				if (is_All_Number(query) && selected == 0) {
 					ss << query;
 					ss >> year;
 					ss.clear();
 					displayContainer(library.getBooksTreePrintByYear(year),
+							"Books tree",
+							"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", "");
+				} else if (selected == 1) {
+					displayContainer(library.getBooksTreePrintByTitle(query),
+							"Books tree",
+							"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", "");
+				} else if (is_All_ASCII_Letter(query) && selected == 2) {
+					displayContainer(library.getBooksTreePrintByAuthor(query),
 							"Books tree",
 							"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", "");
 				}

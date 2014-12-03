@@ -11,6 +11,12 @@ class Borrow;
 #include <fstream>
 #include <stdlib.h>
 #include "../Exception.h"
+
+#define PERSON 0
+#define READER 1
+#define EMPLOYEE 2
+#define SUPERVISOR 3
+
 using namespace std;
 
 class Person {

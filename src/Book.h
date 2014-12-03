@@ -10,6 +10,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include "Exception.h"
+#define BOOK 4
 using namespace std;
 
 class Book {

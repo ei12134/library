@@ -40,6 +40,28 @@ bool partialMatchQuery(const string & q, const string & n) {
 	return false;
 }
 
+bool partialMatchQueryPermissive(const string & q, const string & n) {
+	if (q.size() == 0 || q.size() > n.size())
+		return false;
+	bool partialMatch = false;
+	for (size_t z = 0; z < n.size(); z++) {
+		for (size_t i = z; i < n.size(); i++) {
+			if (tolower(q[0]) == tolower(n[i])) {
+				partialMatch = true;
+				for (size_t z = 1, y = i + 1; z < q.size(); z++, y++) {
+					if (tolower(q[z]) != tolower(n[y])) {
+						partialMatch = false;
+						break;
+					}
+				}
+				if (partialMatch)
+					return true;
+			}
+		}
+	}
+	return false;
+}
+
 bool matchQuery(const string & q, const string & n) {
 	if (q.size() == 0 || q.size() > n.size())
 		return false;

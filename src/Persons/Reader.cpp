@@ -116,7 +116,7 @@ string Reader::print() const {
 }
 
 unsigned int Reader::getType() const {
-	return 1;
+	return READER;
 }
 
 string Reader::printType() const {

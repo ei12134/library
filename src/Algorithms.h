@@ -12,6 +12,7 @@ inline bool is_NON_ASCII_Letter(const int & c);
 bool is_All_ASCII_Letter(const string& s);
 bool is_All_Number(const string& s);
 bool partialMatchQuery(const string & q, const string & n);
+bool partialMatchQueryPermissive(const string & q, const string & n);
 bool matchQuery(const string & q, const string & n);
 
 template<class Comparable>
