@@ -171,24 +171,20 @@ vector<string> Library::getBooksTreePrint() const {
 vector<string> Library::getBooksTreePrintByYear(unsigned int year) const {
 	vector<string> print;
 	Book* b = new Book;
+	Book* b2 = new Book;
 	b->setEditionYear(year);
+	b2->setEditionYear(year + 1);
 
-	pair<set<Book*, bool (*)(const Book*, const Book*)>::const_iterator,
-			set<Book*, bool (*)(const Book*, const Book*)>::const_iterator> range =
-			booksTree.equal_range(b);
+	set<Book*, bool (*)(const Book*, const Book*)>::const_iterator lower =
+			booksTree.upper_bound(b);
 
-	if (range.second == range.first)
-			print.push_back("yes");
-	else
-		print.push_back("no");
+	set<Book*, bool (*)(const Book*, const Book*)>::const_iterator upper =
+			booksTree.lower_bound(b2);
 
-//	if (range.second != booksTree.end())
-//		print.push_back((*range.second)->print());
-
-//	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
-//			range.first; it != range.second && it != booksTree.end(); it--) {
-//		print.push_back((*it)->print());
-//	}
+	for (set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
+			lower; it != upper && it != booksTree.end(); it++) {
+		print.push_back((*it)->print());
+	}
 
 	return print;
 }

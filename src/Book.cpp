@@ -189,8 +189,13 @@ void Book::setEditionYear(unsigned int editionYear) {
 bool Book::operator<(const Book& b2) const {
 	if (editionYear < b2.editionYear)
 		return true;
+	if (editionYear > b2.editionYear)
+		return false;
+
 	if (title < b2.title)
 		return true;
+	if (title > b2.title)
+		return false;
 
 	for (size_t i = 0; i < authors.size() && i < b2.authors.size(); i++)
 		if (authors[i] < b2.authors[i])
