@@ -18,6 +18,9 @@ public:
 	Request(Person* reader, Book* book, Date date);
 	Person* getReader() const;
 	Book* getBook() const;
+	Date getDate() const {
+		return request;
+	}
 	bool operator==(const Request& r2) const;
 //	friend ostream& operator<<(ostream& os, const Request& r);
 };

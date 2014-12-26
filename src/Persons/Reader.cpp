@@ -107,6 +107,10 @@ bool Reader::addBorrow(Borrow* borrow) {
 		return false;
 	else
 		borrowedBooks.push_back(borrow);
+
+	lastActiviteDate = borrow->getBorrowDate();
+	inactive = false;
+
 	return true;
 }
 
@@ -115,6 +119,10 @@ bool Reader::addRequest(Request request) {
 		return false;
 	else
 		requestedBooks.push_back(request);
+
+	lastActiviteDate = request.getDate();
+	inactive = false;
+
 	return true;
 }
 
