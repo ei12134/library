@@ -27,11 +27,16 @@ private:
 	vector<Request> requestedBooks;
 	/// reader unique card id
 	unsigned int card;
+
+	// when new user is created this variable is set to true (there is no register year)
+	// (because we have no borroed books to compare if he is really inactive by date)
 	bool inactive;
+
+	Date lastActiviteDate;
 public:
 	static unsigned long int readerID;
 	/** Reader manual constructor*/
-	Reader(string name, unsigned int age, unsigned int phone, string email, bool inactive);
+	Reader(string name, unsigned int age, unsigned int phone, string email);
 	/** Reader automatic constructor with member data read from readers.csv file*/
 	Reader(stringstream& s);
 	virtual ~Reader();
@@ -55,6 +60,8 @@ public:
 	bool removeBorrow(Borrow* borrow);
 	bool removeRequest(Request request);
 	bool borrowLimit();
+
+	bool checkInactiveByDate(const Date &d);
 
 	/** saves reader data to output file stream buffer
 	 */

@@ -28,11 +28,11 @@ struct eqReadF {
 
 struct hReadF {
 	int operator()(const Person* p1) const {
-		string s1 = p1->getName();
-		int v = 0;
-		for (unsigned int i = 0; i < s1.size(); i++)
-			v = 37 * v + s1[i];
-		return v;
+		/*string s1 = p1->getName();
+		 int v = 0;
+		 for (unsigned int i = 0; i < s1.size(); i++)
+		 v = 37 * v + s1[i];*/
+		return p1->getCard();
 	}
 };
 
@@ -242,6 +242,12 @@ public:
 	 *@return true if successful false otherwise
 	 */
 	bool removeEmployeeFromSupervisors(Employee* employee);
+
+	bool removePersonHashTable(Person* person);
+
+	bool addPersonHashTable(Person* person);
+
+	void updateInactiveReaders();
 
 	/** Loads stored books
 	 * Loads books.csv file to the books vector

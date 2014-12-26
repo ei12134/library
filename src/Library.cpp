@@ -70,6 +70,31 @@ Library::~Library() {
 	persons.clear();
 }
 
+bool Library::removePersonHashTable(Person* person) {
+	iteratorH it = inactiveReaders.find(person);
+	if (it != inactiveReaders.end()) {
+		inactiveReaders.erase(it);
+		return true;
+	}
+	return false;
+}
+
+bool Library::addPersonHashTable(Person* person) {
+	pair<iteratorH, bool> it = inactiveReaders.insert(person);
+	return it.second;
+}
+
+void Library::updateInactiveReaders() {
+	inactiveReaders.clear();
+	Date d;
+	vector<Person*> readers = getReaders();
+	for (size_t i = 0; i < readers.size(); i++) {
+		Reader *r = static_cast<Reader*>(readers[i]);
+		if (r->checkInactiveByDate(d))// returns true if is incative by date
+			inactiveReaders.insert(readers[i]);
+	}
+}
+
 vector<Book*> Library::getBooks() const {
 	return books;
 }

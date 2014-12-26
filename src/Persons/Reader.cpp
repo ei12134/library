@@ -3,16 +3,18 @@
 unsigned long int Reader::readerID = 0;
 
 Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,
-		string email, bool inactive) :
+		string email) :
 		Person(name, age, phoneNumber, email), card(++readerID) {
 	borrowedBooks.reserve(MAX_BORROWS); // limit to 3 borrowed books
+	inactive = false;
 }
 
 Reader::Reader(stringstream& s) :
 		Person(s) {
 	borrowedBooks.reserve(MAX_BORROWS);
 	stringstream ss;
-	string sInactive, sCard;
+	string sInactive, sCard, data;
+	int dia, mes, ano;
 	unsigned int card;
 	bool inactive;
 
@@ -22,6 +24,34 @@ Reader::Reader(stringstream& s) :
 	ss >> inactive;
 	ss.clear();
 	this->inactive = inactive;
+
+	// ***********************************************************
+	// read lastActiveDate ***************************************
+	// ***********************************************************
+
+	if (!getline(s, data, ','))
+		throw Exception<string>("Error reading day", "Borrow");
+	ss << data;
+	ss >> dia;
+	ss.clear();
+	data.clear();
+	if (!getline(s, data, ','))
+		throw Exception<string>("Error reading month", "Borrow");
+	ss << data;
+	ss >> mes;
+	ss.clear();
+	data.clear();
+	if (!getline(s, data, ';'))
+		throw Exception<string>("Error reading year", "Borrow");
+	ss << data;
+	ss >> ano;
+	ss.clear();
+	data.clear();
+	this->lastActiviteDate = Date(dia, mes, ano);
+
+	// ***********************************************************
+	// ***********************************************************
+	// ***********************************************************
 
 	if (!getline(s, sCard)) // read last input until newline
 		throw Exception<string>("Error reading card", "Reader");
@@ -36,7 +66,9 @@ Reader::Reader(stringstream& s) :
 
 void Reader::saveData(ofstream &of) {
 	Person::saveData(of);
-	of << inactive << ";" << card;
+	of << inactive << ";" << lastActiviteDate.getDay() << ","
+			<< lastActiviteDate.getMonth() << "," << lastActiviteDate.getYear()
+			<< ";" << card;
 }
 
 Reader::~Reader() {
@@ -138,3 +170,9 @@ bool Reader::getInactive() const {
 void Reader::setInactive(bool inactive) {
 	this->inactive = inactive;
 }
+
+bool Reader::checkInactiveByDate(const Date &d) {
+	inactive = (d - lastActiviteDate) >= 365;
+	return inactive;
+}
+
