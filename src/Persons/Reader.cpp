@@ -47,7 +47,7 @@ Reader::Reader(stringstream& s) :
 	ss >> ano;
 	ss.clear();
 	data.clear();
-	this->lastActiviteDate = Date(dia, mes, ano);
+	this->lastActivity = Date(dia, mes, ano);
 
 	// ***********************************************************
 	// ***********************************************************
@@ -66,8 +66,8 @@ Reader::Reader(stringstream& s) :
 
 void Reader::saveData(ofstream &of) {
 	Person::saveData(of);
-	of << inactive << ";" << lastActiviteDate.getDay() << ","
-			<< lastActiviteDate.getMonth() << "," << lastActiviteDate.getYear()
+	of << inactive << ";" << lastActivity.getDay() << ","
+			<< lastActivity.getMonth() << "," << lastActivity.getYear()
 			<< ";" << card;
 }
 
@@ -108,7 +108,7 @@ bool Reader::addBorrow(Borrow* borrow) {
 	else
 		borrowedBooks.push_back(borrow);
 
-	lastActiviteDate = borrow->getBorrowDate();
+	lastActivity = borrow->getBorrowDate();
 	inactive = false;
 
 	return true;
@@ -120,7 +120,7 @@ bool Reader::addRequest(Request request) {
 	else
 		requestedBooks.push_back(request);
 
-	lastActiviteDate = request.getDate();
+	lastActivity = request.getDate();
 	inactive = false;
 
 	return true;
@@ -180,7 +180,7 @@ void Reader::setInactive(bool inactive) {
 }
 
 bool Reader::checkInactiveByDate(const Date &d) {
-	inactive = (d - lastActiviteDate) >= 365;
+	inactive = (d - lastActivity) >= 365;
 	return inactive;
 }
 

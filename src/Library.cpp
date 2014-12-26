@@ -70,7 +70,7 @@ Library::~Library() {
 	persons.clear();
 }
 
-bool Library::removePersonHashTable(Person* person) {
+bool Library::removePersonFromHashTable(Person* person) {
 	iteratorH it = inactiveReaders.find(person);
 	if (it != inactiveReaders.end()) {
 		inactiveReaders.erase(it);
@@ -79,7 +79,7 @@ bool Library::removePersonHashTable(Person* person) {
 	return false;
 }
 
-bool Library::addPersonHashTable(Person* person) {
+bool Library::addPersonToHashTable(Person* person) {
 	pair<iteratorH, bool> it = inactiveReaders.insert(person);
 	return it.second;
 }
@@ -318,7 +318,7 @@ bool Library::removeReader(Person* reader) {
 	for (size_t i = 0; i < persons.size(); i++)
 		if (persons[i] == reader) {
 			if (reader->getBorrowedBooks().size() == 0) {
-				removePersonHashTable(persons[i]);
+				removePersonFromHashTable(persons[i]);
 				persons.erase(persons.begin() + i);
 				return true;
 			}

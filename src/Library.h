@@ -61,7 +61,7 @@ public:
 	/** Library destructor saves in *.csv files and stores*/
 	~Library();
 
-	///@return true if b1 < than b2 false otherwise
+	///@return comparison between two books
 	static bool compareBooks(const Book* b1, const Book* b2) {
 		return *b1 < *b2;
 	}
@@ -243,9 +243,9 @@ public:
 	 */
 	bool removeEmployeeFromSupervisors(Employee* employee);
 
-	bool removePersonHashTable(Person* person);
+	bool removePersonFromHashTable(Person* person);
 
-	bool addPersonHashTable(Person* person);
+	bool addPersonToHashTable(Person* person);
 
 	void updateInactiveReaders();
 

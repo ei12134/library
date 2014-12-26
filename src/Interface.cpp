@@ -79,7 +79,7 @@ void Interface::displayMenu() {
 	bool exit = false;
 	const size_t displayMenuSize = 8;
 	string displayMenu[displayMenuSize] = { "Persons", "Readers", "Employees",
-			"Supervisors", "Books", "Books BST", "Hash table\n", "Exit" };
+			"Supervisors", "Books", "Books BST", "Inactive readers\n", "Exit" };
 	string header = "Display";
 	vector<string> persStr;
 	persStr.push_back("name");
@@ -884,6 +884,7 @@ void Interface::createBorrow(Person* employee) {
 				Borrow* borrow = new Borrow(book, employee, reader);
 				if (reader->addBorrow(borrow)) {
 					library.addBorrow(borrow);
+					library.removePersonFromHashTable(reader);
 					book->setBorrowed(true);
 					infMsg = "Borrow created successfully";
 					library.saveBorrows();
@@ -1169,9 +1170,9 @@ void Interface::editReader(Person* reader) {
 			if (edited) {
 				reader = castedReader;
 				library.savePersons();
-				library.removePersonHashTable(&backup);
+				library.removePersonFromHashTable(&backup);
 				if (castedReader->getInactive())
-					library.addPersonHashTable(castedReader);
+					library.addPersonToHashTable(castedReader);
 				edited = false;
 				changesMessage = "Changes saved successfully";
 			}

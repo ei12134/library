@@ -31,8 +31,7 @@ private:
 	// when new user is created this variable is set to true (there is no register year)
 	// (because we have no borroed books to compare if he is really inactive by date)
 	bool inactive;
-
-	Date lastActiviteDate;
+	Date lastActivity;
 public:
 	static unsigned long int readerID;
 	/** Reader manual constructor*/
