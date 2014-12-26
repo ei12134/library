@@ -534,7 +534,7 @@ void Interface::manageReaders() {
 		clearScreen();
 		displayHeader(header);
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(FOUR_TABS, (i + 1), cmds[i],
+			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
 			FGGREEN_BGBLACK, 1);
 
 		if (errMsg.size() > 0) {
@@ -546,7 +546,7 @@ void Interface::manageReaders() {
 			cout << endl << endl;
 			infMsg.clear();
 		}
-		cout << FOUR_TABS << PROMPT_SYMBOL;
+		cout << THREE_TABS + HALF_TAB << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -569,6 +569,7 @@ void Interface::manageReaders() {
 			break;
 		case '4':
 			library.updateInactiveReaders();
+			infMsg = "Inactive readers hash table updated";
 			break;
 		case '5':
 			exit = true;
@@ -1065,8 +1066,8 @@ void Interface::editReader(Person* reader) {
 	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
 			"[4] Email: ", "[5] Status: ", "Discard changes", "Save changes",
 			"Exit" };
-	Reader* dReader = dynamic_cast<Reader*>(reader);
-	Reader backup = *dReader;
+	Reader* castedReader = dynamic_cast<Reader*>(reader);
+	Reader backup = *castedReader;
 
 	do {
 		string newName, newAgeStr, newPhoneStr, newEmail;
@@ -1077,15 +1078,15 @@ void Interface::editReader(Person* reader) {
 		displayHeader(header);
 
 		colorMsg(THREE_TABS, cmds[0], FGWHITE_BGBLACK, 0);
-		cout << reader->getName().substr(0, 20) << endl;
+		cout << castedReader->getName().substr(0, 20) << endl;
 		colorMsg(THREE_TABS, cmds[1], FGWHITE_BGBLACK, 0);
-		cout << reader->getAge() << endl;
+		cout << castedReader->getAge() << endl;
 		colorMsg(THREE_TABS, cmds[2], FGWHITE_BGBLACK, 0);
-		cout << reader->getPhone() << endl;
+		cout << castedReader->getPhone() << endl;
 		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
-		cout << reader->getEmail().substr(0, 20) << endl;
+		cout << castedReader->getEmail().substr(0, 20) << endl;
 		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
-		cout << (reader->getInactive() ? "inactive" : "active") << endl << endl;
+		cout << (castedReader->getInactive() ? "inactive" : "active") << endl << endl;
 
 		for (size_t i = 5; i < cmdsSize - 1; i++) {
 			if (!edited)
@@ -1114,7 +1115,7 @@ void Interface::editReader(Person* reader) {
 				cout << THREE_TABS << "Name: ";
 				getline(cin, newName, '\n');
 			}
-			reader->setName(newName);
+			castedReader->setName(newName);
 			edited = true;
 			break;
 
@@ -1127,7 +1128,7 @@ void Interface::editReader(Person* reader) {
 			}
 			ss << newAgeStr;
 			ss >> newAge;
-			reader->setAge(newAge);
+			castedReader->setAge(newAge);
 			edited = true;
 			break;
 
@@ -1140,7 +1141,7 @@ void Interface::editReader(Person* reader) {
 			}
 			ss << newPhoneStr;
 			ss >> newPhone;
-			reader->setPhone(newPhone);
+			castedReader->setPhone(newPhone);
 			edited = true;
 			break;
 
@@ -1150,27 +1151,27 @@ void Interface::editReader(Person* reader) {
 				cout << THREE_TABS << "Mail: ";
 				getline(cin, newEmail, '\n');
 			}
-			reader->setEmail(newEmail);
+			castedReader->setEmail(newEmail);
 			edited = true;
 			break;
 		case '5':
-			reader->setInactive(!reader->getInactive());
+			castedReader->setInactive(!castedReader->getInactive());
 			edited = true;
 			break;
 		case '6':
 			if (edited) {
-				*reader = backup;
+				*castedReader = backup;
 				edited = false;
 				changesMessage = "Changes discarded";
 			}
 			break;
 		case '7':
 			if (edited) {
+				reader = castedReader;
 				library.savePersons();
-
 				library.removePersonHashTable(&backup);
-				if (reader->getInactive())
-					library.addPersonHashTable(reader);
+				if (castedReader->getInactive())
+					library.addPersonHashTable(castedReader);
 				edited = false;
 				changesMessage = "Changes saved successfully";
 			}
@@ -1603,7 +1604,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 				cout << TAB;
 
 			colorMsg("",
-					(books[i]->getBorrowed() == 1 ? "[Borrowed]" : "[Available]"),
+					(matches[i]->getBorrowed() ? "[Borrowed]" : "[Available]"),
 					FGWHITE_BGBLACK, 1);
 
 			colorMsg(TWO_TABS, "Author(s): ",

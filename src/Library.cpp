@@ -318,6 +318,7 @@ bool Library::removeReader(Person* reader) {
 	for (size_t i = 0; i < persons.size(); i++)
 		if (persons[i] == reader) {
 			if (reader->getBorrowedBooks().size() == 0) {
+				removePersonHashTable(persons[i]);
 				persons.erase(persons.begin() + i);
 				return true;
 			}
