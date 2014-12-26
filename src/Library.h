@@ -21,14 +21,14 @@
 using namespace std;
 
 struct eqReadF {
-	bool operator()(const Person &p1, const Person &p2) const {
-		return p1.getCard() == p2.getCard();
+	bool operator()(const Person* p1, const Person* p2) const {
+		return p1->getCard() == p2->getCard();
 	}
 };
 
 struct hReadF {
-	int operator()(const Person &p1) const {
-		string s1 = p1.getName();
+	int operator()(const Person* p1) const {
+		string s1 = p1->getName();
 		int v = 0;
 		for (unsigned int i = 0; i < s1.size(); i++)
 			v = 37 * v + s1[i];
@@ -36,8 +36,9 @@ struct hReadF {
 	}
 };
 
-typedef tr1::unordered_set<Person, hReadF, eqReadF>::iterator iteratorH;
-typedef tr1::unordered_set<Person, hReadF, eqReadF> tabH;
+typedef tr1::unordered_set<Person*, hReadF, eqReadF>::const_iterator cIteratorH;
+typedef tr1::unordered_set<Person*, hReadF, eqReadF>::iterator iteratorH;
+typedef tr1::unordered_set<Person*, hReadF, eqReadF> tabH;
 
 /**
  * Library Class
@@ -49,6 +50,7 @@ private:
 	vector<Book*> books; /// vector to Book pointer type objects
 	vector<Borrow*> borrows; /// vector to Borrow pointer type objects
 	vector<Person*> persons; /// vector to Borrow pointer type objects
+	tabH inactiveReaders; /// hash table containing inactive readers
 	queue<Request> requests; /// queue with unavailable requested books
 
 public:
@@ -255,6 +257,11 @@ public:
 	 * Loads borrows.csv file to the borrows vector
 	 */
 	void loadBorrows();
+
+	/** Loads inactive readers
+	 * loads inactive readers to hash table
+	 */
+	void buildHashTable();
 
 	/**
 	 * Saves books in books.csv file

@@ -42,6 +42,8 @@ public:
 	virtual bool removeEmplyee(Employee * e) {
 		return false;
 	}
+	virtual bool getInactive() const = 0;
+	virtual void setInactive(bool Inactive) = 0;
 	virtual bool addBorrow(Borrow* borrow) = 0;
 	virtual vector<Borrow*> getBorrowedBooks() const = 0;
 	virtual vector<Employee *> getEmployeeTeam() const;

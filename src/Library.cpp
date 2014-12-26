@@ -49,6 +49,7 @@ Library::Library() :
 	loadBooks();
 	loadPersons();
 	loadBorrows();
+	buildHashTable();
 	sort(persons.begin(), persons.end(), compareName);
 }
 
@@ -217,6 +218,11 @@ vector<string> Library::getBooksTreePrintByAuthor(string author) const {
 
 vector<string> Library::getHashTablePrint() const {
 	vector<string> print;
+	for (cIteratorH it = inactiveReaders.begin(); it != inactiveReaders.end();
+			it++) {
+		print.push_back((*it)->print());
+	}
+
 	return print;
 }
 
@@ -571,6 +577,15 @@ void Library::loadBorrows() {
 	}
 	file.close();
 // at borrow to reader
+}
+
+void Library::buildHashTable() {
+	vector<Person*> readers = getReaders();
+	for (size_t i = 0; i < readers.size(); i++) {
+		Reader *r = static_cast<Reader*>(readers[i]);
+		if (r->getInactive())
+			inactiveReaders.insert(readers[i]);
+	}
 }
 
 void Library::saveBooks() {

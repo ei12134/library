@@ -730,7 +730,7 @@ void Interface::createReader() {
 		ss >> newPhone;
 		ss.clear();
 
-		Person *reader = new Reader(newName, newAge, newPhone, newEmail);
+		Person *reader = new Reader(newName, newAge, newPhone, newEmail, true);
 		library.addPerson(reader);
 		library.savePersons();
 		cout << endl << THREE_TABS << newName << " successfully created.";
@@ -1058,9 +1058,10 @@ void Interface::editReader(Person* reader) {
 	bool exit = false;
 	bool edited = false;
 	string changesMessage;
-	const size_t cmdsSize = 7;
+	const size_t cmdsSize = 8;
 	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
-			"[4] Email: ", "Discard changes", "Save changes", "Exit" };
+			"[4] Email: ", "[5] Status: ", "Discard changes", "Save changes",
+			"Exit" };
 	Reader* dReader = dynamic_cast<Reader*>(reader);
 	Reader backup = *dReader;
 
@@ -1079,9 +1080,11 @@ void Interface::editReader(Person* reader) {
 		colorMsg(THREE_TABS, cmds[2], FGWHITE_BGBLACK, 0);
 		cout << reader->getPhone() << endl;
 		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
-		cout << reader->getEmail().substr(0, 20) << endl << endl;
+		cout << reader->getEmail().substr(0, 20) << endl;
+		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
+		cout << (reader->getInactive() ? "inactive" : "active") << endl << endl;
 
-		for (size_t i = 4; i < cmdsSize - 1; i++) {
+		for (size_t i = 5; i < cmdsSize - 1; i++) {
 			if (!edited)
 				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGRAY_BGBLACK, 1);
 			else
@@ -1148,20 +1151,25 @@ void Interface::editReader(Person* reader) {
 			edited = true;
 			break;
 		case '5':
+			reader->setInactive(!reader->getInactive());
+			edited = true;
+			break;
+		case '6':
 			if (edited) {
 				*reader = backup;
 				edited = false;
 				changesMessage = "Changes discarded";
 			}
 			break;
-		case '6':
+		case '7':
 			if (edited) {
 				library.savePersons();
+				library.buildHashTable(); // <- CHANGE
 				edited = false;
 				changesMessage = "Changes saved successfully";
 			}
 			break;
-		case '7':
+		case '8':
 			if (edited)
 				*reader = backup;
 			edited = false;
@@ -1799,7 +1807,7 @@ int Interface::displayContainer(vector<string> vec, string listName,
 					key = getKey();
 					if (key == ESCAPE_KEY)
 						done = true;
-					else if (tolower(key)== 's' && sortStr.size() > 0) {
+					else if (tolower(key) == 's' && sortStr.size() > 0) {
 						return -1;
 					}
 				}

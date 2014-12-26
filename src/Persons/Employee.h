@@ -34,6 +34,12 @@ public:
 	bool removeEmplyee(Employee * e);
 	void removeAllEmplyee();
 
+	bool getInactive() const {
+		return false;
+	}
+	void setInactive(bool Inactive) {
+	}
+
 	void setNif(unsigned int nif);
 	void setWage(unsigned int wage);
 	vector<Borrow*> getBorrowedBooks() const;

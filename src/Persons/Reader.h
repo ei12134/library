@@ -27,11 +27,11 @@ private:
 	vector<Request> requestedBooks;
 	/// reader unique card id
 	unsigned int card;
-
+	bool inactive;
 public:
 	static unsigned long int readerID;
 	/** Reader manual constructor*/
-	Reader(string name, unsigned int age, unsigned int phone, string email);
+	Reader(string name, unsigned int age, unsigned int phone, string email, bool inactive);
 	/** Reader automatic constructor with member data read from readers.csv file*/
 	Reader(stringstream& s);
 	virtual ~Reader();
@@ -46,6 +46,8 @@ public:
 	unsigned int getCard() const;
 	unsigned int getNif() const;
 	unsigned int getWage() const;
+	bool getInactive() const;
+	void setInactive(bool inactive);
 	string printType() const;
 	bool setBorrowedBooks(vector<Borrow*> borrowedBooks);
 	bool addBorrow(Borrow* borrow);

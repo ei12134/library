@@ -3,7 +3,7 @@
 unsigned long int Reader::readerID = 0;
 
 Reader::Reader(string name, unsigned int age, unsigned int phoneNumber,
-		string email) :
+		string email, bool inactive) :
 		Person(name, age, phoneNumber, email), card(++readerID) {
 	borrowedBooks.reserve(MAX_BORROWS); // limit to 3 borrowed books
 }
@@ -12,8 +12,16 @@ Reader::Reader(stringstream& s) :
 		Person(s) {
 	borrowedBooks.reserve(MAX_BORROWS);
 	stringstream ss;
-	string sCard;
+	string sInactive, sCard;
 	unsigned int card;
+	bool inactive;
+
+	if (!getline(s, sInactive, ';'))
+		throw Exception<string>("Error reading inactive", "Reader");
+	ss << sInactive;
+	ss >> inactive;
+	ss.clear();
+	this->inactive = inactive;
 
 	if (!getline(s, sCard)) // read last input until newline
 		throw Exception<string>("Error reading card", "Reader");
@@ -28,7 +36,7 @@ Reader::Reader(stringstream& s) :
 
 void Reader::saveData(ofstream &of) {
 	Person::saveData(of);
-	of << card;
+	of << inactive << ";" << card;
 }
 
 Reader::~Reader() {
@@ -121,4 +129,12 @@ unsigned int Reader::getType() const {
 
 string Reader::printType() const {
 	return "[Reader]";
+}
+
+bool Reader::getInactive() const {
+	return inactive;
+}
+
+void Reader::setInactive(bool inactive) {
+	this->inactive = inactive;
 }
