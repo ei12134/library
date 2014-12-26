@@ -89,8 +89,8 @@ string Book::print() const {
 	stringstream ss, authorsSs;
 
 	ss << (title.size() > 30 ? title.substr(0, 30) : title);
-	ss << (title.size() >= 30 ? "\t" : "");
-	for (int i = 30 - title.size(); i > 0; i -= 8)
+	ss << (title.size() >= 31 ? "\t" : "");
+	for (int i = 31 - title.size(); i > 0; i -= 8)
 		ss << "\t";
 
 	if (authors.size() > 0) {

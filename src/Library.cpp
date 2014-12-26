@@ -206,8 +206,10 @@ vector<string> Library::getBooksTreePrintByAuthor(string author) const {
 			booksTree.begin(); it != booksTree.end(); it++) {
 		vector<string> authors = (*it)->getAuthors();
 		for (size_t i = 0; i < authors.size(); i++)
-			if (partialMatchQueryPermissive(author, authors[i]))
+			if (partialMatchQueryPermissive(author, authors[i])){
 				print.push_back((*it)->print());
+				break;
+			}
 	}
 
 	return print;
@@ -227,6 +229,9 @@ void Library::setPersons(vector<Person*> persons) {
 
 void Library::addBook(Book* book) {
 	books.push_back(book);
+}
+
+void Library::addTreeBook(Book* book) {
 	booksTree.insert(book);
 }
 
@@ -251,6 +256,16 @@ bool Library::removeBook(Book* book) {
 			return true;
 		}
 	return false;
+}
+
+bool Library::removeTreeBook(Book* book) {
+	set<Book*, bool (*)(const Book*, const Book*)>::iterator it =
+			booksTree.find(book);
+	if (it == booksTree.end())
+		return false;
+	else
+		booksTree.erase(book);
+	return true;
 }
 
 bool Library::removeBorrow(Borrow* borrow) {

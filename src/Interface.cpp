@@ -104,7 +104,7 @@ void Interface::displayMenu() {
 		for (size_t i = 0; i < displayMenuSize; i++)
 			cmdMsg(FOUR_TABS, (i + 1), displayMenu[i], FGGREEN_BGBLACK, 1);
 
-		cout << endl << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
+		cout << endl << FOUR_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -152,6 +152,9 @@ void Interface::displayMenu() {
 		case '6':
 			displayContainer(library.getBooksTreePrint(), "Books tree",
 					"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", "");
+			break;
+		case '7':
+			exit = true;
 			break;
 		case ESCAPE_KEY:
 			exit = true;
@@ -474,7 +477,7 @@ void Interface::manageBooks() {
 			cout << endl << endl;
 			infMsg.clear();
 		}
-		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
+		cout << FOUR_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -493,6 +496,7 @@ void Interface::manageBooks() {
 			if (book != NULL && !book->getBorrowed()
 					&& confirmOperation(confirmRemove)) {
 				if (library.removeBook(book)) {
+					library.removeTreeBook(book);
 					infMsg = "Book removed successfully";
 					library.saveBooks();
 				} else
@@ -538,7 +542,7 @@ void Interface::manageReaders() {
 			cout << endl << endl;
 			infMsg.clear();
 		}
-		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
+		cout << FOUR_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -597,7 +601,7 @@ void Interface::manageEmployees(Person* supervisor) {
 			cout << endl << endl;
 			infMsg.clear();
 		}
-		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
+		cout << FOUR_TABS << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -663,7 +667,7 @@ void Interface::createBook() {
 		cout << THREE_TABS << "Year: ";
 		getline(cin, newEditionYearStr, '\n');
 	}
-	cout << endl << THREE_TABS << "Press S to save" << PROMPT_SYMBOL;
+	cout << endl << THREE_TABS << "[s] to Save " << PROMPT_SYMBOL;
 	char ch = cin.get();
 	if (ch == 's' || ch == 'S') {
 		ss << newPageNumberStr;
@@ -675,6 +679,7 @@ void Interface::createBook() {
 		Book *b = new Book(authors, false, newQuota, newPageNumber, newISBN,
 				newTitle, newEditionYear);
 		library.addBook(b);
+		library.addTreeBook(b);
 		library.saveBooks();
 		cout << endl << THREE_TABS << newTitle << " successfully created.";
 	} else
@@ -711,7 +716,7 @@ void Interface::createReader() {
 		getline(cin, newEmail, '\n');
 	}
 
-	cout << endl << THREE_TABS << "Press S to save" << PROMPT_SYMBOL;
+	cout << endl << THREE_TABS << "[s] to Save " << PROMPT_SYMBOL;
 	char ch = cin.get();
 	if (ch == 's' || ch == 'S') {
 		ss << newAgeStr;
@@ -774,7 +779,7 @@ void Interface::createEmployee() {
 	else if (confirmOperation(supervisorDialog))
 		supervisor = true;
 
-	cout << endl << THREE_TABS << "Press S to save" << PROMPT_SYMBOL;
+	cout << endl << THREE_TABS << "[s] to Save " << PROMPT_SYMBOL;
 	char ch = cin.get();
 	if (ch == 's' || ch == 'S') {
 		ss << newAgeStr;
@@ -1019,6 +1024,8 @@ void Interface::editBook(Book* book) {
 			break;
 		case '8':
 			if (edited) {
+				library.removeTreeBook(&backup);
+				library.addTreeBook(book);
 				library.saveBooks();
 				edited = false;
 				changesMessage = "Changes saved successfully";

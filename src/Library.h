@@ -159,6 +159,11 @@ public:
 	 */
 	void addBook(Book* book);
 
+	/** Adds new book to the library booksTree
+	 *@param book Book pointer
+	 */
+	void addTreeBook(Book* book);
+
 	/** Adds new Borrow to the library
 	 *@param borrow Borrow pointer
 	 */
@@ -179,6 +184,12 @@ public:
 	 *@return true if successful false otherwise
 	 */
 	bool removeBook(Book* book);
+
+	/** Attempts to remove existing book from the library booksTree
+	 *@param book Book pointer to remove
+	 *@return true if successful false otherwise
+	 */
+	bool removeTreeBook(Book* book);
 
 	/** Attempts to remove existing borrow from the library
 	 *@param borrow Borrow pointer to remove
