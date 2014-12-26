@@ -206,12 +206,17 @@ vector<string> Library::getBooksTreePrintByAuthor(string author) const {
 			booksTree.begin(); it != booksTree.end(); it++) {
 		vector<string> authors = (*it)->getAuthors();
 		for (size_t i = 0; i < authors.size(); i++)
-			if (partialMatchQueryPermissive(author, authors[i])){
+			if (partialMatchQueryPermissive(author, authors[i])) {
 				print.push_back((*it)->print());
 				break;
 			}
 	}
 
+	return print;
+}
+
+vector<string> Library::getHashTablePrint() const {
+	vector<string> print;
 	return print;
 }
 

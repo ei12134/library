@@ -17,7 +17,27 @@
 #include <queue>
 #include <vector>
 #include <set>
+#include <tr1/unordered_set>
 using namespace std;
+
+struct eqReadF {
+	bool operator()(const Person &p1, const Person &p2) const {
+		return p1.getCard() == p2.getCard();
+	}
+};
+
+struct hReadF {
+	int operator()(const Person &p1) const {
+		string s1 = p1.getName();
+		int v = 0;
+		for (unsigned int i = 0; i < s1.size(); i++)
+			v = 37 * v + s1[i];
+		return v;
+	}
+};
+
+typedef tr1::unordered_set<Person, hReadF, eqReadF>::iterator iteratorH;
+typedef tr1::unordered_set<Person, hReadF, eqReadF> tabH;
 
 /**
  * Library Class
@@ -121,6 +141,11 @@ public:
 	 *@return string vector containing books print output of a given author
 	 */
 	vector<string> getBooksTreePrintByAuthor(string author) const;
+
+	/** Gets all print output from hash table
+	 *@return string vector containing all inactive readers
+	 */
+	vector<string> getHashTablePrint() const;
 
 	/** Sorts given container and generates string used to display its contents
 	 *@return string vector containing persons print output

@@ -77,9 +77,9 @@ void Interface::dispatchPerson(Person* person) {
 void Interface::displayMenu() {
 	char input;
 	bool exit = false;
-	const size_t displayMenuSize = 7;
+	const size_t displayMenuSize = 8;
 	string displayMenu[displayMenuSize] = { "Persons", "Readers", "Employees",
-			"Supervisors", "Books", "Books tree\n", "Exit" };
+			"Supervisors", "Books", "Books BST", "Hash table\n", "Exit" };
 	string header = "Display";
 	vector<string> persStr;
 	persStr.push_back("name");
@@ -150,10 +150,14 @@ void Interface::displayMenu() {
 			}
 			break;
 		case '6':
-			displayContainer(library.getBooksTreePrint(), "Books tree",
+			displayContainer(library.getBooksTreePrint(), "Books BST",
 					"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", "");
 			break;
 		case '7':
+			displayContainer(library.getHashTablePrint(), "Inactive Readers",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard", "");
+			break;
+		case '8':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -171,7 +175,7 @@ void Interface::searchMenu() {
 	const size_t searchMenuSize = 4;
 	string searchMenu[searchMenuSize] = { "By edition year", "By title",
 			"By author\n", "Exit" };
-	string header = "Search books tree";
+	string header = "Search books BST";
 	string query;
 	vector<string> booksStr;
 	booksStr.push_back("title");
@@ -211,15 +215,15 @@ void Interface::searchMenu() {
 					ss >> year;
 					ss.clear();
 					displayContainer(library.getBooksTreePrintByYear(year),
-							"Books tree",
+							"Books BST",
 							"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", "");
 				} else if (selected == 1) {
 					displayContainer(library.getBooksTreePrintByTitle(query),
-							"Books tree",
+							"Books BST",
 							"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", "");
 				} else if (is_All_ASCII_Letter(query) && selected == 2) {
 					displayContainer(library.getBooksTreePrintByAuthor(query),
-							"Books tree",
+							"Books BST",
 							"\tTitle\t\t\tAuthors\t\t\tYear\tStatus", "");
 				}
 			}
@@ -1795,7 +1799,7 @@ int Interface::displayContainer(vector<string> vec, string listName,
 					key = getKey();
 					if (key == ESCAPE_KEY)
 						done = true;
-					else if (key == 's' && sortStr.size() > 0) {
+					else if (tolower(key)== 's' && sortStr.size() > 0) {
 						return -1;
 					}
 				}
@@ -1808,7 +1812,7 @@ int Interface::displayContainer(vector<string> vec, string listName,
 		else if (i == vecSize) {
 			cout << " " << repeatStr(hSeparator, 77) << endl << vLimitMsg;
 			key = getKey();
-			if (key == 's' && sortStr.size() > 0) {
+			if (tolower(key) == 's' && sortStr.size() > 0) {
 				return -1;
 			} else
 				break;
