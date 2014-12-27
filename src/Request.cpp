@@ -67,7 +67,7 @@ string Request::print() const {
 	for (int i = 30 - bookTitle.size(); i > 0; i -= 8)
 		ss << "\t";
 
-	ss << requestDate << "\t";
+	ss << requestDate;
 
 	return ss.str();
 }
