@@ -103,8 +103,8 @@ bool Reader::setBorrowedBooks(vector<Borrow*> borrowedBooks) {
 }
 
 bool Reader::addBorrow(Borrow* borrow) {
-	if (borrow->getBook()->getBorrowed())// livro ja esta emprestado
-		return false;
+//	if (borrow->getBook()->getBorrowed())// livro ja esta emprestado
+//		return false;
 	if (borrowedBooks.size() >= MAX_BORROWS)
 		return false;
 	else

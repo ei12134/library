@@ -250,7 +250,7 @@ public:
 
 	bool addPersonToHashTable(Person* person);
 
-	bool borrowQueuedRequest(Book* b);
+	string borrowQueuedRequest(Borrow* b);
 
 	void updateInactiveReaders();
 

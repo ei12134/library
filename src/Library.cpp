@@ -86,18 +86,23 @@ bool Library::addPersonToHashTable(Person* person) {
 	return it.second;
 }
 
-bool Library::borrowQueuedRequest(Book* b) {
+string Library::borrowQueuedRequest(Borrow* b) {
 	if (b == NULL)
-		return false;
-	bool borrow = false;
+		return "";
+	string readerName = "";
 	stack<Request> temp;
 	while (!reserveQueue.empty()) {
 		Request req = reserveQueue.top();
 		reserveQueue.pop();
-		if (req.getBook()->getID() == b->getID()) {
-			//borrow = true;
-
-			break;
+		Reader* r = static_cast<Reader*>(req.getReader());
+		if (req.getBook()->getID() == b->getBook()->getID()) {
+			Borrow* borrow = new Borrow(b->getBook(), b->getEmployee(), r);
+			if (r->addBorrow(borrow)) {
+				addBorrow(borrow);
+				readerName = r->getName();
+				break;
+			} else
+				delete borrow;
 		}
 		temp.push(req);
 	}
@@ -105,7 +110,7 @@ bool Library::borrowQueuedRequest(Book* b) {
 		reserveQueue.push(temp.top());
 		temp.pop();
 	}
-	return borrow;
+	return readerName;
 }
 
 void Library::updateInactiveReaders() {
@@ -296,7 +301,14 @@ void Library::addTreeBook(Book* book) {
 }
 
 void Library::addBorrow(Borrow* borrow) {
+	Person* reader = borrow->getReader();
+	Book* book = borrow->getBook();
+	if (reader != NULL)
+		removePersonFromHashTable(reader);
+	if (book != NULL)
+		book->setBorrowed(true);
 	borrows.push_back(borrow);
+	saveBorrows();
 }
 
 void Library::addPerson(Person* person) {
