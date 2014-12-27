@@ -67,8 +67,8 @@ Reader::Reader(stringstream& s) :
 void Reader::saveData(ofstream &of) {
 	Person::saveData(of);
 	of << inactive << ";" << lastActivity.getDay() << ","
-			<< lastActivity.getMonth() << "," << lastActivity.getYear()
-			<< ";" << card;
+			<< lastActivity.getMonth() << "," << lastActivity.getYear() << ";"
+			<< card;
 }
 
 Reader::~Reader() {
@@ -103,6 +103,8 @@ bool Reader::setBorrowedBooks(vector<Borrow*> borrowedBooks) {
 }
 
 bool Reader::addBorrow(Borrow* borrow) {
+	if (borrow->getBook()->getBorrowed())// livro ja esta emprestado
+		return false;
 	if (borrowedBooks.size() >= MAX_BORROWS)
 		return false;
 	else

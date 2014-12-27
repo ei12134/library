@@ -6,6 +6,7 @@
 #define READERS_FILE "readers.csv"
 #define EMPLOYEES_FILE "employees.csv"
 #define SUPERVISORS_FILE "supervisors.csv"
+#define REQUESTS_FILE "requests.csv"
 
 #include "./Persons/Person.h"
 #include "./Persons/Employee.h"
@@ -15,6 +16,7 @@
 #include <algorithm>
 #include <fstream>
 #include <queue>
+#include <stack>
 #include <vector>
 #include <set>
 #include <tr1/unordered_set>
@@ -51,7 +53,8 @@ private:
 	vector<Borrow*> borrows; /// vector to Borrow pointer type objects
 	vector<Person*> persons; /// vector to Borrow pointer type objects
 	tabH inactiveReaders; /// hash table containing inactive readers
-	queue<Request> requests; /// queue with unavailable requested books
+
+	priority_queue<Request> reserveQueue;
 
 public:
 	/** Library constructor reads *.csv files and stores
@@ -97,7 +100,7 @@ public:
 	vector<Person*> getSupervisors() const;
 
 	///@return readers
-	queue<Request> getRequests() const;
+	priority_queue<Request> getRequests() const;
 
 	/** Gets all print output from T type objects
 	 *@return string vector containing print output
@@ -247,6 +250,8 @@ public:
 
 	bool addPersonToHashTable(Person* person);
 
+	bool borrowQueuedRequest(Book* b);
+
 	void updateInactiveReaders();
 
 	/** Loads stored books
@@ -264,10 +269,14 @@ public:
 	 */
 	void loadBorrows();
 
+	void loadRequests();
+
 	/** Loads inactive readers
 	 * loads inactive readers to hash table
 	 */
 	void buildHashTable();
+
+	void saveRequests();
 
 	/**
 	 * Saves books in books.csv file

@@ -49,6 +49,7 @@ Library::Library() :
 	loadBooks();
 	loadPersons();
 	loadBorrows();
+	loadRequests();
 	buildHashTable();
 	sort(persons.begin(), persons.end(), compareName);
 }
@@ -57,6 +58,7 @@ Library::~Library() {
 	saveBooks();
 	savePersons();
 	saveBorrows();
+	saveRequests();
 
 	booksTree.clear();
 	for (unsigned x = 0; x < books.size(); x++)
@@ -84,13 +86,35 @@ bool Library::addPersonToHashTable(Person* person) {
 	return it.second;
 }
 
+bool Library::borrowQueuedRequest(Book* b) {
+	if (b == NULL)
+		return false;
+	bool borrow = false;
+	stack<Request> temp;
+	while (!reserveQueue.empty()) {
+		Request req = reserveQueue.top();
+		reserveQueue.pop();
+		if (req.getBook()->getID() == b->getID()) {
+			//borrow = true;
+
+			break;
+		}
+		temp.push(req);
+	}
+	while (!temp.empty()) {
+		reserveQueue.push(temp.top());
+		temp.pop();
+	}
+	return borrow;
+}
+
 void Library::updateInactiveReaders() {
 	inactiveReaders.clear();
 	Date d;
 	vector<Person*> readers = getReaders();
 	for (size_t i = 0; i < readers.size(); i++) {
 		Reader *r = static_cast<Reader*>(readers[i]);
-		if (r->checkInactiveByDate(d))// returns true if is incative by date
+		if (r->checkInactiveByDate(d)) // returns true if is incative by date
 			inactiveReaders.insert(readers[i]);
 	}
 }
@@ -158,8 +182,8 @@ vector<Person*> Library::getSupervisors() const {
 	return supervisors;
 }
 
-queue<Request> Library::getRequests() const {
-	return requests;
+priority_queue<Request> Library::getRequests() const {
+	return reserveQueue;
 }
 
 vector<string> Library::getSortedPrint(int type, int sortFunc) {
@@ -279,6 +303,10 @@ void Library::addPerson(Person* person) {
 	persons.push_back(person);
 }
 
+void Library::addRequest(Request request) {
+	reserveQueue.push(request);
+}
+
 bool Library::removeBook(Book* book) {
 	if (book == NULL)
 		return false;
@@ -308,7 +336,7 @@ bool Library::removeBorrow(Borrow* borrow) {
 	if (borrow == NULL)
 		return false;
 	borrow->getBook()->setBorrowed(false);
-	borrow->setReturned(borrow);
+	borrow->setReturned(true);
 	return true;
 }
 
@@ -605,6 +633,97 @@ void Library::loadBorrows() {
 // at borrow to reader
 }
 
+void Library::loadRequests() {
+// book id ; reader card ; day , month , year
+	ifstream file;
+	string line;
+	stringstream bf;
+	file.open(REQUESTS_FILE);
+	if (file.is_open()) {
+		while (file.good()) {
+			bf.clear();
+			getline(file, line, '\n');
+			bf << line;
+			stringstream ss;
+			stringstream temps;
+			string Values;
+			unsigned long int ReaderCard;
+			unsigned long int bookID;
+			unsigned int dia, mes, ano;
+			int posBook, posRead = -1;
+
+			try {
+				if (!getline(bf, Values, ';'))
+					throw Exception<string>("Error reading bookID", "Request");
+				ss << Values;
+				ss >> bookID;
+				ss.clear();
+				Values.clear();
+
+				// book association
+				for (unsigned x = 0; x < books.size(); x++)
+					if (books[x]->getID() == bookID) {
+						posBook = x;
+						break;
+					}
+
+				if (!getline(bf, Values, ';'))
+					throw Exception<string>("Error reading reader card",
+							"Request");
+				ss << Values;
+				ss >> ReaderCard;
+				ss.clear();
+				Values.clear();
+
+				// Reader association (shouldn't be 0)
+				for (unsigned x = 0; x < persons.size(); x++) {
+					if (persons[x]->getCard() == ReaderCard) {
+						posRead = x;
+					}
+				}
+
+				if (!getline(bf, Values, ','))
+					throw Exception<string>("Error reading day", "Request");
+				ss << Values;
+				ss >> dia;
+				ss.clear();
+				Values.clear();
+				if (!getline(bf, Values, ','))
+					throw Exception<string>("Error reading month", "Request");
+				ss << Values;
+				ss >> mes;
+				ss.clear();
+				Values.clear();
+				if (!getline(bf, Values, ';'))
+					throw Exception<string>("Error reading year", "Request");
+				ss << Values;
+				ss >> ano;
+				ss.clear();
+				Values.clear();
+				Date requestDate(dia, mes, ano);
+
+				if (posBook == -1 || posRead == -1) {
+					// checking error
+				} else {
+					// creating Request
+					Person* reader = persons[posRead];
+
+					if (reader == NULL) {
+						// error casting
+					} else {
+						Request request(books[posBook], reader, requestDate);
+						// adding Request Book to the priority queue
+						reserveQueue.push(request);
+					}
+				}
+			} catch (Exception<string> &e) {
+			} catch (Exception<int> &e) {
+			}
+		}
+	}
+	file.close();
+}
+
 void Library::buildHashTable() {
 	vector<Person*> readers = getReaders();
 	for (size_t i = 0; i < readers.size(); i++) {
@@ -612,6 +731,19 @@ void Library::buildHashTable() {
 		if (r->getInactive())
 			inactiveReaders.insert(readers[i]);
 	}
+}
+
+void Library::saveRequests() {
+	ofstream pFile(REQUESTS_FILE);
+	priority_queue<Request> copy = reserveQueue;
+	while (!copy.empty()) {
+		Request tempR = copy.top();
+		tempR.saveData(pFile);
+		copy.pop();
+		if (!copy.empty())
+			pFile << endl;
+	}
+	pFile.close();
 }
 
 void Library::saveBooks() {

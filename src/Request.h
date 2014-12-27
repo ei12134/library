@@ -11,17 +11,20 @@ using namespace std;
  * stores data concerning the request of a book unavailable at the library
  */
 class Request {
-	Person* reader;
 	Book* book;
+	Person* reader;
 	Date request;
 public:
-	Request(Person* reader, Book* book, Date date);
+	Request(Book* book, Person* reader, Date date);
+
 	Person* getReader() const;
 	Book* getBook() const;
-	Date getDate() const {
-		return request;
-	}
+	Date getDate() const;
 	bool operator==(const Request& r2) const;
+	bool operator<(const Request& r2) const;
+
+	void saveData(ofstream &of);
+
 //	friend ostream& operator<<(ostream& os, const Request& r);
 };
 

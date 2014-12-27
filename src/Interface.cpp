@@ -853,7 +853,8 @@ void Interface::createBorrow(Person* employee) {
 			errorMsg(errMsg);
 			cout << endl << endl;
 			errMsg.clear();
-		} else if (infMsg.size() > 0) {
+		}
+		if (infMsg.size() > 0) {
 			infoMsg(infMsg);
 			cout << endl << endl;
 			infMsg.clear();
@@ -873,8 +874,8 @@ void Interface::createBorrow(Person* employee) {
 			}
 			break;
 		case '2':
-			book = searchBook(library.getAvailableBooks());
-			if (book == NULL || book->getBorrowed()) {
+			book = searchBook(library.getBooks());
+			if (book == NULL) {
 				book = NULL;
 				errMsg = "Select another book";
 			}
@@ -888,6 +889,14 @@ void Interface::createBorrow(Person* employee) {
 					book->setBorrowed(true);
 					infMsg = "Borrow created successfully";
 					library.saveBorrows();
+				} else if (book->getBorrowed()) {
+					errMsg = "The book requested wasn't available";
+					infMsg = "The book was automatically reserved";
+					Date d;
+					Request r(book, reader, d);
+					library.addRequest(r);
+					library.saveRequests();
+					delete borrow;
 				} else {
 					errMsg = "Select another reader";
 					delete borrow;
@@ -897,7 +906,6 @@ void Interface::createBorrow(Person* employee) {
 				errMsg = "Select a reader and a book";
 			break;
 		case '4':
-
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -1087,7 +1095,8 @@ void Interface::editReader(Person* reader) {
 		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
 		cout << castedReader->getEmail().substr(0, 20) << endl;
 		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
-		cout << (castedReader->getInactive() ? "inactive" : "active") << endl << endl;
+		cout << (castedReader->getInactive() ? "inactive" : "active") << endl
+				<< endl;
 
 		for (size_t i = 5; i < cmdsSize - 1; i++) {
 			if (!edited)
@@ -1403,6 +1412,8 @@ void Interface::editBorrow(Person* reader) {
 				if (confirmOperation(returnDialog)) {
 					reader->removeBorrow(borrows[0]);
 					library.removeBorrow(borrows[0]);
+					library.borrowQueuedRequest(borrows[0]->getBook());
+
 					library.saveBorrows();
 					infMsg = "Book returned successfully";
 				}
