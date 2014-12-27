@@ -1,7 +1,13 @@
 #include "Request.h"
 
 Request::Request(Book* book, Person* reader, Date date) :
-		reader(reader), book(book), request(date) {
+		book(book), reader(reader), request(date) {
+}
+
+Request::Request() :
+		book(NULL), reader(NULL) {
+	Date d;
+	request = d;
 }
 
 Person* Request::getReader() const {
@@ -38,5 +44,31 @@ bool Request::operator<(const Request& r2) const {
 	else if (reader->getAge() > 23 && r2.reader->getAge() <= 23)
 		return true;
 	return true;
+}
+
+string Request::print() const {
+	string readerName = reader->getName();
+	unsigned int readerAge = reader->getAge();
+	string bookTitle = book->getTitle();
+	string requestDate = request.print();
+	stringstream ss;
+
+	ss << readerName.substr(0, 22);
+	if (readerName.size() >= 23)
+		ss << "\t";
+	else
+		for (int i = 23 - readerName.size(); i > 0; i -= 8)
+			ss << "\t";
+
+	ss << readerAge << "\t";
+
+	ss << (bookTitle.size() > 30 ? bookTitle.substr(0, 30) : bookTitle);
+	ss << (bookTitle.size() >= 30 ? "\t" : "");
+	for (int i = 30 - bookTitle.size(); i > 0; i -= 8)
+		ss << "\t";
+
+	ss << requestDate << "\t";
+
+	return ss.str();
 }
 

@@ -16,10 +16,11 @@ class Request {
 	Date request;
 public:
 	Request(Book* book, Person* reader, Date date);
-
+	Request();
 	Person* getReader() const;
 	Book* getBook() const;
 	Date getDate() const;
+	string print() const;
 	bool operator==(const Request& r2) const;
 	bool operator<(const Request& r2) const;
 

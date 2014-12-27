@@ -53,8 +53,7 @@ private:
 	vector<Borrow*> borrows; /// vector to Borrow pointer type objects
 	vector<Person*> persons; /// vector to Borrow pointer type objects
 	tabH inactiveReaders; /// hash table containing inactive readers
-
-	priority_queue<Request> reserveQueue;
+	priority_queue<Request> requestsQueue; /// priority queue containing books reservations
 
 public:
 	/** Library constructor reads *.csv files and stores
@@ -152,6 +151,11 @@ public:
 	 */
 	vector<string> getHashTablePrint() const;
 
+	/** Gets all print output from priorty queue
+	 *@return string vector containing all book reservations
+	 */
+	vector<string> getPriorityQueuePrint() const;
+
 	/** Sorts given container and generates string used to display its contents
 	 *@return string vector containing persons print output
 	 */
@@ -247,6 +251,8 @@ public:
 	bool removeEmployeeFromSupervisors(Employee* employee);
 
 	bool removePersonFromHashTable(Person* person);
+
+	bool removeRequest(Request request);
 
 	bool addPersonToHashTable(Person* person);
 

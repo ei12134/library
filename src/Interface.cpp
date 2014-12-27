@@ -77,9 +77,10 @@ void Interface::dispatchPerson(Person* person) {
 void Interface::displayMenu() {
 	char input;
 	bool exit = false;
-	const size_t displayMenuSize = 8;
+	const size_t displayMenuSize = 9;
 	string displayMenu[displayMenuSize] = { "Persons", "Readers", "Employees",
-			"Supervisors", "Books", "Books BST", "Inactive readers\n", "Exit" };
+			"Supervisors", "Books", "Books BST", "Inactive readers",
+			"Requests queue\n", "Exit" };
 	string header = "Display";
 	vector<string> persStr;
 	persStr.push_back("name");
@@ -158,6 +159,10 @@ void Interface::displayMenu() {
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard", "");
 			break;
 		case '8':
+			displayContainer(library.getPriorityQueuePrint(), "Requests queue",
+					"\tName\t\tAge\tTitle\t\t\t\tDate", "");
+			break;
+		case '9':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -321,9 +326,9 @@ void Interface::readerMenu(Person* reader) {
 void Interface::employeeMenu(Person* employee) {
 	char input;
 	bool exit = false;
-	const size_t cmdsSize = 4;
-	string cmds[cmdsSize] = { "Borrow a book", "Manage books",
-			"Manage readers\n", "Logout\n" };
+	const size_t cmdsSize = 5;
+	string cmds[cmdsSize] = { "Borrow a book", "Manage books", "Manage readers",
+			"Manage requests\n", "Logout\n" };
 	string header;
 
 	do {
@@ -364,6 +369,9 @@ void Interface::employeeMenu(Person* employee) {
 			manageReaders();
 			break;
 		case '4':
+			manageRequests(employee);
+			break;
+		case '5':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -378,10 +386,10 @@ void Interface::employeeMenu(Person* employee) {
 void Interface::supervisorMenu(Person* supervisor) {
 	char input;
 	bool exit = false;
-	const size_t cmdsSize = 7;
+	const size_t cmdsSize = 8;
 	string cmds[cmdsSize] = { "Borrow a book", "Manage books", "Manage readers",
-			"Manage employees", "Auto-assign teams", "Employees team\n",
-			"Logout\n" };
+			"Manage employees", "Manage requests", "Auto-assign teams",
+			"Employees team\n", "Logout\n" };
 	string header;
 	vector<string> display;
 	vector<Employee *> team;
@@ -432,18 +440,21 @@ void Interface::supervisorMenu(Person* supervisor) {
 			manageEmployees(supervisor);
 			break;
 		case '5':
+			manageRequests(supervisor);
+			break;
+		case '6':
 			library.assignEmployees();
 			library.savePersons();
 			cout << "Employees were evenly assigned";
 			getKey();
 			break;
-		case '6':
+		case '7':
 			team = supervisor->getEmployeeTeam();
 			display = library.getContainerPtrPrint(team);
 			displayContainer(display, "Employees team",
 					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif", "");
 			break;
-		case '7':
+		case '8':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -460,14 +471,22 @@ void Interface::manageBooks() {
 	bool exit = false;
 	string header = "Manage books", errMsg, infMsg;
 	string confirmRemove = "Remove book?";
-	const size_t cmdsSize = 4;
-	string cmds[cmdsSize] = { "Create book", "Edit book", "Remove book\n",
-			"Exit\n" };
+	const size_t cmdsSize = 5;
+	string cmds[cmdsSize] =
+			{ "Create", "Display", "Edit", "Remove\n", "Exit\n" };
 	Book* book;
+	vector<string> booksStr;
+	booksStr.push_back("title");
+	booksStr.push_back("author");
+	booksStr.push_back("year");
+	booksStr.push_back("status");
 
 	do {
 		clearScreen();
 		displayHeader(header);
+
+		int sortFunc = 0;
+
 		for (size_t i = 0; i < cmdsSize; i++)
 			cmdMsg(FOUR_TABS, (i + 1), cmds[i],
 			FGGREEN_BGBLACK, 1);
@@ -489,13 +508,21 @@ void Interface::manageBooks() {
 			createBook();
 			break;
 		case '2':
+			while (displayContainer(library.getSortedPrint(BOOK, sortFunc),
+					"Books", "\tTitle\t\t\tAuthors\t\t\tYear\tStatus",
+					booksStr[sortFunc]) == -1) {
+				sortFunc++;
+				sortFunc %= booksStr.size();
+			}
+			break;
+		case '3':
 			book = searchBook(library.getBooks());
 			if (book != NULL) {
 				editBook(book);
 			} else
 				errMsg = "Error editing a book";
 			break;
-		case '3':
+		case '4':
 			book = searchBook(library.getBooks());
 			if (book != NULL && !book->getBorrowed()
 					&& confirmOperation(confirmRemove)) {
@@ -508,7 +535,7 @@ void Interface::manageBooks() {
 			} else
 				errMsg = "Error removing a book";
 			break;
-		case '4':
+		case '5':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -525,16 +552,25 @@ void Interface::manageReaders() {
 	bool exit = false;
 	string header = "Manage readers";
 	string errMsg, infMsg;
-	const size_t cmdsSize = 5;
-	string cmds[cmdsSize] = { "Create reader", "Edit reader", "Remove reader",
-			"Check inactive readers\n", "Exit\n" };
+	string spacing = string((int) ((80 - 17) / 2), ' ');
+	const size_t cmdsSize = 7;
+	string cmds[cmdsSize] = { "Create", "Display", "Edit", "Remove",
+			"Display inactives", "Update inactives\n", "Exit\n" };
 	Person* reader;
+	vector<string> readerStr;
+	readerStr.push_back("name");
+	readerStr.push_back("age");
+	readerStr.push_back("phone");
+	readerStr.push_back("email");
+	readerStr.push_back("card");
 
 	do {
 		clearScreen();
 		displayHeader(header);
+
+		int sortFunc = 0;
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
+			cmdMsg(spacing, (i + 1), cmds[i],
 			FGGREEN_BGBLACK, 1);
 
 		if (errMsg.size() > 0) {
@@ -546,7 +582,7 @@ void Interface::manageReaders() {
 			cout << endl << endl;
 			infMsg.clear();
 		}
-		cout << THREE_TABS + HALF_TAB << PROMPT_SYMBOL;
+		cout << spacing << PROMPT_SYMBOL;
 
 		input = getKey();
 		switch (input) {
@@ -554,24 +590,36 @@ void Interface::manageReaders() {
 			createReader();
 			break;
 		case '2':
+			while (displayContainer(library.getSortedPrint(READER, sortFunc),
+					"Readers", "\tName\t\tAge\tPhone\t\tEmail\t\t\tCard",
+					readerStr[sortFunc]) == -1) {
+				sortFunc++;
+				sortFunc %= readerStr.size();
+			}
+			break;
+		case '3':
 			reader = searchPerson(library.getReaders());
 			if (reader != NULL)
 				editReader(reader);
 			else
 				errMsg = "Error editing a reader";
 			break;
-		case '3':
+		case '4':
 			if (library.removeReader(searchPerson(library.getReaders()))) {
 				library.savePersons();
 				infMsg = "Reader removed successfully";
 			} else
 				errMsg = "Error removing a reader";
 			break;
-		case '4':
+		case '5':
+			displayContainer(library.getHashTablePrint(), "Inactive Readers",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tCard", "");
+			break;
+		case '6':
 			library.updateInactiveReaders();
 			infMsg = "Inactive readers hash table updated";
 			break;
-		case '5':
+		case '7':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -588,14 +636,22 @@ void Interface::manageEmployees(Person* supervisor) {
 	bool exit = false;
 	string header = "Manage employees";
 	string errMsg, infMsg;
-	const size_t cmdsSize = 4;
-	string cmds[cmdsSize] = { "Create employee", "Edit employee",
-			"Remove employee\n", "Exit\n" };
+	const size_t cmdsSize = 5;
+	string cmds[cmdsSize] =
+			{ "Create", "Display", "Edit", "Remove\n", "Exit\n" };
 	Employee* employee;
+	vector<string> emplStr;
+	emplStr.push_back("name");
+	emplStr.push_back("age");
+	emplStr.push_back("phone");
+	emplStr.push_back("email");
+	emplStr.push_back("card");
 
 	do {
 		clearScreen();
 		displayHeader(header);
+
+		int sortFunc = 0;
 		for (size_t i = 0; i < cmdsSize; i++)
 			cmdMsg(FOUR_TABS, (i + 1), cmds[i],
 			FGGREEN_BGBLACK, 1);
@@ -617,6 +673,15 @@ void Interface::manageEmployees(Person* supervisor) {
 			createEmployee();
 			break;
 		case '2':
+			while (displayContainer(
+					library.getSortedPrint(EMPLOYEE_OR_SUPERVISOR, sortFunc),
+					"Employees", "\tName\t\tAge\tPhone\t\tEmail\t\t\tNif",
+					emplStr[sortFunc]) == -1) {
+				sortFunc++;
+				sortFunc %= emplStr.size();
+			}
+			break;
+		case '3':
 			employee = static_cast<Employee*>(searchPerson(
 					library.getEmployees(true)));
 			if (employee != NULL)
@@ -624,7 +689,7 @@ void Interface::manageEmployees(Person* supervisor) {
 			else
 				errMsg = "Error editing an employee";
 			break;
-		case '3':
+		case '4':
 			if (library.removeEmployee(
 					(searchPerson(library.getEmployees(true))), supervisor)) {
 				library.savePersons();
@@ -632,7 +697,66 @@ void Interface::manageEmployees(Person* supervisor) {
 			} else
 				errMsg = "Error removing an employee";
 			break;
+		case '5':
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+}
+
+void Interface::manageRequests(Person* employee) {
+	char input;
+	bool exit = false;
+	string header = "Manage requests";
+	string errMsg, infMsg;
+	const size_t cmdsSize = 5;
+	string cmds[cmdsSize] =
+			{ "Create", "Display", "Edit", "Remove\n", "Exit\n" };
+
+	do {
+		clearScreen();
+		displayHeader(header);
+		Request r;
+
+		for (size_t i = 0; i < cmdsSize; i++)
+			cmdMsg(FOUR_TABS, (i + 1), cmds[i],
+			FGGREEN_BGBLACK, 1);
+
+		if (errMsg.size() > 0) {
+			errorMsg(errMsg);
+			cout << endl << endl;
+			errMsg.clear();
+		} else if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
+		}
+		cout << FOUR_TABS << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			break;
+		case '2':
+			displayContainer(library.getPriorityQueuePrint(), "Requests queue",
+					"\tName\t\tAge\tTitle\t\t\t\tDate", "");
+			break;
+		case '3':
+			break;
 		case '4':
+			r = searchRequest(library.getRequests());
+			if (r.getBook() != NULL && r.getReader() != NULL) {
+				if (library.removeRequest(r))
+					infMsg = "Request removed successfully";
+			} else
+				errMsg = "No request was selected";
+			break;
+		case '5':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -884,6 +1008,7 @@ void Interface::createBorrow(Person* employee) {
 			if (reader != NULL && book != NULL) {
 				Borrow* borrow = new Borrow(book, employee, reader);
 				if (!book->getBorrowed() && reader->addBorrow(borrow)) {
+					// make reader active again??
 					library.addBorrow(borrow);
 					infMsg = "Borrow created successfully";
 				} else if (book->getBorrowed()) {
@@ -1702,6 +1827,120 @@ Book* Interface::searchBook(vector<Book*> books) {
 		}
 	} while (!exit);
 	return NULL;
+}
+
+Request Interface::searchRequest(priority_queue<Request> requestQueue) {
+	string query;
+	string header = "Search requests";
+	bool exit = false;
+	bool clear = false;
+	int key;
+	string spacing = string((int) ((80 - 48) / 2), ' ');
+	size_t selected = 0, vLimit = 5;
+	vector<Request> matches;
+	do {
+		clearScreen();
+		displayHeader(header);
+		priority_queue<Request> copy = requestQueue;
+		if (clear) {
+			selected = 0;
+			matches.clear();
+			clear = false;
+		}
+// Search books for given query
+		if (query.size() > 0 && matches.size() == 0) {
+			while (!copy.empty()) {
+				string readerName = copy.top().getReader()->getName();
+				string bookTitle = copy.top().getBook()->getTitle();
+				if (partialMatchQuery(query, readerName)
+						|| partialMatchQuery(query, bookTitle))
+					matches.push_back(copy.top());
+				copy.pop();
+			}
+		}
+// Display books that match
+		for (size_t i = 0; i < matches.size() && i < vLimit; i++) {
+
+			colorMsg(TWO_TABS, "Reader:     ",
+			FGWHITE_BGBLACK, 0);
+			colorMsg("", matches[i].getReader()->getName().substr(0, 28),
+					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 0);
+
+			for (ssize_t z = 28 - matches[i].getReader()->getName().size();
+					z >= 0; z -= 8)
+				cout << TAB;
+
+			colorMsg("", (matches[i].getDate().print()),
+			FGWHITE_BGBLACK, 1);
+
+			colorMsg(TWO_TABS, "Book:     ",
+			FGWHITE_BGBLACK, 0);
+			colorMsg("", matches[i].getBook()->getTitle() + " ",
+					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 2);
+		}
+		cout << spacing << "Enter reader name or book title ";
+		colorMsg("", "[ESC to exit]", FGWHITE_BGBLACK, 2);
+		cout << spacing << PROMPT_SYMBOL << query;
+
+		key = getKey();
+
+		switch (key) {
+		case 0:
+			break;
+		case TAB_KEY:
+			if (matches.size() > selected + 1) {
+				if (query != matches[selected].getReader()->getName())
+					query = matches[selected].getReader()->getName();
+				else
+					query = matches[++selected].getReader()->getName();
+			} else {
+				selected = 0;
+				if (matches.size() > selected)
+					query = matches[selected].getReader()->getName();
+			}
+			break;
+		case RETURN_KEY:
+			if (matches.size() > selected)
+				return matches[selected];
+			break;
+		case BACKSPACE_KEY:
+			if (query.length() > 0) {
+				clear = true;
+				query.erase(query.end() - 1);
+			}
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		case DELETE_KEY:
+			clear = true;
+			query.clear();
+			break;
+		case ARROW_DOWN:
+			if (matches.size() == 0)
+				selected = 0;
+			else {
+				selected++;
+				selected %= (matches.size() > vLimit ? vLimit : matches.size());
+			}
+			break;
+		case ARROW_UP:
+			if (matches.size() == 0)
+				selected = 0;
+			else if (selected < 1)
+				selected = (matches.size() > vLimit ? vLimit : matches.size())
+						- 1;
+			else
+				selected--;
+			break;
+		default:
+			clear = true;
+			query += char(key);
+			break;
+		}
+	} while (!exit);
+	Request r;
+	return r;
 }
 
 void Interface::clearScreen() {

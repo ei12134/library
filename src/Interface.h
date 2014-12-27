@@ -89,6 +89,7 @@ public:
 	void manageBooks();
 	void manageReaders();
 	void manageEmployees(Person* supervisor);
+	void manageRequests(Person* employee);
 
 	void createBook();
 	void createReader();
@@ -103,6 +104,7 @@ public:
 
 	Person* searchPerson(vector<Person*> persons);
 	Book* searchBook(vector<Book*> books);
+	Request searchRequest(priority_queue<Request> requestQueue);
 
 	void displayHeader(string& header);
 	bool confirmOperation(string& query);

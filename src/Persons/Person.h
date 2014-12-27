@@ -16,6 +16,7 @@ class Borrow;
 #define READER 1
 #define EMPLOYEE 2
 #define SUPERVISOR 3
+#define EMPLOYEE_OR_SUPERVISOR 4
 
 using namespace std;
 

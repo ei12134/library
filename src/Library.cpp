@@ -91,9 +91,9 @@ string Library::borrowQueuedRequest(Borrow* b) {
 		return "";
 	string readerName = "";
 	stack<Request> temp;
-	while (!reserveQueue.empty()) {
-		Request req = reserveQueue.top();
-		reserveQueue.pop();
+	while (!requestsQueue.empty()) {
+		Request req = requestsQueue.top();
+		requestsQueue.pop();
 		Reader* r = static_cast<Reader*>(req.getReader());
 		if (req.getBook()->getID() == b->getBook()->getID()) {
 			Borrow* borrow = new Borrow(b->getBook(), b->getEmployee(), r);
@@ -107,7 +107,7 @@ string Library::borrowQueuedRequest(Borrow* b) {
 		temp.push(req);
 	}
 	while (!temp.empty()) {
-		reserveQueue.push(temp.top());
+		requestsQueue.push(temp.top());
 		temp.pop();
 	}
 	return readerName;
@@ -188,7 +188,7 @@ vector<Person*> Library::getSupervisors() const {
 }
 
 priority_queue<Request> Library::getRequests() const {
-	return reserveQueue;
+	return requestsQueue;
 }
 
 vector<string> Library::getSortedPrint(int type, int sortFunc) {
@@ -204,6 +204,9 @@ vector<string> Library::getSortedPrint(int type, int sortFunc) {
 		break;
 	case SUPERVISOR:
 		return sortPersons(getSupervisors(), sortFunc);
+		break;
+	case EMPLOYEE_OR_SUPERVISOR:
+		return sortPersons(getEmployees(true), sortFunc);
 		break;
 	case BOOK:
 		return sortBooks(sortFunc);
@@ -270,6 +273,17 @@ vector<string> Library::getBooksTreePrintByAuthor(string author) const {
 	return print;
 }
 
+vector<string> Library::getPriorityQueuePrint() const {
+	vector<string> print;
+	priority_queue<Request> copy = requestsQueue;
+	while (!copy.empty()) {
+		print.push_back(copy.top().print());
+		copy.pop();
+	}
+
+	return print;
+}
+
 vector<string> Library::getHashTablePrint() const {
 	vector<string> print;
 	for (cIteratorH it = inactiveReaders.begin(); it != inactiveReaders.end();
@@ -316,7 +330,7 @@ void Library::addPerson(Person* person) {
 }
 
 void Library::addRequest(Request request) {
-	reserveQueue.push(request);
+	requestsQueue.push(request);
 }
 
 bool Library::removeBook(Book* book) {
@@ -384,6 +398,28 @@ bool Library::removeEmployeeFromSupervisors(Employee* employee) {
 		if (persons[i]->getType() == 3)
 			persons[i]->removeEmplyee(employee);
 	return true;
+}
+
+bool Library::removeRequest(Request request) {
+	stack<Request> temp;
+	bool success = false;
+	while (!requestsQueue.empty()) {
+		Request req = requestsQueue.top();
+		requestsQueue.pop();
+		if (req.getBook()->getID() == request.getBook()->getID()
+				&& req.getReader()->getCard()
+						== request.getReader()->getCard()) {
+			saveRequests();
+			success = true;
+			break;
+		} else
+			temp.push(req);
+	}
+	while (!temp.empty()) {
+		requestsQueue.push(temp.top());
+		temp.pop();
+	}
+	return success;
 }
 
 void Library::loadPersons() {
@@ -725,7 +761,7 @@ void Library::loadRequests() {
 					} else {
 						Request request(books[posBook], reader, requestDate);
 						// adding Request Book to the priority queue
-						reserveQueue.push(request);
+						requestsQueue.push(request);
 					}
 				}
 			} catch (Exception<string> &e) {
@@ -747,7 +783,7 @@ void Library::buildHashTable() {
 
 void Library::saveRequests() {
 	ofstream pFile(REQUESTS_FILE);
-	priority_queue<Request> copy = reserveQueue;
+	priority_queue<Request> copy = requestsQueue;
 	while (!copy.empty()) {
 		Request tempR = copy.top();
 		tempR.saveData(pFile);
