@@ -50,6 +50,19 @@ void Date::addOneDay() {
 	}
 }
 
+void Date::removeOneDay() {
+	if (this->day > 1) {
+		this->day--;
+	} else if (this->day <= 1) {
+		if (this->month <= 1) {
+			this->year--;
+			this->month = 12;
+		} else
+			this->month--;
+		this->day = GiveMonthDays(this->month, this->year);
+	}
+}
+
 int Date::julianDays() const { // julian days days since 1/1/2000
 	int a = (14 - month) / 12;
 	int y = year + 4800 - a;

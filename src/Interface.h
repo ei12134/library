@@ -98,6 +98,8 @@ public:
 	Request editRequest(const Request &r);
 	vector<string> editAuthors();
 
+	int editDate(Date &d);
+
 	Person* searchPerson(vector<Person*> persons);
 	Book* searchBook(vector<Book*> books);
 	Request searchRequest(priority_queue<Request> requestQueue);

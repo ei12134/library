@@ -49,6 +49,9 @@ public:
 	/** add one day to the class date */
 	void addOneDay();
 
+	/** removes one day to the class date */
+	void removeOneDay();
+
 	/** returns string with the date of this class dd-mm-yyyy */
 	string print() const;
 

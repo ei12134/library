@@ -22,7 +22,7 @@ public:
 	Date getDate() const;
 	string print() const;
 
-	bool setDate(Date d);
+	void setDate(Date d);
 	bool changeReader(Person* reader);
 	bool changeBook(Book* book);
 

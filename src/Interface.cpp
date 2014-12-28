@@ -971,7 +971,7 @@ void Interface::createBorrow(Person* employee, bool request) {
 
 	do {
 		clearScreen();
-		displayHeader (header);
+		displayHeader(header);
 
 		if (reader != NULL) {
 			colorMsg(THREE_TABS, "[Reader name] ", FGWHITE_BGBLACK, 0);
@@ -1246,7 +1246,8 @@ void Interface::editReader(Person* reader) {
 		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
 		cout << castedReader->getEmail().substr(0, 20) << endl;
 		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
-		cout << (castedReader->getInactive() ? "inactive" : "active") << endl << endl;
+		cout << (castedReader->getInactive() ? "inactive" : "active") << endl
+				<< endl;
 		colorMsg(THREE_TABS, "Last activity: ", FGWHITE_BGBLACK, 0);
 		cout << castedReader->getLastActivity().print() << endl << endl;
 
@@ -1634,26 +1635,29 @@ Request Interface::editRequest(const Request &r) {
 	char input;
 	bool exit = false;
 	bool edited = false;
+	bool editingDate = false;
 	string errMsg, infMsg;
 	const size_t cmdsSize = 6;
 	string cmds[cmdsSize] = { "[1] Reader: ", "[2] Book: ", "[3] Date: ",
 			"Discard changes", "Save changes", "Exit" };
-
+	Date editedDate = r.getDate();
 	Request editR = r;
 	Request newR = r;
 
 	do {
+		int editDateResult;
 		stringstream ss;
 		string header = "Edit Request";
 		clearScreen();
 		displayHeader(header);
 
 		colorMsg(THREE_TABS, cmds[0], FGWHITE_BGBLACK, 0);
-		cout << editR.getReader()->getName().substr(0, 20) << endl;
+		cout << editR.getReader()->getName().substr(0, 24) << endl;
 		colorMsg(THREE_TABS, cmds[1], FGWHITE_BGBLACK, 0);
-		cout << editR.getBook()->getTitle().substr(0, 20) << endl;
+		cout << editR.getBook()->getTitle().substr(0, 24) << endl;
 		colorMsg(THREE_TABS, cmds[2], FGWHITE_BGBLACK, 0);
-		cout << editR.getDate().print() << endl << endl;
+		cout << (editingDate ? editedDate.print() : editR.getDate().print())
+				<< endl << endl;
 
 		for (size_t i = 3; i < cmdsSize - 1; i++) {
 			if (!edited)
@@ -1677,7 +1681,8 @@ Request Interface::editRequest(const Request &r) {
 		}
 
 		cout << endl << THREE_TABS << PROMPT_SYMBOL;
-		input = getKey();
+		if (!editingDate)
+			input = getKey();
 		switch (input) {
 		case '1':
 			if (editR.changeReader(searchPerson(library.getReaders())))
@@ -1693,7 +1698,42 @@ Request Interface::editRequest(const Request &r) {
 			}
 			break;
 		case '3':
-			errMsg = "The date can't be changed";
+			infMsg = " Press + or - to change the date";
+			if (!editingDate) {
+				// start editing with editR date
+				editedDate = editR.getDate();
+				editingDate = true;
+			} else {
+				editDateResult = editDate(editedDate);
+
+				switch (editDateResult) {
+				case 0:
+					// display new date
+					// keep changing date
+					break;
+				case RETURN_KEY:
+					// mark edited
+					if (editedDate != editR.getDate())
+						edited = true;
+					// change & save new date
+					editR.setDate(editedDate);
+					// stop changing date
+					editingDate = false;
+					// display messages
+					infMsg.clear();
+					break;
+				case ESCAPE_KEY:
+					// restore date
+					// stop changing date
+					editingDate = false;
+					// display messages
+					infMsg.clear();
+					errMsg = "The date was restored";
+					break;
+				default:
+					break;
+				}
+			}
 			break;
 		case '4':
 			if (edited) {
@@ -1739,6 +1779,35 @@ vector<string> Interface::editAuthors() {
 		cout << endl;
 	}
 	return authors;
+}
+
+int Interface::editDate(Date &d) {
+	char input = getKey();
+	switch (input) {
+	case '+':
+		d.addOneDay();
+		return 0;
+		break;
+	case '-':
+		d.removeOneDay();
+		return 0;
+		break;
+	case '5':
+		return RETURN_KEY;
+		break;
+	case RETURN_KEY:
+		return RETURN_KEY;
+		break;
+	case '4':
+		return ESCAPE_KEY;
+		break;
+	case ESCAPE_KEY:
+		return ESCAPE_KEY;
+		break;
+	default:
+		break;
+	}
+	return 0;
 }
 
 Person* Interface::searchPerson(vector<Person*> persons) {
