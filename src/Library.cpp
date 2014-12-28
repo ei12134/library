@@ -343,8 +343,16 @@ void Library::addPerson(Person* person) {
 	persons.push_back(person);
 }
 
-void Library::addRequest(Request request) {
+bool Library::addRequest(Request request) {
+	priority_queue<Request> copy = requestsQueue;
+	while (!copy.empty()) {
+		if (copy.top() == request) {
+			return false;
+		}
+		copy.pop();
+	}
 	requestsQueue.push(request);
+	return true;
 }
 
 bool Library::removeBook(Book* book) {
@@ -423,7 +431,6 @@ bool Library::removeRequest(const Request &request) {
 		if (req.getBook()->getID() == request.getBook()->getID()
 				&& req.getReader()->getCard()
 						== request.getReader()->getCard()) {
-			saveRequests();
 			success = true;
 			break;
 		} else

@@ -179,6 +179,8 @@ bool Reader::getInactive() const {
 
 void Reader::setInactive(bool inactive) {
 	this->inactive = inactive;
+	if (!this->inactive)
+		lastActivity = Date();
 }
 
 bool Reader::checkInactiveByDate(const Date &d) {

@@ -213,7 +213,7 @@ public:
 	/** Adds new request to the library queue
 	 *@param request
 	 */
-	void addRequest(Request request);
+	bool addRequest(Request request);
 
 	/** Attempts to remove existing book from the library
 	 *@param book Book pointer to remove

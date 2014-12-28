@@ -44,7 +44,8 @@ void Request::saveData(ofstream &of) {
 }
 
 bool Request::operator==(const Request& r2) const {
-	return ((this->reader == r2.reader) && (this->book == r2.book));
+	return ((this->reader == r2.reader) && (this->book == r2.book)
+			&& (request == r2.request));
 }
 bool Request::operator<(const Request& r2) const {
 	if (request < r2.request)

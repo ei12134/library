@@ -752,7 +752,10 @@ void Interface::manageRequests(Person* employee) {
 			if (r.getBook() != NULL && r.getReader() != NULL) {
 				if (library.removeRequest(r)) {
 					Request newR = editRequest(r);
-					library.addRequest(newR);
+					if (library.addRequest(newR)) {
+						library.saveRequests();
+						r.getReader()->setInactive(false);
+					}
 				}
 			} else {
 				errMsg = "No request was selected";
@@ -761,8 +764,10 @@ void Interface::manageRequests(Person* employee) {
 		case '4':
 			r = searchRequest(library.getRequests());
 			if (r.getBook() != NULL && r.getReader() != NULL) {
-				if (library.removeRequest(r))
+				if (library.removeRequest(r)) {
 					infMsg = "Request removed successfully";
+					library.saveRequests();
+				}
 			} else
 				errMsg = "No request was selected";
 			break;
@@ -1023,11 +1028,15 @@ void Interface::createBorrow(Person* employee) {
 					infMsg = "Borrow created successfully";
 				} else if (book->getBorrowed()) {
 					errMsg = "The book requested wasn't available";
-					infMsg = "The book was automatically reserved";
 					Date d;
 					Request r(book, reader, d);
-					library.addRequest(r);
-					library.saveRequests();
+					if (library.addRequest(r)) {
+						r.getReader()->setInactive(false);
+						library.saveRequests();
+						infMsg = "The book was automatically reserved";
+					} else {
+						infMsg = "That request already exists";
+					}
 					delete borrow;
 				} else {
 					errMsg = "Select another reader";
