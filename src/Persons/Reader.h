@@ -53,6 +53,7 @@ public:
 	bool getInactive() const;
 	Date getLastActivity() const;
 	void setInactive(bool inactive);
+	void setLastActivity(Date d);
 	string printType() const;
 	bool setBorrowedBooks(vector<Borrow*> borrowedBooks);
 	bool addBorrow(Borrow* borrow);

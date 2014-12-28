@@ -1221,17 +1221,20 @@ void Interface::editReader(Person* reader) {
 	char input;
 	bool exit = false;
 	bool edited = false;
-	string changesMessage;
-	const size_t cmdsSize = 8;
+	bool editingDate = false;
+	Date editedDate;
+	string errMsg, infMsg;
+	const size_t cmdsSize = 9;
 	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
-			"[4] Email: ", "[5] Status: ", "Discard changes", "Save changes",
-			"Exit" };
+			"[4] Email: ", "[5] Status: ", "[6] Last activity: ",
+			"Discard changes", "Save changes", "Exit" };
 	Reader* castedReader = dynamic_cast<Reader*>(reader);
 	Reader backup = *castedReader;
 
 	do {
 		string newName, newAgeStr, newPhoneStr, newEmail;
 		unsigned int newAge, newPhone;
+		int editDateResult;
 		stringstream ss;
 		string header = "Edit Reader" + string(5, ' ') + reader->getName();
 		clearScreen();
@@ -1246,12 +1249,15 @@ void Interface::editReader(Person* reader) {
 		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
 		cout << castedReader->getEmail().substr(0, 20) << endl;
 		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
-		cout << (castedReader->getInactive() ? "inactive" : "active") << endl
+		cout << (castedReader->getInactive() ? "inactive" : "active") << endl;
+		colorMsg(THREE_TABS, cmds[5], FGWHITE_BGBLACK, 0);
+		cout
+				<< (editingDate ?
+						editedDate.print() :
+						castedReader->getLastActivity().print()) << endl
 				<< endl;
-		colorMsg(THREE_TABS, "Last activity: ", FGWHITE_BGBLACK, 0);
-		cout << castedReader->getLastActivity().print() << endl << endl;
 
-		for (size_t i = 5; i < cmdsSize - 1; i++) {
+		for (size_t i = 6; i < cmdsSize - 1; i++) {
 			if (!edited)
 				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGRAY_BGBLACK, 1);
 			else
@@ -1261,15 +1267,22 @@ void Interface::editReader(Person* reader) {
 		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1],
 		FGGREEN_BGBLACK, 1);
 
-		if (changesMessage.size() > 0) {
+		if (errMsg.size() > 0) {
 			cout << endl;
-			infoMsg(changesMessage);
-			changesMessage.clear();
+			errorMsg(errMsg);
+			cout << endl;
+			errMsg.clear();
+		}
+		if (infMsg.size() > 0) {
+			cout << endl;
+			infoMsg(infMsg);
+			infMsg.clear();
 			cout << endl;
 		}
 		cout << endl << THREE_TABS << PROMPT_SYMBOL;
 
-		input = getKey();
+		if (!editingDate)
+			input = getKey();
 		switch (input) {
 
 		case '1':
@@ -1322,13 +1335,52 @@ void Interface::editReader(Person* reader) {
 			edited = true;
 			break;
 		case '6':
-			if (edited) {
-				*castedReader = backup;
-				edited = false;
-				changesMessage = "Changes discarded";
+			infMsg = " Press [+] or [-] to change the date [ESC to cancel]";
+			if (!editingDate) {
+				// start editing with editR date
+				editedDate = castedReader->getLastActivity();
+				editingDate = true;
+			} else {
+				editDateResult = editDate(editedDate);
+
+				switch (editDateResult) {
+				case 0:
+					// display new date
+					// keep changing date
+					break;
+				case RETURN_KEY:
+					// mark edited
+					if (editedDate != castedReader->getLastActivity())
+						edited = true;
+					// change & save new date
+					castedReader->setLastActivity(editedDate);
+					// stop changing date
+					editingDate = false;
+					// display messages
+					infMsg.clear();
+					break;
+					void setLastActivity(Date d);
+				case ESCAPE_KEY:
+					// restore date
+					// stop changing date
+					editingDate = false;
+					// display messages
+					infMsg.clear();
+					errMsg = "Date editing was cancelled";
+					break;
+				default:
+					break;
+				}
 			}
 			break;
 		case '7':
+			if (edited) {
+				*castedReader = backup;
+				edited = false;
+				infMsg = "Changes discarded";
+			}
+			break;
+		case '8':
 			if (edited) {
 				reader = castedReader;
 				library.savePersons();
@@ -1336,10 +1388,10 @@ void Interface::editReader(Person* reader) {
 				if (castedReader->getInactive())
 					library.addPersonToHashTable(castedReader);
 				edited = false;
-				changesMessage = "Changes saved successfully";
+				infMsg = "Changes saved successfully";
 			}
 			break;
-		case '8':
+		case '9':
 			if (edited)
 				*reader = backup;
 			edited = false;
@@ -1698,7 +1750,7 @@ Request Interface::editRequest(const Request &r) {
 			}
 			break;
 		case '3':
-			infMsg = " Press + or - to change the date";
+			infMsg = " Press [+] or [-] to change the date [ESC to cancel]";
 			if (!editingDate) {
 				// start editing with editR date
 				editedDate = editR.getDate();
@@ -1728,7 +1780,7 @@ Request Interface::editRequest(const Request &r) {
 					editingDate = false;
 					// display messages
 					infMsg.clear();
-					errMsg = "The date was restored";
+					errMsg = "Date editing was cancelled";
 					break;
 				default:
 					break;
@@ -1792,14 +1844,8 @@ int Interface::editDate(Date &d) {
 		d.removeOneDay();
 		return 0;
 		break;
-	case '5':
-		return RETURN_KEY;
-		break;
 	case RETURN_KEY:
 		return RETURN_KEY;
-		break;
-	case '4':
-		return ESCAPE_KEY;
 		break;
 	case ESCAPE_KEY:
 		return ESCAPE_KEY;
