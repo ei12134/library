@@ -5,9 +5,10 @@ unsigned long int Book::bookID = 0;
 
 Book::Book(vector<string> authors, bool borrowed, string quota,
 		unsigned int pageNumber, string ISBN, string title,
-		unsigned int editionYear) :
+		unsigned int editionYear, bool deleted) :
 		authors(authors), borrowed(borrowed), quota(quota), pageNumber(
-				pageNumber), ISBN(ISBN), title(title), editionYear(editionYear) {
+				pageNumber), ISBN(ISBN), title(title), editionYear(editionYear), deleted(
+				deleted) {
 	ID = ++bookID;
 }
 
@@ -15,8 +16,8 @@ Book::Book(stringstream& s) {
 	stringstream ss;
 	string book;
 	string newAuthors, newBorrowed, newQuota, newPageNumber, newISBN, newTitle,
-			newAuthor, newEditionYearStr, newIdStr;
-	bool borrowed;
+			newAuthor, newEditionYearStr, newDeletedStr, newIdStr;
+	bool borrowed, deleted;
 	unsigned int pageNumber, newId, editionYear;
 
 	if (!getline(s, newAuthors, ';'))
@@ -30,7 +31,6 @@ Book::Book(stringstream& s) {
 
 	if (!getline(s, newBorrowed, ';'))
 		throw Exception<string>("Error reading borrowed", "Book");
-
 	ss << newBorrowed;
 	ss >> borrowed;
 	ss.clear();
@@ -62,6 +62,13 @@ Book::Book(stringstream& s) {
 	this->editionYear = editionYear;
 	ss.clear();
 
+	if (!getline(s, newDeletedStr, ';'))
+		throw Exception<string>("Error reading deleted", "Book");
+	ss << newDeletedStr;
+	ss >> deleted;
+	ss.clear();
+	this->deleted = deleted;
+
 	if (!getline(s, newIdStr))
 		throw Exception<string>("Error reading title", "Book");
 	ss << newIdStr;
@@ -79,6 +86,7 @@ Book::Book() {
 	this->pageNumber = 0;
 	this->editionYear = 0;
 	this->ID = 0;
+	this->deleted = false;
 	addAuthor("");
 }
 
@@ -106,7 +114,11 @@ string Book::print() const {
 	for (int i = 24 - authorsSs.str().size(); i > 0; i -= 8)
 		ss << "\t";
 
-	ss << editionYear << "\t" << (borrowed == 1 ? "Borrowed" : "Available");
+	ss << editionYear << "\t";
+	if (deleted)
+		ss << "Deleted";
+	else
+		ss << (borrowed == 1 ? "Borrowed" : "Available");
 	return ss.str();
 }
 
@@ -171,6 +183,10 @@ unsigned int Book::getEditionYear() const {
 	return editionYear;
 }
 
+bool Book::getDeleted() const {
+	return deleted;
+}
+
 void Book::setISBN(string ISBN) {
 	this->ISBN = ISBN;
 }
@@ -184,6 +200,10 @@ void Book::setTitle(string title) {
 
 void Book::setEditionYear(unsigned int editionYear) {
 	this->editionYear = editionYear;
+}
+
+void Book::setDeleted(bool deleted) {
+	this->deleted = deleted;
 }
 
 bool Book::operator<(const Book& b2) const {

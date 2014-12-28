@@ -809,7 +809,7 @@ void Interface::createBook() {
 		ss >> newEditionYear;
 		vector<Book*> books = library.getBooks();
 		Book *b = new Book(authors, false, newQuota, newPageNumber, newISBN,
-				newTitle, newEditionYear);
+				newTitle, newEditionYear, false);
 		library.addBook(b);
 		library.addTreeBook(b);
 		library.saveBooks();

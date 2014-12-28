@@ -125,7 +125,12 @@ void Library::updateInactiveReaders() {
 }
 
 vector<Book*> Library::getBooks() const {
-	return books;
+	vector<Book*> availableBooks;
+	for (size_t i = 0; i < books.size(); i++)
+		if (!books[i]->getDeleted())
+			availableBooks.push_back(books[i]);
+
+	return availableBooks;
 }
 
 set<Book*, bool (*)(const Book*, const Book*)> Library::getBooksTree() const {
@@ -342,7 +347,7 @@ bool Library::removeBook(Book* book) {
 					booksTree.find(book);
 			if (it != booksTree.end())
 				booksTree.erase(it);
-			books.erase(books.begin() + i);
+			books[i]->setDeleted(true);
 			return true;
 		}
 	return false;
@@ -508,7 +513,8 @@ void Library::loadBooks() {
 				ss << line;
 				Book* bk = new Book(ss);
 				books.push_back(bk);
-				booksTree.insert(bk);
+				if (!bk->getDeleted())
+					booksTree.insert(bk);
 			} catch (Exception<string> &e) {
 			}
 		}
@@ -806,7 +812,8 @@ void Library::saveBooks() {
 		pFile << ";" << books[i]->getBorrowed() << ";" << books[i]->getQuota()
 				<< ";" << books[i]->getPageNumber() << ";"
 				<< books[i]->getISBN() << ";" << books[i]->getTitle() << ";"
-				<< books[i]->getEditionYear() << ";" << books[i]->getID();
+				<< books[i]->getEditionYear() << ";" << books[i]->getDeleted()
+				<< ";" << books[i]->getID();
 		if (i < (-1 + books.size()))
 			pFile << endl;
 	}

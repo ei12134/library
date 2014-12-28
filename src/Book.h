@@ -23,11 +23,12 @@ private:
 	string ISBN;
 	string title;
 	unsigned int editionYear;
+	bool deleted;
 public:
 	static unsigned long int bookID;
 	Book(vector<string> authors, bool borrowed, string quota,
 			unsigned int pageNumber, string ISBN, string title,
-			unsigned int editionYear);
+			unsigned int editionYear, bool deleted);
 	virtual ~Book();
 	Book(stringstream& s);
 	Book();
@@ -41,6 +42,7 @@ public:
 	bool getBorrowed() const;
 	unsigned long int getID() const;
 	unsigned int getEditionYear() const;
+	bool getDeleted() const;
 	void addAuthor(string author);
 	void setAuthors(vector<string> authors);
 	void setBorrowed(bool borrowed);
@@ -49,6 +51,7 @@ public:
 	void setISBN(string ISBN);
 	void setTitle(string title);
 	void setEditionYear(unsigned int editionYear);
+	void setDeleted(bool deleted);
 	bool operator<(const Book& b2) const;
 };
 
