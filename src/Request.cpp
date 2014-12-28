@@ -22,6 +22,13 @@ Date Request::getDate() const {
 	return request;
 }
 
+bool Request::setDate(Date d){
+	if (d.getDay() == 1 && d.getMonth() == 1 && d.getYear() == 2000)
+		return false;
+	this->request = request;
+	return true;
+}
+
 bool Request::changeReader(Person* reader) {
 	if (reader != NULL) {
 		this->reader = reader;

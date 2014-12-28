@@ -1246,8 +1246,8 @@ void Interface::editReader(Person* reader) {
 		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
 		cout << castedReader->getEmail().substr(0, 20) << endl;
 		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
-		cout << (castedReader->getInactive() ? "inactive" : "active") << endl;
-		colorMsg(THREE_TABS, "Last Activity: ", FGWHITE_BGBLACK, 0);
+		cout << (castedReader->getInactive() ? "inactive" : "active") << endl << endl;
+		colorMsg(THREE_TABS, "Last activity: ", FGWHITE_BGBLACK, 0);
 		cout << castedReader->getLastActivity().print() << endl << endl;
 
 		for (size_t i = 5; i < cmdsSize - 1; i++) {
@@ -1661,18 +1661,18 @@ Request Interface::editRequest(const Request &r) {
 			else
 				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 1);
 		}
-		cout << endl << endl;
+		cout << endl;
 		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1],
-		FGGREEN_BGBLACK, 1);
+		FGGREEN_BGBLACK, 2);
 
 		if (errMsg.size() > 0) {
 			errorMsg(errMsg);
-			cout << endl << endl;
+			cout << endl;
 			errMsg.clear();
 		}
 		if (infMsg.size() > 0) {
 			infoMsg(infMsg);
-			cout << endl << endl;
+			cout << endl;
 			infMsg.clear();
 		}
 
