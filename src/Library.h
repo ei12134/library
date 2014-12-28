@@ -80,6 +80,8 @@ public:
 	///@return borrows from a given reader
 	vector<Borrow*> getReaderBorrows(Person* p) const;
 
+	vector<Book*> getBorroedBooks() const;
+
 	///@return borrows
 	vector<Borrow*> getBorrows() const;
 
@@ -252,7 +254,7 @@ public:
 
 	bool removePersonFromHashTable(Person* person);
 
-	bool removeRequest(Request request);
+	bool removeRequest(const Request &request);
 
 	bool addPersonToHashTable(Person* person);
 

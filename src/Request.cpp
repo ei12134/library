@@ -22,6 +22,22 @@ Date Request::getDate() const {
 	return request;
 }
 
+bool Request::changeReader(Person* reader) {
+	if (reader != NULL) {
+		this->reader = reader;
+		return true;
+	}
+	return false;
+}
+
+bool Request::changeBook(Book* book) {
+	if (book != NULL) {
+		this->book = book;
+		return true;
+	}
+	return false;
+}
+
 void Request::saveData(ofstream &of) {
 	of << book->getID() << ";" << reader->getCard() << ";" << request.getDay()
 			<< "," << request.getMonth() << "," << request.getYear();

@@ -23,12 +23,7 @@ using namespace std;
 static const char hSeparator = 196;
 static const char progressBar = 254;
 
-#else // Other OS's
-#include <termios.h>    //termios, TCSANOW, ECHO, ICANON
-#include <unistd.h>     //STDIN_FILENO
-#define PROMPT_SYMBOL "$ "
-#define CLEARSCREEN "clear"
-#define BACKSPACE_KEY 127
+#else // Other OS's#include <termios.h>    //termios, TCSANOW, ECHO, ICANON#include <unistd.h>     //STDIN_FILENO#define PROMPT_SYMBOL "$ "#define CLEARSCREEN "clear"#define BACKSPACE_KEY 127
 #define RETURN_KEY 10
 static const string hSeparator = "\u2501";
 static const string progressBar = "\u25A0";
@@ -100,6 +95,7 @@ public:
 	void editReader(Person* reader);
 	void editEmployee(Employee* employee);
 	void editBorrow(Person* reader);
+	Request editRequest(const Request &r);
 	vector<string> editAuthors();
 
 	Person* searchPerson(vector<Person*> persons);

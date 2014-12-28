@@ -21,6 +21,10 @@ public:
 	Book* getBook() const;
 	Date getDate() const;
 	string print() const;
+
+	bool changeReader(Person* reader);
+	bool changeBook(Book* book);
+
 	bool operator==(const Request& r2) const;
 	bool operator<(const Request& r2) const;
 

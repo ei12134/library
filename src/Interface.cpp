@@ -741,12 +741,22 @@ void Interface::manageRequests(Person* employee) {
 		input = getKey();
 		switch (input) {
 		case '1':
+			createBorrow(employee);
 			break;
 		case '2':
 			displayContainer(library.getPriorityQueuePrint(), "Requests queue",
 					"\tName\t\tAge\tTitle\t\t\t\tDate", "");
 			break;
 		case '3':
+			r = searchRequest(library.getRequests());
+			if (r.getBook() != NULL && r.getReader() != NULL) {
+				if (library.removeRequest(r)) {
+					Request newR = editRequest(r);
+					library.addRequest(newR);
+				}
+			} else {
+				errMsg = "No request was selected";
+			}
 			break;
 		case '4':
 			r = searchRequest(library.getRequests());
@@ -1600,6 +1610,98 @@ void Interface::editBorrow(Person* reader) {
 	} while (!exit);
 }
 
+Request Interface::editRequest(const Request &r) {
+	char input;
+	bool exit = false;
+	bool edited = false;
+	string errMsg, infMsg;
+	const size_t cmdsSize = 6;
+	string cmds[cmdsSize] = { "[1] Reader: ", "[2] Book: ", "[3] Date: ",
+			"Discard changes", "Save changes", "Exit" };
+
+	Request editR = r;
+	Request newR = r;
+
+	do {
+		stringstream ss;
+		string header = "Edit Request";
+		clearScreen();
+		displayHeader(header);
+
+		colorMsg(THREE_TABS, cmds[0], FGWHITE_BGBLACK, 0);
+		cout << editR.getReader()->getName().substr(0, 20) << endl;
+		colorMsg(THREE_TABS, cmds[1], FGWHITE_BGBLACK, 0);
+		cout << editR.getBook()->getTitle().substr(0, 20) << endl;
+		colorMsg(THREE_TABS, cmds[2], FGWHITE_BGBLACK, 0);
+		cout << editR.getDate().print() << endl << endl;
+
+		for (size_t i = 3; i < cmdsSize - 1; i++) {
+			if (!edited)
+				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGRAY_BGBLACK, 1);
+			else
+				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 1);
+		}
+		cout << endl << endl;
+		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1],
+		FGGREEN_BGBLACK, 1);
+
+		if (errMsg.size() > 0) {
+			errorMsg(errMsg);
+			cout << endl << endl;
+			errMsg.clear();
+		}
+		if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
+		}
+
+		cout << endl << THREE_TABS << PROMPT_SYMBOL;
+		input = getKey();
+		switch (input) {
+		case '1':
+			if (editR.changeReader(searchPerson(library.getReaders())))
+				edited = true;
+			else
+				errMsg = "Error editing the reader field";
+			break;
+		case '2':
+			if (editR.changeBook(searchBook((library.getBorroedBooks())))) {
+				edited = true;
+			} else {
+				errMsg = "Error editing the book field";
+			}
+			break;
+		case '3':
+			errMsg = "The date can't be changed";
+			break;
+		case '4':
+			if (edited) {
+				edited = false;
+				editR = newR; // changes to default again
+				infMsg = "Changes discarded";
+			}
+			break;
+		case '5':
+			if (edited) {
+				newR = editR;
+				edited = false;
+				infMsg = "Changes saved successfully";
+			}
+			break;
+		case '6':
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+	return newR;
+}
+
 vector<string> Interface::editAuthors() {
 	vector<string> authors;
 	string newAuthor, authorsDialog = "\t\t\tAdd another author?";
@@ -1948,25 +2050,25 @@ void Interface::clearScreen() {
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	DWORD count;
 	DWORD cellCount;
-	COORD homeCoords = {0, 0};
+	COORD homeCoords = { 0, 0 };
 
 	if ((HANDLE) hConsoleOutput == INVALID_HANDLE_VALUE)
-	return;
+		return;
 
 	/* Get the number of cells in the current buffer */
 	if (!GetConsoleScreenBufferInfo(hConsoleOutput, &csbi))
-	return;
+		return;
 	cellCount = csbi.dwSize.X * csbi.dwSize.Y;
 
 	/* Fill the entire buffer with spaces */
 	if (!FillConsoleOutputCharacter(hConsoleOutput, (TCHAR) ' ', cellCount,
-					homeCoords, &count))
-	return;
+			homeCoords, &count))
+		return;
 
 	/* Fill the entire buffer with the current colors and attributes */
 	if (!FillConsoleOutputAttribute(hConsoleOutput, csbi.wAttributes, cellCount,
-					homeCoords, &count))
-	return;
+			homeCoords, &count))
+		return;
 
 	/* Move the cursor home */
 	SetConsoleCursorPosition(hConsoleOutput, homeCoords);
@@ -2017,7 +2119,7 @@ string Interface::repeatStr(const T& s, const size_t n) {
 #else
 	string r = s;
 	for (size_t i = 0; i < n; i++)
-		r += s;
+	r += s;
 	return r;
 #endif
 }
@@ -2153,7 +2255,7 @@ char Interface::getKey() {
 
 // no need to read the return character nor mouse events
 	DWORD mode = !ENABLE_ECHO_INPUT | !ENABLE_LINE_INPUT
-	| !ENABLE_PROCESSED_INPUT | !ENABLE_MOUSE_INPUT;
+			| !ENABLE_PROCESSED_INPUT | !ENABLE_MOUSE_INPUT;
 
 	SetConsoleMode(hConsoleInput, mode);
 
@@ -2163,21 +2265,21 @@ char Interface::getKey() {
 
 	do {
 		ReadConsoleInput(hConsoleInput, &lpBuffer, 1, &lpNumberOfEventsRead);
-	}while (!lpBuffer.Event.KeyEvent.bKeyDown);
+	} while (!lpBuffer.Event.KeyEvent.bKeyDown);
 
 	specialKey = lpBuffer.Event.KeyEvent.wVirtualScanCode;
 	char key = 0;
 
 	if (specialKey == 72)
-	key = ARROW_UP;
+		key = ARROW_UP;
 	else if (specialKey == 80)
-	key = ARROW_DOWN;
+		key = ARROW_DOWN;
 	else if (specialKey == 83)
-	key = DELETE_KEY;
+		key = DELETE_KEY;
 	else if (specialKey == 1)
-	key = ESCAPE_KEY;
+		key = ESCAPE_KEY;
 	else
-	key = lpBuffer.Event.KeyEvent.uChar.AsciiChar;
+		key = lpBuffer.Event.KeyEvent.uChar.AsciiChar;
 
 //FlushConsoleInputBuffer(hConsoleInput); // getline & special keys
 // Restore input mode on exit.
@@ -2208,21 +2310,21 @@ char Interface::getKey() {
 	/*This is your part:
 	 I choose 'e' to end input. Notice that EOF is also turned off
 	 in the non-canonical mode*/
-	char keys[32] = { 0 };
+	char keys[32] = {0};
 	fflush(stdout);
 	read(STDIN_FILENO, keys, 4096);
 
 	if (keys[0] == 27 && keys[1] == 91) {
 		if (keys[2] == 51 && keys[3] == 126)
-			keys[0] = DELETE_KEY;
+		keys[0] = DELETE_KEY;
 		else if (keys[2] == 65)
-			keys[0] = ARROW_UP;
+		keys[0] = ARROW_UP;
 		else if (keys[2] == 66)
-			keys[0] = ARROW_DOWN;
+		keys[0] = ARROW_DOWN;
 		else
-			keys[0] = 0;
-	} else if (keys[0] == 27 && keys[2] != 0)
 		keys[0] = 0;
+	} else if (keys[0] == 27 && keys[2] != 0)
+	keys[0] = 0;
 
 	/*restore the old settings*/
 	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
@@ -2233,85 +2335,85 @@ char Interface::getKey() {
 void Interface::setColor(int color) {
 #if defined(_WIN32) || defined(_WIN64)
 	switch (color) {
-		case FGGRAY_BGBLACK:
+	case FGGRAY_BGBLACK:
 		SetConsoleTextAttribute(hConsoleOutput,
-				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+		FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 		break;
-		case FGWHITE_BGBLACK:
-		SetConsoleTextAttribute(hConsoleOutput,
-				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
-				| FOREGROUND_INTENSITY);
-		break;
-		case FGRED_BGBLACK:
-		SetConsoleTextAttribute(hConsoleOutput,
-				FOREGROUND_RED | FOREGROUND_INTENSITY);
-		break;
-		case FGGREEN_BGBLACK:
-		SetConsoleTextAttribute(hConsoleOutput,
-				FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-		break;
-		case FGBLUE_BGBLACK:
-		SetConsoleTextAttribute(hConsoleOutput,
-				FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		break;
-		case FGGRAY_BGRED:
-		SetConsoleTextAttribute(hConsoleOutput,
-				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | BACKGROUND_RED);
-		break;
-		case FGWHITE_BGRED:
+	case FGWHITE_BGBLACK:
 		SetConsoleTextAttribute(hConsoleOutput,
 				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
-				| FOREGROUND_INTENSITY | BACKGROUND_RED);
+						| FOREGROUND_INTENSITY);
 		break;
-		case FGBLACK_BGWHITE:
+	case FGRED_BGBLACK:
+		SetConsoleTextAttribute(hConsoleOutput,
+		FOREGROUND_RED | FOREGROUND_INTENSITY);
+		break;
+	case FGGREEN_BGBLACK:
+		SetConsoleTextAttribute(hConsoleOutput,
+		FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		break;
+	case FGBLUE_BGBLACK:
+		SetConsoleTextAttribute(hConsoleOutput,
+		FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+		break;
+	case FGGRAY_BGRED:
+		SetConsoleTextAttribute(hConsoleOutput,
+		FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | BACKGROUND_RED);
+		break;
+	case FGWHITE_BGRED:
+		SetConsoleTextAttribute(hConsoleOutput,
+				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+						| FOREGROUND_INTENSITY | BACKGROUND_RED);
+		break;
+	case FGBLACK_BGWHITE:
 		SetConsoleTextAttribute(hConsoleOutput,
 				BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE
-				| BACKGROUND_INTENSITY);
+						| BACKGROUND_INTENSITY);
 		break;
-		case FGBLACK_BGGRAY:
+	case FGBLACK_BGGRAY:
 		SetConsoleTextAttribute(hConsoleOutput,
-				BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
+		BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
 		break;
-		case FGBLACK_BGGREEN:
+	case FGBLACK_BGGREEN:
 		SetConsoleTextAttribute(hConsoleOutput,
-				BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+		BACKGROUND_GREEN | BACKGROUND_INTENSITY);
 		break;
-		default:
+	default:
 		break;
 	}
 #else
 	switch (color) {
-	case FGGRAY_BGBLACK:
+		case FGGRAY_BGBLACK:
 		cout << "\033[40;37m";
 		break;
-	case FGWHITE_BGBLACK:
+		case FGWHITE_BGBLACK:
 		cout << "\033[40;37m";
 		break;
-	case FGRED_BGBLACK:
+		case FGRED_BGBLACK:
 		cout << "\033[40;31m";
 		break;
-	case FGGREEN_BGBLACK:
+		case FGGREEN_BGBLACK:
 		cout << "\033[40;32m";
 		break;
-	case FGBLUE_BGBLACK:
+		case FGBLUE_BGBLACK:
 		cout << "\033[40;34m";
 		break;
-	case FGGRAY_BGRED:
+		case FGGRAY_BGRED:
 		cout << "\033[41;37m";
 		break;
-	case FGWHITE_BGRED:
+		case FGWHITE_BGRED:
 		cout << "\033[41;37m";
 		break;
-	case FGBLACK_BGWHITE:
+		case FGBLACK_BGWHITE:
 		cout << "\033[47;30m";
 		break;
-	case FGBLACK_BGGRAY:
+		case FGBLACK_BGGRAY:
 		cout << "\033[47;30m";
 		break;
-	case FGBLACK_BGGREEN:
+		case FGBLACK_BGGREEN:
 		cout << "\033[42;30m";
 		break;
-	default:
+		default:
 		break;
 	}
 
@@ -2321,7 +2423,7 @@ void Interface::setColor(int color) {
 void Interface::resetColor() {
 #if defined(_WIN32) || defined(_WIN64)
 	SetConsoleTextAttribute(hConsoleOutput,
-			FOREGROUND_GREEN | FOREGROUND_INTENSITY | 0 | 0 | 0);
+	FOREGROUND_GREEN | FOREGROUND_INTENSITY | 0 | 0 | 0);
 #else
 	cout << "\033[0;40;32m";
 #endif
@@ -2384,3 +2486,4 @@ bool Interface::seekNIF(const string &s) {
 
 	return false;
 }
+

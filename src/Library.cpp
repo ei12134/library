@@ -140,7 +140,7 @@ set<Book*, bool (*)(const Book*, const Book*)> Library::getBooksTree() const {
 vector<Book*> Library::getAvailableBooks() const {
 	vector<Book*> available;
 	for (size_t i = 0; i < books.size(); i++)
-		if (!books[i]->getBorrowed())
+		if (!books[i]->getBorrowed() && !books[i]->getDeleted())
 			available.push_back(books[i]);
 
 	return available;
@@ -156,6 +156,15 @@ vector<Borrow*> Library::getReaderBorrows(Person* p) const {
 			b.push_back(borrows[x]);
 	}
 	return b;
+}
+
+vector<Book*> Library::getBorroedBooks() const {
+	vector<Book*> available;
+	for (size_t i = 0; i < books.size(); i++)
+		if (books[i]->getBorrowed() && !books[i]->getDeleted())
+			available.push_back(books[i]);
+
+	return available;
 }
 
 vector<Borrow*> Library::getBorrows() const {
@@ -405,7 +414,7 @@ bool Library::removeEmployeeFromSupervisors(Employee* employee) {
 	return true;
 }
 
-bool Library::removeRequest(Request request) {
+bool Library::removeRequest(const Request &request) {
 	stack<Request> temp;
 	bool success = false;
 	while (!requestsQueue.empty()) {
