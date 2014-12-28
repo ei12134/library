@@ -115,6 +115,7 @@ string Book::print() const {
 		ss << "\t";
 
 	ss << editionYear << "\t";
+
 	if (deleted)
 		ss << "Deleted";
 	else

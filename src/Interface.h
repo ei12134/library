@@ -89,7 +89,7 @@ public:
 	void createBook();
 	void createReader();
 	void createEmployee();
-	void createBorrow(Person* employee);
+	void createBorrow(Person* employee, bool request);
 
 	void editBook(Book* book);
 	void editReader(Person* reader);

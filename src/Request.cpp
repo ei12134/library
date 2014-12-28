@@ -47,6 +47,7 @@ bool Request::operator==(const Request& r2) const {
 	return ((this->reader == r2.reader) && (this->book == r2.book)
 			&& (request == r2.request));
 }
+
 bool Request::operator<(const Request& r2) const {
 	if (request < r2.request)
 		return false;
@@ -60,7 +61,7 @@ bool Request::operator<(const Request& r2) const {
 		return false;
 	else if (reader->getAge() > 23 && r2.reader->getAge() <= 23)
 		return true;
-	return true;
+	return reader->getAge() > r2.reader->getAge();
 }
 
 string Request::print() const {
@@ -79,9 +80,9 @@ string Request::print() const {
 
 	ss << readerAge << "\t";
 
-	ss << (bookTitle.size() > 30 ? bookTitle.substr(0, 30) : bookTitle);
-	ss << (bookTitle.size() >= 30 ? "\t" : "");
-	for (int i = 30 - bookTitle.size(); i > 0; i -= 8)
+	ss << (bookTitle.size() > 32 ? bookTitle.substr(0, 32) : bookTitle);
+	ss << (bookTitle.size() >= 32 ? "\t" : "");
+	for (int i = 32 - bookTitle.size(); i > 0; i -= 8)
 		ss << "\t";
 
 	ss << requestDate;

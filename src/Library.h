@@ -77,10 +77,11 @@ public:
 	///@return available books
 	vector<Book*> getAvailableBooks() const;
 
+	///@return borrowed books
+	vector<Book*> getBorrowedBooks() const;
+
 	///@return borrows from a given reader
 	vector<Borrow*> getReaderBorrows(Person* p) const;
-
-	vector<Book*> getBorroedBooks() const;
 
 	///@return borrows
 	vector<Borrow*> getBorrows() const;

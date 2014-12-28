@@ -95,6 +95,10 @@ unsigned int Reader::getWage() const {
 	return 0;
 }
 
+Date Reader::getLastActivity() const{
+	return lastActivity;
+}
+
 bool Reader::setBorrowedBooks(vector<Borrow*> borrowedBooks) {
 	if (MAX_BORROWS > borrowedBooks.size())
 		return false;

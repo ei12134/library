@@ -158,7 +158,7 @@ vector<Borrow*> Library::getReaderBorrows(Person* p) const {
 	return b;
 }
 
-vector<Book*> Library::getBorroedBooks() const {
+vector<Book*> Library::getBorrowedBooks() const {
 	vector<Book*> available;
 	for (size_t i = 0; i < books.size(); i++)
 		if (books[i]->getBorrowed() && !books[i]->getDeleted())

@@ -51,6 +51,7 @@ public:
 	unsigned int getNif() const;
 	unsigned int getWage() const;
 	bool getInactive() const;
+	Date getLastActivity() const;
 	void setInactive(bool inactive);
 	string printType() const;
 	bool setBorrowedBooks(vector<Borrow*> borrowedBooks);
