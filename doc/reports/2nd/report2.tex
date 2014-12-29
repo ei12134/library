@@ -18,34 +18,35 @@
 \newpage
 
 \begin{abstract}
-Foi-nos proposto o desenvolvimento de uma aplicação em C++ para gestão de uma biblioteca que abrangesse livros, leitores, funcionários e supervisores. A biblioteca teria necessariamente que permitir, de forma controlada, o empréstimo de livros a leitores e gestão de ambos pelos funcionários. Os empréstimos, quando possíveis, teriam um período máximo de duração de 7 dias para cada livro, podendo o leitor incorrer numa multa caso não o devolvesse dentro deste prazo. Os supervisores estariam individualmente a cargo de uma equipa composta por funcionários.
+Foi proposta a extensão das funcionalidades de uma aplicação em \texttt{C++} para gestão de uma biblioteca que evidenciasse o conhecimento e um uso correcto de novas estruturas de dados: árvores binárias de pesquisa, filas de prioridade e tabelas de dispersão. Os livros são agora dispostos de forma ordenada pelo ano de edição numa árvore binária de pesquisa, os leitores inactivos são armazenados numa tabela de dispersão e os pedidos de livros já emprestados são registados numa fila de prioridade.
 \end{abstract}
 
 \section{Descrição da solução implementada}
-Após um período de interpretação do guião que nos foi fornecido, determinámos, através de esquemas, a relação entre as classes necessárias para implementar o pedido recorrendo a UML. Decidimos que a classe \emph Library teria um papel basilar ao armazenar e manipular as estruturas de dados essenciais à gestão de uma biblioteca, nomeadamente contentores de livros, leitores e funcionários. Estabelecemos uma relação de hierarquia de classes entre pessoas, leitores e funcionários, sendo estes dois últimos subclasses da classe abstrata \emph Person. Considerámos inapropriado a criação de uma subclasse \emph Supervisor em relação à classe \emph Employee, por se tratar de uma solução quase forçada que recorre a uma relação hierárquica entre classes que, afinal, não diferem significativamente. Como um supervisor é sempre à partida um empregado, permitimos a sua promoção, recorrendo a um booleano \emph supervisor, membro dado da classe \emph Employee.
+Para implementar a ordenação pedida dos livros, introduziu-se um novo membro-dado da classe livro \texttt{editionYear} que representa o seu ano de edição e funciona como primeiro parâmetro de decisão no operador menor dessa classe. A árvore binária de pesquisa ordena os livros pelo ano de edição, pelo título, pelos nomes dos autores e pelo \texttt{bookID}, de modo a permitir distinguir entre cópias do mesmo exemplar.
 
-Na conceptualização de empréstimos, foi necessária a classe \emph Borrow que associaria a cada empréstimo um livro, um leitor e um empregado responsável pela operação. Ainda a propósito da criação e gestão correta de um empréstimo, sentimos a necessidade de recorrer a uma classe que nos permitisse representar a data de forma suficientemente flexível para determinar facilmente as diferenças entre duas datas (empréstimo e entrega do livro).
+Para permitir a classificação de leitores como inactivos de forma manual, recorreu-se a uma variável booleana \texttt{inactive}, membro-dado da classe \texttt{Reader} e para verificar de forma automática os leitores inactivos, usou-se outro novo membro-dado, data da última actividade do leitor \texttt{lastActivity}. Recorreu-se ao número de identificação de cada leitor para o indexar na tabela de dispersão, uma vez que cada leitor tem um \texttt{card} com um número único.
+
+Na construção de uma fila de prioridade que armazenasse os pedidos de empréstimo, definiu-se uma nova classe \texttt{Request} que contivesse apontadores para um leitor, para o livro pedido e respectiva data. Ordenou-se a fila de prioridade, implementando o operador menor da classe \texttt{Request}, priorizando os pedidos pela data e depois pelas idades dos leitores: crianças $(idade \leq 12)$, estudantes $(12 < idade \leq 23)$ e, por fim, adultos $(idade > 23)$.
 
 \section{Lista de casos de utilização da aplicação}
-A aplicação permite a criação, edição e remoção de livros, leitores, funcionários e empréstimos. É possível a visualização simplificada e ordenação de livros, leitores e funcionários. Na gestão de empréstimos, a aplicação também admite o cálculo de multa, caso o leitor não devolva o livro dentro do prazo estipulado.
+A aplicação permite a criação, leitura, edição e remoção de livros, leitores, funcionários, empréstimos e pedidos de empréstimo.
+
+Alterações como a remoção ou adição de livros são espelhadas na árvore binária. É possível listar a árvore binária de forma completa ou parcial, pesquisando pelo ano de edição, pelos autores ou pelo título.
+
+É permitida a atribuição manual do estado de inactividade pela data da última actividade e/ou pela configuração do estado de inactividade guardado em \texttt{inactive}. A atribuição automática dos estados de inactividade \texttt{Update inactives} sobrepõe-se às configurações manuais, usando como critério único a última actividade do leitor.
+
+É criado e adicionado um novo pedido à fila de espera, de forma automática, aquando da tentativa de empréstimo de um livro que esteja indisponível. Após a devolução de qualquer livro é feita uma busca na fila pelo primeiro leitor em espera que possa requisitar o livro (desde que não tenha excedido o máximo de empréstimos em simultâneo).
 
 \section{Relato das principais dificuldades encontradas no desenvolvimento do trabalho}
-Mesmo tendo investido algum tempo no planeamento inicial, encontrámos algumas dificuldades na definição de uma representação ideal dos conceitos pedidos e que permitisse de igual forma satisfazer as operações requeridas. Fomos, portanto, de forma iterativa, reformulando as nossas abordagens a cada problema/incompatibilidades que foram surgindo. Tivemos também que transpor vários problemas no uso do software de gestão de repositórios \emph Git, por não termos conhecimentos que nos permitissem fluxos de trabalho paralelos, sem conflitos, aquando da junção do código.
+Encontraram-se algumas dificuldades na nomenclatura e no adicionar de novos métodos e membros-dado às classes anteriormente definidas, pelo aumento da complexidade na leitura e escrita de ficheiros e na gestão da estabilidade das funcionalidades já existentes.
+
+Foi difícil a implementação do operador menor da classe \texttt{Request} que permitisse uma correcta ordenação na fila de prioridades.
 
 \section{Indicação do esforço dedicado por cada elemento do grupo}
 
 \subsection{Notas em grupo}
-Tentámos desde o início, trabalhando em grupo, fazer o esboço das classes e separação de tarefas de forma equitativa.
-Fomos trabalhando ora por turnos, ora por conferência via \emph Skype.
-
-\subsubsection{José Peixoto}
-Tal como os restantes membros do grupo, participei desde o início na esquematização de uma solução do que nos fora pedido. Depois das tarefas divididas, estive mais envolvido nas classes \emph{Library, Reader, Algorithms e Interface}, colaborando também, sempre que necessário, nas classes a cargo dos meus colegas. Além disso assumi, voluntariamente, a concretização do relatório final, incluindo as autoavaliações redigidas pelos restantes colegas.
-
-\subsubsection{Paulo Faria}
-Colaborei sobretudo nas classes \emph{Interface, Book, Library}, mas tal como os meus colegas, sempre que o era necessário, também dei uma ajuda em outras classes.
-
-\subsubsection{Pedro Moura}
-Estive mais envolvido nas classes \emph{Data, Exception, Borrow, Persons} e na leitura e escrita de ficheiros, colaborando também em outras partes do programa, quando necessário.
+Resolvemos sequencialmente os itens do enunciado.
+Fomos trabalhando ora por turnos ora conferenciando via \emph{Skype} ou \emph{Google Hangouts}.
 
 \newpage
 
