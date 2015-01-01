@@ -6,13 +6,14 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <math.h>
 #include <stdio.h>
 #include <string>
 #include <vector>
 using namespace std;
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined (_WIN64)
 #define BACKSPACE_KEY 8
 #define RETURN_KEY 13
 #define CLEARSCREEN "cls"
@@ -86,9 +87,9 @@ public:
 	void manageEmployees(Person* supervisor);
 	void manageRequests(Person* employee);
 
-	void createBook();
-	void createReader();
-	void createEmployee();
+	bool createBook();
+	bool createReader();
+	bool createEmployee();
 	void createBorrow(Person* employee, bool request);
 
 	void editBook(Book* book);

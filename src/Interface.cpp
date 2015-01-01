@@ -505,7 +505,8 @@ void Interface::manageBooks() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			createBook();
+			if (createBook())
+				errMsg = "Error creating a book";
 			break;
 		case '2':
 			while (displayContainer(library.getSortedPrint(BOOK, sortFunc),
@@ -587,7 +588,8 @@ void Interface::manageReaders() {
 		input = getKey();
 		switch (input) {
 		case '1':
-			createReader();
+			if (createReader())
+				errMsg = "Error creating a reader";
 			break;
 		case '2':
 			while (displayContainer(library.getSortedPrint(READER, sortFunc),
@@ -670,7 +672,8 @@ void Interface::manageEmployees(Person* supervisor) {
 		input = getKey();
 		switch (input) {
 		case '1':
-			createEmployee();
+			if (createEmployee())
+				errMsg = "Error creating an employee";
 			break;
 		case '2':
 			while (displayContainer(
@@ -784,174 +787,344 @@ void Interface::manageRequests(Person* employee) {
 	} while (!exit);
 }
 
-void Interface::createBook() {
+bool Interface::createBook() {
+
+	char input;
+	bool aborted = true;
+	bool exit = false;
+	string infMsg, errMsg;
+	const size_t cmdsSize = 8;
+	string cmds[cmdsSize] = { "[1] Author: ", "[2] Quota: ", "[3] Pages: ",
+			"[4] ISBN: ", "[5] Title: ", "[6] Edition: ", "Create", "Exit" };
+	Book *b = NULL;
 	string header = "Create Book";
 	string newAuthor, newPageNumberStr, newQuota, newISBN, newTitle,
 			newEditionYearStr;
-	stringstream ss;
+	vector<string> authors;
 	unsigned int newPageNumber, newEditionYear;
 
-	clearScreen();
-	displayHeader(header);
+	do {
+		stringstream ss;
+		string header = "Create reader";
 
-	vector<string> authors = editAuthors();
-	while (newQuota.size() == 0) {
-		cout << THREE_TABS << "Quota: ";
-		getline(cin, newQuota, '\n');
-	}
-	while (newPageNumberStr.size() == 0 || !is_All_Number(newPageNumberStr)) {
-		cout << THREE_TABS << "Pages: ";
-		getline(cin, newPageNumberStr, '\n');
-	}
-	while (newISBN.size() == 0 || (newISBN.size() != 13 && newISBN.size() != 10)) {
-		cout << THREE_TABS << "ISBN: ";
-		getline(cin, newISBN, '\n');
-	}
-	while (newTitle.size() == 0) {
-		cout << THREE_TABS << "Title: ";
-		getline(cin, newTitle, '\n');
-	}
-	while (newEditionYearStr.size() == 0 || !is_All_Number(newEditionYearStr)) {
-		cout << THREE_TABS << "Year: ";
-		getline(cin, newEditionYearStr, '\n');
-	}
-	cout << endl << THREE_TABS << "[s] to Save " << PROMPT_SYMBOL;
-	char ch = cin.get();
-	if (ch == 's' || ch == 'S') {
-		ss << newPageNumberStr;
-		ss >> newPageNumber;
-		ss.clear();
-		ss << newEditionYearStr;
-		ss >> newEditionYear;
-		vector<Book*> books = library.getBooks();
-		Book *b = new Book(authors, false, newQuota, newPageNumber, newISBN,
-				newTitle, newEditionYear, false);
-		library.addBook(b);
-		library.addTreeBook(b);
-		library.saveBooks();
-		cout << endl << THREE_TABS << newTitle << " successfully created.";
-	} else
-		cout << endl << THREE_TABS << "Book creation cancelled";
-	getKey();
+		clearScreen();
+		displayHeader(header);
 
+		colorMsg(THREE_TABS, cmds[0], FGWHITE_BGBLACK, 0);
+		cout << (authors.size() > 0 ? authors[0] : "") << endl;
+		colorMsg(THREE_TABS, cmds[1], FGWHITE_BGBLACK, 0);
+		cout << newQuota << endl;
+		colorMsg(THREE_TABS, cmds[2], FGWHITE_BGBLACK, 0);
+		cout << newPageNumberStr << endl;
+		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
+		cout << newISBN << endl;
+		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
+		cout << newTitle << endl;
+		colorMsg(THREE_TABS, cmds[5], FGWHITE_BGBLACK, 0);
+		cout << newEditionYearStr << endl << endl;
+
+		for (size_t i = 6; i < cmdsSize; i++) {
+			cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 2);
+		}
+
+		if (errMsg.size() > 0) {
+			errorMsg(errMsg);
+			cout << endl << endl;
+			errMsg.clear();
+		} else if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
+		}
+		cout << THREE_TABS << PROMPT_SYMBOL;
+
+		input = getKey();
+		switch (input) {
+		case '1':
+			cout << endl << endl;
+			authors = editAuthors();
+			break;
+		case '2':
+			cout << endl << endl << THREE_TABS << "Quota: ";
+			getline(cin, newQuota, '\n');
+			break;
+		case '3':
+			cout << endl << endl << THREE_TABS << "Pages: ";
+			getline(cin, newPageNumberStr, '\n');
+			ss << newPageNumberStr;
+			ss >> newPageNumber;
+			break;
+		case '4':
+			cout << endl << endl << THREE_TABS << "ISBN: ";
+			getline(cin, newISBN, '\n');
+			break;
+		case '5':
+			cout << endl << endl << THREE_TABS << "Title: ";
+			getline(cin, newTitle, '\n');
+			break;
+		case '6':
+			cout << endl << endl << THREE_TABS << "Year: ";
+			getline(cin, newEditionYearStr, '\n');
+			ss << newEditionYearStr;
+			ss >> newEditionYear;
+			break;
+		case '7':
+			if (newQuota.size() == 0)
+				errMsg = "Enter a correct quota";
+			else if (newPageNumberStr.size() == 0
+					|| !is_All_Number(newPageNumberStr))
+				errMsg = "Enter a correct page number";
+			else if (newISBN.size() == 0
+					|| (newISBN.size() != 13 && newISBN.size() != 10))
+				errMsg = "Enter a correct 10 or 13 digit ISBN";
+			else if (newTitle.size() == 0)
+				errMsg = "Enter a correct title";
+			else if (newEditionYearStr.size() == 0
+					|| !is_All_Number(newEditionYearStr))
+				errMsg = "Enter a correct edition year";
+			else {
+				b = new Book(authors, false, newQuota, newPageNumber, newISBN,
+						newTitle, newEditionYear, false);
+				library.addBook(b);
+				library.addTreeBook(b);
+				library.saveBooks();
+
+				infMsg = newTitle + " successfully created";
+				aborted = false;
+			}
+			break;
+		case '9':
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+	return aborted;
 }
 
-void Interface::createReader() {
-	string header = "Create Reader";
+bool Interface::createReader() {
+	char input;
+	bool aborted = true;
+	bool exit = false;
+	string infMsg, errMsg;
+	const size_t cmdsSize = 6;
+	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
+			"[4] Email: ", "Create", "Exit" };
+	Reader *r = NULL;
 	string newName, newAgeStr, newPhoneStr, newEmail;
-	stringstream ss;
 	unsigned int newAge, newPhone;
 
-	clearScreen();
-	displayHeader(header);
+	do {
+		stringstream ss;
+		string header = "Create reader";
+		clearScreen();
+		displayHeader(header);
 
-	while (newName.size() == 0 || !is_All_ASCII_Letter(newName)) {
-		cout << THREE_TABS << "Name: ";
-		getline(cin, newName, '\n');
-	}
-	while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
-			|| newAgeStr.size() > 3) {
-		cout << THREE_TABS << "Age: ";
-		getline(cin, newAgeStr, '\n');
-	}
-	while (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
-			|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
-		cout << THREE_TABS << "Phone: ";
-		getline(cin, newPhoneStr, '\n');
-	}
-	while (newEmail.size() == 0 || newEmail.size() < 7) {
-		cout << THREE_TABS << "Mail: ";
-		getline(cin, newEmail, '\n');
-	}
+		colorMsg(THREE_TABS, cmds[0], FGWHITE_BGBLACK, 0);
+		cout << newName << endl;
+		colorMsg(THREE_TABS, cmds[1], FGWHITE_BGBLACK, 0);
+		cout << newAgeStr << endl;
+		colorMsg(THREE_TABS, cmds[2], FGWHITE_BGBLACK, 0);
+		cout << newPhoneStr << endl;
+		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
+		cout << newEmail.substr(0, 20) << endl << endl;
+		for (size_t i = 4; i < cmdsSize; i++) {
+			cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 2);
+		}
 
-	cout << endl << THREE_TABS << "[s] to Save " << PROMPT_SYMBOL;
-	char ch = cin.get();
-	if (ch == 's' || ch == 'S') {
-		ss << newAgeStr;
-		ss >> newAge;
-		ss.clear();
-		ss << newPhoneStr;
-		ss >> newPhone;
-		ss.clear();
+		if (errMsg.size() > 0) {
+			errorMsg(errMsg);
+			cout << endl << endl;
+			errMsg.clear();
+		} else if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
+		}
+		cout << THREE_TABS << PROMPT_SYMBOL;
 
-		Person *reader = new Reader(newName, newAge, newPhone, newEmail);
-		library.addPerson(reader);
-		library.savePersons();
-		cout << endl << THREE_TABS << newName << " successfully created.";
-	} else
-		cout << endl << THREE_TABS << "Reader creation cancelled";
-	getKey();
+		input = getKey();
+		switch (input) {
+		case '1':
+			cout << endl << endl << THREE_TABS << "Name: ";
+			getline(cin, newName, '\n');
+			break;
+		case '2':
+			cout << endl << endl << THREE_TABS << "Age: ";
+			getline(cin, newAgeStr, '\n');
+			ss << newAgeStr;
+			ss >> newAge;
+			break;
+		case '3':
+			cout << endl << endl << THREE_TABS << "Phone: ";
+			getline(cin, newPhoneStr, '\n');
+			ss << newPhoneStr;
+			ss >> newPhone;
+			break;
+		case '4':
+			cout << endl << endl << THREE_TABS << "Email: ";
+			getline(cin, newEmail, '\n');
+			break;
+		case '5':
+			if (newName.size() == 0 || !is_All_ASCII_Letter(newName))
+				errMsg = "Enter a correct name";
+			else if (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
+					|| newAgeStr.size() > 3)
+				errMsg = "Enter a correct age";
+			else if (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
+					|| newPhoneStr.size() != 9)
+				errMsg = "Enter 9 digit phone number";
+			else if (newEmail.size() == 0 || newEmail.size() < 6)
+				errMsg = "Enter a correct email address";
+			else {
+				r = new Reader(newName, newAge, newPhone, newEmail);
+				library.addPerson(r);
+				library.savePersons();
+				infMsg = newName + " successfully created";
+				aborted = false;
+			}
+			break;
+		case '9':
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+	return aborted;
 }
 
-void Interface::createEmployee() {
-	string header = "Create Employee";
+bool Interface::createEmployee() {
+	char input;
+	bool aborted = true;
+	bool exit = false;
+	string infMsg, errMsg;
+	const size_t cmdsSize = 9;
+	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
+			"[4] Email: ", "[5] Nif: ", "[6] Wage: ", "[7] Hierarchy: ",
+			"Create", "Exit" };
+	Employee *e = NULL;
 	string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr;
-	string supervisorDialog = "\n\t\t\tSupervisor?";
-	stringstream ss;
 	unsigned int newAge, newPhone, newNif, newWage;
-	bool supervisor = false;
+	bool newSupervisor = false;
 
-	clearScreen();
-	displayHeader(header);
+	do {
+		stringstream ss;
+		string header = "Create employee";
+		clearScreen();
+		displayHeader(header);
 
-	while (newName.size() == 0 || !is_All_ASCII_Letter(newName)) {
-		cout << THREE_TABS << "Name: ";
-		getline(cin, newName, '\n');
-	}
-	while (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
-			|| newAgeStr.size() > 3) {
-		cout << THREE_TABS << "Age: ";
-		getline(cin, newAgeStr, '\n');
-	}
-	while (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
-			|| newPhoneStr.size() < 6 || newPhoneStr.size() > 12) {
-		cout << THREE_TABS << "Phone: ";
-		getline(cin, newPhoneStr, '\n');
-	}
-	while (newEmail.size() == 0 || newEmail.size() < 7) {
-		cout << THREE_TABS << "Mail: ";
-		getline(cin, newEmail, '\n');
-	}
-	while (newNifStr.size() == 0 || !is_All_Number(newNifStr)
-			|| newNifStr.size() != 9 || seekNIF(newNifStr)) {
-		cout << THREE_TABS << "NIF: ";
-		getline(cin, newNifStr, '\n');
-	}
-	while (newWageStr.size() == 0 || !is_All_Number(newWageStr)) {
-		cout << THREE_TABS << "Wage: ";
-		getline(cin, newWageStr, '\n');
-	}
+		colorMsg(THREE_TABS, cmds[0], FGWHITE_BGBLACK, 0);
+		cout << newName << endl;
+		colorMsg(THREE_TABS, cmds[1], FGWHITE_BGBLACK, 0);
+		cout << newAgeStr << endl;
+		colorMsg(THREE_TABS, cmds[2], FGWHITE_BGBLACK, 0);
+		cout << newPhoneStr << endl;
+		colorMsg(THREE_TABS, cmds[3], FGWHITE_BGBLACK, 0);
+		cout << newEmail.substr(0, 20) << endl;
+		colorMsg(THREE_TABS, cmds[4], FGWHITE_BGBLACK, 0);
+		cout << newNifStr << endl;
+		colorMsg(THREE_TABS, cmds[5], FGWHITE_BGBLACK, 0);
+		cout << newWageStr << endl;
+		colorMsg(THREE_TABS, cmds[6], FGWHITE_BGBLACK, 0);
+		cout << "[" << (newSupervisor ? "Supervisor" : "Employee") << "]"
+				<< endl << endl;
+		for (size_t i = 7; i < cmdsSize; i++) {
+			cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 2);
+		}
 
-	if (library.getPersons().size() == 0)
-		supervisor = true;
-	else if (confirmOperation(supervisorDialog))
-		supervisor = true;
+		if (errMsg.size() > 0) {
+			errorMsg(errMsg);
+			cout << endl << endl;
+			errMsg.clear();
+		} else if (infMsg.size() > 0) {
+			infoMsg(infMsg);
+			cout << endl << endl;
+			infMsg.clear();
+		}
+		cout << THREE_TABS << PROMPT_SYMBOL;
 
-	cout << endl << THREE_TABS << "[s] to Save " << PROMPT_SYMBOL;
-	char ch = cin.get();
-	if (ch == 's' || ch == 'S') {
-		ss << newAgeStr;
-		ss >> newAge;
-		ss.clear();
-		ss << newPhoneStr;
-		ss >> newPhone;
-		ss.clear();
-		ss << newNifStr;
-		ss >> newNif;
-		ss.clear();
-		ss << newWageStr;
-		ss >> newWage;
-		ss.clear();
+		input = getKey();
+		switch (input) {
 
-		vector<Person*> empl = library.getEmployees(true);
-		Employee *s0 = new Employee(newName, newAge, newPhone, newEmail, newNif,
-				newWage, supervisor);
-		library.addPerson(s0);
-		library.savePersons();
-		cout << endl << THREE_TABS << newName << " successfully created.";
-	} else
-		cout << endl << THREE_TABS << "Employee creation cancelled";
-	getKey();
+		case '1':
+			cout << endl << endl << THREE_TABS << "Name: ";
+			getline(cin, newName, '\n');
+			break;
+		case '2':
+			cout << endl << endl << THREE_TABS << "Age: ";
+			getline(cin, newAgeStr, '\n');
+			ss << newAgeStr;
+			ss >> newAge;
+			break;
+		case '3':
+			cout << endl << endl << THREE_TABS << "Phone: ";
+			getline(cin, newPhoneStr, '\n');
+			ss << newPhoneStr;
+			ss >> newPhone;
+			break;
+		case '4':
+			cout << endl << endl << THREE_TABS << "Email: ";
+			getline(cin, newEmail, '\n');
+			break;
+		case '5':
+			cout << endl << endl << THREE_TABS << "NIF: ";
+			getline(cin, newNifStr, '\n');
+			ss << newNifStr;
+			ss >> newNif;
+			break;
+		case '6':
+			cout << endl << endl << THREE_TABS << "Wage: ";
+			getline(cin, newWageStr, '\n');
+			ss << newWageStr;
+			ss >> newWage;
+			break;
+		case '7':
+			newSupervisor = !newSupervisor;
+			break;
+		case '8':
+			if (newName.size() == 0 || !is_All_ASCII_Letter(newName))
+				errMsg = "Enter a correct name";
+			else if (newAgeStr.size() == 0 || !is_All_Number(newAgeStr)
+					|| newAgeStr.size() > 3)
+				errMsg = "Enter a correct age";
+			else if (newPhoneStr.size() == 0 || !is_All_Number(newPhoneStr)
+					|| newPhoneStr.size() != 9)
+				errMsg = "Enter 9 digit phone number";
+			else if (newEmail.size() == 0 || newEmail.size() < 6)
+				errMsg = "Enter a correct email address";
+			else if (newNifStr.size() == 0 || !is_All_Number(newNifStr)
+					|| newNifStr.size() != 9 || seekNIF(newNifStr))
+				errMsg = "Enter 9 digit nif";
+			else if (newWageStr.size() == 0 || !is_All_Number(newWageStr))
+				errMsg = "Enter a numeric wage";
+			else {
+				e = new Employee(newName, newAge, newPhone, newEmail, newNif,
+						newWage, newSupervisor);
+				library.addPerson(e);
+				library.savePersons();
+				infMsg = newName + " successfully created";
+				aborted = false;
+			}
+			break;
+		case '9':
+			exit = true;
+			break;
+		case ESCAPE_KEY:
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	} while (!exit);
+	return aborted;
 }
 
 void Interface::createBorrow(Person* employee, bool request) {
@@ -1060,7 +1233,6 @@ void Interface::createBorrow(Person* employee, bool request) {
 			exit = true;
 			break;
 		case ESCAPE_KEY:
-
 			exit = true;
 			break;
 		default:
@@ -1127,7 +1299,6 @@ void Interface::editBook(Book* book) {
 			book->setAuthors(editAuthors());
 			edited = true;
 			break;
-
 		case '2':
 			cout << endl << endl;
 			while (newQuota.size() == 0) {
@@ -2342,17 +2513,17 @@ int Interface::displayContainer(vector<string> vec, string listName,
 
 void Interface::setConsole() {
 #if defined(_WIN32) || defined (_WIN64)
-	// get handles
+// get handles
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	hConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
 
-	// backup current console configuration
+// backup current console configuration
 	GetConsoleMode(hConsoleOutput, &fdwOldMode);
 	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 	GetConsoleScreenBufferInfo(hConsoleOutput, &csbiInfo);
 	wOldColorAttrs = csbiInfo.wAttributes;
 
-	// set window title & size
+// set window title & size
 	_COORD coord;
 	coord.X = WIDTH;
 	coord.Y = HEIGHT;
@@ -2374,7 +2545,7 @@ void Interface::setConsole() {
 
 void Interface::restoreConsole() {
 #if defined(_WIN32) || defined(_WIN64)
-	// restore old console configuration
+// restore old console configuration
 	SetConsoleMode(hConsoleInput, fdwOldMode);
 	SetConsoleTextAttribute(hConsoleOutput, wOldColorAttrs);
 #else
@@ -2384,7 +2555,7 @@ void Interface::restoreConsole() {
 }
 
 char Interface::getKey() {
-#ifdef _WIN32
+#if (defined _WIN32 || defined _WIN64)
 	DWORD fdwSaveOldMode;
 	GetConsoleMode(hConsoleInput, &fdwSaveOldMode);
 
@@ -2419,11 +2590,7 @@ char Interface::getKey() {
 //FlushConsoleInputBuffer(hConsoleInput); // getline & special keys
 // Restore input mode on exit.
 	SetConsoleMode(hConsoleInput, fdwSaveOldMode);
-
 	return key;
-
-#elif _WIN64
-	return getch();
 #else
 	static struct termios oldt, newt;
 

@@ -55,6 +55,8 @@ void Date::removeOneDay() {
 		this->day--;
 	} else if (this->day <= 1) {
 		if (this->month <= 1) {
+			if (this->month == 1 && this->year == 2000)
+				return;
 			this->year--;
 			this->month = 12;
 		} else
