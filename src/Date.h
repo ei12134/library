@@ -63,23 +63,32 @@ public:
 	/** check if date is lower that d2
 	 *@param Date d2
 	 */
-	bool operator <(Date d2) const;
+	bool operator<(Date d2) const;
 
 	/** check if date is bigger that d2
 	 *@param Date d2
 	 */
-	bool operator >(Date d2) const;
+	bool operator>(Date d2) const;
 
 	/** check if date is equal to d2
 	 *@param Date d2
 	 */
-	bool operator ==(Date d2) const;
+	bool operator==(Date d2) const;
 
 	/** check if date is different of d2
 	 *@param Date d2
 	 */
-	bool operator !=(Date d2) const;
+	bool operator!=(Date d2) const;
 
+	/** postfix operator increments date by one day
+	 *@param postfix convention
+	 */
+	Date operator++(int) const;
+
+	/** postfix operator decrements date by one day
+	 *@param postfix convention
+	 */
+	Date operator--(int) const;
 };
 
 /** return true if ano is bissesto false if not

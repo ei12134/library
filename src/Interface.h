@@ -58,6 +58,8 @@ static const string progressBar = "\u25A0";
 #define WIDTH 80
 #define HEIGHT 25
 
+const size_t headerSpacing = 3;
+
 class Interface {
 private:
 	Library library;

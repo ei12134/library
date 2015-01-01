@@ -270,7 +270,7 @@ void Interface::readerMenu(Person* reader) {
 	string infMsg;
 	vector<Borrow*> previousBorrows;
 	do {
-		header = "Reader" + string(5, ' ') + reader->getName();
+		header = "Reader" + string(headerSpacing, ' ') + reader->getName();
 		clearScreen();
 		displayHeader(header);
 		colorMsg(THREE_TABS + HALF_TAB, "Age: ", FGWHITE_BGBLACK, 0);
@@ -332,7 +332,7 @@ void Interface::employeeMenu(Person* employee) {
 	string header;
 
 	do {
-		header = "Employee" + string(5, ' ') + employee->getName();
+		header = "Employee" + string(headerSpacing, ' ') + employee->getName();
 		clearScreen();
 		displayHeader(header);
 
@@ -386,13 +386,10 @@ void Interface::employeeMenu(Person* employee) {
 void Interface::supervisorMenu(Person* supervisor) {
 	char input;
 	bool exit = false;
-	const size_t cmdsSize = 8;
+	const size_t cmdsSize = 6;
 	string cmds[cmdsSize] = { "Borrow a book", "Manage books", "Manage readers",
-			"Manage employees", "Manage requests", "Auto-assign teams",
-			"Employees team\n", "Logout\n" };
+			"Manage employees", "Manage requests\n", "Logout\n" };
 	string header;
-	vector<string> display;
-	vector<Employee *> team;
 
 	do {
 		if (supervisor->getType() != 3) {
@@ -400,7 +397,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 			break;
 		}
 
-		header = "Supervisor" + string(5, ' ') + supervisor->getName();
+		header = "Supervisor" + string(headerSpacing, ' ') + supervisor->getName();
 		clearScreen();
 		displayHeader(header);
 
@@ -443,18 +440,6 @@ void Interface::supervisorMenu(Person* supervisor) {
 			manageRequests(supervisor);
 			break;
 		case '6':
-			library.assignEmployees();
-			library.savePersons();
-			cout << "Employees were evenly assigned";
-			getKey();
-			break;
-		case '7':
-			team = supervisor->getEmployeeTeam();
-			display = library.getContainerPtrPrint(team);
-			displayContainer(display, "Employees team",
-					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif", "");
-			break;
-		case '8':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -638,10 +623,12 @@ void Interface::manageEmployees(Person* supervisor) {
 	bool exit = false;
 	string header = "Manage employees";
 	string errMsg, infMsg;
-	const size_t cmdsSize = 5;
-	string cmds[cmdsSize] =
-			{ "Create", "Display", "Edit", "Remove\n", "Exit\n" };
+	const size_t cmdsSize = 7;
+	string cmds[cmdsSize] = { "Create", "Display", "Team", "Edit",
+			"Remove", "Auto-assign\n", "Exit\n" };
 	Employee* employee;
+	vector<string> display;
+	vector<Employee *> team;
 	vector<string> emplStr;
 	emplStr.push_back("name");
 	emplStr.push_back("age");
@@ -685,6 +672,12 @@ void Interface::manageEmployees(Person* supervisor) {
 			}
 			break;
 		case '3':
+			team = supervisor->getEmployeeTeam();
+			display = library.getContainerPtrPrint(team);
+			displayContainer(display, "Employees team",
+					"\tName\t\tAge\tPhone\t\tEmail\t\t\tNif", "");
+			break;
+		case '4':
 			employee = static_cast<Employee*>(searchPerson(
 					library.getEmployees(true)));
 			if (employee != NULL)
@@ -692,7 +685,7 @@ void Interface::manageEmployees(Person* supervisor) {
 			else
 				errMsg = "Error editing an employee";
 			break;
-		case '4':
+		case '5':
 			if (library.removeEmployee(
 					(searchPerson(library.getEmployees(true))), supervisor)) {
 				library.savePersons();
@@ -700,7 +693,12 @@ void Interface::manageEmployees(Person* supervisor) {
 			} else
 				errMsg = "Error removing an employee";
 			break;
-		case '5':
+		case '6':
+			library.assignEmployees();
+			library.savePersons();
+			infMsg = "Employees were evenly assigned";
+			break;
+		case '7':
 			exit = true;
 			break;
 		case ESCAPE_KEY:

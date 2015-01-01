@@ -108,6 +108,18 @@ bool Date::operator !=(Date d2) const {
 	return !(*this == d2);
 }
 
+Date Date::operator++(int) const {
+	Date date(day, month, year);
+	date.addOneDay();
+	return date;
+}
+
+Date Date::operator--(int) const {
+	Date date(day, month, year);
+	date.removeOneDay();
+	return date;
+}
+
 bool isBissesto(unsigned int ano) {
 	return (ano % 4 == 0 && ((ano % 100 != 0) || (ano % 400 == 0)));
 }
