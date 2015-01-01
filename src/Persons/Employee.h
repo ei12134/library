@@ -29,10 +29,12 @@ public:
 	unsigned int getCard() const;
 	vector<Employee *> getEmployeeTeam() const;
 	void setSupervisor(bool super);
-	bool isSupervisor() const;
-	void addEmplyee(Employee * e);
-	bool removeEmplyee(Employee * e);
-	void removeAllEmplyee();
+	bool getSupervisor() const {
+		return supervisor;
+	}
+	void addEmployee(Employee * e);
+	bool removeEmployee(Employee * e);
+	void clearEmployeesTeam();
 
 	bool getInactive() const {
 		return false;

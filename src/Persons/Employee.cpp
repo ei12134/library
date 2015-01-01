@@ -53,12 +53,12 @@ void Employee::saveData(ofstream &of) {
 Employee::~Employee() {
 }
 
-void Employee::addEmplyee(Employee * e) {
+void Employee::addEmployee(Employee * e) {
 	if (supervisor)
 		this->team.push_back(e);
 }
 
-bool Employee::removeEmplyee(Employee * e) {
+bool Employee::removeEmployee(Employee * e) {
 	for (unsigned int x = 0; x < team.size(); x++) {
 		if (team[x] == e) {
 			team.erase(team.begin() + x);
@@ -67,7 +67,7 @@ bool Employee::removeEmplyee(Employee * e) {
 	}
 	return false;
 }
-void Employee::removeAllEmplyee() {
+void Employee::clearEmployeesTeam() {
 	team.clear();
 }
 
@@ -127,10 +127,6 @@ void Employee::setSupervisor(bool super) {
 	this->supervisor = super;
 	if (!supervisor)
 		team.clear();
-}
-
-bool Employee::isSupervisor() const {
-	return supervisor;
 }
 
 unsigned int Employee::getCard() const {

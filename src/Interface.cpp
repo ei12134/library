@@ -1594,9 +1594,7 @@ void Interface::editEmployee(Employee* employee) {
 	do {
 		string newName, newAgeStr, newPhoneStr, newEmail, newNifStr, newWageStr;
 		unsigned int newAge, newPhone, newNif, newWage;
-		char ch;
 		stringstream ss;
-		istringstream s;
 		string header = "Edit Employee" + string(5, ' ') + employee->getName();
 		clearScreen();
 		displayHeader(header);
@@ -1702,25 +1700,9 @@ void Interface::editEmployee(Employee* employee) {
 			edited = true;
 			break;
 		case '7':
-			cout << endl << endl << TWO_TABS
-					<< "[S] to set as supervisor [E] as employee"
-					<< PROMPT_SYMBOL;
-			ch = getKey();
-			if (tolower(ch) == 's') {
-				Employee* e = static_cast<Employee*>(employee);
-				if (e != NULL) {
-					library.removeEmployeeFromSupervisors(e);
-					employee->setSupervisor(1);
-					edited = true;
-				}
-				library.assignEmployees();
-			} else if (tolower(ch) == 'e') {
-				employee->setSupervisor(0); // setSupervisor automatically cleans the supervisor team
-				edited = true;
-				if (library.getEmployees(true).size() > 1) {
-					library.assignEmployees();
-				}
-			}
+			employee->setSupervisor(!employee->getSupervisor());
+			library.assignEmployees();
+			edited = true;
 			break;
 		case '8':
 			if (edited) {

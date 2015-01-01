@@ -40,7 +40,7 @@ public:
 	virtual bool removeBorrow(Borrow* borrow) {
 		return false;
 	}
-	virtual bool removeEmplyee(Employee * e) {
+	virtual bool removeEmployee(Employee * e) {
 		return false;
 	}
 	virtual bool getInactive() const = 0;

@@ -418,7 +418,7 @@ bool Library::removeEmployeeFromSupervisors(Employee* employee) {
 		return false;
 	for (size_t i = 0; i < persons.size(); i++)
 		if (persons[i]->getType() == 3)
-			persons[i]->removeEmplyee(employee);
+			persons[i]->removeEmployee(employee);
 	return true;
 }
 
@@ -480,7 +480,7 @@ void Library::loadPersons() {
 				while (getline(fs, e, ',')) {
 					for (unsigned x = 0; x < temp.size(); x++) {
 						if (temp[x]->getName() == e) { // check if employee exists in memory
-							employee->addEmplyee(temp[x]);
+							employee->addEmployee(temp[x]);
 							break;
 						}
 					}
@@ -897,14 +897,14 @@ void Library::assignEmployees() {
 	for (unsigned int x = 0; x < sup.size(); x++) {
 		Employee* e = dynamic_cast<Employee*>(sup[x]);
 		if (e != NULL)
-			e->removeAllEmplyee();
+			e->clearEmployeesTeam();
 	}
 	for (unsigned int x = 0; x < emp.size(); x++) {
 		Employee* e = dynamic_cast<Employee*>(sup.at(x % sup.size()));
 		if (e != NULL) {
 			Employee* e2 = dynamic_cast<Employee*>(emp[x]);
 			if (e2 != NULL)
-				e->addEmplyee(e2);
+				e->addEmployee(e2);
 		}
 	}
 }
