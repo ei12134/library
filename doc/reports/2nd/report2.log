@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2014.12.20)  28 DEC 2014 13:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2014.12.20)  29 DEC 2014 13:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -202,8 +202,7 @@ Package hyperref Info: Option `unicode' set `true' on input line 7.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
 File: puenc.def 2012/11/06 v6.83m Hyperref: PDF Unicode definition (HO)
-)
-No file report2.aux.
+) (./report2.aux)
 \openout1 = `report2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
@@ -222,6 +221,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
+
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count99
@@ -264,6 +264,8 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 9.
 LaTeX Info: Redefining \pageref on input line 9.
 LaTeX Info: Redefining \nameref on input line 9.
+
+(./report2.out) (./report2.out)
 \@outlinefile=\write3
 \openout3 = `report2.out'.
 
@@ -277,10 +279,12 @@ Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 16.
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 16.
+ [1
 
-[1
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./report2.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 6.
+)
 \tf@toc=\write4
 \openout4 = `report2.toc'.
 
@@ -289,70 +293,79 @@ Package babel Info: Redefining portuges shorthand "|
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 18.
  [2]
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 21.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 24.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 29.
+(babel)             in language  on input line 31.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 32.
+(babel)             in language  on input line 39.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 34.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 34.
+(babel)             in language  on input line 39.
  [3]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 35.
+(babel)             in language  on input line 40.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 37.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 41.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 44.
+(babel)             in language  on input line 45.
 Package babel Info: Redefining portuges shorthand "|
 (babel)             in language  on input line 47.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 50.
+(babel)             in language  on input line 52.
+
+<UMLParte2a.png, id=62, 1425.07407pt x 694.84593pt>
+File: UMLParte2a.png Graphic file (type png)
+ <use UMLParte2a.png>
+Package pdftex.def Info: UMLParte2a.png used on input line 53.
+(pdftex.def)             Requested size: 1425.07059pt x 694.84422pt.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 54.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 50.
- [4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 52.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 52.
+(babel)             in language  on input line 54.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 54.
 
-(./report2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 52.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 52.
-
-
-Package rerunfilecheck Warning: File `report2.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `report2.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  3683978775F58F6DE14D81DF3377671F;1831.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 52.
+[4]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 54.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 54.
+ [5 <./UMLParte2a.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 54.
+ (./report2.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 54.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 54.
+Package rerunfilecheck Info: File `report2.out' has not changed.
+(rerunfilecheck)             Checksum: 44F2016FA7485015E22F02567FE38A30;1507.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 54.
  ) 
 Here is how much of TeX's memory you used:
- 8871 strings out of 494996
- 123685 string characters out of 6180488
- 192666 words of memory out of 5000000
- 12037 multiletter control sequences out of 15000+600000
- 15857 words of font info for 36 fonts, out of 8000000 for 9000
+ 8915 strings out of 494996
+ 124587 string characters out of 6180488
+ 192770 words of memory out of 5000000
+ 12067 multiletter control sequences out of 15000+600000
+ 17100 words of font info for 40 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 29i,6n,32p,988b,339s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/user/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.600pk> </home/us
+ 29i,7n,32p,640b,339s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/user/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1095.600pk> </home/us
 er/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/user/.texmf-va
-r/fonts/pk/ljfour/jknappen/ec/ecti1095.600pk> </home/user/.texmf-var/fonts/pk/l
-jfour/jknappen/ec/ecrm1000.600pk> </home/user/.texmf-var/fonts/pk/ljfour/jknapp
-en/ec/ecbx1000.600pk> </home/user/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx14
-40.600pk> </home/user/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </
-home/user/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </home/user/.t
-exmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2074.600pk> </home/user/.texmf-var/fon
-ts/pk/ljfour/jknappen/ec/ecrm1728.600pk>
-Output written on report2.pdf (4 pages, 89844 bytes).
+r/fonts/pk/ljfour/jknappen/ec/ectt1095.600pk> </home/user/.texmf-var/fonts/pk/l
+jfour/jknappen/ec/ectt1000.600pk> </home/user/.texmf-var/fonts/pk/ljfour/jknapp
+en/ec/ecrm1000.600pk> </home/user/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx10
+00.600pk> </home/user/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.600pk> </
+home/user/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/user/.t
+exmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/user/.texmf-var/fon
+ts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </home/user/.texmf-var/fonts/pk/ljfour
+/jknappen/ec/ecbx2074.600pk> </home/user/.texmf-var/fonts/pk/ljfour/jknappen/ec
+/ecrm1728.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on report2.pdf (5 pages, 330372 bytes).
 PDF statistics:
- 347 PDF objects out of 1000 (max. 8388607)
- 70 compressed objects within 1 object stream
- 14 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 418 PDF objects out of 1000 (max. 8388607)
+ 114 compressed objects within 2 object streams
+ 13 named destinations out of 1000 (max. 500000)
+ 54 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,0 +1,54 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[portuguese]{babel}
+\usepackage{graphicx}
+\usepackage[pdftex]{hyperref}
+\hypersetup{unicode=true}
+
+\begin{document}
+
+\title{Algoritmos e Estruturas de Dados\\ \huge \textbf{Gestão de uma Biblioteca (Parte 2)}\\[3.5cm]\normalsize  Turma 4 - Grupo B\\[0.5cm]}
+\author{José Peixoto \\Paulo Faria \\Pedro Moura \and 200603103\\201204965\\201306843 \and ei12134@fe.up.pt \\ ei12135@fe.up.pt \\ up201306843@fe.up.pt\\[3.5cm]}
+
+\maketitle
+
+\newpage
+\tableofcontents
+\newpage
+
+\begin{abstract}
+Foi-nos proposto a extensão das funcionalidades de uma aplicação em C++ para gestão de uma biblioteca que evidenciasse o conhecimento e um uso correcto de novas estruturas de dados: árvores binárias de pesquisa, filas de prioridade e tabelas de dispersão. Os livros são agora dispostos de forma ordenada pelo ano de edição numa árvore binária de pesquisa, os leitores inactivos são armazenados numa tabela de dispersão e os pedidos de livros já emprestados são registados numa fila de prioridade.
+\end{abstract}
+
+\section{Descrição da solução implementada}
+Para implementar a nova ordenação dos livros introduziu-se um novo membro dado da classe livro \texttt{editionYear}, que representa o ano de edição do livro e funciona como primeiro parâmetro de decisão no operador menor dessa classe. A árvore binária de pesquisa ordena os livros em primeiro lugar pelo ano de edição, pelo título, pelos nomes dos autores e por fim pelo \texttt{bookID}, de modo a permitir distinguir entre copias do mesmo exemplar.
+
+Para permitir a classificação de leitores como inactivos de forma manual, recorreu-se a uma variável booleana \texttt{inactive}, membro-dado da classe \texttt{Reader} e para verificar de forma automática os leitores inactivos, usou-se outro novo membro-dado, data da ultima actividade do leitor \texttt{lastActivity}. Recorreu-se ao número de identificação de cada leitor para o indexar na tabela de dispersão, uma vez que cada leitor tem um \texttt{card} com um número único.
+
+Na construção de uma fila de prioridade que armazenasse os pedidos de empréstimo, definiu-se uma nova classe \texttt{Request} que contivesse apontadores para um leitor, para o livro pedido e a data do pedido. Ordenou-se a fila de prioridade implementando o operador menor da classe \texttt{Request} priorizando os pedidos pela data e depois pelas idades dos leitores: crianças $(idade \leq 12)$, estudantes $(12 < idade \leq 23)$ e por fim adultos $(idade > 23)$.
+
+\section{Lista de casos de utilização da aplicação}
+A aplicação permite a criação, leitura, edição e remoção de livros, leitores, funcionários e empréstimos e pedidos de empréstimo.
+
+Alterações como a remoção ou adição de livros são espelhadas na árvore binária. É possível listar a árvore binária de forma completa ou parcial, pesquisando pelo ano de edição, pelos autores ou pelo titulo.
+
+É permitida a atribuição manual do estado de inactividade pela data da última actividade e/ou pela configuração do estado de inactividade guardado em \texttt{inactive}. A atribuição automática dos estados de inactividade \texttt{Update inactives} sobrepõe-se às configurações manuais, usando como critério único a ultima actividade do leitor.
+
+É criado e adicionado um novo pedido à fila de espera, de forma automática, aquando da tentativa de empréstimo de um livro que esteja indisponível. Após a devolução de qualquer livro é feita uma busca pela fila pelo primeiro leitor em espera que possa requisitar o livro (não tenha excedido o máximo de empréstimos em simultâneo).
+
+\section{Relato das principais dificuldades encontradas no desenvolvimento do trabalho}
+Encontraram-se algumas dificuldades na nomenclatura e no adicionar novos métodos e membros-dado às classes anteriormente definidas, pelo aumento da complexidade na leitura e escrita de ficheiros e na gestão da estabilidade das funcionalidades já existentes.
+
+Foi difícil a implementação do operador menor da classe \texttt{Request} que permitisse correctamente a ordenação na fila de prioridades.
+
+\section{Indicação do esforço dedicado por cada elemento do grupo}
+
+\subsection{Notas em grupo}
+Resolvemos sequencialmente os itens do enunciado.
+Fomos trabalhando ora por turnos ora conferenciando via \emph{Skype} ou \emph{Google Hangouts}.
+
+\newpage
+
+\end{document}
+

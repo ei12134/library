@@ -72,8 +72,8 @@ Library::~Library() {
 	persons.clear();
 }
 
-bool Library::removePersonFromHashTable(Person* person) {
-	iteratorH it = inactiveReaders.find(person);
+bool Library::removeReaderFromHashTable(Person* reader) {
+	iteratorH it = inactiveReaders.find(reader);
 	if (it != inactiveReaders.end()) {
 		inactiveReaders.erase(it);
 		return true;
@@ -81,8 +81,8 @@ bool Library::removePersonFromHashTable(Person* person) {
 	return false;
 }
 
-bool Library::addPersonToHashTable(Person* person) {
-	pair<iteratorH, bool> it = inactiveReaders.insert(person);
+bool Library::addReaderToHashTable(Person* reader) {
+	pair<iteratorH, bool> it = inactiveReaders.insert(reader);
 	return it.second;
 }
 
@@ -332,7 +332,7 @@ void Library::addBorrow(Borrow* borrow) {
 	Person* reader = borrow->getReader();
 	Book* book = borrow->getBook();
 	if (reader != NULL)
-		removePersonFromHashTable(reader);
+		removeReaderFromHashTable(reader);
 	if (book != NULL)
 		book->setBorrowed(true);
 	borrows.push_back(borrow);
@@ -394,7 +394,7 @@ bool Library::removeReader(Person* reader) {
 	for (size_t i = 0; i < persons.size(); i++)
 		if (persons[i] == reader) {
 			if (reader->getBorrowedBooks().size() == 0) {
-				removePersonFromHashTable(persons[i]);
+				removeReaderFromHashTable(persons[i]);
 				persons.erase(persons.begin() + i);
 				return true;
 			}

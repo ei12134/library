@@ -756,7 +756,7 @@ void Interface::manageRequests(Person* employee) {
 				if (library.removeRequest(r)) {
 					Request newR = editRequest(r);
 					if (library.addRequest(newR)) {
-						library.removePersonFromHashTable(newR.getReader());
+						library.removeReaderFromHashTable(newR.getReader());
 						library.saveRequests();
 						r.getReader()->setInactive(false);
 					}
@@ -1214,7 +1214,7 @@ void Interface::createBorrow(Person* employee, bool request) {
 					Request r(book, reader, d);
 					if (library.addRequest(r)) {
 						r.getReader()->setInactive(false);
-						library.removePersonFromHashTable(r.getReader());
+						library.removeReaderFromHashTable(r.getReader());
 						library.saveRequests();
 						infMsg = "The book was automatically reserved";
 					} else {
@@ -1555,9 +1555,9 @@ void Interface::editReader(Person* reader) {
 			if (edited) {
 				reader = castedReader;
 				library.savePersons();
-				library.removePersonFromHashTable(&backup);
+				library.removeReaderFromHashTable(&backup);
 				if (castedReader->getInactive())
-					library.addPersonToHashTable(castedReader);
+					library.addReaderToHashTable(castedReader);
 				edited = false;
 				infMsg = "Changes saved successfully";
 			}
