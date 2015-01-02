@@ -275,16 +275,14 @@ void Interface::readerMenu(Person* reader) {
 		displayHeader(header);
 		colorMsg(THREE_TABS + HALF_TAB, "Age: ", FGWHITE_BGBLACK, 0);
 		cout << reader->getAge() << " years" << endl;
-		colorMsg(THREE_TABS + HALF_TAB, "Card: ",
-		FGWHITE_BGBLACK, 0);
+		colorMsg(THREE_TABS + HALF_TAB, "Card: ", FGWHITE_BGBLACK, 0);
 		cout << +reader->getCard() << endl;
 		colorMsg(THREE_TABS + HALF_TAB, "Phone: ", FGWHITE_BGBLACK, 0);
 		cout << reader->getPhone() << endl;
 		colorMsg(THREE_TABS + HALF_TAB, "Email: ", FGWHITE_BGBLACK, 0);
 		cout << reader->getEmail() << endl << endl;
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
-			FGGREEN_BGBLACK, 1);
+			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 		vector<Borrow*> borrowedBooks = reader->getBorrowedBooks();
 		for (size_t i = 0; i < borrowedBooks.size(); i++)
 			if (borrowedBooks[i]->calcFee() > 0)
@@ -352,8 +350,7 @@ void Interface::employeeMenu(Person* employee) {
 		cout << employee->getWage() << " EUR" << endl << endl;
 
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
-			FGGREEN_BGBLACK, 1);
+			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
@@ -397,7 +394,8 @@ void Interface::supervisorMenu(Person* supervisor) {
 			break;
 		}
 
-		header = "Supervisor" + string(headerSpacing, ' ') + supervisor->getName();
+		header = "Supervisor" + string(headerSpacing, ' ')
+				+ supervisor->getName();
 		clearScreen();
 		displayHeader(header);
 
@@ -417,8 +415,7 @@ void Interface::supervisorMenu(Person* supervisor) {
 		cout << supervisor->getWage() << " EUR" << endl << endl;
 
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
-			FGGREEN_BGBLACK, 1);
+			cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		cout << THREE_TABS << HALF_TAB << PROMPT_SYMBOL;
 
@@ -473,8 +470,7 @@ void Interface::manageBooks() {
 		int sortFunc = 0;
 
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(FOUR_TABS, (i + 1), cmds[i],
-			FGGREEN_BGBLACK, 1);
+			cmdMsg(FOUR_TABS, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		if (errMsg.size() > 0) {
 			errorMsg(errMsg);
@@ -556,8 +552,7 @@ void Interface::manageReaders() {
 
 		int sortFunc = 0;
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(spacing, (i + 1), cmds[i],
-			FGGREEN_BGBLACK, 1);
+			cmdMsg(spacing, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		if (errMsg.size() > 0) {
 			errorMsg(errMsg);
@@ -624,8 +619,8 @@ void Interface::manageEmployees(Person* supervisor) {
 	string header = "Manage employees";
 	string errMsg, infMsg;
 	const size_t cmdsSize = 7;
-	string cmds[cmdsSize] = { "Create", "Display", "Team", "Edit",
-			"Remove", "Auto-assign\n", "Exit\n" };
+	string cmds[cmdsSize] = { "Create", "Display", "Team", "Edit", "Remove",
+			"Auto-assign\n", "Exit\n" };
 	Employee* employee;
 	vector<string> display;
 	vector<Employee *> team;
@@ -642,8 +637,7 @@ void Interface::manageEmployees(Person* supervisor) {
 
 		int sortFunc = 0;
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(FOUR_TABS, (i + 1), cmds[i],
-			FGGREEN_BGBLACK, 1);
+			cmdMsg(FOUR_TABS, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		if (errMsg.size() > 0) {
 			errorMsg(errMsg);
@@ -725,8 +719,7 @@ void Interface::manageRequests(Person* employee) {
 		Request r;
 
 		for (size_t i = 0; i < cmdsSize; i++)
-			cmdMsg(FOUR_TABS, (i + 1), cmds[i],
-			FGGREEN_BGBLACK, 1);
+			cmdMsg(FOUR_TABS, (i + 1), cmds[i], FGGREEN_BGBLACK, 1);
 
 		if (errMsg.size() > 0) {
 			errorMsg(errMsg);
@@ -803,7 +796,6 @@ bool Interface::createBook() {
 
 	do {
 		stringstream ss;
-		string header = "Create reader";
 
 		clearScreen();
 		displayHeader(header);
@@ -867,19 +859,22 @@ bool Interface::createBook() {
 			ss >> newEditionYear;
 			break;
 		case '7':
-			if (newQuota.size() == 0)
-				errMsg = "Enter a correct quota";
+			if(authors.size() == 0){
+				errMsg = "Enter at least one author";
+			}
+			else if (newQuota.size() == 0)
+			errMsg = "Enter a correct quota";
 			else if (newPageNumberStr.size() == 0
 					|| !is_All_Number(newPageNumberStr))
-				errMsg = "Enter a correct page number";
+			errMsg = "Enter a correct page number";
 			else if (newISBN.size() == 0
 					|| (newISBN.size() != 13 && newISBN.size() != 10))
-				errMsg = "Enter a correct 10 or 13 digit ISBN";
+			errMsg = "Enter a correct 10 or 13 digit ISBN";
 			else if (newTitle.size() == 0)
-				errMsg = "Enter a correct title";
+			errMsg = "Enter a correct title";
 			else if (newEditionYearStr.size() == 0
 					|| !is_All_Number(newEditionYearStr))
-				errMsg = "Enter a correct edition year";
+			errMsg = "Enter a correct edition year";
 			else {
 				b = new Book(authors, false, newQuota, newPageNumber, newISBN,
 						newTitle, newEditionYear, false);
@@ -891,7 +886,7 @@ bool Interface::createBook() {
 				aborted = false;
 			}
 			break;
-		case '9':
+		case '8':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -909,6 +904,7 @@ bool Interface::createReader() {
 	bool aborted = true;
 	bool exit = false;
 	string infMsg, errMsg;
+	string header = "Create reader";
 	const size_t cmdsSize = 6;
 	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
 			"[4] Email: ", "Create", "Exit" };
@@ -918,10 +914,8 @@ bool Interface::createReader() {
 
 	do {
 		stringstream ss;
-		string header = "Create reader";
 		clearScreen();
 		displayHeader(header);
-
 		colorMsg(THREE_TABS, cmds[0], FGWHITE_BGBLACK, 0);
 		cout << newName << endl;
 		colorMsg(THREE_TABS, cmds[1], FGWHITE_BGBLACK, 0);
@@ -986,7 +980,7 @@ bool Interface::createReader() {
 				aborted = false;
 			}
 			break;
-		case '9':
+		case '6':
 			exit = true;
 			break;
 		case ESCAPE_KEY:
@@ -1003,6 +997,7 @@ bool Interface::createEmployee() {
 	char input;
 	bool aborted = true;
 	bool exit = false;
+	string header = "Create employee";
 	string infMsg, errMsg;
 	const size_t cmdsSize = 9;
 	string cmds[cmdsSize] = { "[1] Name: ", "[2] Age: ", "[3] Phone: ",
@@ -1015,7 +1010,6 @@ bool Interface::createEmployee() {
 
 	do {
 		stringstream ss;
-		string header = "Create employee";
 		clearScreen();
 		displayHeader(header);
 
@@ -1157,11 +1151,11 @@ void Interface::createBorrow(Person* employee, bool request) {
 
 		for (size_t i = 0; i < cmdsSize; i++) {
 			if (i == 2 && (reader == NULL || book == NULL))
-				cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
-				FGGRAY_BGBLACK, 1);
+				cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGRAY_BGBLACK,
+						1);
 			else
-				cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i],
-				FGGREEN_BGBLACK, 1);
+				cmdMsg(THREE_TABS + HALF_TAB, (i + 1), cmds[i], FGGREEN_BGBLACK,
+						1);
 		}
 
 		if (errMsg.size() > 0) {
@@ -1250,6 +1244,7 @@ void Interface::editBook(Book* book) {
 			"[4] ISBN: ", "[5] Title: ", "[6] Edition: ", "Discard changes",
 			"Save changes", "Exit" };
 	Book backup = *book;
+	Book * bck = &backup;
 	do {
 		string newQuota, newTitle, newISBN, newPageNumberStr, newEditionYearStr;
 		unsigned int newPageNumber, newEditionYear;
@@ -1278,8 +1273,7 @@ void Interface::editBook(Book* book) {
 				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 1);
 		}
 		cout << endl;
-		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1],
-		FGGREEN_BGBLACK, 1);
+		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1], FGGREEN_BGBLACK, 1);
 
 		if (changesMessage.size() > 0) {
 			cout << endl;
@@ -1361,7 +1355,7 @@ void Interface::editBook(Book* book) {
 			break;
 		case '8':
 			if (edited) {
-				library.removeTreeBook(&backup);
+				library.removeTreeBook(bck);
 				library.addTreeBook(book);
 				library.saveBooks();
 				edited = false;
@@ -1433,8 +1427,7 @@ void Interface::editReader(Person* reader) {
 				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 1);
 		}
 		cout << endl;
-		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1],
-		FGGREEN_BGBLACK, 1);
+		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1], FGGREEN_BGBLACK, 1);
 
 		if (errMsg.size() > 0) {
 			cout << endl;
@@ -1749,7 +1742,7 @@ void Interface::editBorrow(Person* reader) {
 
 		for (size_t i = 0; i < borrows.size(); i++)
 			cmdMsg(THREE_TABS, (i + 1), borrows[i]->printShort(),
-			FGGREEN_BGBLACK, 1);
+					FGGREEN_BGBLACK, 1);
 
 		if (infMsg.size() > 0) {
 			infoMsg(infMsg);
@@ -1869,8 +1862,7 @@ Request Interface::editRequest(const Request &r) {
 				cmdMsg(THREE_TABS, i + 1, cmds[i], FGGREEN_BGBLACK, 1);
 		}
 		cout << endl;
-		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1],
-		FGGREEN_BGBLACK, 2);
+		cmdMsg(THREE_TABS, cmdsSize, cmds[cmdsSize - 1], FGGREEN_BGBLACK, 2);
 
 		if (errMsg.size() > 0) {
 			errorMsg(errMsg);
@@ -2034,8 +2026,9 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 			colorMsg(THREE_TABS, matches[i]->getName(),
 					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 0);
 			cout << TAB;
-			if (matches[i]->getName().size() < 16)
-				cout << TAB;
+			for (int j = 16 - matches[i]->getName().size() ; j > 0; j -= 8)
+							cout << TAB;
+
 			colorMsg("", matches[i]->printType(), FGWHITE_BGBLACK, 1);
 		}
 		cout << endl << THREE_TABS << "Enter person name ";
@@ -2136,8 +2129,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 // Display books that match
 		for (size_t i = 0; i < matches.size() && i < vLimit; i++) {
 
-			colorMsg(TWO_TABS, "Title:     ",
-			FGWHITE_BGBLACK, 0);
+			colorMsg(TWO_TABS, "Title:     ", FGWHITE_BGBLACK, 0);
 			colorMsg("", matches[i]->getTitle().substr(0, 28),
 					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 0);
 
@@ -2148,8 +2140,7 @@ Book* Interface::searchBook(vector<Book*> books) {
 					(matches[i]->getBorrowed() ? "[Borrowed]" : "[Available]"),
 					FGWHITE_BGBLACK, 1);
 
-			colorMsg(TWO_TABS, "Author(s): ",
-			FGWHITE_BGBLACK, 0);
+			colorMsg(TWO_TABS, "Author(s): ", FGWHITE_BGBLACK, 0);
 			colorMsg("", matches[i]->printAuthors() + " ",
 					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 2);
 		}
@@ -2249,8 +2240,7 @@ Request Interface::searchRequest(priority_queue<Request> requestQueue) {
 // Display books that match
 		for (size_t i = 0; i < matches.size() && i < vLimit; i++) {
 
-			colorMsg(TWO_TABS, "Reader:     ",
-			FGWHITE_BGBLACK, 0);
+			colorMsg(TWO_TABS, "Reader:     ", FGWHITE_BGBLACK, 0);
 			colorMsg("", matches[i].getReader()->getName().substr(0, 28),
 					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 0);
 
@@ -2258,11 +2248,9 @@ Request Interface::searchRequest(priority_queue<Request> requestQueue) {
 					z >= 0; z -= 8)
 				cout << TAB;
 
-			colorMsg("", (matches[i].getDate().print()),
-			FGWHITE_BGBLACK, 1);
+			colorMsg("", (matches[i].getDate().print()), FGWHITE_BGBLACK, 1);
 
-			colorMsg(TWO_TABS, "Book:     ",
-			FGWHITE_BGBLACK, 0);
+			colorMsg(TWO_TABS, "Book:     ", FGWHITE_BGBLACK, 0);
 			colorMsg("", matches[i].getBook()->getTitle() + " ",
 					(selected == i ? FGBLACK_BGGREEN : FGGREEN_BGBLACK), 2);
 		}
@@ -2336,25 +2324,25 @@ void Interface::clearScreen() {
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	DWORD count;
 	DWORD cellCount;
-	COORD homeCoords = {0, 0};
+	COORD homeCoords = { 0, 0 };
 
 	if ((HANDLE) hConsoleOutput == INVALID_HANDLE_VALUE)
-	return;
+		return;
 
 	/* Get the number of cells in the current buffer */
 	if (!GetConsoleScreenBufferInfo(hConsoleOutput, &csbi))
-	return;
+		return;
 	cellCount = csbi.dwSize.X * csbi.dwSize.Y;
 
 	/* Fill the entire buffer with spaces */
 	if (!FillConsoleOutputCharacter(hConsoleOutput, (TCHAR) ' ', cellCount,
-					homeCoords, &count))
-	return;
+			homeCoords, &count))
+		return;
 
 	/* Fill the entire buffer with the current colors and attributes */
 	if (!FillConsoleOutputAttribute(hConsoleOutput, csbi.wAttributes, cellCount,
-					homeCoords, &count))
-	return;
+			homeCoords, &count))
+		return;
 
 	/* Move the cursor home */
 	SetConsoleCursorPosition(hConsoleOutput, homeCoords);
@@ -2405,7 +2393,7 @@ string Interface::repeatStr(const T& s, const size_t n) {
 #else
 	string r = s;
 	for (size_t i = 0; i < n; i++)
-		r += s;
+	r += s;
 	return r;
 #endif
 }
@@ -2420,7 +2408,7 @@ int Interface::displayContainer(vector<string> vec, string listName,
 	string sortedMsg;
 	if (sortStr.size() > 0) {
 		sortedMsg = "Sorted by " + sortStr
-				+ (sortStr.size() > 5 ? + TAB : + TWO_TABS);
+				+ (sortStr.size() > 5 ? +TAB : +TWO_TABS);
 		vLimitMsg =
 				" [ESC] to interrupt [s] to sort or any other key to continue...";
 	} else
@@ -2541,7 +2529,7 @@ char Interface::getKey() {
 
 // no need to read the return character nor mouse events
 	DWORD mode = !ENABLE_ECHO_INPUT | !ENABLE_LINE_INPUT
-	| !ENABLE_PROCESSED_INPUT | !ENABLE_MOUSE_INPUT;
+			| !ENABLE_PROCESSED_INPUT | !ENABLE_MOUSE_INPUT;
 
 	SetConsoleMode(hConsoleInput, mode);
 
@@ -2551,21 +2539,21 @@ char Interface::getKey() {
 
 	do {
 		ReadConsoleInput(hConsoleInput, &lpBuffer, 1, &lpNumberOfEventsRead);
-	}while (!lpBuffer.Event.KeyEvent.bKeyDown);
+	} while (!lpBuffer.Event.KeyEvent.bKeyDown);
 
 	specialKey = lpBuffer.Event.KeyEvent.wVirtualScanCode;
 	char key = 0;
 
 	if (specialKey == 72)
-	key = ARROW_UP;
+		key = ARROW_UP;
 	else if (specialKey == 80)
-	key = ARROW_DOWN;
+		key = ARROW_DOWN;
 	else if (specialKey == 83)
-	key = DELETE_KEY;
+		key = DELETE_KEY;
 	else if (specialKey == 1)
-	key = ESCAPE_KEY;
+		key = ESCAPE_KEY;
 	else
-	key = lpBuffer.Event.KeyEvent.uChar.AsciiChar;
+		key = lpBuffer.Event.KeyEvent.uChar.AsciiChar;
 
 //FlushConsoleInputBuffer(hConsoleInput); // getline & special keys
 // Restore input mode on exit.
@@ -2592,21 +2580,21 @@ char Interface::getKey() {
 	/*This is your part:
 	 I choose 'e' to end input. Notice that EOF is also turned off
 	 in the non-canonical mode*/
-	char keys[32] = { 0 };
+	char keys[32] = {0};
 	fflush(stdout);
 	read(STDIN_FILENO, keys, 4096);
 
 	if (keys[0] == 27 && keys[1] == 91) {
 		if (keys[2] == 51 && keys[3] == 126)
-			keys[0] = DELETE_KEY;
+		keys[0] = DELETE_KEY;
 		else if (keys[2] == 65)
-			keys[0] = ARROW_UP;
+		keys[0] = ARROW_UP;
 		else if (keys[2] == 66)
-			keys[0] = ARROW_DOWN;
+		keys[0] = ARROW_DOWN;
 		else
-			keys[0] = 0;
-	} else if (keys[0] == 27 && keys[2] != 0)
 		keys[0] = 0;
+	} else if (keys[0] == 27 && keys[2] != 0)
+	keys[0] = 0;
 
 	/*restore the old settings*/
 	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
@@ -2617,85 +2605,86 @@ char Interface::getKey() {
 void Interface::setColor(int color) {
 #if defined(_WIN32) || defined(_WIN64)
 	switch (color) {
-		case FGGRAY_BGBLACK:
+	case FGGRAY_BGBLACK:
 		SetConsoleTextAttribute(hConsoleOutput,
 				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 		break;
-		case FGWHITE_BGBLACK:
+	case FGWHITE_BGBLACK:
 		SetConsoleTextAttribute(hConsoleOutput,
 				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
-				| FOREGROUND_INTENSITY);
+						| FOREGROUND_INTENSITY);
 		break;
-		case FGRED_BGBLACK:
+	case FGRED_BGBLACK:
 		SetConsoleTextAttribute(hConsoleOutput,
 				FOREGROUND_RED | FOREGROUND_INTENSITY);
 		break;
-		case FGGREEN_BGBLACK:
+	case FGGREEN_BGBLACK:
 		SetConsoleTextAttribute(hConsoleOutput,
 				FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 		break;
-		case FGBLUE_BGBLACK:
+	case FGBLUE_BGBLACK:
 		SetConsoleTextAttribute(hConsoleOutput,
 				FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 		break;
-		case FGGRAY_BGRED:
-		SetConsoleTextAttribute(hConsoleOutput,
-				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | BACKGROUND_RED);
-		break;
-		case FGWHITE_BGRED:
+	case FGGRAY_BGRED:
 		SetConsoleTextAttribute(hConsoleOutput,
 				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
-				| FOREGROUND_INTENSITY | BACKGROUND_RED);
+						| BACKGROUND_RED);
 		break;
-		case FGBLACK_BGWHITE:
+	case FGWHITE_BGRED:
+		SetConsoleTextAttribute(hConsoleOutput,
+				FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+						| FOREGROUND_INTENSITY | BACKGROUND_RED);
+		break;
+	case FGBLACK_BGWHITE:
 		SetConsoleTextAttribute(hConsoleOutput,
 				BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE
-				| BACKGROUND_INTENSITY);
+						| BACKGROUND_INTENSITY);
 		break;
-		case FGBLACK_BGGRAY:
+	case FGBLACK_BGGRAY:
 		SetConsoleTextAttribute(hConsoleOutput,
 				BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
 		break;
-		case FGBLACK_BGGREEN:
+	case FGBLACK_BGGREEN:
 		SetConsoleTextAttribute(hConsoleOutput,
 				BACKGROUND_GREEN | BACKGROUND_INTENSITY);
 		break;
-		default:
+	default:
 		break;
 	}
 #else
 	switch (color) {
-	case FGGRAY_BGBLACK:
+		case FGGRAY_BGBLACK:
 		cout << "\033[40;37m";
 		break;
-	case FGWHITE_BGBLACK:
+		case FGWHITE_BGBLACK:
 		cout << "\033[40;37m";
 		break;
-	case FGRED_BGBLACK:
+		case FGRED_BGBLACK:
 		cout << "\033[40;31m";
 		break;
-	case FGGREEN_BGBLACK:
+		case FGGREEN_BGBLACK:
 		cout << "\033[40;32m";
 		break;
-	case FGBLUE_BGBLACK:
+		case FGBLUE_BGBLACK:
 		cout << "\033[40;34m";
 		break;
-	case FGGRAY_BGRED:
+		case FGGRAY_BGRED:
 		cout << "\033[41;37m";
 		break;
-	case FGWHITE_BGRED:
+		case FGWHITE_BGRED:
 		cout << "\033[41;37m";
 		break;
-	case FGBLACK_BGWHITE:
+		case FGBLACK_BGWHITE:
 		cout << "\033[47;30m";
 		break;
-	case FGBLACK_BGGRAY:
+		case FGBLACK_BGGRAY:
 		cout << "\033[47;30m";
 		break;
-	case FGBLACK_BGGREEN:
+		case FGBLACK_BGGREEN:
 		cout << "\033[42;30m";
 		break;
-	default:
+		default:
 		break;
 	}
 
