@@ -103,7 +103,7 @@ public:
 
 	int editDate(Date &d);
 
-	Person* searchPerson(vector<Person*> persons);
+	Person* searchPerson(vector<Person*> persons, string header);
 	Book* searchBook(vector<Book*> books);
 	Request searchRequest(priority_queue<Request> requestQueue);
 

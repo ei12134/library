@@ -32,7 +32,7 @@ void Interface::menu() {
 		switch (input) {
 		case '1':
 			if (library.getSupervisors().size() != 0)
-				dispatchPerson(searchPerson(library.getPersons()));
+				dispatchPerson(searchPerson(library.getPersons(), "Login"));
 			else if (confirmOperation(noSupervisors))
 				createEmployee();
 			break;
@@ -584,14 +584,15 @@ void Interface::manageReaders() {
 			}
 			break;
 		case '3':
-			reader = searchPerson(library.getReaders());
+			reader = searchPerson(library.getReaders(), "Search reader");
 			if (reader != NULL)
 				editReader(reader);
 			else
 				errMsg = "Error editing a reader";
 			break;
 		case '4':
-			if (library.removeReader(searchPerson(library.getReaders()))) {
+			if (library.removeReader(
+					searchPerson(library.getReaders(), "Search reader"))) {
 				library.savePersons();
 				infMsg = "Reader removed successfully";
 			} else
@@ -677,7 +678,7 @@ void Interface::manageEmployees(Person* supervisor) {
 			break;
 		case '4':
 			employee = static_cast<Employee*>(searchPerson(
-					library.getEmployees(true)));
+					library.getEmployees(true), "Search employee"));
 			if (employee != NULL)
 				editEmployee(employee);
 			else
@@ -685,7 +686,8 @@ void Interface::manageEmployees(Person* supervisor) {
 			break;
 		case '5':
 			if (library.removeEmployee(
-					(searchPerson(library.getEmployees(true))), supervisor)) {
+					(searchPerson(library.getEmployees(true), "Search employee")),
+					supervisor)) {
 				library.savePersons();
 				infMsg = "Employee removed successfully";
 			} else
@@ -1180,7 +1182,7 @@ void Interface::createBorrow(Person* employee, bool request) {
 		input = getKey();
 		switch (input) {
 		case '1':
-			reader = searchPerson(library.getReaders());
+			reader = searchPerson(library.getReaders(), "Search reader");
 			if (reader == NULL) {
 				reader = NULL;
 				errMsg = "Select another reader";
@@ -1915,7 +1917,8 @@ Request Interface::editRequest(const Request &r) {
 			input = getKey();
 		switch (input) {
 		case '1':
-			if (editR.changeReader(searchPerson(library.getReaders())))
+			if (editR.changeReader(
+					searchPerson(library.getReaders(), "Search reader")))
 				edited = true;
 			else
 				errMsg = "Error editing the reader field";
@@ -2034,9 +2037,8 @@ int Interface::editDate(Date &d) {
 	return 0;
 }
 
-Person* Interface::searchPerson(vector<Person*> persons) {
+Person* Interface::searchPerson(vector<Person*> persons, string header) {
 	string query;
-	string header = "Login";
 	bool exit = false;
 	bool clear = false;
 	int key;
@@ -2132,7 +2134,7 @@ Person* Interface::searchPerson(vector<Person*> persons) {
 
 Book* Interface::searchBook(vector<Book*> books) {
 	string query;
-	string header = "Search books";
+	string header = "Search book";
 	bool exit = false;
 	bool clear = false;
 	int key;
