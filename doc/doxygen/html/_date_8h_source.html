@@ -92,21 +92,24 @@
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">     */</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">int</span> operator-(<a class="code" href="class_date.html">Date</a> d2) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">bool</span> operator &lt;(<a class="code" href="class_date.html">Date</a> d2) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">bool</span> operator&lt;(<a class="code" href="class_date.html">Date</a> d2) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">bool</span> operator &gt;(<a class="code" href="class_date.html">Date</a> d2) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">bool</span> operator&gt;(<a class="code" href="class_date.html">Date</a> d2) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">bool</span> operator ==(<a class="code" href="class_date.html">Date</a> d2) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">bool</span> operator==(<a class="code" href="class_date.html">Date</a> d2) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">bool</span> operator !=(<a class="code" href="class_date.html">Date</a> d2) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">bool</span> operator!=(<a class="code" href="class_date.html">Date</a> d2) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;};</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keywordtype">bool</span> isBissesto(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ano);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> GiveMonthDays(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> month, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> year);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="class_date.html">Date</a> operator++(<span class="keywordtype">int</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="class_date.html">Date</a> operator--(<span class="keywordtype">int</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;};</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keywordtype">bool</span> isBissesto(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ano);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> GiveMonthDays(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> month, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> year);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="class_date_html_a254204c492d3ebc26a2c62d532e34844"><div class="ttname"><a href="class_date.html#a254204c492d3ebc26a2c62d532e34844">Date::getDay</a></div><div class="ttdeci">unsigned int getDay() const </div><div class="ttdef"><b>Definition:</b> Date.h:30</div></div>
 <div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div></div>
 <div class="ttc" id="class_date_html_a6561cf495bd6b7e6c747420d7ae9cc12"><div class="ttname"><a href="class_date.html#a6561cf495bd6b7e6c747420d7ae9cc12">Date::getYear</a></div><div class="ttdeci">unsigned int getYear() const </div><div class="ttdef"><b>Definition:</b> Date.h:40</div></div>
@@ -115,7 +118,7 @@
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 1 2015 21:52:45 for Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 2 2015 16:58:18 for Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

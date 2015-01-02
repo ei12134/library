@@ -191,7 +191,8 @@ void Reader::setLastActivity(Date d){
 	this->lastActivity = d;
 }
 
-bool Reader::checkInactiveByDate(const Date &d) {
+bool Reader::checkInactiveByDate() {
+	Date d;
 	inactive = (d - lastActivity) >= 365;
 	return inactive;
 }

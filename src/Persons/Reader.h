@@ -62,7 +62,7 @@ public:
 	bool removeRequest(Request request);
 	bool borrowLimit();
 
-	bool checkInactiveByDate(const Date &d);
+	bool checkInactiveByDate();
 
 	/** saves reader data to output file stream buffer
 	 */

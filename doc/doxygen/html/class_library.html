@@ -102,6 +102,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5eb773de6d0b667380182e3da109bcce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d52ceecfcb87cd050585d2435b4caba"><td class="memItemLeft" align="right" valign="top">vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a2d52ceecfcb87cd050585d2435b4caba">getPriorityQueuePrint</a> () const </td></tr>
 <tr class="separator:a2d52ceecfcb87cd050585d2435b4caba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ebf53a0aae0e2d0ac66ae2e4a892a4e"><td class="memItemLeft" align="right" valign="top">vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a4ebf53a0aae0e2d0ac66ae2e4a892a4e">getPriorityQueuePrintByReader</a> (<a class="el" href="class_person.html">Person</a> *reader) const </td></tr>
+<tr class="separator:a4ebf53a0aae0e2d0ac66ae2e4a892a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa87a150340e6b095911d09a63b942e5b"><td class="memItemLeft" align="right" valign="top">vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#aa87a150340e6b095911d09a63b942e5b">sortPersons</a> (vector&lt; <a class="el" href="class_person.html">Person</a> * &gt; vec, size_t compareType)</td></tr>
 <tr class="separator:aa87a150340e6b095911d09a63b942e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf0f9726c4d235b70e1f88e0b351e35b"><td class="memItemLeft" align="right" valign="top">vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#abf0f9726c4d235b70e1f88e0b351e35b">sortBooks</a> (size_t compareType)</td></tr>
@@ -140,6 +142,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a96c429b640f9896418964473972c5c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a024f685a5999d93b92273bfd1f9160c5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a024f685a5999d93b92273bfd1f9160c5">removeReaderFromHashTable</a> (<a class="el" href="class_person.html">Person</a> *reader)</td></tr>
 <tr class="separator:a024f685a5999d93b92273bfd1f9160c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcb7584b1959d792cbdff928971bf881"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#adcb7584b1959d792cbdff928971bf881">removeRequestByReader</a> (<a class="el" href="class_person.html">Person</a> *reader)</td></tr>
+<tr class="separator:adcb7584b1959d792cbdff928971bf881"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b19049efc88ecd60ef044a8477a0a70"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a2b19049efc88ecd60ef044a8477a0a70">removeRequest</a> (const <a class="el" href="class_request.html">Request</a> &amp;request)</td></tr>
 <tr class="separator:a2b19049efc88ecd60ef044a8477a0a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67cdb6d73dfca421a558b1500ddfeee8"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_library.html#a67cdb6d73dfca421a558b1500ddfeee8">borrowQueuedRequest</a> (<a class="el" href="class_borrow.html">Borrow</a> *b)</td></tr>
@@ -719,7 +723,24 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Gets all print output from priorty queue </p><dl class="section return"><dt>Returns</dt><dd>string vector containing all book reservations </dd></dl>
+<p>Gets all print output from priority queue </p><dl class="section return"><dt>Returns</dt><dd>string vector containing all book reservations </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4ebf53a0aae0e2d0ac66ae2e4a892a4e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt; string &gt; Library::getPriorityQueuePrintByReader </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_person.html">Person</a> *&#160;</td>
+          <td class="paramname"><em>reader</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Gets all print output from priority queue </p><dl class="section return"><dt>Returns</dt><dd>string vector containing all book reservations from a specific reader </dd></dl>
 
 </div>
 </div>
@@ -1058,6 +1079,29 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="adcb7584b1959d792cbdff928971bf881"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Library::removeRequestByReader </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_person.html">Person</a> *&#160;</td>
+          <td class="paramname"><em>reader</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Attempts to remove existing request from the requests queue </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname"><a class="el" href="class_person.html">Person</a></td><td>pointer to check in requests queue </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if successful false otherwise </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a5dbccc45f7e2eee5cb28c9b8ae58e80e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1278,7 +1322,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 1 2015 21:52:45 for Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 2 2015 16:58:19 for Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

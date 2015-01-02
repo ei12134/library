@@ -115,11 +115,10 @@ string Library::borrowQueuedRequest(Borrow* b) {
 
 void Library::updateInactiveReaders() {
 	inactiveReaders.clear();
-	Date d;
 	vector<Person*> readers = getReaders();
 	for (size_t i = 0; i < readers.size(); i++) {
 		Reader *r = static_cast<Reader*>(readers[i]);
-		if (r->checkInactiveByDate(d)) // returns true if is incative by date
+		if (r->checkInactiveByDate()) // returns true if is incative by date
 			inactiveReaders.insert(readers[i]);
 	}
 }
@@ -298,6 +297,18 @@ vector<string> Library::getPriorityQueuePrint() const {
 	return print;
 }
 
+vector<string> Library::getPriorityQueuePrintByReader(Person* reader) const {
+	vector<string> print;
+	priority_queue<Request> copy = requestsQueue;
+	while (!copy.empty()) {
+		if (copy.top().getReader() == reader)
+			print.push_back(copy.top().print());
+		copy.pop();
+	}
+
+	return print;
+}
+
 vector<string> Library::getHashTablePrint() const {
 	vector<string> print;
 	for (cIteratorH it = inactiveReaders.begin(); it != inactiveReaders.end();
@@ -420,6 +431,35 @@ bool Library::removeEmployeeFromSupervisors(Employee* employee) {
 		if (persons[i]->getType() == 3)
 			persons[i]->removeEmployee(employee);
 	return true;
+}
+
+bool Library::removeRequestByReader(Person* reader) {
+	stack<Request> temp;
+	bool success = false;
+	vector<Person*> employees = getEmployees(true);
+	if (employees.size() == 0)
+		return success;
+	Person* employee = employees[0];
+
+	while (!requestsQueue.empty()) {
+		Request req = requestsQueue.top();
+		requestsQueue.pop();
+		if (req.getReader()->getCard() == reader->getCard()) {
+			if (!req.getBook()->getBorrowed()) {
+				Borrow* borrow = new Borrow(req.getBook(), employee, reader);
+				reader->addBorrow(borrow);
+				addBorrow(borrow);
+				success = true;
+				break;
+			}
+		} else
+			temp.push(req);
+	}
+	while (!temp.empty()) {
+		requestsQueue.push(temp.top());
+		temp.pop();
+	}
+	return success;
 }
 
 bool Library::removeRequest(const Request &request) {

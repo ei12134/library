@@ -149,10 +149,15 @@ public:
 	 */
 	vector<string> getHashTablePrint() const;
 
-	/** Gets all print output from priorty queue
+	/** Gets all print output from priority queue
 	 *@return string vector containing all book reservations
 	 */
 	vector<string> getPriorityQueuePrint() const;
+
+	/** Gets all print output from priority queue
+	 *@return string vector containing all book reservations from a specific reader
+	 */
+	vector<string> getPriorityQueuePrintByReader(Person* reader) const;
 
 	/** Sorts given container and generates string used to display its contents
 	 *@return string vector containing persons print output
@@ -259,6 +264,12 @@ public:
 	 *@return true if successful false otherwise
 	 */
 	bool removeReaderFromHashTable(Person* reader);
+
+	/** Attempts to remove existing request from the requests queue
+	 *@param Person pointer to check in  requests queue
+	 *@return true if successful false otherwise
+	 */
+	bool removeRequestByReader(Person* reader);
 
 	/** Attempts to remove existing request from the requests queue
 	 *@param request reference to remove
