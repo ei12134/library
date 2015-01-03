@@ -83,12 +83,12 @@ public:
 	/** postfix operator increments date by one day
 	 *@param postfix convention
 	 */
-	Date operator++(int) const;
+	Date operator++(int);
 
 	/** postfix operator decrements date by one day
 	 *@param postfix convention
 	 */
-	Date operator--(int) const;
+	Date operator--(int);
 };
 
 /** return true if ano is bissesto false if not

@@ -108,15 +108,15 @@ bool Date::operator !=(Date d2) const {
 	return !(*this == d2);
 }
 
-Date Date::operator++(int) const {
-	Date date(day, month, year);
-	date.addOneDay();
+Date Date::operator++(int) {
+	Date date(*this);
+	(*this).addOneDay();
 	return date;
 }
 
-Date Date::operator--(int) const {
-	Date date(day, month, year);
-	date.removeOneDay();
+Date Date::operator--(int) {
+	Date date(*this);
+	(*this).removeOneDay();
 	return date;
 }
 

@@ -2018,11 +2018,11 @@ int Interface::editDate(Date &d) {
 	char input = getKey();
 	switch (input) {
 	case '+':
-		d.addOneDay();
+		d++;
 		return 0;
 		break;
 	case '-':
-		d.removeOneDay();
+		d--;
 		return 0;
 		break;
 	case RETURN_KEY:
