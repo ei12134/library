@@ -265,8 +265,14 @@ public:
 	 */
 	bool removeReaderFromHashTable(Person* reader);
 
+	/** Attempts to remove existing requests of given book from the requests queue
+	 *@param Book pointer to check in requests queue
+	 *@return true if successful false otherwise
+	 */
+	bool removeRequestByBook(Book* book);
+
 	/** Attempts to remove existing request from the requests queue
-	 *@param Person pointer to check in  requests queue
+	 *@param Person pointer to check in requests queue
 	 *@return true if successful false otherwise
 	 */
 	bool removeRequestByReader(Person* reader);

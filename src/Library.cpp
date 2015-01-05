@@ -373,10 +373,12 @@ bool Library::removeBook(Book* book) {
 		if (books[i] == book) {
 			set<Book*, bool (*)(const Book*, const Book*)>::const_iterator it =
 					booksTree.find(book);
-			if (it != booksTree.end())
+			if (it != booksTree.end()) {
 				booksTree.erase(it);
-			books[i]->setDeleted(true);
-			return true;
+				removeRequestByBook(books[i]);
+				books[i]->setDeleted(true);
+				return true;
+			}
 		}
 	return false;
 }
@@ -431,6 +433,25 @@ bool Library::removeEmployeeFromSupervisors(Employee* employee) {
 		if (persons[i]->getType() == 3)
 			persons[i]->removeEmployee(employee);
 	return true;
+}
+
+bool Library::removeRequestByBook(Book* book) {
+	stack<Request> temp;
+	bool success = false;
+
+	while (!requestsQueue.empty()) {
+		Request req = requestsQueue.top();
+		requestsQueue.pop();
+		if (req.getBook()->getID() == book->getID()) {
+			success = true;
+		} else
+			temp.push(req);
+	}
+	while (!temp.empty()) {
+		requestsQueue.push(temp.top());
+		temp.pop();
+	}
+	return success;
 }
 
 bool Library::removeRequestByReader(Person* reader) {
